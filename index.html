@@ -1,0 +1,2807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orquestra para Crianças — Aprenda as Notas</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#7d9d7a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Music&display=swap" rel="stylesheet">
+  <style>
+    /* ========== VARIÁVEIS E BASE ========== */
+    :root {
+      --bg: #f5f0e8;
+      --card: #fffef9;
+      --text: #3d3a35;
+      --text-soft: #6b6560;
+      --do: #e8b4bc;
+      --re: #f5d6a8;
+      --mi: #f5e6a8;
+      --fa: #c8e6c9;
+      --sol: #b3e5fc;
+      --la: #d1c4e9;
+      --si: #ffccbc;
+      --accent: #7d9d7a;
+      --success: #81c784;
+      /* Cores das cordas do violino (foto 2: vermelho, laranja, azul, verde — versão pastel) */
+      --string-sol: #e8a0a0;
+      --string-re: #f5c88a;
+      --string-la: #a0c8e8;
+      --string-mi: #a0d8a0;
+      --string-do: #1f1f1f;
+      --radius: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --font: 'Segoe UI', 'Nunito', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== LAYOUT PRINCIPAL ========== */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-top: 0.25rem;
+    }
+
+    .header-top {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-top-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 0.75rem;
+      z-index: 50;
+      width: auto;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+    }
+
+    /* ========== MASCOTE ========== */
+    .mascot {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 0.5rem;
+      background: linear-gradient(135deg, var(--sol) 0%, var(--la) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.4s ease;
+    }
+
+    .mascot.happy {
+      transform: scale(1.1);
+    }
+
+    /* ========== MENSAGEM / INSTRUÇÃO ========== */
+    .message-box {
+      background: var(--card);
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.9rem;
+      min-height: unset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: var(--shadow);
+      font-size: 1.1rem;
+      color: var(--text);
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .message-box .instruction-text {
+      max-width: 100%;
+    }
+
+    /* ========== BARRA DE PROGRESSO ========== */
+    .progress-section {
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 1rem;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 0.35rem;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .stars {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .star {
+      opacity: 0.25;
+      transition: opacity 0.3s ease;
+    }
+
+    .star.earned {
+      opacity: 1;
+    }
+
+    /* ========== ESPELHO DO VIOLINO — 4 CORDAS × 5 POSIÇÕES (como na foto 2) ========== */
+    .violin-section {
+      position: relative;
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+    }
+
+    .violin-title {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Espelho rotacionado 90°: cordas em linhas (vertical), posições em colunas (horizontal) */
+    .violin-board {
+      background: #2a2520;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 40px 1fr 1fr 1fr 1fr 1fr;
+      grid-template-rows: auto auto auto auto auto;
+      gap: 8px 10px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .violin-board .string-label {
+      color: rgba(255,255,255,0.9);
+      font-size: 0.95rem;
+      font-weight: 700;
+      justify-self: end;
+      padding-right: 6px;
+    }
+
+    .violin-board .pos-label {
+      color: rgba(255,255,255,0.9);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .finger-cell {
+      width: 100%;
+      max-width: 64px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      font-family: inherit;
+      padding: 0;
+      margin: 0;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .finger-cell:focus {
+      outline: none;
+    }
+
+    .finger-cell:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.6);
+    }
+
+    .finger-cell:active {
+      transform: scale(0.95);
+    }
+
+    .finger-cell.playing {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.8);
+    }
+
+    .finger-cell.pos-0 {
+      border-radius: 8px;
+      background: transparent;
+      border-color: transparent;
+      color: rgba(255,255,255,0.95);
+      font-size: 1.05rem;
+    }
+
+    .finger-cell.pos-0:active {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .finger-cell.pos-1,
+    .finger-cell.pos-2,
+    .finger-cell.pos-3,
+    .finger-cell.pos-4 {
+      color: #1a1a1a;
+    }
+
+    .finger-cell.string-sol { background: var(--string-sol); }
+    .finger-cell.string-re { background: var(--string-re); }
+    .finger-cell.string-la { background: var(--string-la); }
+    .finger-cell.string-mi { background: var(--string-mi); }
+    .finger-cell.string-do {
+      background: var(--string-do);
+      color: #f3f3f3;
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .finger-cell.highlight {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.6);
+    }
+
+    .finger-cell.pos-0.highlight {
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.8);
+    }
+
+    .finger-cell.string-do.pos-0 {
+      color: #fff;
+    }
+
+    /* Layout para instrumentos de sopro/metal (dedilhado por instrumento) */
+    .violin-board.wind-layout {
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)) !important;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+
+    .violin-board.wind-layout .finger-cell {
+      min-height: 84px;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      flex-direction: column;
+      gap: 0.2rem;
+      line-height: 1.15;
+      padding: 0.45rem 0.35rem;
+    }
+
+    .finger-note {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .finger-meta {
+      font-size: 0.68rem;
+      color: rgba(20, 20, 20, 0.75);
+      text-align: center;
+      white-space: normal;
+      max-width: 100%;
+    }
+
+    /* ========== PENTAGRAMA (MODO MUSIC TUTOR) ========== */
+    .staff-section {
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+    }
+
+    .staff-svg {
+      width: 100%;
+      max-width: 420px;
+      display: block;
+      margin: 0 auto 0.75rem;
+    }
+
+    .note-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .note-option-btn {
+      padding: 0.6rem 0.9rem;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      font-family: inherit;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .note-option-btn:active {
+      transform: scale(0.96);
+    }
+
+    .note-option-btn.correct {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .note-option-btn.wrong {
+      background: #f8d7da;
+      color: #a94442;
+    }
+
+    /* ========== TONALIDADE ========== */
+    .instrument-section,
+    .key-section {
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .key-label {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 0.5rem;
+    }
+
+    .instrument-tabs,
+    .key-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .instrument-btn,
+    .key-btn {
+      padding: 0.5rem 0.85rem;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-family: inherit;
+    }
+
+    .instrument-btn:hover,
+    .key-btn:hover {
+      background: rgba(125, 157, 122, 0.15);
+    }
+
+    .instrument-btn.active,
+    .key-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* ========== MODOS DE JOGO ========== */
+    .mode-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .mode-btn {
+      padding: 0.65rem 1.1rem;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .mode-btn:hover {
+      background: rgba(125, 157, 122, 0.15);
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* ========== PAINEL DE CONFIGURAÇÕES ========== */
+    .settings-wrap {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .settings-toggle {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.25rem 0 0.35rem;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+
+    .settings-panel {
+      margin-top: 0.6rem;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 0.9rem;
+      width: 100%;
+    }
+
+    .settings-panel.hidden {
+      display: none !important;
+    }
+
+    .settings-group {
+      margin-bottom: 0.8rem;
+    }
+
+    .settings-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .clef-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .clef-btn {
+      padding: 0.5rem 0.85rem;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-family: inherit;
+    }
+
+    .clef-btn:hover {
+      background: rgba(125, 157, 122, 0.15);
+    }
+
+    .clef-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ========== CONTROLES ========== */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.2rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      border-radius: 50%;
+    }
+
+    /* ========== ACESSIBILIDADE E MODO CALMO ========== */
+    body.calm-mode .mascot.happy {
+      transform: scale(1.05);
+    }
+
+    /* ========== RESPONSIVO ========== */
+    @media (max-width: 600px) {
+      .violin-board {
+        padding: 8px 10px;
+        gap: 6px 8px;
+      }
+
+      .finger-cell {
+        max-width: 52px;
+        min-height: 36px;
+        font-size: 0.9rem;
+      }
+
+      .violin-board .pos-label {
+        font-size: 1rem;
+      }
+    }
+
+    /* ========== ANIMAÇÃO SUAVE DE ACERTO ========== */
+    @keyframes soft-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
+    /* ========== OCULTAR ELEMENTOS POR MODO ========== */
+    .hidden {
+      display: none !important;
+    }
+
+    .note-name-display {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 0.25rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* ========== METRÔNOMO ==========
+       Modal simples estilo cartão (igual ao print) */
+    .metronome-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .metronome-card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.15rem 1.15rem 1.05rem;
+      position: relative;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .metronome-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      border: none;
+      background: rgba(0,0,0,0.06);
+      color: var(--text);
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .metro-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      margin-top: 0.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .metro-bpm-badge {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      letter-spacing: 0.02em;
+    }
+
+    .metro-bpm-value {
+      font-size: 4.2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .metro-bpm-label {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-top: -0.2rem;
+    }
+
+    .metro-slider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.35rem 0 0.85rem;
+    }
+
+    .metro-round {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      padding: 0;
+    }
+
+    .metro-round.small {
+      width: 30px;
+      height: 30px;
+      font-size: 1.1rem;
+    }
+
+    .metro-slider input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .metro-controls {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .metro-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 0.65rem 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .metro-btn.metro-pause {
+      background: rgba(0,0,0,0.06);
+      color: var(--text);
+    }
+
+    .metro-btn.metro-start {
+      background: rgba(125, 157, 122, 0.95);
+      color: #fff;
+    }
+
+    .metro-beat-title {
+      text-align: center;
+      color: var(--text-soft);
+      margin: 0.35rem 0 0.15rem;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .metro-dots {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      min-height: 26px;
+    }
+
+    .metro-dot {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.12);
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .metro-dot.active {
+      background: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .metro-dot.accent {
+      background: #e67e22;
+    }
+
+    .metro-section {
+      background: rgba(0,0,0,0.03);
+      border-radius: var(--radius);
+      padding: 0.7rem 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .metro-section-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .metro-section-label {
+      font-weight: 900;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .metro-stepper {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .metro-stepper-value {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 900;
+      color: var(--text-soft);
+    }
+
+    .metro-check {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-soft);
+      font-weight: 700;
+      margin-top: 0.45rem;
+      user-select: none;
+    }
+
+    .metro-timer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-top: 0.55rem;
+    }
+
+    .metro-timer-input {
+      width: 92px;
+      padding: 0.45rem 0.5rem;
+      border-radius: var(--radius);
+      border: 2px solid rgba(0,0,0,0.06);
+      font-weight: 800;
+      color: var(--text-soft);
+    }
+
+    .metro-subdiv-title,
+    .metro-subdiv-row,
+    .metro-subdiv-title + * {
+      text-align: center;
+    }
+
+    .metro-subdiv-title {
+      color: var(--text-soft);
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .metro-subdiv-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.1rem;
+    }
+
+    .metro-subdiv-btn {
+      border: 2px solid rgba(125, 157, 122, 0.55);
+      background: rgba(125, 157, 122, 0.08);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 0.45rem 0.7rem;
+      font-weight: 900;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+    }
+
+    .metro-subdiv-btn.active {
+      background: rgba(125, 157, 122, 0.95);
+      color: #fff;
+      border-color: rgba(125, 157, 122, 1);
+    }
+
+    .metro-subdiv-btn svg {
+      display: block;
+      width: 26px;
+      height: 26px;
+    }
+
+    .metro-subdiv-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+
+    @media (max-width: 480px) {
+      .metronome-card {
+        padding: 1rem 0.95rem 0.9rem;
+      }
+    }
+  </style>
+  <!-- Som real de violino (soundfont MusyngKite) -->
+  <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="settings-top-toggle">
+      <button type="button" class="btn btn-secondary btn-icon settings-toggle" id="btnSettingsToggleInline" aria-expanded="false" aria-controls="settingsPanel">⚙️</button>
+    </div>
+    <div class="message-box" id="messageBox">
+      <span class="instruction-text" id="instructionText">Clique em um botão para ouvir a nota. Escolha um modo acima.</span>
+    </div>
+
+    <div class="progress-section" id="progressSection">
+      <div class="progress-label">
+        <span>Seu progresso</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="stars" id="starsContainer">
+        <span class="star" data-star="0">⭐</span>
+        <span class="star" data-star="1">⭐</span>
+        <span class="star" data-star="2">⭐</span>
+        <span class="star" data-star="3">⭐</span>
+        <span class="star" data-star="4">⭐</span>
+      </div>
+    </div>
+
+    <div class="settings-wrap">
+      
+      <div class="settings-panel hidden" id="settingsPanel">
+        <div class="settings-group instrument-section" id="instrumentSection">
+          <p class="key-label">Instrumento</p>
+          <div class="instrument-tabs" id="instrumentTabs" role="group" aria-label="Escolha o instrumento">
+            <!-- Botões de instrumentos preenchidos via JS -->
+          </div>
+        </div>
+
+        <div class="settings-group key-section" id="keySection">
+          <p class="key-label">Tonalidade</p>
+          <div class="key-tabs" id="keyTabs" role="group" aria-label="Escolha a tonalidade">
+            <!-- Botões de tonalidade preenchidos via JS -->
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <p class="key-label">Clave</p>
+          <div class="clef-tabs" id="clefTabs" role="group" aria-label="Escolha a clave">
+            <!-- Botões de clave preenchidos via JS -->
+          </div>
+        </div>
+
+        <div class="settings-group controls">
+          <button type="button" class="btn btn-secondary" id="btnRepeatInstruction" title="Repetir instrução">🔁 Repetir</button>
+          <button type="button" class="btn btn-secondary" id="btnNarration" title="Narração (falar instruções)">🗣️ Narração</button>
+          <button type="button" class="btn btn-secondary" id="btnAmbient" title="Trilha ambiente suave">🎵 Ambiente</button>
+          <button type="button" class="btn btn-secondary" id="btnCalmMode" title="Modo calmo (volume baixo)">🔊 Modo calmo</button>
+          <button type="button" class="btn btn-secondary" id="btnSound" title="Ligar/desligar som">🔈 Som</button>
+          <button type="button" class="btn btn-secondary" id="btnFullscreen" title="Alternar tela cheia">⛶ Tela cheia</button>
+          <button type="button" class="btn btn-secondary" id="btnAbout" title="Informações do app">Sobre</button>
+          <button type="button" class="btn btn-primary" id="btnRestart" title="Reiniciar">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="violin-section" id="violinSection">
+      <p class="violin-title" id="instrumentTitle">Espelho do instrumento</p>
+      <div class="violin-board" id="violinBoard">
+        <!-- Grade de posições — preenchida via JS conforme o instrumento -->
+      </div>
+      <p class="note-name-display" id="currentNoteDisplay">&nbsp;</p>
+    </div>
+
+    <div class="staff-section hidden" id="staffSection">
+      <p class="violin-title">Pentagrama — descubra a nota</p>
+      <svg id="staffSvg" class="staff-svg" role="img" aria-label="Pentagrama com uma nota"></svg>
+      <div class="note-options" id="noteOptions" aria-label="Opções de notas">
+        <!-- Botões Dó a Si (preenchidos via JS) -->
+      </div>
+    </div>
+
+    <div class="mode-tabs" role="tablist">
+      <button type="button" class="mode-btn active" data-mode="learn" role="tab">Aprender</button>
+      <button type="button" class="mode-btn" data-mode="challenge" role="tab">Desafio</button>
+      <button type="button" class="mode-btn" data-mode="staff" role="tab">Pentagrama</button>
+      <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">Metrônomo</button>
+    </div>
+
+    <!-- Metrônomo (tela/modal) -->
+    <div class="metronome-modal hidden" id="metronomeModal" role="dialog" aria-modal="true" aria-label="Metrônomo">
+      <div class="metronome-card">
+        <button type="button" class="metronome-close" id="btnMetronomeClose" aria-label="Fechar">✕</button>
+
+        <div class="metro-top">
+          <div class="metro-bpm-badge">BPM</div>
+          <div class="metro-bpm-value" id="metroBpmValue">60</div>
+          <div class="metro-bpm-label" id="metroBpmLabel">Médio</div>
+        </div>
+
+        <div class="metro-slider">
+          <button type="button" class="metro-round" id="btnMetroMinus" aria-label="Diminuir BPM">−</button>
+          <input type="range" id="metroBpmSlider" min="30" max="220" step="1" value="60" aria-label="Slider de BPM">
+          <button type="button" class="metro-round" id="btnMetroPlus" aria-label="Aumentar BPM">+</button>
+        </div>
+
+        <div class="metro-controls">
+          <button type="button" class="metro-btn metro-pause" id="btnMetroStop">Pare</button>
+          <button type="button" class="metro-btn metro-start" id="btnMetroStart">Toque BPM</button>
+        </div>
+
+        <div class="metro-beat-title">BATIDAS</div>
+        <div class="metro-dots" id="metroDots" aria-hidden="true"></div>
+
+        <div class="metro-section">
+          <div class="metro-section-row">
+            <div class="metro-section-label">Batidas</div>
+            <div class="metro-stepper">
+              <button type="button" class="metro-round small" id="btnMetroBeatsMinus" aria-label="Diminuir batidas">−</button>
+              <div class="metro-stepper-value" id="metroBeatsValue">4</div>
+              <button type="button" class="metro-round small" id="btnMetroBeatsPlus" aria-label="Aumentar batidas">+</button>
+            </div>
+          </div>
+
+          <label class="metro-check">
+            <input type="checkbox" id="chkMetroAccent" />
+            <span>Estresse primeira batida</span>
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <!-- Subdivisões removidas: metrônomo fica em tempo inteiro -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Sobre (modal) -->
+    <div class="metronome-modal hidden" id="aboutModal" role="dialog" aria-modal="true" aria-label="Sobre">
+      <div class="metronome-card">
+        <button type="button" class="metronome-close" id="btnAboutClose" aria-label="Fechar">✕</button>
+        <div style="text-align:center; padding-top: 0.2rem;">
+          <div style="font-size:1.2rem; font-weight:900; color: var(--text); margin-bottom:0.55rem;">🎵 GEM Tools</div>
+          
+          <div style="text-align:left; color: var(--text-soft); font-weight:700;">
+            <div style="margin-bottom:0.85rem;">
+              <span style="display:inline-block; width:100%; color: var(--text); font-weight:900;">🎵 Sobre o GEM Tools</span>
+              <br/>
+              <span>
+                O GEM Tools é um aplicativo desenvolvido para auxiliar no aprendizado musical dos alunos do GEM – Grupo de Ensino Musical da CCB.
+              </span>
+            </div>
+
+            <div style="margin-bottom:0.85rem;">
+              <span style="color: var(--text); font-weight:900;">🎯 Objetivo</span>
+              <br/>
+              Ajudar alunos no desenvolvimento musical por meio de:
+              <br/>• Exercícios interativos
+              <br/>• Treinamento auditivo
+              <br/>• Leitura musical
+              <br/>• Prática com metrônomo
+            </div>
+
+            <div style="margin-bottom:0.85rem;">
+              <span style="color: var(--text); font-weight:900;">♿ Inclusão</span>
+              <br/>
+              O aplicativo também faz parte de uma iniciativa de GEM Inclusivo, buscando adaptar o ensino musical para todos os alunos, respeitando suas individualidades e promovendo acessibilidade no aprendizado.
+            </div>
+
+            <div style="margin-bottom:0.85rem;">
+              <span style="color: var(--text); font-weight:900;">⚠️ Versão Beta</span>
+              <br/>
+              Este aplicativo encontra-se em fase Beta, podendo apresentar melhorias contínuas, ajustes e novas funcionalidades ao longo do tempo.
+            </div>
+
+            <div style="margin-bottom:0.85rem;">
+              <span style="color: var(--text); font-weight:900;">📢 Uso Livre</span>
+              <br/>
+              O GEM Tools é um projeto independente, sem fins lucrativos, e pode ser utilizado livremente para fins educacionais.
+              <br/><br/>
+              ✔ Sem propagandas.
+              <br/>
+              ✔ Sem coleta indevida de dados.
+              <br/>
+              ✔ Uso permitido sem restrições de direitos para estudo.
+            </div>
+
+            <div>
+              <span style="color: var(--text); font-weight:900;">👨‍💻 Desenvolvido por:</span>
+              <br/>
+              Michel Roger Ribeiro Pires.
+            </div>
+          </div>
+          <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
+            Versão: 1.0.0 - <span id="aboutVersion">Beta</span>
+          </div>
+          <div style="margin-top:1rem; text-align:center;">
+            <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
+      const NOTAS = [
+        { id: 'do', nome: 'Dó', solfa: 'Dó', cor: 'do', freq: 261.63 },
+        { id: 're', nome: 'Ré', solfa: 'Ré', cor: 're', freq: 293.66 },
+        { id: 'mi', nome: 'Mi', solfa: 'Mi', cor: 'mi', freq: 329.63 },
+        { id: 'fa', nome: 'Fá', solfa: 'Fá', cor: 'fa', freq: 349.23 },
+        { id: 'sol', nome: 'Sol', solfa: 'Sol', cor: 'sol', freq: 392.00 },
+        { id: 'la', nome: 'Lá', solfa: 'Lá', cor: 'la', freq: 440.00 },
+        { id: 'si', nome: 'Si', solfa: 'Si', cor: 'si', freq: 493.88 }
+      ];
+
+      // ========== INSTRUMENTOS DA ORQUESTRA CCB ==========
+      const INSTRUMENTOS = [
+        // CORDAS
+        {
+          id: 'violino',
+          nome: 'Violino',
+          emoji: '🎻',
+          tipo: 'corda',
+          soundfont: 'violin',
+          descricao: '4 cordas: Sol, Ré, Lá, Mi — primeira posição',
+          cordas: ['sol', 're', 'la', 'mi'],
+          cordaClasses: { sol: 'string-sol', re: 'string-re', la: 'string-la', mi: 'string-mi' },
+          fingerboard: [
+            ['sol', 're', 'la', 'mi'],   // pos 0 — cordas soltas
+            ['la', 'mi', 'si', 'fa'],    // pos 1
+            ['si', 'fa', 'do', 'sol'],   // pos 2
+            ['do', 'sol', 're', 'la'],   // pos 3
+            ['re', 'la', 'mi', 'si']     // pos 4
+          ],
+          freqBoard: [
+            [196.00, 293.66, 440.00, 659.25],   // pos 0: G3, D4, A4, E5
+            [220.00, 329.63, 493.88, 698.46],   // pos 1: A3, E4, B4, F5
+            [246.94, 349.23, 523.25, 783.99],   // pos 2: B3, F4, C5, G5
+            [261.63, 392.00, 587.33, 880.00],   // pos 3: C4, G4, D5, A5
+            [293.66, 440.00, 659.25, 987.77]    // pos 4: D4, A4, E5, B5
+          ]
+        },
+        {
+          id: 'viola',
+          nome: 'Viola',
+          emoji: '🎻',
+          tipo: 'corda',
+          soundfont: 'viola',
+          descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
+          cordas: ['do', 'sol', 're', 'la'],
+          cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
+          fingerboard: [
+            ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
+            ['re', 'la', 'mi', 'si'],     // pos 1
+            ['mi', 'si', 'fa', 'do'],     // pos 2
+            ['fa', 'do', 'sol', 're'],    // pos 3
+            ['sol', 're', 'la', 'mi']     // pos 4
+          ],
+          freqBoard: [
+            [130.81, 196.00, 293.66, 440.00],   // pos 0: C3, G3, D4, A4
+            [146.83, 220.00, 329.63, 493.88],   // pos 1: D3, A3, E4, B4
+            [164.81, 246.94, 349.23, 523.25],   // pos 2: E3, B3, F4, C5
+            [174.61, 261.63, 392.00, 587.33],   // pos 3: F3, C4, G4, D5
+            [196.00, 293.66, 440.00, 659.25]    // pos 4: G3, D4, A4, E5
+          ]
+        },
+        {
+          id: 'violoncelo',
+          nome: 'Violoncelo',
+          emoji: '🎻',
+          tipo: 'corda',
+          soundfont: 'cello',
+          descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
+          cordas: ['do', 'sol', 're', 'la'],
+          cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
+          fingerboard: [
+            ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
+            ['re', 'la', 'mi', 'si'],     // pos 1
+            ['mi', 'si', 'fa', 'do'],     // pos 2
+            ['fa', 'do', 'sol', 're'],    // pos 3
+            ['sol', 're', 'la', 'mi']     // pos 4
+          ],
+          freqBoard: [
+            [65.41, 98.00, 146.83, 220.00],   // pos 0: C2, G2, D3, A3
+            [73.42, 110.00, 164.81, 246.94],   // pos 1: D2, A2, E3, B3
+            [82.41, 123.47, 174.61, 261.63],   // pos 2: E2, B2, F3, C4
+            [87.31, 130.81, 196.00, 293.66],   // pos 3: F2, C3, G3, D4
+            [98.00, 146.83, 220.00, 329.63]    // pos 4: G2, D3, A3, E4
+          ]
+        },
+        // SOPROS - MADEIRAS
+        {
+          id: 'flauta',
+          nome: 'Flauta',
+          emoji: '🎵',
+          tipo: 'sopro',
+          soundfont: 'flute',
+          descricao: 'Dedilhado de flauta doce/barroca — Dó a Si',
+          dedilhado: 'teclas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'E: 123 + p | D: 123',
+            re: 'E: 123 + p | D: 12',
+            mi: 'E: 123 + p | D: 1',
+            fa: 'E: 123 + p | D: -',
+            sol: 'E: 123 | D: -',
+            la: 'E: 12 | D: -',
+            si: 'E: 1 | D: -'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+          ]
+        },
+        {
+          id: 'clarinete',
+          nome: 'Clarinete',
+          emoji: '🎵',
+          tipo: 'sopro',
+          soundfont: 'clarinet',
+          descricao: 'Dedilhado de clarinete (registro base) — Dó a Si',
+          dedilhado: 'teclas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'polegar + E123 D123',
+            re: 'polegar + E123 D12',
+            mi: 'polegar + E123 D1',
+            fa: 'polegar + E123',
+            sol: 'polegar + E12',
+            la: 'polegar + E1',
+            si: 'polegar + chave A'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+          ]
+        },
+        {
+          id: 'oboe',
+          nome: 'Oboé',
+          emoji: '🎵',
+          tipo: 'sopro',
+          soundfont: 'oboe',
+          descricao: 'Dedilhado de oboe (simplificado) — Dó a Si',
+          dedilhado: 'teclas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'E123 | D123 + C grave',
+            re: 'E123 | D123',
+            mi: 'E123 | D12',
+            fa: 'E123 | D1',
+            sol: 'E123',
+            la: 'E12',
+            si: 'E1'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+          ]
+        },
+        {
+          id: 'fagote',
+          nome: 'Fagote',
+          emoji: '🎵',
+          tipo: 'sopro',
+          soundfont: 'bassoon',
+          descricao: 'Dedilhado de fagote (simplificado) — Dó a Si',
+          dedilhado: 'teclas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'E123 | D123 + polegar',
+            re: 'E123 | D123',
+            mi: 'E123 | D12',
+            fa: 'E123 | D1',
+            sol: 'E123',
+            la: 'E12',
+            si: 'E1'
+          },
+          freqBoard: [
+            [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+          ]
+        },
+        // METais
+        {
+          id: 'trompete',
+          nome: 'Trompete',
+          emoji: '🎺',
+          tipo: 'metal',
+          soundfont: 'trumpet',
+          descricao: 'Válvulas de trompete — Dó a Si',
+          dedilhado: 'valvulas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'valvulas: 0',
+            re: 'valvulas: 1+3',
+            mi: 'valvulas: 1+2',
+            fa: 'valvulas: 1',
+            sol: 'valvulas: 0',
+            la: 'valvulas: 1+2',
+            si: 'valvulas: 2'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+          ]
+        },
+        {
+          id: 'trompa',
+          nome: 'Trompa',
+          emoji: '🎺',
+          tipo: 'metal',
+          soundfont: 'french-horn',
+          descricao: 'Válvulas de trompa (F) — Dó a Si',
+          dedilhado: 'valvulas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'valvulas: 0',
+            re: 'valvulas: 1',
+            mi: 'valvulas: 1+2',
+            fa: 'valvulas: 0',
+            sol: 'valvulas: 2',
+            la: 'valvulas: 1',
+            si: 'valvulas: 2'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+          ]
+        },
+        {
+          id: 'trombone',
+          nome: 'Trombone',
+          emoji: '🎺',
+          tipo: 'metal',
+          soundfont: 'trombone',
+          descricao: 'Posições da vara (tenor) — Dó a Si',
+          dedilhado: 'posicoes',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'vara: 6a pos.',
+            re: 'vara: 4a pos.',
+            mi: 'vara: 2a pos.',
+            fa: 'vara: 1a pos.',
+            sol: 'vara: 4a pos.',
+            la: 'vara: 2a pos.',
+            si: 'vara: 1a pos.'
+          },
+          freqBoard: [
+            [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+          ]
+        }
+      ];
+
+      // Variáveis globais para instrumento atual
+      var currentInstrument = INSTRUMENTOS[0];
+      var CORDAS = currentInstrument.cordas || [];
+      var CORDA_CLASS = currentInstrument.cordaClasses || {};
+      var FINGERBOARD = currentInstrument.fingerboard || [];
+      var FREQ_BOARD = currentInstrument.freqBoard || [];
+
+      const MENSAGENS_POSITIVAS = [
+        'Muito bem!',
+        'Você conseguiu!',
+        'Isso aí!',
+        'Parabéns!',
+        'Excelente!',
+        'Ótimo!',
+        'Vamos tentar de novo?',
+        'Quase lá!'
+      ];
+
+      // Tonalidades: acidentes por escala (sustenidos = #, bemóis = ♭)
+      const TONALIDADES = [
+        { id: 'do', nome: 'Dó M', sustenidos: [], bemolis: [] },
+        { id: 'sol', nome: 'Sol M', sustenidos: ['fa'], bemolis: [] },
+        { id: 're', nome: 'Ré M', sustenidos: ['fa', 'do'], bemolis: [] },
+        { id: 'la', nome: 'Lá M', sustenidos: ['fa', 'do', 'sol'], bemolis: [] },
+        { id: 'mi', nome: 'Mi M', sustenidos: ['fa', 'do', 'sol', 're'], bemolis: [] },
+        { id: 'si', nome: 'Si M', sustenidos: ['fa', 'do', 'sol', 're', 'la'], bemolis: [] },
+        { id: 'fa', nome: 'Fá M', sustenidos: [], bemolis: ['si'] },
+        { id: 'sib', nome: 'Sib M', sustenidos: [], bemolis: ['si', 'mi'] },
+        { id: 'mib', nome: 'Mib M', sustenidos: [], bemolis: ['si', 'mi', 'la'] }
+      ];
+      var currentKey = TONALIDADES[0];
+
+      // ========== ESTADO GLOBAL ==========
+      let audioCtx = null;
+      let currentMode = 'learn';
+      let challengeTarget = null;
+      let challengeTimeout = null;
+      let score = 0;
+      let totalChallenges = 0;
+      let soundEnabled = true;
+      let calmMode = false;
+      let narrationEnabled = false;
+      let ambientEnabled = false;
+      let ambientOsc = null;
+      let ambientGain = null;
+      let speechSynth = null;
+      var currentInstrumentSound = null;
+      var instrumentLoadPromises = {};
+      var currentSustainedNoteStop = null;
+      var currentPressedCell = null;
+      let staffModeTarget = null;
+      let staffNoteEllipse = null;
+      let staffClefElement = null;
+      let currentClef = 'sol';
+      
+      // ========== METRÔNOMO ==========
+      let metroModalEl = null;
+      let metroDotsEl = null;
+      let metroBpmValueEl = null;
+      let metroBpmLabelEl = null;
+      let metroBpmSliderEl = null;
+      let metroAccentCheckboxEl = null;
+      let metroBeatsValueEl = null;
+      let metroSubdivRowEl = null;
+
+      let metroAudioCtx = null;
+      let metroSchedulerId = null;
+      let metroNextClickTime = 0;
+      let metroClickIndexInBar = 0;
+      let metroIsRunning = false;
+
+      let metroBpm = 60;
+      let metroBeatsPerBar = 4;
+      let metroSubdivision = 1; // cliques por batida
+      let metroAccentFirst = false;
+      let metroNoiseBuffer = null;
+      const METRO_LOOKAHEAD_MS = 25;
+      const METRO_SCHEDULE_AHEAD_S = 0.12;
+      const STAFF_BOTTOM_LINE_Y = 118;
+      const STAFF_STEP_PX = 6;
+      const STAFF_MIN_DIFF = -5;
+      const STAFF_MAX_DIFF = 11;
+
+      const CLAVES = [
+        { id: 'sol', nome: 'Sol', simbolo: '𝄞', fontSize: '74', y: '116', x: '18', anchor: 'start', baseline: 'alphabetic' },
+        // Clave de Dó (alto): o centro da clave marca o Dó na 3a linha.
+        { id: 'do', nome: 'Dó', simbolo: '𝄡', fontSize: '50', y: '105.5', x: '50', anchor: 'middle', baseline: 'middle' },
+        // Clave de Fá: os dois pontos devem "abraçar" a 4a linha (Fá).
+        { id: 'fa', nome: 'Fá', simbolo: '𝄢', fontSize: '53', y: '103.5', x: '60', anchor: 'middle', baseline: 'middle' }
+      ];
+
+      const CLEF_BOTTOM_LINE = {
+        sol: { noteId: 'mi', octave: 4 }, // Mi4 na 1a linha inferior
+        do: { noteId: 'fa', octave: 3 },  // F3 na 1a linha inferior -> 3a linha = Dó4
+        fa: { noteId: 'sol', octave: 2 }  // G2 na 1a linha inferior -> 4a linha = Fá3, 5a = Lá3
+      };
+
+      const NOTE_DEGREE = { do: 0, re: 1, mi: 2, fa: 3, sol: 4, la: 5, si: 6 };
+      const DEGREE_NOTE_ID = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
+      const NOTE_SEMITONE = { do: 0, re: 2, mi: 4, fa: 5, sol: 7, la: 9, si: 11 };
+
+      // ========== INICIALIZAÇÃO DO ÁUDIO ==========
+      function getAudioContext() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return audioCtx;
+      }
+
+      /** Converte frequência (Hz) em nome da nota MIDI (ex.: 440 -> 'A4'). */
+      function freqToMidiNoteName(freq) {
+        var midi = Math.round(69 + 12 * Math.log2(freq / 440));
+        midi = Math.max(0, Math.min(127, midi));
+        var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        return names[midi % 12] + Math.floor(midi / 12);
+      }
+
+      /** Ajusta a frequência conforme a tonalidade: sustenido = +1 semitom, bemol = -1 semitom. */
+      function getFreqInKey(noteId, baseFreq, key) {
+        if (!key || !baseFreq) return baseFreq;
+        if (key.sustenidos && key.sustenidos.indexOf(noteId) >= 0)
+          return baseFreq * Math.pow(2, 1 / 12);
+        if (key.bemolis && key.bemolis.indexOf(noteId) >= 0)
+          return baseFreq * Math.pow(2, -1 / 12);
+        return baseFreq;
+      }
+
+      /** Carrega o instrumento (amostras reais) do soundfont MusyngKite. */
+      function loadInstrument(instrumentId) {
+        var inst = INSTRUMENTOS.find(function(i) { return i.id === instrumentId; });
+        if (!inst) return Promise.resolve(null);
+        
+        if (instrumentLoadPromises[instrumentId]) {
+          return instrumentLoadPromises[instrumentId];
+        }
+        
+        var ctx = getAudioContext();
+        if (typeof Soundfont === 'undefined') {
+          instrumentLoadPromises[instrumentId] = Promise.resolve(null);
+          return instrumentLoadPromises[instrumentId];
+        }
+        
+        instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
+          from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/'
+        }).then(function (loadedInst) {
+          return loadedInst;
+        }).catch(function () {
+          return null;
+        });
+        
+        return instrumentLoadPromises[instrumentId];
+      }
+
+      /** Fallback: som por síntese (duração fixa). */
+      function playNoteSoundFallback(freq) {
+        var ctx = getAudioContext();
+        var now = ctx.currentTime;
+        var vol = calmMode ? 0.12 : 0.25;
+        var osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(vol, now + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+        osc.connect(g);
+        g.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.75);
+      }
+
+      function playGameSfx(type) {
+        if (!soundEnabled) return;
+        var ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+        var now = ctx.currentTime;
+        var baseVol = calmMode ? 0.07 : 0.14;
+
+        function tone(freq, startOffset, duration, wave) {
+          var osc = ctx.createOscillator();
+          var g = ctx.createGain();
+          osc.type = wave || 'triangle';
+          osc.frequency.setValueAtTime(freq, now + startOffset);
+          g.gain.setValueAtTime(0.0001, now + startOffset);
+          g.gain.exponentialRampToValueAtTime(baseVol, now + startOffset + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
+          osc.connect(g);
+          g.connect(ctx.destination);
+          osc.start(now + startOffset);
+          osc.stop(now + startOffset + duration + 0.01);
+        }
+
+        if (type === 'correct') {
+          tone(523.25, 0.00, 0.10, 'triangle'); // C5
+          tone(659.25, 0.11, 0.12, 'triangle'); // E5
+          tone(783.99, 0.24, 0.14, 'triangle'); // G5
+        } else if (type === 'wrong') {
+          tone(329.63, 0.00, 0.10, 'sawtooth'); // E4
+          tone(277.18, 0.10, 0.12, 'sawtooth'); // C#4
+          tone(220.00, 0.22, 0.16, 'sawtooth'); // A3
+        }
+      }
+
+      /** Para a nota que está tocando sustentada (enquanto o botão está pressionado). */
+      function stopNoteSound() {
+        if (currentSustainedNoteStop) {
+          try { currentSustainedNoteStop(); } catch (e) {}
+          currentSustainedNoteStop = null;
+        }
+      }
+
+      /**
+       * Inicia a nota em modo sustentado: toca enquanto não chamar stopNoteSound().
+       * Usado quando o botão fica pressionado.
+       */
+      function startNoteSound(noteId, freqHz) {
+        if (!soundEnabled) return;
+        stopNoteSound();
+        var nota = NOTAS.find(function (n) { return n.id === noteId; });
+        if (!nota) return;
+        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+        freq = getFreqInKey(noteId, freq, currentKey);
+
+        var ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        loadInstrument(currentInstrument.id).then(function (inst) {
+          if (inst) {
+            var noteName = freqToMidiNoteName(freq);
+            var note = inst.play(noteName, 0, -1);
+            if (note && typeof note.stop === 'function') {
+              currentSustainedNoteStop = function () { note.stop(ctx.currentTime); };
+            }
+          } else {
+            var now = ctx.currentTime;
+            var vol = calmMode ? 0.12 : 0.25;
+            var osc = ctx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+            var g = ctx.createGain();
+            g.gain.setValueAtTime(0, now);
+            g.gain.linearRampToValueAtTime(vol, now + 0.05);
+            osc.connect(g);
+            g.connect(ctx.destination);
+            osc.start(now);
+            currentSustainedNoteStop = function () {
+              var t = ctx.currentTime;
+              g.gain.linearRampToValueAtTime(0, t + 0.05);
+              osc.stop(t + 0.06);
+            };
+          }
+        }).catch(function () {
+          var now = ctx.currentTime;
+          var vol = calmMode ? 0.12 : 0.25;
+          var osc = ctx.createOscillator();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          var g = ctx.createGain();
+          g.gain.setValueAtTime(0, now);
+          g.gain.linearRampToValueAtTime(vol, now + 0.05);
+          osc.connect(g);
+          g.connect(ctx.destination);
+          osc.start(now);
+          currentSustainedNoteStop = function () {
+            var t = ctx.currentTime;
+            g.gain.linearRampToValueAtTime(0, t + 0.05);
+            osc.stop(t + 0.06);
+          };
+        });
+      }
+
+      /**
+       * Toca a nota por tempo fixo (usado no modo Desafio quando o jogo toca a nota).
+       */
+      function playNoteSound(noteId, freqHz) {
+        if (!soundEnabled) return;
+        var nota = NOTAS.find(function (n) { return n.id === noteId; });
+        if (!nota) return;
+        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+        freq = getFreqInKey(noteId, freq, currentKey);
+
+        var ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        loadInstrument(currentInstrument.id).then(function (inst) {
+          if (inst) {
+            var noteName = freqToMidiNoteName(freq);
+            inst.play(noteName, 0, { duration: 1.2 });
+          } else {
+            playNoteSoundFallback(freq);
+          }
+        }).catch(function () {
+          playNoteSoundFallback(freq);
+        });
+      }
+
+      // ========== NARRAÇÃO (WEB SPEECH API) ==========
+      function speak(text, force) {
+        if (!force && !narrationEnabled) return;
+        if (!('speechSynthesis' in window)) return;
+        speechSynth = window.speechSynthesis;
+        speechSynth.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'pt-BR';
+        u.rate = 0.9;
+        u.pitch = 1;
+        u.volume = calmMode ? 0.6 : 1;
+        speechSynth.speak(u);
+      }
+
+      function repeatInstruction() {
+        const msg = document.getElementById('instructionText');
+        if (msg && msg.textContent) speak(msg.textContent, true);
+      }
+
+      // ========== TRILHA AMBIENTE SUAVE (OPCIONAL) ==========
+      function startAmbient() {
+        if (!ambientEnabled || !soundEnabled) return;
+        const ctx = getAudioContext();
+        if (ambientOsc) return;
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, ctx.currentTime);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime);
+        ambientOsc = osc;
+        ambientGain = gain;
+      }
+
+      function stopAmbient() {
+        if (!ambientOsc || !ambientGain) return;
+        const ctx = getAudioContext();
+        ambientGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+        ambientOsc.stop(ctx.currentTime + 0.6);
+        ambientOsc = null;
+        ambientGain = null;
+      }
+
+      function toggleAmbient() {
+        ambientEnabled = !ambientEnabled;
+        const btn = document.getElementById('btnAmbient');
+        if (btn) btn.textContent = ambientEnabled ? '🎵 Ambiente ligado' : '🎵 Ambiente';
+        if (ambientEnabled) startAmbient(); else stopAmbient();
+      }
+
+      function updateFullscreenButton() {
+        var btn = document.getElementById('btnFullscreen');
+        if (!btn) return;
+        var isFullscreen = !!document.fullscreenElement;
+        btn.textContent = isFullscreen ? '🗗 Sair da tela cheia' : '⛶ Tela cheia';
+      }
+
+      function toggleFullscreen() {
+        var el = document.documentElement;
+        if (!document.fullscreenElement) {
+          if (el.requestFullscreen) {
+            el.requestFullscreen().catch(function () {});
+          }
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen().catch(function () {});
+        }
+      }
+
+      // ========== UI: MENSAGEM E MASCOTE ==========
+      function setMessage(text) {
+        const el = document.getElementById('instructionText');
+        if (el) el.textContent = text;
+      }
+
+      function showPositiveFeedback() {
+        const mascot = document.getElementById('mascot');
+        if (mascot) {
+          mascot.classList.add('happy');
+          setTimeout(function () { mascot.classList.remove('happy'); }, 800);
+        }
+        const msg = MENSAGENS_POSITIVAS[Math.floor(Math.random() * MENSAGENS_POSITIVAS.length)];
+        setMessage(msg);
+        speak(msg);
+      }
+
+      // ========== VIOLINO: DESTAQUE DA POSIÇÃO (todas as células com essa nota) ==========
+      function highlightViolinPosition(noteId) {
+        document.querySelectorAll('.finger-cell[data-note-id="' + noteId + '"]').forEach(function (cell) {
+          cell.classList.add('highlight');
+        });
+      }
+
+      function clearViolinHighlight() {
+        document.querySelectorAll('.finger-cell.highlight').forEach(function (cell) {
+          cell.classList.remove('highlight');
+        });
+      }
+
+      // ========== TONALIDADE: nome da nota na escala atual (ex.: Fá M → Sib) ==========
+      function getNoteNameInKey(noteId, key) {
+        var base = { do: 'Dó', re: 'Ré', mi: 'Mi', fa: 'Fá', sol: 'Sol', la: 'Lá', si: 'Si' };
+        var nome = base[noteId] || '';
+        if (key.sustenidos && key.sustenidos.indexOf(noteId) >= 0) return nome + '♯';
+        if (key.bemolis && key.bemolis.indexOf(noteId) >= 0) return nome + '♭';
+        return nome;
+      }
+
+      function getNoteName(noteId) {
+        return getNoteNameInKey(noteId, currentKey);
+      }
+
+      function freqClose(a, b) {
+        if (typeof a !== 'number' || typeof b !== 'number' || isNaN(a) || isNaN(b)) return false;
+        return Math.abs(a - b) <= 0.5;
+      }
+
+      function buildChallengeTargetLabel(target) {
+        if (!target) return '';
+        var noteLabel = getNoteNameInKey(target.id, currentKey);
+        if (target.stringKey) {
+          return noteLabel + ' da corda ' + getNoteNameInKey(target.stringKey, currentKey);
+        }
+        return noteLabel;
+      }
+
+      function diatonicValue(noteId, octave) {
+        return (octave * 7) + NOTE_DEGREE[noteId];
+      }
+
+      function noteFromDiatonic(value) {
+        var octave = Math.floor(value / 7);
+        var degree = value % 7;
+        if (degree < 0) {
+          degree += 7;
+          octave -= 1;
+        }
+        return { noteId: DEGREE_NOTE_ID[degree], octave: octave };
+      }
+
+      function naturalMidi(noteId, octave) {
+        return (octave + 1) * 12 + NOTE_SEMITONE[noteId];
+      }
+
+      function midiToFreq(midi) {
+        return 440 * Math.pow(2, (midi - 69) / 12);
+      }
+
+      function getLedgerLineDiffs(diff) {
+        var ledgerDiffs = [];
+        if (diff < -1) {
+          for (var d = -2; d >= diff; d -= 2) ledgerDiffs.push(d);
+        } else if (diff > 9) {
+          for (var d = 10; d <= diff; d += 2) ledgerDiffs.push(d);
+        }
+        return ledgerDiffs;
+      }
+
+      function buildStaffPositionsForClef(clefId) {
+        var bottom = CLEF_BOTTOM_LINE[clefId] || CLEF_BOTTOM_LINE.sol;
+        var bottomDiatonic = diatonicValue(bottom.noteId, bottom.octave);
+        var positions = [];
+        for (var diff = STAFF_MIN_DIFF; diff <= STAFF_MAX_DIFF; diff++) {
+          var current = noteFromDiatonic(bottomDiatonic + diff);
+          var midi = naturalMidi(current.noteId, current.octave);
+          var y = STAFF_BOTTOM_LINE_Y - (diff * STAFF_STEP_PX);
+          var ledgerDiffs = getLedgerLineDiffs(diff);
+          var ledgerYs = ledgerDiffs.map(function (ledgerDiff) {
+            return STAFF_BOTTOM_LINE_Y - (ledgerDiff * STAFF_STEP_PX);
+          });
+          positions.push({
+            noteId: current.noteId,
+            octave: current.octave,
+            y: y,
+            freq: midiToFreq(midi),
+            ledgerYs: ledgerYs
+          });
+        }
+        return positions;
+      }
+
+      function updateViolinBoardLabels() {
+        document.querySelectorAll('.finger-cell').forEach(function (cell) {
+          var noteId = cell.dataset.noteId;
+          if (noteId) {
+            var noteName = getNoteNameInKey(noteId, currentKey);
+            var noteMain = cell.querySelector('.finger-note');
+            if (noteMain) {
+              noteMain.textContent = noteName;
+            } else {
+              cell.textContent = noteName;
+            }
+            var pos = cell.dataset.freq ? ' (freq: ' + Math.round(parseFloat(cell.dataset.freq)) + 'Hz)' : '';
+            var fingering = cell.dataset.fingering ? ', ' + cell.dataset.fingering : '';
+            cell.setAttribute('aria-label', 'Nota ' + noteName + pos + fingering);
+          }
+        });
+        document.querySelectorAll('.violin-board .string-label').forEach(function (el, i) {
+          if (CORDAS && CORDAS[i]) el.textContent = getNoteNameInKey(CORDAS[i], currentKey);
+        });
+      }
+
+      function createViolinBoard() {
+        const board = document.getElementById('violinBoard');
+        if (!board) return;
+        board.innerHTML = '';
+        board.classList.remove('wind-layout');
+        
+        // Atualiza variáveis globais com o instrumento atual
+        CORDAS = currentInstrument.cordas || [];
+        CORDA_CLASS = currentInstrument.cordaClasses || {};
+        FINGERBOARD = currentInstrument.fingerboard || [];
+        FREQ_BOARD = currentInstrument.freqBoard || [];
+        
+        // Atualiza título
+        var titleEl = document.getElementById('instrumentTitle');
+        if (titleEl) {
+          titleEl.textContent = currentInstrument.descricao || 'Espelho do instrumento';
+        }
+        
+        // Atualiza mascote
+        var mascot = document.getElementById('mascot');
+        if (mascot) mascot.textContent = currentInstrument.emoji || '🎻';
+        
+        // Instrumentos de corda: grade de cordas × posições
+        if (currentInstrument.tipo === 'corda' && CORDAS.length > 0 && FINGERBOARD.length > 0) {
+          board.style.gridTemplateColumns = '40px ' + '1fr '.repeat(5);
+          board.style.gridTemplateRows = 'auto '.repeat(CORDAS.length + 1);
+          
+          // Cabeçalho: posições
+          var empty = document.createElement('div');
+          empty.className = 'pos-label';
+          empty.setAttribute('aria-hidden', 'true');
+          board.appendChild(empty);
+          
+          for (var pos = 4; pos >= 0; pos--) {
+            var pl = document.createElement('div');
+            pl.className = 'pos-label';
+            pl.setAttribute('aria-hidden', 'true');
+            pl.textContent = pos;
+            board.appendChild(pl);
+          }
+          
+          // Linhas: uma por corda
+          for (var s = 0; s < CORDAS.length; s++) {
+            var stringKey = CORDAS[s];
+            var sl = document.createElement('div');
+            sl.className = 'string-label';
+            sl.setAttribute('aria-hidden', 'true');
+            sl.textContent = getNoteNameInKey(stringKey, currentKey);
+            board.appendChild(sl);
+            
+            for (var pos = 4; pos >= 0; pos--) {
+              var noteId = FINGERBOARD[pos][s];
+              var freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
+              var cell = document.createElement('button');
+              cell.type = 'button';
+              cell.className = 'finger-cell pos-' + pos + ' ' + (CORDA_CLASS[stringKey] || '');
+              cell.dataset.noteId = noteId;
+              if (freq) cell.dataset.freq = String(freq);
+              cell.dataset.stringKey = stringKey;
+              cell.dataset.position = String(pos);
+              cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', posição ' + pos);
+              cell.textContent = getNoteNameInKey(noteId, currentKey);
+              board.appendChild(cell);
+            }
+          }
+        }
+        // Instrumentos de sopro/metal: teclas/válvulas simples (notas em linha)
+        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal') && currentInstrument.notas) {
+          board.classList.add('wind-layout');
+          board.style.gridTemplateColumns = '1fr '.repeat(currentInstrument.notas.length);
+          board.style.gridTemplateRows = 'auto';
+          
+          for (var i = 0; i < currentInstrument.notas.length; i++) {
+            var noteId = currentInstrument.notas[i];
+            var freq = currentInstrument.freqBoard[i] ? currentInstrument.freqBoard[i][0] : NOTAS.find(function(n) { return n.id === noteId; }).freq;
+            var fingeringText = currentInstrument.fingeringMap && currentInstrument.fingeringMap[noteId]
+              ? currentInstrument.fingeringMap[noteId]
+              : 'dedilhado basico';
+            var cell = document.createElement('button');
+            cell.type = 'button';
+            cell.className = 'finger-cell pos-' + i;
+            cell.dataset.noteId = noteId;
+            cell.dataset.freq = String(freq);
+            cell.dataset.fingering = fingeringText;
+            cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', ' + fingeringText);
+            cell.innerHTML = '<span class="finger-note">' + getNoteNameInKey(noteId, currentKey) + '</span><span class="finger-meta">' + fingeringText + '</span>';
+            board.appendChild(cell);
+          }
+        }
+      }
+      
+      // ========== SELEÇÃO DE INSTRUMENTO ==========
+      function setInstrument(instrumentId) {
+        var inst = INSTRUMENTOS.find(function(i) { return i.id === instrumentId; });
+        if (!inst) return;
+        
+        currentInstrument = inst;
+        createViolinBoard();
+        updateViolinBoardLabels();
+        clearViolinHighlight();
+        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+        
+        // Atualiza botões de instrumentos
+        document.querySelectorAll('.instrument-btn').forEach(function (btn) {
+          var active = btn.dataset.instrumentId === instrumentId;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        
+        setMessage('Instrumento: ' + inst.nome + '. ' + (currentMode === 'learn' ? 'Mantenha pressionado numa nota para ouvir.' : 'Escolha um modo.'));
+      }
+      
+      function createInstrumentButtons() {
+        var container = document.getElementById('instrumentTabs');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        INSTRUMENTOS.forEach(function (inst) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'instrument-btn' + (inst.id === currentInstrument.id ? ' active' : '');
+          btn.dataset.instrumentId = inst.id;
+          btn.setAttribute('aria-pressed', inst.id === currentInstrument.id ? 'true' : 'false');
+          btn.textContent = inst.emoji + ' ' + inst.nome;
+          container.appendChild(btn);
+        });
+      }
+
+      // ========== MODOS DE JOGO ==========
+      function setMode(mode) {
+        if (metroIsRunning) stopMetronome();
+        currentMode = mode;
+        document.querySelectorAll('.mode-btn').forEach(function (btn) {
+          btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+        clearViolinHighlight();
+        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+
+        var violinSection = document.getElementById('violinSection');
+        var staffSectionEl = document.getElementById('staffSection');
+        if (violinSection && staffSectionEl) {
+          if (mode === 'staff') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.remove('hidden');
+          } else {
+            violinSection.classList.remove('hidden');
+            staffSectionEl.classList.add('hidden');
+          }
+        }
+
+        if (mode === 'learn') {
+          setMessage('Mantenha o dedo pressionado numa nota para ouvir o som.');
+        } else if (mode === 'challenge') {
+          totalChallenges = 0;
+          score = 0;
+          updateProgress();
+          startChallenge();
+        } else if (mode === 'staff') {
+          score = 0;
+          totalChallenges = 0;
+          updateProgress();
+          startStaffRound();
+        }
+      }
+
+      function startChallenge() {
+        var noteId, freq, nome, stringKey = null, pos = null;
+        
+        // Instrumentos de corda: escolhe corda e posição aleatória
+        if (currentInstrument.tipo === 'corda' && FINGERBOARD.length > 0 && CORDAS.length > 0) {
+          pos = Math.floor(Math.random() * FINGERBOARD.length);
+          var s = Math.floor(Math.random() * CORDAS.length);
+          stringKey = CORDAS[s];
+          noteId = FINGERBOARD[pos][s];
+          freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
+        }
+        // Instrumentos de sopro/metal: escolhe nota aleatória
+        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal') && currentInstrument.notas) {
+          var idx = Math.floor(Math.random() * currentInstrument.notas.length);
+          noteId = currentInstrument.notas[idx];
+          freq = currentInstrument.freqBoard[idx] ? currentInstrument.freqBoard[idx][0] : NOTAS.find(function(n) { return n.id === noteId; }).freq;
+        }
+        else {
+          // Fallback: escolhe nota aleatória básica
+          var randomNote = NOTAS[Math.floor(Math.random() * NOTAS.length)];
+          noteId = randomNote.id;
+          freq = randomNote.freq;
+        }
+        
+        nome = getNoteNameInKey(noteId, currentKey);
+        challengeTarget = { id: noteId, nome: nome, freq: freq, stringKey: stringKey, pos: pos };
+        setMessage('Qual é esta nota? Ouça com atenção.');
+        playNoteSound(challengeTarget.id, challengeTarget.freq);
+        document.getElementById('currentNoteDisplay').textContent = '?';
+        if (challengeTimeout) clearTimeout(challengeTimeout);
+        challengeTimeout = setTimeout(function () {
+          setMessage('Escolha a nota que você ouviu.');
+        }, 1200);
+      }
+
+      /** Chamado ao soltar o botão: para a nota e aplica a lógica do modo (desafio/learn/free). */
+      function onNoteEnd(noteId, freqHz, stringKey) {
+        var nota = NOTAS.find(function (n) { return n.id === noteId; });
+        if (!nota) return;
+
+        var nomeNaTonalidade = getNoteNameInKey(noteId, currentKey);
+        if (currentMode === 'learn') {
+          setMessage('Esta é a nota ' + nomeNaTonalidade + '. Mantenha pressionado para ouvir de novo.');
+          speak('Nota ' + nomeNaTonalidade);
+        } else if (currentMode === 'challenge' && challengeTarget) {
+          totalChallenges++;
+          var noteMatch = noteId === challengeTarget.id;
+          var pitchMatch = (challengeTarget.freq == null || freqHz == null) ? true : freqClose(freqHz, challengeTarget.freq);
+          var stringMatch = challengeTarget.stringKey ? (stringKey === challengeTarget.stringKey) : true;
+          var isCorrect = noteMatch && pitchMatch && stringMatch;
+          var targetLabel = buildChallengeTargetLabel(challengeTarget);
+          if (isCorrect) {
+            score++;
+            playGameSfx('correct');
+            document.getElementById('currentNoteDisplay').textContent = targetLabel;
+            showPositiveFeedback();
+            updateProgress();
+            setTimeout(startChallenge, 1800);
+          } else {
+            playGameSfx('wrong');
+            document.getElementById('currentNoteDisplay').textContent = targetLabel;
+            var attemptedLabel = nomeNaTonalidade;
+            if (stringKey) attemptedLabel += ' da corda ' + getNoteNameInKey(stringKey, currentKey);
+            setMessage('Você tocou ' + attemptedLabel + '. A esperada era ' + targetLabel + '. Vamos tentar de novo!');
+            speak('Vamos tentar de novo. A nota era ' + targetLabel);
+            setTimeout(startChallenge, 2200);
+          }
+        }
+
+        // Em modos livres, remove destaque ao soltar o botão.
+        // No desafio, o destaque da nota-alvo continua ativo.
+        if (currentMode !== 'challenge') {
+          clearViolinHighlight();
+        }
+      }
+
+      // ========== PENTAGRAMA: DESENHO E LÓGICA DO GAME ==========
+      function initStaff() {
+        var svg = document.getElementById('staffSvg');
+        if (!svg) return;
+        var NS = 'http://www.w3.org/2000/svg';
+        svg.setAttribute('viewBox', '0 0 300 160');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.innerHTML = '';
+
+        for (var i = 0; i < 5; i++) {
+          var y = 70 + i * 12;
+          var line = document.createElementNS(NS, 'line');
+          line.setAttribute('x1', '40');
+          line.setAttribute('x2', '280');
+          line.setAttribute('y1', String(y));
+          line.setAttribute('y2', String(y));
+          line.setAttribute('stroke', '#444');
+          line.setAttribute('stroke-width', '2');
+          svg.appendChild(line);
+        }
+
+        staffClefElement = document.createElementNS(NS, 'text');
+        staffClefElement.setAttribute('x', '18');
+        staffClefElement.setAttribute('fill', '#444');
+        svg.appendChild(staffClefElement);
+
+        staffNoteEllipse = document.createElementNS(NS, 'ellipse');
+        staffNoteEllipse.setAttribute('cx', '200');
+        staffNoteEllipse.setAttribute('cy', '100');
+        staffNoteEllipse.setAttribute('rx', '10');
+        staffNoteEllipse.setAttribute('ry', '7');
+        staffNoteEllipse.setAttribute('fill', '#222');
+        svg.appendChild(staffNoteEllipse);
+        updateStaffClefVisual();
+      }
+
+      function updateStaffClefVisual() {
+        if (!staffClefElement) return;
+        var clef = CLAVES.find(function (c) { return c.id === currentClef; }) || CLAVES[0];
+        staffClefElement.textContent = clef.simbolo;
+        staffClefElement.setAttribute('y', clef.y);
+        staffClefElement.setAttribute('x', clef.x);
+        staffClefElement.setAttribute('font-size', clef.fontSize);
+        staffClefElement.setAttribute('font-family', '"Noto Music", serif');
+        staffClefElement.setAttribute('text-anchor', clef.anchor || 'start');
+        staffClefElement.setAttribute('dominant-baseline', clef.baseline || 'alphabetic');
+      }
+
+      function setStaffNote(position) {
+        if (!staffNoteEllipse || !position) return;
+        staffNoteEllipse.setAttribute('cy', String(position.y));
+        staffNoteEllipse.setAttribute('cx', '200');
+
+        var svg = document.getElementById('staffSvg');
+        if (!svg) return;
+
+        // Remove linhas suplementares antigas
+        var old = svg.querySelectorAll('.ledger-line');
+        old.forEach(function (l) { svg.removeChild(l); });
+
+        // Desenha linhas suplementares necessárias (inclusive quando a nota fica entre elas).
+        if (position.ledgerYs && position.ledgerYs.length) {
+          var NS = 'http://www.w3.org/2000/svg';
+          position.ledgerYs.forEach(function (ledgerY) {
+            var line = document.createElementNS(NS, 'line');
+            line.setAttribute('x1', '180');
+            line.setAttribute('x2', '220');
+            line.setAttribute('y1', String(ledgerY));
+            line.setAttribute('y2', String(ledgerY));
+            line.setAttribute('stroke', '#444');
+            line.setAttribute('stroke-width', '2');
+            line.setAttribute('class', 'ledger-line');
+            svg.insertBefore(line, staffNoteEllipse);
+          });
+        }
+      }
+
+      function startStaffRound() {
+        if (!staffNoteEllipse) initStaff();
+        var positions = buildStaffPositionsForClef(currentClef);
+        if (!positions.length) return;
+        var index = Math.floor(Math.random() * positions.length);
+        var pos = positions[index];
+        staffModeTarget = { id: pos.noteId, index: index };
+        setStaffNote(pos);
+        document.getElementById('currentNoteDisplay').textContent = '?';
+        setMessage('Qual é esta nota no pentagrama? Toque o nome correto.');
+        playNoteSound(pos.noteId, pos.freq);
+      }
+
+      function handleNoteOptionClick(selectedId, buttonEl) {
+        var nomeSelecionada = getNoteNameInKey(selectedId, currentKey);
+
+        if (currentMode !== 'staff' || !staffModeTarget) {
+          setMessage('Esta é a nota ' + nomeSelecionada + '.');
+          speak('Nota ' + nomeSelecionada);
+          return;
+        }
+
+        totalChallenges++;
+        var corretaNome = getNoteNameInKey(staffModeTarget.id, currentKey);
+
+        document.querySelectorAll('.note-option-btn').forEach(function (btn) {
+          btn.classList.remove('correct', 'wrong');
+        });
+
+        if (selectedId === staffModeTarget.id) {
+          score++;
+          playGameSfx('correct');
+          buttonEl.classList.add('correct');
+          showPositiveFeedback();
+        } else {
+          playGameSfx('wrong');
+          buttonEl.classList.add('wrong');
+          var correctBtn = document.querySelector('.note-option-btn[data-note-id="' + staffModeTarget.id + '"]');
+          if (correctBtn) correctBtn.classList.add('correct');
+          setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '.');
+          speak('A nota correta era ' + corretaNome);
+        }
+
+        updateProgress();
+
+        setTimeout(function () {
+          document.querySelectorAll('.note-option-btn').forEach(function (btn) {
+            btn.classList.remove('correct', 'wrong');
+          });
+          startStaffRound();
+        }, 1800);
+      }
+
+      // ========== PROGRESSO E ESTRELAS ==========
+      function updateProgress() {
+        const total = Math.max(totalChallenges, 1);
+        const pct = totalChallenges === 0 ? 0 : Math.round((score / totalChallenges) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressText').textContent = score + ' / ' + totalChallenges;
+
+        const stars = document.querySelectorAll('.star');
+        const level = pct >= 90 ? 5 : pct >= 70 ? 4 : pct >= 50 ? 3 : pct >= 30 ? 2 : pct >= 10 ? 1 : 0;
+        stars.forEach(function (star, i) {
+          star.classList.toggle('earned', i < level);
+        });
+      }
+
+      // ========== REINICIAR ==========
+      function restart() {
+        score = 0;
+        totalChallenges = 0;
+        challengeTarget = null;
+        if (challengeTimeout) clearTimeout(challengeTimeout);
+        updateProgress();
+        document.getElementById('progressFill').style.width = '0%';
+        document.getElementById('progressText').textContent = '0 / 0';
+        document.querySelectorAll('.star').forEach(function (s) { s.classList.remove('earned'); });
+        setMessage('Pronto para começar de novo! Escolha um modo.');
+        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+        clearViolinHighlight();
+        if (currentMode === 'challenge') startChallenge();
+        if (currentMode === 'staff') startStaffRound();
+      }
+
+      // ========== EVENTOS ==========
+      function bindEvents() {
+        var btnSettings = document.getElementById('btnSettingsToggle');
+        var btnSettingsInline = document.getElementById('btnSettingsToggleInline');
+        if (btnSettings) btnSettings.addEventListener('click', toggleSettingsPanel);
+        if (btnSettingsInline) btnSettingsInline.addEventListener('click', toggleSettingsPanel);
+
+        document.querySelectorAll('.instrument-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setInstrument(this.dataset.instrumentId);
+          });
+        });
+
+        document.querySelectorAll('.key-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setKey(this.dataset.keyId);
+          });
+        });
+
+        document.querySelectorAll('.clef-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setClef(this.dataset.clefId);
+          });
+        });
+
+        var btnAbout = document.getElementById('btnAbout');
+        if (btnAbout) btnAbout.addEventListener('click', openAboutModal);
+        var btnAboutClose = document.getElementById('btnAboutClose');
+        if (btnAboutClose) btnAboutClose.addEventListener('click', closeAboutModal);
+        var btnAboutOk = document.getElementById('btnAboutOk');
+        if (btnAboutOk) btnAboutOk.addEventListener('click', closeAboutModal);
+
+        var aboutModal = document.getElementById('aboutModal');
+        if (aboutModal) {
+          aboutModal.addEventListener('click', function (e) {
+            if (e.target === aboutModal) closeAboutModal();
+          });
+        }
+
+        // Espelho: nota toca enquanto o botão estiver pressionado (mousedown/touchstart = toca, mouseup/touchend = para)
+        var board = document.getElementById('violinBoard');
+        function handleNoteStart(e) {
+          e.preventDefault();
+          var cell = e.target.closest('.finger-cell');
+          if (!cell || !cell.dataset.noteId) return;
+          var noteId = cell.dataset.noteId;
+          var freq = cell.dataset.freq ? parseFloat(cell.dataset.freq) : undefined;
+          var stringKey = cell.dataset.stringKey || null;
+          var nota = NOTAS.find(function (n) { return n.id === noteId; });
+          if (!nota) return;
+          stopNoteSound();
+          startNoteSound(noteId, freq);
+          if (currentMode === 'challenge') {
+            document.getElementById('currentNoteDisplay').textContent = '?';
+          } else {
+            document.getElementById('currentNoteDisplay').textContent = getNoteNameInKey(noteId, currentKey);
+            clearViolinHighlight();
+            highlightViolinPosition(noteId);
+          }
+          cell.classList.add('playing');
+          currentPressedCell = { noteId: noteId, freq: freq, stringKey: stringKey, cell: cell };
+          document.addEventListener('mouseup', handleNoteEndOnce);
+          document.addEventListener('touchend', handleNoteEndOnce, { passive: true });
+        }
+        function handleNoteEndOnce() {
+          document.removeEventListener('mouseup', handleNoteEndOnce);
+          document.removeEventListener('touchend', handleNoteEndOnce);
+          stopNoteSound();
+          if (!currentPressedCell) return;
+          onNoteEnd(currentPressedCell.noteId, currentPressedCell.freq, currentPressedCell.stringKey);
+          if (currentPressedCell.cell) currentPressedCell.cell.classList.remove('playing');
+          currentPressedCell = null;
+          document.querySelectorAll('.finger-cell.playing').forEach(function (c) { c.classList.remove('playing'); });
+        }
+        if (board) {
+          board.addEventListener('mousedown', function (e) {
+            if (e.button !== 0) return;
+            handleNoteStart(e);
+          });
+          board.addEventListener('touchstart', function (e) {
+            handleNoteStart(e);
+          }, { passive: false });
+          board.addEventListener('mouseleave', function () {
+            if (currentPressedCell) handleNoteEndOnce();
+          });
+        }
+
+        document.querySelectorAll('.mode-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            if (this.dataset && this.dataset.mode) {
+              setMode(this.dataset.mode);
+            } else if (this.id === 'btnMetronome') {
+              openMetronomeModal();
+            }
+          });
+        });
+
+        document.getElementById('btnRepeatInstruction').addEventListener('click', repeatInstruction);
+
+        document.getElementById('btnNarration').addEventListener('click', function () {
+          narrationEnabled = !narrationEnabled;
+          this.textContent = narrationEnabled ? '🗣️ Narração ligada' : '🗣️ Narração';
+          if (narrationEnabled) repeatInstruction();
+        });
+
+        document.getElementById('btnAmbient').addEventListener('click', toggleAmbient);
+
+        document.getElementById('btnCalmMode').addEventListener('click', function () {
+          calmMode = !calmMode;
+          document.body.classList.toggle('calm-mode', calmMode);
+          this.textContent = calmMode ? '🔉 Modo calmo' : '🔊 Modo calmo';
+          if (ambientGain) {
+            const ctx = getAudioContext();
+            ambientGain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 0.3);
+          }
+        });
+
+        document.getElementById('btnSound').addEventListener('click', function () {
+          soundEnabled = !soundEnabled;
+          this.textContent = soundEnabled ? '🔈 Som' : '🔇 Som';
+          if (!soundEnabled && ambientOsc) stopAmbient();
+          if (!soundEnabled && metroIsRunning) stopMetronome();
+          if (soundEnabled && ambientEnabled) startAmbient();
+        });
+
+        var btnFullscreen = document.getElementById('btnFullscreen');
+        if (btnFullscreen) {
+          btnFullscreen.addEventListener('click', toggleFullscreen);
+          document.addEventListener('fullscreenchange', updateFullscreenButton);
+        }
+
+        document.getElementById('btnRestart').addEventListener('click', restart);
+      }
+
+      // ========== INICIALIZAÇÃO ==========
+      function createClefButtons() {
+        var container = document.getElementById('clefTabs');
+        if (!container) return;
+        container.innerHTML = '';
+        CLAVES.forEach(function (clef) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'clef-btn' + (clef.id === currentClef ? ' active' : '');
+          btn.dataset.clefId = clef.id;
+          btn.setAttribute('aria-pressed', clef.id === currentClef ? 'true' : 'false');
+          btn.textContent = clef.simbolo + ' ' + clef.nome;
+          container.appendChild(btn);
+        });
+      }
+
+      function setClef(clefId) {
+        var clef = CLAVES.find(function (c) { return c.id === clefId; });
+        if (!clef) return;
+        currentClef = clef.id;
+        document.querySelectorAll('.clef-btn').forEach(function (btn) {
+          var active = btn.dataset.clefId === clefId;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        updateStaffClefVisual();
+        if (currentMode === 'staff') startStaffRound();
+      }
+
+      function toggleSettingsPanel() {
+        var panel = document.getElementById('settingsPanel');
+        var btn1 = document.getElementById('btnSettingsToggle');
+        var btn2 = document.getElementById('btnSettingsToggleInline');
+        if (!panel) return;
+        var opened = panel.classList.toggle('hidden') === false;
+        if (btn1) {
+          btn1.setAttribute('aria-expanded', opened ? 'true' : 'false');
+          btn1.setAttribute('title', opened ? 'Fechar configurações' : 'Abrir configurações');
+        }
+        if (btn2) {
+          btn2.setAttribute('aria-expanded', opened ? 'true' : 'false');
+          btn2.setAttribute('title', opened ? 'Fechar configurações' : 'Abrir configurações');
+          // Mantém apenas o ícone (sem texto), conforme pedido.
+        }
+      }
+
+      // ========== METRÔNOMO ==========
+      function tempoLabel(bpm) {
+        if (bpm < 60) return 'Lento';
+        if (bpm < 90) return 'Médio';
+        return 'Rápido';
+      }
+
+      function playMetroClick(accent, whenTime) {
+        if (!soundEnabled) return;
+        if (!metroAudioCtx) metroAudioCtx = getAudioContext();
+        if (!metroAudioCtx) return;
+
+        var t = whenTime != null ? whenTime : metroAudioCtx.currentTime;
+        // Som digital (oscilador curto), mais audível
+        var osc = metroAudioCtx.createOscillator();
+        var g = metroAudioCtx.createGain();
+
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(accent ? 1600 : 1200, t);
+
+        // Volume maior para não ficar baixo.
+        var vol = calmMode ? (accent ? 0.22 : 0.15) : (accent ? 0.38 : 0.28);
+        var attack = 0.002;
+        var decay = accent ? 0.05 : 0.045;
+
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol, t + attack);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+
+        osc.connect(g);
+        g.connect(metroAudioCtx.destination);
+
+        osc.start(t);
+        osc.stop(t + decay + 0.01);
+      }
+
+      function renderMetroDots() {
+        if (!metroDotsEl) return;
+        metroDotsEl.innerHTML = '';
+        for (var i = 0; i < metroBeatsPerBar; i++) {
+          var dot = document.createElement('span');
+          dot.className = 'metro-dot';
+          dot.dataset.beatIndex = String(i + 1);
+          metroDotsEl.appendChild(dot);
+        }
+      }
+
+      function highlightMetroBeat(beatIndex) {
+        if (!metroDotsEl) return;
+        var dots = metroDotsEl.querySelectorAll('.metro-dot');
+        dots.forEach(function (d) {
+          d.classList.remove('active', 'accent');
+        });
+        var idx = beatIndex - 1;
+        if (idx < 0 || idx >= metroBeatsPerBar) return;
+        var dot = dots[idx];
+        if (!dot) return;
+        dot.classList.add('active');
+        if (metroAccentFirst && beatIndex === 1) dot.classList.add('accent');
+      }
+
+      function stopMetronome() {
+        metroIsRunning = false;
+        if (metroSchedulerId) clearInterval(metroSchedulerId);
+        metroSchedulerId = null;
+        metroNextClickTime = 0;
+        metroClickIndexInBar = 0;
+        if (metroDotsEl) highlightMetroBeat(1);
+        updateMetroButtons();
+      }
+
+      function metroScheduleLoop() {
+        if (!metroIsRunning || !metroAudioCtx) return;
+        var now = metroAudioCtx.currentTime;
+        while (metroNextClickTime < now + METRO_SCHEDULE_AHEAD_S) {
+          var clicksInBar = metroBeatsPerBar * metroSubdivision;
+          var clickIndex = metroClickIndexInBar % clicksInBar;
+          var beatIndex = Math.floor(clickIndex / metroSubdivision) + 1;
+          var subdivIndex = clickIndex % metroSubdivision;
+          var isBeatStart = subdivIndex === 0;
+          var isAccent = metroAccentFirst && beatIndex === 1 && isBeatStart;
+
+          if (isBeatStart) highlightMetroBeat(beatIndex);
+          playMetroClick(isAccent, metroNextClickTime);
+
+          metroNextClickTime += (60 / metroBpm) / metroSubdivision;
+          metroClickIndexInBar++;
+        }
+      }
+
+      function startMetronome() {
+        if (metroIsRunning) return;
+        if (!metroAudioCtx) metroAudioCtx = getAudioContext();
+        if (!metroAudioCtx) return;
+
+        metroAudioCtx.resume && metroAudioCtx.resume();
+
+        metroIsRunning = true;
+        metroClickIndexInBar = 0;
+        metroNextClickTime = metroAudioCtx.currentTime + 0.05;
+
+        updateMetroButtons();
+        highlightMetroBeat(1);
+
+        // Scheduler
+        metroSchedulerId = setInterval(metroScheduleLoop, METRO_LOOKAHEAD_MS);
+      }
+
+      function updateMetroButtons() {
+        var btnStop = document.getElementById('btnMetroStop');
+        var btnStart = document.getElementById('btnMetroStart');
+        if (!btnStop || !btnStart) return;
+        btnStop.disabled = !metroIsRunning;
+        btnStart.disabled = metroIsRunning;
+      }
+
+      function setMetroBpm(bpm, restartIfRunning) {
+        var n = parseInt(bpm, 10);
+        if (isNaN(n)) return;
+        metroBpm = Math.max(30, Math.min(220, n));
+        if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
+        if (metroBpmLabelEl) metroBpmLabelEl.textContent = tempoLabel(metroBpm);
+        if (metroBpmSliderEl) metroBpmSliderEl.value = String(metroBpm);
+        if (restartIfRunning && metroIsRunning) {
+          stopMetronome();
+          startMetronome();
+        }
+      }
+
+      function setMetroBeatsPerBar(beats, restartIfRunning) {
+        var n = parseInt(beats, 10);
+        if (isNaN(n)) return;
+        metroBeatsPerBar = Math.max(1, Math.min(12, n));
+        if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
+        renderMetroDots();
+        if (restartIfRunning && metroIsRunning) {
+          stopMetronome();
+          startMetronome();
+        } else {
+          highlightMetroBeat(1);
+        }
+      }
+
+      function setMetroSubdivision(subdiv, restartIfRunning) {
+        var n = parseInt(subdiv, 10);
+        if (isNaN(n)) return;
+        // 1,2,3,4
+        if (n < 1 || n > 4) n = 1;
+        metroSubdivision = n;
+        if (restartIfRunning && metroIsRunning) {
+          stopMetronome();
+          startMetronome();
+        }
+      }
+
+      function openMetronomeModal() {
+        if (!metroModalEl) metroModalEl = document.getElementById('metronomeModal');
+        if (!metroModalEl) return;
+        metroModalEl.classList.remove('hidden');
+        var btn = document.getElementById('btnMetronome');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+        if (!metroIsRunning) {
+          setMessage('Escolha um ritmo no metrônomo.');
+        }
+        if (metroIsRunning) updateMetroButtons();
+      }
+
+      function closeMetronomeModal() {
+        if (!metroModalEl) metroModalEl = document.getElementById('metronomeModal');
+        if (!metroModalEl) return;
+        metroModalEl.classList.add('hidden');
+        var btn = document.getElementById('btnMetronome');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+        // Ao fechar, não deixa rodando no fundo.
+        if (metroIsRunning) stopMetronome();
+      }
+
+      function initMetronomeUI() {
+        metroModalEl = document.getElementById('metronomeModal');
+        metroDotsEl = document.getElementById('metroDots');
+        metroBpmValueEl = document.getElementById('metroBpmValue');
+        metroBpmLabelEl = document.getElementById('metroBpmLabel');
+        metroBpmSliderEl = document.getElementById('metroBpmSlider');
+        metroAccentCheckboxEl = document.getElementById('chkMetroAccent');
+        metroBeatsValueEl = document.getElementById('metroBeatsValue');
+        metroSubdivRowEl = document.getElementById('metroSubdivRow');
+
+        if (!metroModalEl || !metroDotsEl || !metroBpmSliderEl) return;
+
+        // Estado inicial alinhado ao print
+        metroBeatsPerBar = 4;
+        metroSubdivision = 1;
+        metroAccentFirst = false;
+
+        metroBpm = parseInt(metroBpmSliderEl.value, 10) || metroBpm;
+        if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
+        if (metroBpmLabelEl) metroBpmLabelEl.textContent = tempoLabel(metroBpm);
+
+        if (metroAccentCheckboxEl) metroAccentCheckboxEl.checked = metroAccentFirst;
+
+        if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
+
+        renderMetroDots();
+        highlightMetroBeat(1);
+        updateMetroButtons();
+
+        // Slider BPM
+        metroBpmSliderEl.addEventListener('input', function () {
+          setMetroBpm(this.value, true);
+        });
+
+        // Botões BPM
+        var btnMetroMinus = document.getElementById('btnMetroMinus');
+        var btnMetroPlus = document.getElementById('btnMetroPlus');
+        if (btnMetroMinus) {
+          btnMetroMinus.addEventListener('click', function () { setMetroBpm(metroBpm - 1, true); });
+        }
+        if (btnMetroPlus) {
+          btnMetroPlus.addEventListener('click', function () { setMetroBpm(metroBpm + 1, true); });
+        }
+
+        // Start/Stop
+        var btnMetroStop = document.getElementById('btnMetroStop');
+        var btnMetroStart = document.getElementById('btnMetroStart');
+        if (btnMetroStop) btnMetroStop.addEventListener('click', stopMetronome);
+        if (btnMetroStart) btnMetroStart.addEventListener('click', startMetronome);
+
+        // Batidas
+        var btnBeatsMinus = document.getElementById('btnMetroBeatsMinus');
+        var btnBeatsPlus = document.getElementById('btnMetroBeatsPlus');
+        if (btnBeatsMinus) {
+          btnBeatsMinus.addEventListener('click', function () { setMetroBeatsPerBar(metroBeatsPerBar - 1, true); });
+        }
+        if (btnBeatsPlus) {
+          btnBeatsPlus.addEventListener('click', function () { setMetroBeatsPerBar(metroBeatsPerBar + 1, true); });
+        }
+
+        // Acento
+        if (metroAccentCheckboxEl) {
+          metroAccentCheckboxEl.addEventListener('change', function () {
+            metroAccentFirst = !!this.checked;
+          });
+        }
+
+        // Subdivisões
+        if (metroSubdivRowEl) {
+          metroSubdivRowEl.querySelectorAll('.metro-subdiv-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              metroSubdivRowEl.querySelectorAll('.metro-subdiv-btn').forEach(function (b) {
+                b.classList.remove('active');
+              });
+              btn.classList.add('active');
+              var subdiv = btn.dataset.subdiv ? parseInt(btn.dataset.subdiv, 10) : 1;
+              setMetroSubdivision(subdiv, true);
+            });
+          });
+        }
+
+        // Fechar modal
+        var btnClose = document.getElementById('btnMetronomeClose');
+        if (btnClose) btnClose.addEventListener('click', closeMetronomeModal);
+        metroModalEl.addEventListener('click', function (e) {
+          if (e.target === metroModalEl) closeMetronomeModal();
+        });
+      }
+
+      // ========== SOBRE ==========
+      function openAboutModal() {
+        var modal = document.getElementById('aboutModal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+      }
+
+      function closeAboutModal() {
+        var modal = document.getElementById('aboutModal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+      }
+
+      function createKeyButtons() {
+        var container = document.getElementById('keyTabs');
+        if (!container) return;
+        container.innerHTML = '';
+        TONALIDADES.forEach(function (k) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'key-btn' + (k.id === currentKey.id ? ' active' : '');
+          btn.dataset.keyId = k.id;
+          btn.setAttribute('aria-pressed', k.id === currentKey.id ? 'true' : 'false');
+          btn.textContent = k.nome;
+          container.appendChild(btn);
+        });
+      }
+
+      function createNoteButtons() {
+        var container = document.getElementById('noteOptions');
+        if (!container) return;
+        container.innerHTML = '';
+        NOTAS.forEach(function (nota) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'note-option-btn';
+          btn.dataset.noteId = nota.id;
+          btn.textContent = nota.nome;
+          btn.addEventListener('click', function () {
+            handleNoteOptionClick(nota.id, btn);
+          });
+          container.appendChild(btn);
+        });
+      }
+
+      function setKey(keyId) {
+        var key = TONALIDADES.find(function (k) { return k.id === keyId; });
+        if (!key) return;
+        currentKey = key;
+        document.querySelectorAll('.key-btn').forEach(function (btn) {
+          var active = btn.dataset.keyId === keyId;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        updateViolinBoardLabels();
+      }
+
+      function init() {
+        createInstrumentButtons();
+        createKeyButtons();
+        createClefButtons();
+        createViolinBoard();
+        initStaff();
+        createNoteButtons();
+        initMetronomeUI();
+        bindEvents();
+        updateFullscreenButton();
+        // PWA: registra o service worker para permitir "Instalar" no navegador.
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./sw.js').catch(function () {});
+        }
+        setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
