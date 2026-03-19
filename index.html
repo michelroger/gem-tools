@@ -2779,6 +2779,45 @@
         updateViolinBoardLabels();
       }
 
+      function registerServiceWorkerAutoUpdate() {
+        if (!('serviceWorker' in navigator)) return;
+        var hasReloadedForUpdate = false;
+
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          // Evita loop de recarga caso o browser dispare o evento mais de uma vez.
+          if (hasReloadedForUpdate) return;
+          hasReloadedForUpdate = true;
+          window.location.reload();
+        });
+
+        navigator.serviceWorker.register('./sw.js').then(function (registration) {
+          function watchInstallingWorker(worker) {
+            if (!worker) return;
+            worker.addEventListener('statechange', function () {
+              // Se já existia SW controlando, isso é update. Recarrega ao ativar.
+              if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                if (registration.waiting) {
+                  registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                } else if (registration.active) {
+                  window.location.reload();
+                }
+              }
+            });
+          }
+
+          if (registration.installing) {
+            watchInstallingWorker(registration.installing);
+          }
+
+          registration.addEventListener('updatefound', function () {
+            watchInstallingWorker(registration.installing);
+          });
+
+          // Força checagem de atualização ao abrir.
+          registration.update().catch(function () {});
+        }).catch(function () {});
+      }
+
       function init() {
         createInstrumentButtons();
         createKeyButtons();
@@ -2789,10 +2828,8 @@
         initMetronomeUI();
         bindEvents();
         updateFullscreenButton();
-        // PWA: registra o service worker para permitir "Instalar" no navegador.
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./sw.js').catch(function () {});
-        }
+        // PWA: registra o SW com atualização automática para a versão mais recente.
+        registerServiceWorkerAutoUpdate();
         setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
       }
 
