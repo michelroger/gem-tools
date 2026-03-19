@@ -1,20 +1,30 @@
-## GEM Tools (PWA)
+# GEM Tools (PWA)
 
-Orquestra para Crianças — uma PWA para aprender notas e praticar com metrônomo.
+Aplicativo educacional musical em formato PWA, criado para auxiliar alunos no estudo de notas, dedilhado e ritmo.
 
-### Arquivos principais
-- `index.html`: página principal
-- `manifest.webmanifest`: manifesto da PWA (instalação)
-- `sw.js`: service worker (cache/offline)
-- `icon-192.png` / `icon-512.png`: ícones
+## Acesso rapido
+- App online (GitHub Pages): [https://michelroger.github.io/gem-tools/](https://michelroger.github.io/gem-tools/)
+- Repositorio: [https://github.com/michelroger/gem-tools](https://github.com/michelroger/gem-tools)
 
-### Publicação (recomendado: `https`)
-Para que o service worker funcione corretamente em produção, hospede este app em `https`.
-O caminho mais simples é:
+## Sobre o projeto
+O **GEM Tools** foi desenvolvido para apoiar o aprendizado musical com exercicios interativos voltados para:
+- reconhecimento de notas
+- leitura no pentagrama
+- pratica por instrumentos
+- treino de ritmo com metronomo
 
-1. Fazer push deste repositório no GitHub
-2. Ativar **GitHub Pages**
-3. Usar a saída de Pages (URL `https://...`)
+O app funciona no navegador e tambem pode ser instalado como aplicativo (PWA) em celular e desktop.
 
-Depois de publicar, abra a URL no navegador e use a opção de instalar (quando disponível).
+## Principais funcionalidades
+- **Modo Aprender**: ouvir e explorar notas no espelho do instrumento
+- **Modo Desafio**: jogo de identificacao de notas com feedback
+- **Modo Pentagrama**: leitura musical com opcoes de resposta
+- **Metronomo**: ajuste de BPM, batidas e acentuacao
+- **Configuracoes**: instrumento, tonalidade, clave, som e modo calmo
+- **PWA instalavel**: suporte a instalacao e cache offline
+
+
+
+## Licenca
+Projeto educacional sem fins lucrativos.
 
