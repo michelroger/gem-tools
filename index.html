@@ -1064,7 +1064,7 @@
 
         <div class="metro-controls">
           <button type="button" class="metro-btn metro-pause" id="btnMetroStop">Pare</button>
-          <button type="button" class="metro-btn metro-start" id="btnMetroStart">Toque BPM</button>
+          <button type="button" class="metro-btn metro-start" id="btnMetroStart">Toque</button>
         </div>
 
         <div class="metro-beat-title">BATIDAS</div>
@@ -1518,6 +1518,13 @@
 
       let metroSolfejoHandTipCache = {};
       let metroSolfejoHandTipPromises = {};
+
+      // Tween (deslize) entre posições do solfejo
+      let metroSolfejoTweenRafId = null;
+      let metroSolfejoTweenFromPos = null;
+      let metroSolfejoTweenToPos = null;
+      let metroSolfejoTweenStartPerf = 0;
+      let metroSolfejoTweenDurationMs = 0;
       let metroNoiseBuffer = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -2624,6 +2631,7 @@
         if (metroDotsEl) highlightMetroBeat(1);
         // Reseta mão no modo solfejo
         if (metroSolfejoMode) {
+          cancelSolfejoTween();
           metroSolfejoCurrentFrame = 0;
           setSolfejoHandToFrame(0);
         }
@@ -2645,8 +2653,7 @@
             highlightMetroBeat(beatIndex);
             // Atualiza posição da mão sincronizada na batida principal.
             if (metroSolfejoMode) {
-              metroSolfejoCurrentFrame = beatIndex;
-              setSolfejoHandToFrame(beatIndex);
+              startSolfejoHandTween(beatIndex);
             }
           }
           playMetroClick(isAccent, metroNextClickTime);
@@ -2685,10 +2692,14 @@
           metroSolfejoCurrentFrame = 0;
           // Garante que a área do solfejo fica visível e tenta carregar frames.
           updateMetronomeModeUI();
-          ensureSolfejoFramesLoaded().then(function () {
+          ensureHandTipCalibrated().then(function () {
+            ensureSolfejoFramesLoaded().then(function () {
+              setSolfejoHandToFrame(0);
+            });
+            // Best-effort imediato (se frames já estiverem em cache).
             setSolfejoHandToFrame(0);
           });
-          // Best-effort imediato (se frames já estiverem em cache).
+          // Best-effort imediato (antes do onload).
           setSolfejoHandToFrame(0);
         }
 
@@ -2810,6 +2821,14 @@
         if (frameIndex >= frames.length) frameIndex = frames.length - 1;
 
         var pos = frames[frameIndex];
+        setSolfejoHandToPosNatural(pos);
+      }
+
+      function setSolfejoHandToPosNatural(pos) {
+        if (!metroSolfejoHandImgEl) return;
+        if (!metroSolfejoBaseImgEl) return;
+        if (!pos) return;
+
         // pos.x/pos.y está no sistema natural da imagem; vamos converter para display.
         var rect = metroSolfejoBaseImgEl.getBoundingClientRect();
         var naturalW = metroSolfejoBaseImgEl.naturalWidth || 1;
@@ -2839,6 +2858,91 @@
         // Posiciona a ponta do dedo exatamente na marcação (coord do baseX/baseY).
         metroSolfejoHandImgEl.style.left = (baseX - tipDisplayX) + 'px';
         metroSolfejoHandImgEl.style.top = (baseY - tipDisplayY) + 'px';
+      }
+
+      function cancelSolfejoTween() {
+        if (metroSolfejoTweenRafId) {
+          cancelAnimationFrame(metroSolfejoTweenRafId);
+          metroSolfejoTweenRafId = null;
+        }
+        metroSolfejoTweenFromPos = null;
+        metroSolfejoTweenToPos = null;
+      }
+
+      function startSolfejoHandTween(toFrameIndex) {
+        if (!metroSolfejoMode) return;
+        if (!metroIsRunning) return;
+        if (!metroSolfejoHandImgEl) return;
+        if (!metroSolfejoBaseImgEl) return;
+        if (!metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()]) return;
+
+        var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
+        if (!frames || !frames.length) return;
+
+        if (toFrameIndex < 0) toFrameIndex = 0;
+        if (toFrameIndex >= frames.length) toFrameIndex = frames.length - 1;
+
+        var fromIndex = metroSolfejoCurrentFrame;
+        if (fromIndex < 0) fromIndex = 0;
+        if (fromIndex >= frames.length) fromIndex = frames.length - 1;
+
+        var fromPos = frames[fromIndex];
+        var toPos = frames[toFrameIndex];
+        if (!fromPos || !toPos) {
+          metroSolfejoCurrentFrame = toFrameIndex;
+          setSolfejoHandToFrame(toFrameIndex);
+          return;
+        }
+
+        metroSolfejoCurrentFrame = toFrameIndex;
+
+        metroSolfejoTweenFromPos = fromPos;
+        metroSolfejoTweenToPos = toPos;
+        metroSolfejoTweenStartPerf = performance.now();
+        metroSolfejoTweenDurationMs = (60 / metroBpm) * 1000;
+        if (!metroSolfejoTweenDurationMs || metroSolfejoTweenDurationMs < 50) metroSolfejoTweenDurationMs = 250;
+
+        // Control point (quadratic bezier) para aproximar a curva da seta.
+        // Sinal muda conforme mão (direita/esquerda).
+        var dx = toPos.x - fromPos.x;
+        var dy = toPos.y - fromPos.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        var perpX = -dy / dist;
+        var perpY = dx / dist;
+        var midX = (fromPos.x + toPos.x) / 2;
+        var midY = (fromPos.y + toPos.y) / 2;
+        var clockwise = getSolfejoSide() === 'direita';
+        var sign = clockwise ? 1 : -1;
+        var curveMag = dist * 0.25 * sign;
+        var ctrlX = midX + perpX * curveMag;
+        var ctrlY = midY + perpY * curveMag;
+
+        cancelSolfejoTween();
+
+        function easeInOutCubic(t) {
+          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function loop(nowPerf) {
+          if (!metroIsRunning || !metroSolfejoMode) return;
+          var elapsed = nowPerf - metroSolfejoTweenStartPerf;
+          var t = elapsed / metroSolfejoTweenDurationMs;
+          if (t >= 1) {
+            metroSolfejoTweenRafId = null;
+            setSolfejoHandToPosNatural(toPos);
+            return;
+          }
+
+          var e = easeInOutCubic(Math.max(0, Math.min(1, t)));
+          // Quadratic Bézier: (1-e)^2*from + 2*(1-e)*e*ctrl + e^2*to
+          var one = 1 - e;
+          var ix = one * one * fromPos.x + 2 * one * e * ctrlX + e * e * toPos.x;
+          var iy = one * one * fromPos.y + 2 * one * e * ctrlY + e * e * toPos.y;
+          setSolfejoHandToPosNatural({ x: ix, y: iy });
+          metroSolfejoTweenRafId = requestAnimationFrame(loop);
+        }
+
+        metroSolfejoTweenRafId = requestAnimationFrame(loop);
       }
 
       function analyzeSolfejoFramesFromImage(imgEl, beatsPerBar) {
@@ -3001,7 +3105,7 @@
         });
       }
 
-      function analyzeSolfejoFramesFromImageV2(imgEl, beatsPerBar) {
+      function analyzeSolfejoFramesFromImageV2(imgEl, beatsPerBar, side) {
         // Mais robusto: detecta componentes conectados (tende a pegar só os "círculos"/marcadores)
         // e calcula centróides. Depois ordena via caminho mais próximo a partir da preparação.
         return new Promise(function (resolve) {
@@ -3164,29 +3268,47 @@
 
             var prep = chosen[bestPrepIdx];
             var remaining = chosen.filter(function (_, idx) { return idx !== bestPrepIdx; });
-            // Ordena por caminho mais próximo começando na preparação.
-            var ordered = [];
-            var current = { x: prep.x, y: prep.y };
-            for (var i2 = 0; i2 < beatsPerBar && remaining.length; i2++) {
-              var bestJ = 0;
-              var bestD2 = Infinity;
-              for (var j2 = 0; j2 < remaining.length; j2++) {
-                var dx = remaining[j2].x - current.x;
-                var dy = remaining[j2].y - current.y;
-                var d2 = dx * dx + dy * dy;
-                if (d2 < bestD2) { bestD2 = d2; bestJ = j2; }
-              }
-              var next = remaining.splice(bestJ, 1)[0];
-              ordered.push(next);
-              current = next;
+
+            // Ordena pelos ângulos ao redor do centro, começando no ponto 1 (dot mais "baixo" em y).
+            // Isso reduz o erro de mapeamento beatIndex -> posição.
+            var centerX2 = W / 2;
+            var centerY2 = H / 2;
+
+            var startDotIdx = 0;
+            var maxY = -Infinity;
+            for (var sd = 0; sd < remaining.length; sd++) {
+              if (remaining[sd].y > maxY) { maxY = remaining[sd].y; startDotIdx = sd; }
             }
+            var startDot = remaining[startDotIdx];
+            var startAngle = Math.atan2(startDot.y - centerY2, startDot.x - centerX2);
+            if (startAngle < 0) startAngle += Math.PI * 2;
+
+            var clockwise = (side === 'direita');
+            function normAngle(a) {
+              if (a < 0) a += Math.PI * 2;
+              if (a >= Math.PI * 2) a -= Math.PI * 2;
+              return a;
+            }
+
+            var ordered = remaining.map(function (p) {
+              var ang = Math.atan2(p.y - centerY2, p.x - centerX2);
+              ang = normAngle(ang);
+              var dist = clockwise ? (startAngle - ang) : (ang - startAngle);
+              dist = dist % (Math.PI * 2);
+              if (dist < 0) dist += Math.PI * 2;
+              return { p: p, dist: dist };
+            });
+
+            ordered.sort(function (a, b2) { return a.dist - b2.dist; });
 
             var sx = (imgEl.naturalWidth || 1) / W;
             var sy = (imgEl.naturalHeight || 1) / H;
             var frames = [{ x: prep.x * sx, y: prep.y * sy }];
-            ordered.slice(0, beatsPerBar).forEach(function (p) {
-              frames.push({ x: p.x * sx, y: p.y * sy });
-            });
+            for (var oi2 = 0; oi2 < beatsPerBar; oi2++) {
+              var it = ordered[oi2];
+              if (!it) break;
+              frames.push({ x: it.p.x * sx, y: it.p.y * sy });
+            }
 
             // Garante tamanho esperado
             while (frames.length < beatsPerBar + 1) {
@@ -3302,7 +3424,7 @@
 
         metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
           metroSolfejoBaseImgEl.onload = function () {
-            analyzeSolfejoFramesFromImageV2(metroSolfejoBaseImgEl, metroBeatsPerBar).then(function (frames) {
+            analyzeSolfejoFramesFromImageV2(metroSolfejoBaseImgEl, metroBeatsPerBar, handSide).then(function (frames) {
               if (!frames || !frames.length) frames = [];
               // Garante tamanho mínimo com fallback simples
               if (frames.length !== expectedLen) {
