@@ -786,6 +786,40 @@
       min-height: 26px;
     }
 
+    .metro-solfejo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .metro-solfejo-img {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .metro-solfejo-stage {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .metro-solfejo-hand-img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 110px;
+      height: auto;
+      transform: translate(-50%, -95%);
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+    }
+
     .metro-dot {
       width: 56px;
       height: 56px;
@@ -1036,6 +1070,13 @@
         <div class="metro-beat-title">BATIDAS</div>
         <div class="metro-dots" id="metroDots" aria-hidden="true"></div>
 
+        <div class="metro-solfejo-wrap hidden" id="metroSolfejoWrap" aria-hidden="true">
+          <div class="metro-solfejo-stage" id="metroSolfejoStage" aria-hidden="true">
+            <img id="metroSolfejoBaseImg" class="metro-solfejo-img" alt="Movimento de solfejo" />
+            <img id="metroSolfejoHandImg" class="metro-solfejo-hand-img" alt="" />
+          </div>
+        </div>
+
         <div class="metro-section">
           <div class="metro-section-row">
             <div class="metro-section-label">Batidas</div>
@@ -1049,6 +1090,20 @@
           <label class="metro-check">
             <input type="checkbox" id="chkMetroAccent" />
             <span>Estresse primeira batida</span>
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <label class="metro-check" title="Ativa a animação com movimento de solfejo sincronizada ao metrônomo">
+            <input type="checkbox" id="chkMetroSolfejoMode" />
+            <span>Solfejo animado (mão acompanhando)</span>
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <label class="metro-check" title="Usa o movimento de solfejo para canhotos (mão esquerda)">
+            <input type="checkbox" id="chkMetroSolfejoLeftHand" />
+            <span>Mão esquerda (canhotos)</span>
           </label>
         </div>
 
@@ -1436,6 +1491,11 @@
       let metroAccentCheckboxEl = null;
       let metroBeatsValueEl = null;
       let metroSubdivRowEl = null;
+      let metroSolfejoWrapEl = null;
+      let metroSolfejoBaseImgEl = null;
+      let metroSolfejoHandImgEl = null;
+      let metroSolfejoModeCheckboxEl = null;
+      let metroSolfejoLeftHandCheckboxEl = null;
 
       let metroAudioCtx = null;
       let metroSchedulerId = null;
@@ -1447,6 +1507,14 @@
       let metroBeatsPerBar = 4;
       let metroSubdivision = 1; // cliques por batida
       let metroAccentFirst = false;
+      let metroSolfejoMode = false;
+      let metroSolfejoLeftHand = false;
+
+      // Cache das posições (x,y) detectadas nos frames do movimento.
+      // frames: index 0 = preparacao; index 1..N = posicoes.
+      let metroSolfejoFramesCache = {};
+      let metroSolfejoFramesPromises = {};
+      let metroSolfejoCurrentFrame = 0;
       let metroNoiseBuffer = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -1759,6 +1827,28 @@
       // ========== VIOLINO: DESTAQUE DA POSIÇÃO (todas as células com essa nota) ==========
       function highlightViolinPosition(noteId) {
         document.querySelectorAll('.finger-cell[data-note-id="' + noteId + '"]').forEach(function (cell) {
+          cell.classList.add('highlight');
+        });
+      }
+
+      // Destaque apenas uma célula específica no espelho (ex.: nota esperada no desafio).
+      // Para cordas usa `data-string-key` e `data-position` para evitar destacar todas as ocorrências da mesma nota.
+      function highlightViolinCellByTarget(target) {
+        if (!target || !target.id) return;
+
+        var selector = '.finger-cell[data-note-id="' + target.id + '"]';
+
+        if (target.stringKey) selector += '[data-string-key="' + target.stringKey + '"]';
+        if (typeof target.pos !== 'undefined' && target.pos !== null) selector += '[data-position="' + String(target.pos) + '"]';
+
+        var cells = document.querySelectorAll(selector);
+        if (!cells || cells.length === 0) {
+          // Fallback: caso a célula exata não exista (ex.: instrumentos sem string/pos), destaca por nota.
+          highlightViolinPosition(target.id);
+          return;
+        }
+
+        cells.forEach(function (cell) {
           cell.classList.add('highlight');
         });
       }
@@ -2102,7 +2192,13 @@
             if (stringKey) attemptedLabel += ' da corda ' + getNoteNameInKey(stringKey, currentKey);
             setMessage('Você tocou ' + attemptedLabel + '. A esperada era ' + targetLabel + '. Vamos tentar de novo!');
             speak('Vamos tentar de novo. A nota era ' + targetLabel);
-            setTimeout(startChallenge, 2200);
+            // Mostra qual era a nota esperada no espelho do instrumento (para feedback).
+            highlightViolinCellByTarget(challengeTarget);
+            // Remove o destaque antes do próximo desafio (para não entregar a próxima resposta).
+            setTimeout(function () {
+              clearViolinHighlight();
+              startChallenge();
+            }, 2200);
           }
         }
 
@@ -2331,7 +2427,8 @@
           } else {
             document.getElementById('currentNoteDisplay').textContent = getNoteNameInKey(noteId, currentKey);
             clearViolinHighlight();
-            highlightViolinPosition(noteId);
+            // Destaca somente a célula que foi tocada (evita destacar todas as ocorrências da mesma nota).
+            cell.classList.add('highlight');
           }
           cell.classList.add('playing');
           currentPressedCell = { noteId: noteId, freq: freq, stringKey: stringKey, cell: cell };
@@ -2522,6 +2619,11 @@
         metroNextClickTime = 0;
         metroClickIndexInBar = 0;
         if (metroDotsEl) highlightMetroBeat(1);
+        // Reseta mão no modo solfejo
+        if (metroSolfejoMode) {
+          metroSolfejoCurrentFrame = 0;
+          setSolfejoHandToFrame(0);
+        }
         updateMetroButtons();
       }
 
@@ -2536,7 +2638,14 @@
           var isBeatStart = subdivIndex === 0;
           var isAccent = metroAccentFirst && beatIndex === 1 && isBeatStart;
 
-          if (isBeatStart) highlightMetroBeat(beatIndex);
+          if (isBeatStart) {
+            highlightMetroBeat(beatIndex);
+            // Atualiza posição da mão sincronizada na batida principal.
+            if (metroSolfejoMode) {
+              metroSolfejoCurrentFrame = beatIndex;
+              setSolfejoHandToFrame(beatIndex);
+            }
+          }
           playMetroClick(isAccent, metroNextClickTime);
 
           metroNextClickTime += (60 / metroBpm) / metroSubdivision;
@@ -2557,6 +2666,28 @@
 
         updateMetroButtons();
         highlightMetroBeat(1);
+
+        // Prepara animação de solfejo (preparacao no início).
+        if (metroSolfejoMode) {
+          var supportedBeats = [2, 3, 4, 6, 9, 12];
+          if (supportedBeats.indexOf(metroBeatsPerBar) === -1) {
+            setMessage('Solfejo animado disponivel apenas para 2, 3, 4, 6, 9 e 12 batidas.');
+            metroSolfejoMode = false;
+            if (metroSolfejoModeCheckboxEl) metroSolfejoModeCheckboxEl.checked = false;
+            updateMetronomeModeUI();
+          }
+        }
+
+        if (metroSolfejoMode) {
+          metroSolfejoCurrentFrame = 0;
+          // Garante que a área do solfejo fica visível e tenta carregar frames.
+          updateMetronomeModeUI();
+          ensureSolfejoFramesLoaded().then(function () {
+            setSolfejoHandToFrame(0);
+          });
+          // Best-effort imediato (se frames já estiverem em cache).
+          setSolfejoHandToFrame(0);
+        }
 
         // Scheduler
         metroSchedulerId = setInterval(metroScheduleLoop, METRO_LOOKAHEAD_MS);
@@ -2589,6 +2720,7 @@
         metroBeatsPerBar = Math.max(1, Math.min(12, n));
         if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
         renderMetroDots();
+        if (metroSolfejoMode) updateSolfejoImagesSrc();
         if (restartIfRunning && metroIsRunning) {
           stopMetronome();
           startMetronome();
@@ -2613,6 +2745,7 @@
         if (!metroModalEl) metroModalEl = document.getElementById('metronomeModal');
         if (!metroModalEl) return;
         metroModalEl.classList.remove('hidden');
+        updateMetronomeModeUI();
         var btn = document.getElementById('btnMetronome');
         if (btn) btn.setAttribute('aria-expanded', 'true');
         if (!metroIsRunning) {
@@ -2631,6 +2764,268 @@
         if (metroIsRunning) stopMetronome();
       }
 
+      function updateMetronomeModeUI() {
+        if (!metroSolfejoWrapEl) return;
+        metroSolfejoWrapEl.classList.toggle('hidden', !metroSolfejoMode);
+        if (metroSolfejoMode) updateSolfejoImagesSrc();
+      }
+
+      function getSolfejoSide() {
+        return metroSolfejoLeftHand ? 'esquerda' : 'direita';
+      }
+
+      function updateSolfejoImagesSrc() {
+        if (!metroSolfejoBaseImgEl || !metroSolfejoHandImgEl) return;
+
+        var supportedBeats = [2, 3, 4, 6, 9, 12];
+        var side = getSolfejoSide();
+        var beatsOk = supportedBeats.indexOf(metroBeatsPerBar) !== -1;
+
+        // Mesmo se não suportar esse numero, evita "quebrar" o placeholder.
+        if (beatsOk) {
+          metroSolfejoBaseImgEl.src = './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
+        } else {
+          metroSolfejoBaseImgEl.removeAttribute('src');
+        }
+
+        metroSolfejoHandImgEl.src = './imgs/mao-' + side + '.png';
+      }
+
+      function getSolfejoBaseUrl() {
+        // Ex.: ./imgs/movimento-4-direita.png
+        var side = getSolfejoSide();
+        return './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
+      }
+
+      function setSolfejoHandToFrame(frameIndex) {
+        if (!metroSolfejoHandImgEl) return;
+        if (!metroSolfejoBaseImgEl) return;
+
+        var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
+        if (!frames || !frames.length) return;
+        if (frameIndex < 0) frameIndex = 0;
+        if (frameIndex >= frames.length) frameIndex = frames.length - 1;
+
+        var pos = frames[frameIndex];
+        // pos.x/pos.y está no sistema natural da imagem; vamos converter para display.
+        var rect = metroSolfejoBaseImgEl.getBoundingClientRect();
+        var naturalW = metroSolfejoBaseImgEl.naturalWidth || 1;
+        var naturalH = metroSolfejoBaseImgEl.naturalHeight || 1;
+        var scaleX = rect.width / naturalW;
+        var scaleY = rect.height / naturalH;
+
+        // offsetLeft/offsetTop são relativos ao elemento "offsetParent" (a stage tem position: relative).
+        metroSolfejoHandImgEl.style.left = (metroSolfejoBaseImgEl.offsetLeft + (pos.x * scaleX)) + 'px';
+        metroSolfejoHandImgEl.style.top = (metroSolfejoBaseImgEl.offsetTop + (pos.y * scaleY)) + 'px';
+      }
+
+      function analyzeSolfejoFramesFromImage(imgEl, beatsPerBar) {
+        // Detecta os pontos (preparacao + posicoes) dentro da imagem do movimento.
+        // Resultado: array de tamanho beatsPerBar+1 no sistema natural (naturalWidth/naturalHeight).
+        return new Promise(function (resolve) {
+          try {
+            var K = beatsPerBar + 1;
+            var targetW = 260;
+            var scale = targetW / (imgEl.naturalWidth || 1);
+            var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
+
+            var canvas = document.createElement('canvas');
+            canvas.width = targetW;
+            canvas.height = targetH;
+            var ctx = canvas.getContext('2d', { willReadFrequently: true });
+            ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+
+            var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var data = imgData.data;
+
+            // Fundo: média dos cantos (quando tiver pixel não-transparente).
+            function sampleCorner(x, y) {
+              var idx = (y * canvas.width + x) * 4;
+              return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
+            }
+
+            var c1 = sampleCorner(0, 0);
+            var c2 = sampleCorner(canvas.width - 1, 0);
+            var c3 = sampleCorner(0, canvas.height - 1);
+            var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
+
+            var bgR = 0, bgG = 0, bgB = 0, bgCount = 0;
+            [c1, c2, c3, c4].forEach(function (c) {
+              if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
+            });
+            if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
+            else { bgR = 255; bgG = 255; bgB = 255; }
+
+            var candidates = [];
+            var maxPoints = 8500;
+            var step = 2; // performance
+
+            for (var y = 0; y < canvas.height; y += step) {
+              for (var x = 0; x < canvas.width; x += step) {
+                var idx = (y * canvas.width + x) * 4;
+                var a = data[idx + 3];
+                if (a < 30) continue;
+
+                var r = data[idx];
+                var g = data[idx + 1];
+                var b = data[idx + 2];
+
+                var dr = r - bgR;
+                var dg = g - bgG;
+                var db = b - bgB;
+                var dist = Math.sqrt(dr * dr + dg * dg + db * db);
+                if (dist < 70) continue;
+
+                var max = Math.max(r, g, b);
+                var min = Math.min(r, g, b);
+                var sat = max > 0 ? (max - min) / max : 0;
+                var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // 0..255
+
+                if (sat > 0.22 || luma < 90) {
+                  candidates.push({ x: x, y: y, w: dist });
+                  if (candidates.length >= maxPoints) break;
+                }
+              }
+              if (candidates.length >= maxPoints) break;
+            }
+
+            if (!candidates.length || candidates.length < K) {
+              resolve([]);
+              return;
+            }
+
+            // Reduz candidatos (amostragem) para k-means.
+            if (candidates.length > maxPoints) {
+              candidates = candidates.slice(0, maxPoints);
+            }
+
+            // Inicializa centros com os pontos mais "fortes".
+            candidates.sort(function (a, b) { return b.w - a.w; });
+            var centers = [];
+            for (var i = 0; i < K; i++) {
+              centers.push({ x: candidates[Math.floor((i / K) * (candidates.length - 1))].x, y: candidates[Math.floor((i / K) * (candidates.length - 1))].y });
+            }
+
+            var iterations = 8;
+            for (var it = 0; it < iterations; it++) {
+              var sumX = new Array(K).fill(0);
+              var sumY = new Array(K).fill(0);
+              var sumW = new Array(K).fill(0);
+
+              candidates.forEach(function (p) {
+                var best = 0;
+                var bestD = Infinity;
+                for (var c = 0; c < K; c++) {
+                  var dx = p.x - centers[c].x;
+                  var dy = p.y - centers[c].y;
+                  var d2 = dx * dx + dy * dy;
+                  if (d2 < bestD) { bestD = d2; best = c; }
+                }
+                sumX[best] += p.x * p.w;
+                sumY[best] += p.y * p.w;
+                sumW[best] += p.w;
+              });
+
+              for (var c = 0; c < K; c++) {
+                if (sumW[c] > 0) {
+                  centers[c].x = sumX[c] / sumW[c];
+                  centers[c].y = sumY[c] / sumW[c];
+                }
+              }
+            }
+
+            // Escolhe "preparacao" como centro mais ciano/aproximado do eixo central.
+            var prepIndex = 0;
+            var bestPrepScore = -Infinity;
+            for (var c = 0; c < K; c++) {
+              var cx = Math.max(0, Math.min(canvas.width - 1, Math.round(centers[c].x)));
+              var cy = Math.max(0, Math.min(canvas.height - 1, Math.round(centers[c].y)));
+              var ci = (cy * canvas.width + cx) * 4;
+              var r2 = data[ci];
+              var g2 = data[ci + 1];
+              var b2 = data[ci + 2];
+              var score = (g2 + b2) - 2 * r2; // ciano => maior
+              if (score > bestPrepScore) { bestPrepScore = score; prepIndex = c; }
+            }
+
+            var prep = centers[prepIndex];
+            var remaining = centers.filter(function (_, idx) { return idx !== prepIndex; });
+            var ordered = [];
+            var current = { x: prep.x, y: prep.y };
+            for (var i = 0; i < beatsPerBar && remaining.length; i++) {
+              var bestIdx = 0;
+              var bestD = Infinity;
+              for (var j = 0; j < remaining.length; j++) {
+                var dx = remaining[j].x - current.x;
+                var dy = remaining[j].y - current.y;
+                var d2 = dx * dx + dy * dy;
+                if (d2 < bestD) { bestD = d2; bestIdx = j; }
+              }
+              var next = remaining.splice(bestIdx, 1)[0];
+              ordered.push(next);
+              current = next;
+            }
+
+            var sx = (imgEl.naturalWidth || 1) / canvas.width;
+            var sy = (imgEl.naturalHeight || 1) / canvas.height;
+            var frames = [prep].concat(ordered).slice(0, beatsPerBar + 1).map(function (p) {
+              return { x: p.x * sx, y: p.y * sy };
+            });
+
+            resolve(frames);
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      }
+
+      function ensureSolfejoFramesLoaded() {
+        var key = metroBeatsPerBar + '-' + getSolfejoSide();
+        var expectedLen = metroBeatsPerBar + 1;
+
+        if (metroSolfejoFramesCache[key] && metroSolfejoFramesCache[key].length === expectedLen) {
+          return Promise.resolve(metroSolfejoFramesCache[key]);
+        }
+
+        if (metroSolfejoFramesPromises[key]) return metroSolfejoFramesPromises[key];
+
+        var baseSrc = getSolfejoBaseUrl();
+        var handSide = getSolfejoSide();
+
+        metroSolfejoHandImgEl.src = './imgs/mao-' + handSide + '.png';
+        metroSolfejoBaseImgEl.src = baseSrc;
+
+        metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
+          metroSolfejoBaseImgEl.onload = function () {
+            analyzeSolfejoFramesFromImage(metroSolfejoBaseImgEl, metroBeatsPerBar).then(function (frames) {
+              if (!frames || !frames.length) frames = [];
+              // Garante tamanho mínimo com fallback simples
+              if (frames.length !== expectedLen) {
+                // fallback: se falhar detecção, coloca mão no centro (evita travar)
+                var cx = (metroSolfejoBaseImgEl.naturalWidth || 1) / 2;
+                var cy = (metroSolfejoBaseImgEl.naturalHeight || 1) / 2;
+                frames = [];
+                for (var i = 0; i < expectedLen; i++) frames.push({ x: cx, y: cy });
+              }
+              metroSolfejoFramesCache[key] = frames;
+              resolve(frames);
+            });
+          };
+          metroSolfejoBaseImgEl.onerror = function () {
+            // se não carregar, fallback imediato
+            var cx = (metroSolfejoBaseImgEl.naturalWidth || 1) / 2;
+            var cy = (metroSolfejoBaseImgEl.naturalHeight || 1) / 2;
+            var frames = [];
+            var expectedLen2 = metroBeatsPerBar + 1;
+            for (var i = 0; i < expectedLen2; i++) frames.push({ x: cx, y: cy });
+            metroSolfejoFramesCache[key] = frames;
+            resolve(frames);
+          };
+        });
+
+        return metroSolfejoFramesPromises[key];
+      }
+
       function initMetronomeUI() {
         metroModalEl = document.getElementById('metronomeModal');
         metroDotsEl = document.getElementById('metroDots');
@@ -2640,6 +3035,11 @@
         metroAccentCheckboxEl = document.getElementById('chkMetroAccent');
         metroBeatsValueEl = document.getElementById('metroBeatsValue');
         metroSubdivRowEl = document.getElementById('metroSubdivRow');
+        metroSolfejoWrapEl = document.getElementById('metroSolfejoWrap');
+        metroSolfejoBaseImgEl = document.getElementById('metroSolfejoBaseImg');
+        metroSolfejoHandImgEl = document.getElementById('metroSolfejoHandImg');
+        metroSolfejoModeCheckboxEl = document.getElementById('chkMetroSolfejoMode');
+        metroSolfejoLeftHandCheckboxEl = document.getElementById('chkMetroSolfejoLeftHand');
 
         if (!metroModalEl || !metroDotsEl || !metroBpmSliderEl) return;
 
@@ -2647,18 +3047,23 @@
         metroBeatsPerBar = 4;
         metroSubdivision = 1;
         metroAccentFirst = false;
+        metroSolfejoMode = false;
 
         metroBpm = parseInt(metroBpmSliderEl.value, 10) || metroBpm;
         if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
         if (metroBpmLabelEl) metroBpmLabelEl.textContent = tempoLabel(metroBpm);
 
         if (metroAccentCheckboxEl) metroAccentCheckboxEl.checked = metroAccentFirst;
+        if (metroSolfejoModeCheckboxEl) metroSolfejoModeCheckboxEl.checked = metroSolfejoMode;
+        if (metroSolfejoLeftHandCheckboxEl) metroSolfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
 
         if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
 
         renderMetroDots();
         highlightMetroBeat(1);
         updateMetroButtons();
+        updateMetronomeModeUI();
+        updateSolfejoImagesSrc();
 
         // Slider BPM
         metroBpmSliderEl.addEventListener('input', function () {
@@ -2695,6 +3100,30 @@
         if (metroAccentCheckboxEl) {
           metroAccentCheckboxEl.addEventListener('change', function () {
             metroAccentFirst = !!this.checked;
+          });
+        }
+
+        // Modo solfejo
+        if (metroSolfejoModeCheckboxEl) {
+          metroSolfejoModeCheckboxEl.addEventListener('change', function () {
+            metroSolfejoMode = !!this.checked;
+            updateMetronomeModeUI();
+            if (metroIsRunning) {
+              stopMetronome();
+              startMetronome();
+            }
+          });
+        }
+
+        // Mão esquerda (canhotos) para o movimento de solfejo
+        if (metroSolfejoLeftHandCheckboxEl) {
+          metroSolfejoLeftHandCheckboxEl.addEventListener('change', function () {
+            metroSolfejoLeftHand = !!this.checked;
+            if (metroIsRunning && metroSolfejoMode) {
+              // Trocar lado precisa sincronizar com o ciclo atual.
+              stopMetronome();
+              startMetronome();
+            }
           });
         }
 
