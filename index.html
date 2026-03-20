@@ -811,9 +811,9 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 110px;
+      width: auto;
       height: auto;
-      transform: translate(-50%, -95%);
+      transform: none;
       pointer-events: none;
       user-select: none;
       z-index: 5;
@@ -1515,6 +1515,9 @@
       let metroSolfejoFramesCache = {};
       let metroSolfejoFramesPromises = {};
       let metroSolfejoCurrentFrame = 0;
+
+      let metroSolfejoHandTipCache = {};
+      let metroSolfejoHandTipPromises = {};
       let metroNoiseBuffer = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -2814,9 +2817,28 @@
         var scaleX = rect.width / naturalW;
         var scaleY = rect.height / naturalH;
 
-        // offsetLeft/offsetTop são relativos ao elemento "offsetParent" (a stage tem position: relative).
-        metroSolfejoHandImgEl.style.left = (metroSolfejoBaseImgEl.offsetLeft + (pos.x * scaleX)) + 'px';
-        metroSolfejoHandImgEl.style.top = (metroSolfejoBaseImgEl.offsetTop + (pos.y * scaleY)) + 'px';
+        // Faz a mão escalar junto com a imagem do movimento (mantém o mesmo visual ao redimensionar).
+        var baseDisplayW = metroSolfejoBaseImgEl.offsetWidth || rect.width || 1;
+        var handDisplayW = baseDisplayW * 0.28; // calibração visual (aprox. 110px quando base ~ 380px)
+        metroSolfejoHandImgEl.style.width = handDisplayW + 'px';
+
+        var tip = metroSolfejoHandTipCache[getSolfejoSide()];
+        if (!tip) {
+          // Se ainda não calibramos a ponta, não posiciona (evita ficar "errado").
+          return;
+        }
+
+        var handNaturalW = metroSolfejoHandImgEl.naturalWidth || 1;
+        var handScale = handDisplayW / handNaturalW;
+        var tipDisplayX = tip.x * handScale;
+        var tipDisplayY = tip.y * handScale;
+
+        var baseX = metroSolfejoBaseImgEl.offsetLeft + (pos.x * scaleX);
+        var baseY = metroSolfejoBaseImgEl.offsetTop + (pos.y * scaleY);
+
+        // Posiciona a ponta do dedo exatamente na marcação (coord do baseX/baseY).
+        metroSolfejoHandImgEl.style.left = (baseX - tipDisplayX) + 'px';
+        metroSolfejoHandImgEl.style.top = (baseY - tipDisplayY) + 'px';
       }
 
       function analyzeSolfejoFramesFromImage(imgEl, beatsPerBar) {
@@ -2979,6 +3001,289 @@
         });
       }
 
+      function analyzeSolfejoFramesFromImageV2(imgEl, beatsPerBar) {
+        // Mais robusto: detecta componentes conectados (tende a pegar só os "círculos"/marcadores)
+        // e calcula centróides. Depois ordena via caminho mais próximo a partir da preparação.
+        return new Promise(function (resolve) {
+          try {
+            var K = beatsPerBar + 1;
+            var targetW = 260;
+            var scale = targetW / (imgEl.naturalWidth || 1);
+            var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
+
+            var canvas = document.createElement('canvas');
+            canvas.width = targetW;
+            canvas.height = targetH;
+            var ctx = canvas.getContext('2d', { willReadFrequently: true });
+            ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+
+            var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var data = imgData.data;
+
+            function sampleCorner(x, y) {
+              var idx = (y * canvas.width + x) * 4;
+              return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
+            }
+
+            var c1 = sampleCorner(0, 0);
+            var c2 = sampleCorner(canvas.width - 1, 0);
+            var c3 = sampleCorner(0, canvas.height - 1);
+            var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
+
+            var bgR = 255, bgG = 255, bgB = 255, bgCount = 0;
+            [c1, c2, c3, c4].forEach(function (c) {
+              if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
+            });
+            if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
+
+            var W = canvas.width;
+            var H = canvas.height;
+            var N = W * H;
+
+            // Máscara de "pixels de interesse" (marcadores e setas coloridas).
+            var mask = new Uint8Array(N);
+            var alphaThreshold = 40;
+            var satThreshold = 0.25;
+            var distThreshold = 60;
+
+            for (var y = 0; y < H; y++) {
+              for (var x = 0; x < W; x++) {
+                var i = y * W + x;
+                var idx = i * 4;
+                var a = data[idx + 3];
+                if (a < alphaThreshold) continue;
+
+                var r = data[idx], g = data[idx + 1], b = data[idx + 2];
+                var dr = r - bgR, dg = g - bgG, db = b - bgB;
+                var dist = Math.sqrt(dr * dr + dg * dg + db * db);
+                if (dist < distThreshold) continue;
+
+                var max = Math.max(r, g, b);
+                var min = Math.min(r, g, b);
+                var sat = max > 0 ? (max - min) / max : 0;
+                if (sat < satThreshold) continue;
+
+                mask[i] = 1;
+              }
+            }
+
+            var visited = new Uint8Array(N);
+            var components = [];
+            var minArea = Math.round((W * H) * 0.00035); // ajusta sensibilidade
+
+            var qx = new Int32Array(N);
+            var qy = new Int32Array(N);
+
+            for (var yy = 0; yy < H; yy++) {
+              for (var xx = 0; xx < W; xx++) {
+                var start = yy * W + xx;
+                if (!mask[start] || visited[start]) continue;
+
+                // BFS
+                var head = 0, tail = 0;
+                visited[start] = 1;
+                qx[tail] = xx;
+                qy[tail] = yy;
+                tail++;
+
+                var area = 0;
+                var sumX = 0;
+                var sumY = 0;
+                var sumR = 0;
+                var sumG = 0;
+                var sumB = 0;
+
+                while (head < tail) {
+                  var cx = qx[head];
+                  var cy = qy[head];
+                  head++;
+
+                  var ci = cy * W + cx;
+                  area++;
+                  sumX += cx;
+                  sumY += cy;
+
+                  var cidx = ci * 4;
+                  sumR += data[cidx];
+                  sumG += data[cidx + 1];
+                  sumB += data[cidx + 2];
+
+                  // 4-neighbors
+                  if (cx > 0) {
+                    var n = ci - 1;
+                    if (mask[n] && !visited[n]) { visited[n] = 1; qx[tail] = cx - 1; qy[tail] = cy; tail++; }
+                  }
+                  if (cx < W - 1) {
+                    var n2 = ci + 1;
+                    if (mask[n2] && !visited[n2]) { visited[n2] = 1; qx[tail] = cx + 1; qy[tail] = cy; tail++; }
+                  }
+                  if (cy > 0) {
+                    var n3 = ci - W;
+                    if (mask[n3] && !visited[n3]) { visited[n3] = 1; qx[tail] = cx; qy[tail] = cy - 1; tail++; }
+                  }
+                  if (cy < H - 1) {
+                    var n4 = ci + W;
+                    if (mask[n4] && !visited[n4]) { visited[n4] = 1; qx[tail] = cx; qy[tail] = cy + 1; tail++; }
+                  }
+                }
+
+                if (area >= minArea) {
+                  components.push({
+                    x: sumX / area,
+                    y: sumY / area,
+                    area: area,
+                    avgR: sumR / area,
+                    avgG: sumG / area,
+                    avgB: sumB / area
+                  });
+                }
+              }
+            }
+
+            if (!components.length) {
+              resolve([]);
+              return;
+            }
+
+            components.sort(function (a, b2) { return b2.area - a.area; });
+            var chosen = components.slice(0, K);
+            if (chosen.length < K) {
+              resolve([]);
+              return;
+            }
+
+            // Preparacao: ciano (G+B alto, R baixo) e próximo do centro.
+            var centerX = W / 2;
+            var bestPrepIdx = 0;
+            var bestScore = -Infinity;
+            for (var ci2 = 0; ci2 < chosen.length; ci2++) {
+              var c = chosen[ci2];
+              var cyanScore = (c.avgG + c.avgB - 2 * c.avgR) - 0.15 * Math.abs(c.x - centerX);
+              if (cyanScore > bestScore) { bestScore = cyanScore; bestPrepIdx = ci2; }
+            }
+
+            var prep = chosen[bestPrepIdx];
+            var remaining = chosen.filter(function (_, idx) { return idx !== bestPrepIdx; });
+            // Ordena por caminho mais próximo começando na preparação.
+            var ordered = [];
+            var current = { x: prep.x, y: prep.y };
+            for (var i2 = 0; i2 < beatsPerBar && remaining.length; i2++) {
+              var bestJ = 0;
+              var bestD2 = Infinity;
+              for (var j2 = 0; j2 < remaining.length; j2++) {
+                var dx = remaining[j2].x - current.x;
+                var dy = remaining[j2].y - current.y;
+                var d2 = dx * dx + dy * dy;
+                if (d2 < bestD2) { bestD2 = d2; bestJ = j2; }
+              }
+              var next = remaining.splice(bestJ, 1)[0];
+              ordered.push(next);
+              current = next;
+            }
+
+            var sx = (imgEl.naturalWidth || 1) / W;
+            var sy = (imgEl.naturalHeight || 1) / H;
+            var frames = [{ x: prep.x * sx, y: prep.y * sy }];
+            ordered.slice(0, beatsPerBar).forEach(function (p) {
+              frames.push({ x: p.x * sx, y: p.y * sy });
+            });
+
+            // Garante tamanho esperado
+            while (frames.length < beatsPerBar + 1) {
+              frames.push({ x: prep.x * sx, y: prep.y * sy });
+            }
+
+            resolve(frames);
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      }
+      function analyzeHandTipFromImage(imgEl) {
+        // Encontra a "ponta" (menor Y) de pixels não-transparentes.
+        // Retorna coordenadas no sistema natural da imagem (top-left = origem).
+        return new Promise(function (resolve) {
+          try {
+            var w = imgEl.naturalWidth || 1;
+            var h = imgEl.naturalHeight || 1;
+            var canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d', { willReadFrequently: true });
+            ctx.drawImage(imgEl, 0, 0, w, h);
+            var imgData = ctx.getImageData(0, 0, w, h);
+            var data = imgData.data;
+
+            var minY = Infinity;
+            var samples = [];
+            var alphaThreshold = 40;
+
+            for (var y = 0; y < h; y++) {
+              for (var x = 0; x < w; x++) {
+                var idx = (y * w + x) * 4;
+                var a = data[idx + 3];
+                if (a < alphaThreshold) continue;
+                minY = Math.min(minY, y);
+              }
+            }
+            if (minY === Infinity) {
+              resolve({ x: w / 2, y: h / 2 });
+              return;
+            }
+
+            // Media do X onde está a ponta (minY).
+            var sumX = 0;
+            var countX = 0;
+            var yBand = minY + 1; // tolerancia
+            for (var y2 = minY; y2 <= yBand; y2++) {
+              for (var x2 = 0; x2 < w; x2++) {
+                var idx2 = (y2 * w + x2) * 4;
+                var a2 = data[idx2 + 3];
+                if (a2 < alphaThreshold) continue;
+                sumX += x2;
+                countX++;
+              }
+            }
+
+            var tipX = countX > 0 ? (sumX / countX) : (w / 2);
+            resolve({ x: tipX, y: minY });
+          } catch (e) {
+            resolve({ x: (imgEl.naturalWidth || 1) / 2, y: (imgEl.naturalHeight || 1) / 3 });
+          }
+        });
+      }
+
+      function ensureHandTipCalibrated() {
+        if (!metroSolfejoHandImgEl) return Promise.resolve();
+        var side = getSolfejoSide();
+        if (metroSolfejoHandTipCache[side]) return Promise.resolve(metroSolfejoHandTipCache[side]);
+        if (metroSolfejoHandTipPromises[side]) return metroSolfejoHandTipPromises[side];
+
+        metroSolfejoHandTipPromises[side] = new Promise(function (resolve) {
+          // Se ainda não carregou, espera o onload.
+          function finish() {
+            analyzeHandTipFromImage(metroSolfejoHandImgEl).then(function (tip) {
+              metroSolfejoHandTipCache[side] = tip;
+              resolve(tip);
+            });
+          }
+
+          if (metroSolfejoHandImgEl.complete && metroSolfejoHandImgEl.naturalWidth > 0) {
+            finish();
+          } else {
+            metroSolfejoHandImgEl.onload = function () {
+              finish();
+            };
+            metroSolfejoHandImgEl.onerror = function () {
+              metroSolfejoHandTipCache[side] = { x: (metroSolfejoHandImgEl.naturalWidth || 1) / 2, y: 0 };
+              resolve(metroSolfejoHandTipCache[side]);
+            };
+          }
+        });
+
+        return metroSolfejoHandTipPromises[side];
+      }
+
       function ensureSolfejoFramesLoaded() {
         var key = metroBeatsPerBar + '-' + getSolfejoSide();
         var expectedLen = metroBeatsPerBar + 1;
@@ -2997,7 +3302,7 @@
 
         metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
           metroSolfejoBaseImgEl.onload = function () {
-            analyzeSolfejoFramesFromImage(metroSolfejoBaseImgEl, metroBeatsPerBar).then(function (frames) {
+            analyzeSolfejoFramesFromImageV2(metroSolfejoBaseImgEl, metroBeatsPerBar).then(function (frames) {
               if (!frames || !frames.length) frames = [];
               // Garante tamanho mínimo com fallback simples
               if (frames.length !== expectedLen) {
