@@ -820,6 +820,17 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
     }
 
+    .metro-debug-text {
+      margin-top: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      word-break: break-word;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
     .metro-dot {
       width: 56px;
       height: 56px;
@@ -1105,6 +1116,14 @@
             <input type="checkbox" id="chkMetroSolfejoLeftHand" />
             <span>Mão esquerda (canhotos)</span>
           </label>
+        </div>
+
+        <div class="metro-section">
+          <label class="metro-check" title="Mostra coordenadas em tempo real para calibracao">
+            <input type="checkbox" id="chkMetroSolfejoDebug" />
+            <span>Debug posicoes (solfejo)</span>
+          </label>
+          <div id="metroSolfejoDebugText" class="metro-debug-text hidden" aria-live="polite"></div>
         </div>
 
         <div class="metro-section">
@@ -1496,6 +1515,8 @@
       let metroSolfejoHandImgEl = null;
       let metroSolfejoModeCheckboxEl = null;
       let metroSolfejoLeftHandCheckboxEl = null;
+      let metroSolfejoDebugCheckboxEl = null;
+      let metroSolfejoDebugTextEl = null;
 
       let metroAudioCtx = null;
       let metroSchedulerId = null;
@@ -1515,6 +1536,8 @@
       let metroSolfejoFramesCache = {};
       let metroSolfejoFramesPromises = {};
       let metroSolfejoCurrentFrame = 0;
+      let metroSolfejoDebugEnabled = false;
+      let metroSolfejoDebugLastTs = 0;
 
       let metroSolfejoHandTipCache = {};
       let metroSolfejoHandTipPromises = {};
@@ -1532,6 +1555,126 @@
       const STAFF_STEP_PX = 6;
       const STAFF_MIN_DIFF = -5;
       const STAFF_MAX_DIFF = 11;
+
+      // Coordenadas manuais do solfejo por imagem/mão.
+      // Formato: chave "N-lado" -> array com N+1 pontos:
+      // [preparacao, ponto1, ponto2, ...]
+      // Cada ponto usa coordenadas normalizadas (0..1) no tamanho natural da imagem.
+      // Exemplo: x=0.5 / y=0.5 = centro da imagem.
+      //
+      // Ajuste manualmente estes valores para alinhar a ponta do dedo exatamente nas bolinhas.
+      const SOLFEJO_MANUAL_POINTS = {
+        '2-direita': [
+          
+          { x: 0.46, y: 0.75 }, // 1
+          { x: 0.47, y: 0.65 }, // //1,5
+          { x: 0.49, y: 0.43 }  // 2
+
+        ],
+        '2-esquerda': [
+          { x: 0.57, y: 0.58 },
+          { x: 0.54, y: 0.75 },
+          { x: 0.53, y: 0.43 }
+        ],
+        '3-direita': [
+          { x: 0.42, y: 0.60 },
+          { x: 0.44, y: 0.78 },
+          { x: 0.76, y: 0.56 },
+          { x: 0.38, y: 0.38 }
+        ],
+        '3-esquerda': [
+          { x: 0.58, y: 0.60 },
+          { x: 0.56, y: 0.78 },
+          { x: 0.24, y: 0.56 },
+          { x: 0.62, y: 0.38 }
+        ],
+        '4-direita': [
+          { x: 0.50, y: 0.78 },
+          { x: 0.50, y: 0.78 },
+          { x: 0.22, y: 0.56 },
+          { x: 0.76, y: 0.47 },
+          { x: 0.51, y: 0.30 }
+        ],
+        '4-esquerda': [
+          { x: 0.50, y: 0.58 },
+          { x: 0.50, y: 0.78 },
+          { x: 0.78, y: 0.56 },
+          { x: 0.24, y: 0.47 },
+          { x: 0.49, y: 0.30 }
+        ],
+        '6-direita': [
+          { x: 0.50, y: 0.57 },
+          { x: 0.50, y: 0.80 },
+          { x: 0.37, y: 0.73 },
+          { x: 0.22, y: 0.67 },
+          { x: 0.62, y: 0.52 },
+          { x: 0.78, y: 0.43 },
+          { x: 0.55, y: 0.27 }
+        ],
+        '6-esquerda': [
+          { x: 0.50, y: 0.57 },
+          { x: 0.50, y: 0.80 },
+          { x: 0.63, y: 0.73 },
+          { x: 0.78, y: 0.67 },
+          { x: 0.38, y: 0.52 },
+          { x: 0.22, y: 0.43 },
+          { x: 0.45, y: 0.27 }
+        ],
+        '9-direita': [
+          { x: 0.49, y: 0.56 },
+          { x: 0.49, y: 0.80 },
+          { x: 0.31, y: 0.72 },
+          { x: 0.19, y: 0.66 },
+          { x: 0.47, y: 0.57 },
+          { x: 0.59, y: 0.50 },
+          { x: 0.72, y: 0.45 },
+          { x: 0.66, y: 0.35 },
+          { x: 0.56, y: 0.32 },
+          { x: 0.46, y: 0.26 }
+        ],
+        '9-esquerda': [
+          { x: 0.51, y: 0.56 },
+          { x: 0.51, y: 0.80 },
+          { x: 0.69, y: 0.72 },
+          { x: 0.81, y: 0.66 },
+          { x: 0.53, y: 0.57 },
+          { x: 0.41, y: 0.50 },
+          { x: 0.28, y: 0.45 },
+          { x: 0.34, y: 0.35 },
+          { x: 0.44, y: 0.32 },
+          { x: 0.54, y: 0.26 }
+        ],
+        '12-direita': [
+          { x: 0.49, y: 0.54 },
+          { x: 0.49, y: 0.81 },
+          { x: 0.57, y: 0.79 },
+          { x: 0.65, y: 0.77 },
+          { x: 0.40, y: 0.73 },
+          { x: 0.31, y: 0.69 },
+          { x: 0.22, y: 0.65 },
+          { x: 0.61, y: 0.54 },
+          { x: 0.68, y: 0.48 },
+          { x: 0.76, y: 0.42 },
+          { x: 0.20, y: 0.36 },
+          { x: 0.33, y: 0.29 },
+          { x: 0.45, y: 0.24 }
+        ],
+        '12-esquerda': [
+          { x: 0.51, y: 0.54 },
+          { x: 0.51, y: 0.81 },
+          { x: 0.43, y: 0.79 },
+          { x: 0.35, y: 0.77 },
+          { x: 0.60, y: 0.73 },
+          { x: 0.69, y: 0.69 },
+          { x: 0.78, y: 0.65 },
+          { x: 0.39, y: 0.54 },
+          { x: 0.32, y: 0.48 },
+          { x: 0.24, y: 0.42 },
+          { x: 0.80, y: 0.36 },
+          { x: 0.67, y: 0.29 },
+          { x: 0.55, y: 0.24 }
+        ]
+      };
 
       const CLAVES = [
         { id: 'sol', nome: 'Sol', simbolo: '𝄞', fontSize: '74', y: '116', x: '18', anchor: 'start', baseline: 'alphabetic' },
@@ -2795,6 +2938,29 @@
         if (!metroSolfejoWrapEl) return;
         metroSolfejoWrapEl.classList.toggle('hidden', !metroSolfejoMode);
         if (metroSolfejoMode) updateSolfejoImagesSrc();
+        if (metroSolfejoDebugTextEl) {
+          var show = metroSolfejoMode && metroSolfejoDebugEnabled;
+          metroSolfejoDebugTextEl.classList.toggle('hidden', !show);
+        }
+      }
+
+      function logSolfejoDebug(info) {
+        if (!metroSolfejoDebugEnabled) return;
+        var text = '[solfejo] frame=' + info.frame +
+          ' pos=(' + info.nx.toFixed(1) + ',' + info.ny.toFixed(1) + ')' +
+          ' css=(' + info.left.toFixed(1) + ',' + info.top.toFixed(1) + ')' +
+          ' side=' + getSolfejoSide() +
+          ' beats=' + metroBeatsPerBar;
+
+        if (metroSolfejoDebugTextEl) {
+          metroSolfejoDebugTextEl.textContent = text;
+        }
+        // Evita flood exagerado no console (100ms)
+        var now = performance.now();
+        if (now - metroSolfejoDebugLastTs > 100) {
+          metroSolfejoDebugLastTs = now;
+          console.log(text);
+        }
       }
 
       function getSolfejoSide() {
@@ -2869,8 +3035,18 @@
         var baseY = metroSolfejoBaseImgEl.offsetTop + (pos.y * scaleY);
 
         // Posiciona a ponta do dedo exatamente na marcação (coord do baseX/baseY).
-        metroSolfejoHandImgEl.style.left = (baseX - tipDisplayX) + 'px';
-        metroSolfejoHandImgEl.style.top = (baseY - tipDisplayY) + 'px';
+        var finalLeft = (baseX - tipDisplayX);
+        var finalTop = (baseY - tipDisplayY);
+        metroSolfejoHandImgEl.style.left = finalLeft + 'px';
+        metroSolfejoHandImgEl.style.top = finalTop + 'px';
+
+        logSolfejoDebug({
+          frame: metroSolfejoCurrentFrame,
+          nx: pos.x,
+          ny: pos.y,
+          left: finalLeft,
+          top: finalTop
+        });
       }
 
       function cancelSolfejoTween() {
@@ -3423,6 +3599,24 @@
         return metroSolfejoHandTipPromises[side];
       }
 
+      function getManualSolfejoFrames(beatsPerBar, side, naturalW, naturalH) {
+        var key = beatsPerBar + '-' + side;
+        var points = SOLFEJO_MANUAL_POINTS[key];
+        var expected = beatsPerBar + 1;
+        if (!points || points.length !== expected) return null;
+
+        var frames = [];
+        for (var i = 0; i < points.length; i++) {
+          var p = points[i];
+          if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') return null;
+          frames.push({
+            x: p.x * naturalW,
+            y: p.y * naturalH
+          });
+        }
+        return frames;
+      }
+
       function ensureSolfejoFramesLoaded() {
         var key = metroBeatsPerBar + '-' + getSolfejoSide();
         var expectedLen = metroBeatsPerBar + 1;
@@ -3441,6 +3635,19 @@
 
         metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
           metroSolfejoBaseImgEl.onload = function () {
+            var manualFrames = getManualSolfejoFrames(
+              metroBeatsPerBar,
+              handSide,
+              (metroSolfejoBaseImgEl.naturalWidth || 1),
+              (metroSolfejoBaseImgEl.naturalHeight || 1)
+            );
+
+            if (manualFrames && manualFrames.length === expectedLen) {
+              metroSolfejoFramesCache[key] = manualFrames;
+              resolve(manualFrames);
+              return;
+            }
+
             analyzeSolfejoFramesFromImageV2(metroSolfejoBaseImgEl, metroBeatsPerBar, handSide).then(function (frames) {
               if (!frames || !frames.length) frames = [];
               // Garante tamanho mínimo com fallback simples
@@ -3484,6 +3691,8 @@
         metroSolfejoHandImgEl = document.getElementById('metroSolfejoHandImg');
         metroSolfejoModeCheckboxEl = document.getElementById('chkMetroSolfejoMode');
         metroSolfejoLeftHandCheckboxEl = document.getElementById('chkMetroSolfejoLeftHand');
+        metroSolfejoDebugCheckboxEl = document.getElementById('chkMetroSolfejoDebug');
+        metroSolfejoDebugTextEl = document.getElementById('metroSolfejoDebugText');
 
         if (!metroModalEl || !metroDotsEl || !metroBpmSliderEl) return;
 
@@ -3492,6 +3701,7 @@
         metroSubdivision = 1;
         metroAccentFirst = false;
         metroSolfejoMode = false;
+        metroSolfejoDebugEnabled = false;
 
         metroBpm = parseInt(metroBpmSliderEl.value, 10) || metroBpm;
         if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
@@ -3500,6 +3710,7 @@
         if (metroAccentCheckboxEl) metroAccentCheckboxEl.checked = metroAccentFirst;
         if (metroSolfejoModeCheckboxEl) metroSolfejoModeCheckboxEl.checked = metroSolfejoMode;
         if (metroSolfejoLeftHandCheckboxEl) metroSolfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
+        if (metroSolfejoDebugCheckboxEl) metroSolfejoDebugCheckboxEl.checked = metroSolfejoDebugEnabled;
 
         if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
 
@@ -3568,6 +3779,14 @@
               stopMetronome();
               startMetronome();
             }
+          });
+        }
+
+        // Debug de coordenadas
+        if (metroSolfejoDebugCheckboxEl) {
+          metroSolfejoDebugCheckboxEl.addEventListener('change', function () {
+            metroSolfejoDebugEnabled = !!this.checked;
+            updateMetronomeModeUI();
           });
         }
 
