@@ -2894,6 +2894,10 @@
           return;
         }
 
+        // Garante que o tween comece exatamente no ponto anterior (evita desvio
+        // quando a rotina do metronomo agenda múltiplos bips em um mesmo tick).
+        setSolfejoHandToPosNatural(fromPos);
+
         metroSolfejoCurrentFrame = toFrameIndex;
 
         metroSolfejoTweenFromPos = fromPos;
