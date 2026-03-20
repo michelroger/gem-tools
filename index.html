@@ -2653,7 +2653,20 @@
             highlightMetroBeat(beatIndex);
             // Atualiza posição da mão sincronizada na batida principal.
             if (metroSolfejoMode) {
-              startSolfejoHandTween(beatIndex);
+              // Queremos:
+              // - no começo da batida k, a mão já está na bolinha k
+              // - e ao final dessa batida (quando troca para k+1), a mão chega na bolinha k+1
+              // - ao finalizar a ultima batida, volta para "Preparação" (frame 0)
+              var toFrame = (beatIndex < metroBeatsPerBar) ? (beatIndex + 1) : 0;
+
+              // Snap no frame atual (bolinha k) no exato instante do bip.
+              if (metroSolfejoCurrentFrame !== beatIndex) {
+                metroSolfejoCurrentFrame = beatIndex;
+                setSolfejoHandToFrame(beatIndex);
+              }
+
+              // Desliza até o próximo ponto durante a duração da batida.
+              startSolfejoHandTween(toFrame);
             }
           }
           playMetroClick(isAccent, metroNextClickTime);
