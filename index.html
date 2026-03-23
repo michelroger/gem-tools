@@ -63,6 +63,54 @@
       position: relative;
     }
 
+    /* ========== SPLASH SCREEN (inicialização) ========== */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+
+    .splash-screen.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      text-align: center;
+      color: var(--text);
+    }
+
+    .splash-logo {
+      width: clamp(88px, 22vw, 132px);
+      height: clamp(88px, 22vw, 132px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      object-fit: cover;
+      background: #ffffff;
+    }
+
+    .splash-title {
+      margin-top: 0.75rem;
+      font-size: clamp(1.15rem, 4.2vw, 1.4rem);
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      color: var(--text);
+    }
+
+    .splash-subtitle {
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      font-weight: 700;
+    }
+
     header {
       text-align: center;
       margin-bottom: 1rem;
@@ -1017,6 +1065,14 @@
   <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
 </head>
 <body>
+  <div class="splash-screen" id="appSplash" aria-label="Tela de carregamento">
+    <div class="splash-content">
+      <img src="./icon-192.png" alt="Logo GEM Tools" class="splash-logo" />
+      <div class="splash-title">GEM Tools</div>
+      <div class="splash-subtitle">Carregando...</div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="settings-top-toggle">
       <button type="button" class="btn btn-secondary btn-icon settings-toggle" id="btnSettingsToggleInline" aria-expanded="false" aria-controls="settingsPanel">⚙️</button>
@@ -4173,6 +4229,15 @@
         updateViolinBoardLabels();
       }
 
+      function hideSplashScreen() {
+        var splash = document.getElementById('appSplash');
+        if (!splash) return;
+        splash.classList.add('hide');
+        setTimeout(function () {
+          if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+        }, 500);
+      }
+
       function registerServiceWorkerAutoUpdate() {
         if (!('serviceWorker' in navigator)) return;
         var hasReloadedForUpdate = false;
@@ -4225,6 +4290,8 @@
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
         setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+        // Pequeno atraso para a transição de entrada ficar suave.
+        setTimeout(hideSplashScreen, 700);
       }
 
       if (document.readyState === 'loading') {
