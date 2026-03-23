@@ -4003,10 +4003,10 @@
         if (!metroModalEl || !metroDotsEl || !metroBpmSliderEl) return;
 
         // Estado inicial alinhado ao print
-        metroBeatsPerBar = 12;
+        metroBeatsPerBar = 4;
         metroSubdivision = 1;
         metroAccentFirst = false;
-        metroSolfejoMode = true;
+        metroSolfejoMode = false;
 
         metroBpm = parseInt(metroBpmSliderEl.value, 10) || metroBpm;
         if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
