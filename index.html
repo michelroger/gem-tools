@@ -781,9 +781,22 @@
     .metro-dots {
       display: flex;
       justify-content: center;
-      gap: 1rem;
+      gap: 0.55rem;
       margin-bottom: 1rem;
       min-height: 26px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      padding: 0.1rem 0.2rem 0.3rem;
+    }
+
+    .metro-dots.two-rows {
+      display: grid;
+      grid-template-columns: repeat(var(--metro-dot-cols, 6), minmax(0, var(--dot-size, 30px)));
+      justify-content: center;
+      align-content: center;
+      justify-items: center;
+      width: 100%;
+      gap: 0.45rem 0.55rem;
     }
 
     .metro-solfejo-wrap {
@@ -814,34 +827,67 @@
       width: auto;
       height: auto;
       transform: none;
+      transform-origin: 70% 88%;
       pointer-events: none;
       user-select: none;
       z-index: 5;
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
     }
 
-    .metro-debug-text {
-      margin-top: 0.45rem;
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      background: rgba(0,0,0,0.03);
-      border-radius: 8px;
-      padding: 0.4rem 0.5rem;
-      word-break: break-word;
-      font-family: Consolas, "Courier New", monospace;
+    @keyframes metro-hand-tap-right {
+      0% {
+        transform: rotate(0deg) translateY(0px);
+      }
+      35% {
+        transform: rotate(-7deg) translateY(3px);
+      }
+      100% {
+        transform: rotate(0deg) translateY(0px);
+      }
+    }
+
+    @keyframes metro-hand-tap-left {
+      0% {
+        transform: rotate(0deg) translateY(0px);
+      }
+      35% {
+        transform: rotate(7deg) translateY(3px);
+      }
+      100% {
+        transform: rotate(0deg) translateY(0px);
+      }
+    }
+
+    .metro-solfejo-hand-img.tapping-right {
+      animation: metro-hand-tap-right 170ms ease-out;
+    }
+
+    .metro-solfejo-hand-img.tapping-left {
+      animation: metro-hand-tap-left 170ms ease-out;
     }
 
     .metro-dot {
-      width: 56px;
-      height: 56px;
+      --dot-size: 56px;
+      flex: 0 0 var(--dot-size);
+      width: var(--dot-size);
+      height: var(--dot-size);
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
       background: rgba(0,0,0,0.12);
       transition: transform 0.12s ease, background 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: clamp(0.75rem, 2.8vw, 1rem);
+      color: rgba(30, 30, 30, 0.62);
+      user-select: none;
     }
 
     .metro-dot.active {
       background: var(--accent);
       transform: scale(1.05);
+      color: #fff;
     }
 
     .metro-dot.accent {
@@ -1074,8 +1120,8 @@
         </div>
 
         <div class="metro-controls">
-          <button type="button" class="metro-btn metro-pause" id="btnMetroStop">Pare</button>
-          <button type="button" class="metro-btn metro-start" id="btnMetroStart">Toque</button>
+          <button type="button" class="metro-btn metro-pause" id="btnMetroStop">◼</button>
+          <button type="button" class="metro-btn metro-start" id="btnMetroStart">▶</button>
         </div>
 
         <div class="metro-beat-title">BATIDAS</div>
@@ -1116,14 +1162,6 @@
             <input type="checkbox" id="chkMetroSolfejoLeftHand" />
             <span>Mão esquerda (canhotos)</span>
           </label>
-        </div>
-
-        <div class="metro-section">
-          <label class="metro-check" title="Mostra coordenadas em tempo real para calibracao">
-            <input type="checkbox" id="chkMetroSolfejoDebug" />
-            <span>Debug posicoes (solfejo)</span>
-          </label>
-          <div id="metroSolfejoDebugText" class="metro-debug-text hidden" aria-live="polite"></div>
         </div>
 
         <div class="metro-section">
@@ -1515,8 +1553,6 @@
       let metroSolfejoHandImgEl = null;
       let metroSolfejoModeCheckboxEl = null;
       let metroSolfejoLeftHandCheckboxEl = null;
-      let metroSolfejoDebugCheckboxEl = null;
-      let metroSolfejoDebugTextEl = null;
 
       let metroAudioCtx = null;
       let metroSchedulerId = null;
@@ -1536,8 +1572,6 @@
       let metroSolfejoFramesCache = {};
       let metroSolfejoFramesPromises = {};
       let metroSolfejoCurrentFrame = 0;
-      let metroSolfejoDebugEnabled = false;
-      let metroSolfejoDebugLastTs = 0;
 
       let metroSolfejoHandTipCache = {};
       let metroSolfejoHandTipPromises = {};
@@ -1548,6 +1582,8 @@
       let metroSolfejoTweenToPos = null;
       let metroSolfejoTweenStartPerf = 0;
       let metroSolfejoTweenDurationMs = 0;
+      let metroSolfejoTweenFromFrame = 0;
+      let metroSolfejoTweenToFrame = 0;
       let metroNoiseBuffer = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -1557,8 +1593,9 @@
       const STAFF_MAX_DIFF = 11;
 
       // Coordenadas manuais do solfejo por imagem/mão.
-      // Formato: chave "N-lado" -> array com N+1 pontos:
-      // [preparacao, ponto1, ponto2, ...]
+      // Formato: chave "N-lado" -> array com N ou mais pontos:
+      // [ponto1, ponto2, ...]
+      // Sem "preparacao". O loop é: 1 -> 2 -> ... -> N -> 1.
       // Cada ponto usa coordenadas normalizadas (0..1) no tamanho natural da imagem.
       // Exemplo: x=0.5 / y=0.5 = centro da imagem.
       //
@@ -1566,113 +1603,292 @@
       const SOLFEJO_MANUAL_POINTS = {
         '2-direita': [
           
-          { x: 0.46, y: 0.75 }, // 1
-          { x: 0.47, y: 0.65 }, // //1,5
-          { x: 0.49, y: 0.43 }  // 2
-
+        { x: 0.48, y: 0.72 }, // ponto 1
+        { x: 0.70, y: 0.50 }, // ponto 1
+        { x: 0.65, y: 0.22 }, // ponto 1
+        { x: 0.48, y: 0.32 },  // ponto 2
+        { x: 0.40, y: 0.22 },  // ponto 2
+        { x: 0.42, y: 0.22 }  // ponto 2
+          
         ],
         '2-esquerda': [
-          { x: 0.57, y: 0.58 },
-          { x: 0.54, y: 0.75 },
-          { x: 0.53, y: 0.43 }
+        { x: 0.50, y: 0.72}, //  ponto 1 
+        { x: 0.35, y: 0.50 }, // ponto 1
+        { x: 0.31, y: 0.22 }, // ponto 1
+
+        { x: 0.48, y: 0.32 },  // ponto 2
+        { x: 0.58, y: 0.24 },  // ponto 2
+        { x: 0.50, y: 0.22} //  ponto 2
+
         ],
         '3-direita': [
-          { x: 0.42, y: 0.60 },
-          { x: 0.44, y: 0.78 },
-          { x: 0.76, y: 0.56 },
-          { x: 0.38, y: 0.38 }
+          { x: 0.41, y: 0.71 }, //1
+          { x: 0.55, y: 0.51 }, //1
+          { x: 0.61, y: 0.48 }, //1
+                   
+          { x: 0.77, y: 0.54}, //2
+          { x: 0.67, y: 0.29}, //2
+          { x: 0.58, y: 0.25}, //2
+
+          { x: 0.46, y: 0.34}, //3
+          { x: 0.44, y: 0.20}, //3
+          { x: 0.44, y: 0.71}, //3
+           
         ],
         '3-esquerda': [
-          { x: 0.58, y: 0.60 },
-          { x: 0.56, y: 0.78 },
-          { x: 0.24, y: 0.56 },
-          { x: 0.62, y: 0.38 }
+          { x: 0.59, y: 0.74 }, //1
+          { x: 0.47, y: 0.55 }, //1
+          { x: 0.37, y: 0.48 }, //1
+                   
+          { x: 0.23, y: 0.57}, //2
+          { x: 0.28, y: 0.33}, //2
+          { x: 0.41, y: 0.26}, //2
+          
+
+          { x: 0.55, y: 0.37}, //3
+          { x: 0.58, y: 0.28}, //3
+          { x: 0.54, y: 0.20}, //3
+          
+          
         ],
         '4-direita': [
-          { x: 0.50, y: 0.78 },
-          { x: 0.50, y: 0.78 },
-          { x: 0.22, y: 0.56 },
-          { x: 0.76, y: 0.47 },
-          { x: 0.51, y: 0.30 }
+          { x: 0.50, y: 0.73 }, //1
+          { x: 0.44, y: 0.55 }, //1
+          { x: 0.32, y: 0.52 }, //1
+                   
+          { x: 0.16, y: 0.58}, //2
+          { x: 0.41, y: 0.42}, //2
+          { x: 0.70, y: 0.42}, //2
+          
+
+          { x: 0.82, y: 0.49}, //3
+          { x: 0.72, y: 0.26}, //3
+          { x: 0.60, y: 0.25}, //3
+
+          { x: 0.52, y: 0.33}, //4
+          { x: 0.51, y: 0.28}, //4
+          { x: 0.54, y: 0.20}, //4
         ],
         '4-esquerda': [
-          { x: 0.50, y: 0.58 },
-          { x: 0.50, y: 0.78 },
-          { x: 0.78, y: 0.56 },
-          { x: 0.24, y: 0.47 },
-          { x: 0.49, y: 0.30 }
+          { x: 0.46, y: 0.73 }, //1
+          { x: 0.57, y: 0.52 }, //1
+          { x: 0.70, y: 0.54 }, //1
+                   
+          { x: 0.80, y: 0.58}, //2
+          { x: 0.48, y: 0.40}, //2
+          { x: 0.32, y: 0.41}, //2
+          
+
+          { x: 0.16, y: 0.49}, //3
+          { x: 0.22, y: 0.33}, //3
+          { x: 0.33, y: 0.28}, //3
+
+          { x: 0.44, y: 0.33}, //4
+          { x: 0.45, y: 0.24}, //4
+          { x: 0.43, y: 0.20}, //4
         ],
         '6-direita': [
-          { x: 0.50, y: 0.57 },
-          { x: 0.50, y: 0.80 },
-          { x: 0.37, y: 0.73 },
-          { x: 0.22, y: 0.67 },
-          { x: 0.62, y: 0.52 },
-          { x: 0.78, y: 0.43 },
-          { x: 0.55, y: 0.27 }
+
+          { x: 0.49, y: 0.74 }, //1
+          { x: 0.45, y: 0.64 }, //1
+          { x: 0.38, y: 0.63 }, //1
+                   
+          { x: 0.30, y: 0.68}, //2
+          { x: 0.25, y: 0.58}, //2
+          { x: 0.20, y: 0.54}, //2
+          
+          { x: 0.12, y: 0.60}, //3
+          { x: 0.35, y: 0.44}, //3
+          { x: 0.63, y: 0.45}, //3
+
+          { x: 0.74, y: 0.55}, //4
+          { x: 0.79, y: 0.46}, //4
+          { x: 0.83, y: 0.46}, //4
+
+          { x: 0.89, y: 0.51}, //5
+          { x: 0.78, y: 0.26}, //5
+          { x: 0.63, y: 0.28}, //5
+
+          { x: 0.57, y: 0.35}, //6
+          { x: 0.49, y: 0.20}, //6
+          { x: 0.50, y: 0.50}, //6
         ],
         '6-esquerda': [
-          { x: 0.50, y: 0.57 },
-          { x: 0.50, y: 0.80 },
-          { x: 0.63, y: 0.73 },
-          { x: 0.78, y: 0.67 },
-          { x: 0.38, y: 0.52 },
-          { x: 0.22, y: 0.43 },
-          { x: 0.45, y: 0.27 }
+          { x: 0.49, y: 0.74 }, //1
+          { x: 0.54, y: 0.64 }, //1
+          { x: 0.64, y: 0.65 }, //1
+                   
+          { x: 0.69, y: 0.67}, //2
+          { x: 0.73, y: 0.58}, //2
+          { x: 0.78, y: 0.54}, //2
+          
+          { x: 0.87, y: 0.60}, //3
+          { x: 0.63, y: 0.44}, //3
+          { x: 0.40, y: 0.43}, //3
+
+          { x: 0.24, y: 0.54}, //4
+          { x: 0.20, y: 0.46}, //4
+          { x: 0.14, y: 0.47}, //4
+
+          { x: 0.08, y: 0.51}, //5
+          { x: 0.18, y: 0.27}, //5
+          { x: 0.35, y: 0.31}, //5
+
+          { x: 0.40, y: 0.34}, //6
+          { x: 0.49, y: 0.20}, //6
+          { x: 0.46, y: 0.18}, //6
         ],
         '9-direita': [
-          { x: 0.49, y: 0.56 },
-          { x: 0.49, y: 0.80 },
-          { x: 0.31, y: 0.72 },
-          { x: 0.19, y: 0.66 },
-          { x: 0.47, y: 0.57 },
-          { x: 0.59, y: 0.50 },
-          { x: 0.72, y: 0.45 },
-          { x: 0.66, y: 0.35 },
-          { x: 0.56, y: 0.32 },
-          { x: 0.46, y: 0.26 }
+          { x: 0.46, y: 0.73 }, //1
+          { x: 0.41, y: 0.63 }, //1
+          { x: 0.32, y: 0.60 }, //1
+
+          { x: 0.29, y: 0.66}, //2
+          { x: 0.23, y: 0.58}, //2
+          { x: 0.16, y: 0.57}, //2
+          
+
+          { x: 0.12, y: 0.60}, //3
+          { x: 0.37, y: 0.50}, //3
+          { x: 0.50, y: 0.54}, //3
+
+          { x: 0.62, y: 0.58}, //4
+          { x: 0.66, y: 0.52}, //4
+          { x: 0.69, y: 0.53}, //4
+
+          { x: 0.74, y: 0.55}, //5
+          { x: 0.79, y: 0.50}, //5
+          { x: 0.81, y: 0.51}, //5
+
+          { x: 0.87, y: 0.52}, //6
+          { x: 0.84, y: 0.38}, //6
+          { x: 0.78, y: 0.33}, //6
+
+          { x: 0.73, y: 0.36}, //7
+          { x: 0.70, y: 0.26}, //7
+          { x: 0.65, y: 0.27}, //7
+
+          { x: 0.60, y: 0.33}, //8
+          { x: 0.55, y: 0.24}, //8
+          { x: 0.50, y: 0.25}, //8
+
+          { x: 0.44, y: 0.29}, //9
+          { x: 0.42, y: 0.24}, //9
+          { x: 0.44, y: 0.20}, //9
+
+          
         ],
         '9-esquerda': [
-          { x: 0.51, y: 0.56 },
-          { x: 0.51, y: 0.80 },
-          { x: 0.69, y: 0.72 },
-          { x: 0.81, y: 0.66 },
-          { x: 0.53, y: 0.57 },
-          { x: 0.41, y: 0.50 },
-          { x: 0.28, y: 0.45 },
-          { x: 0.34, y: 0.35 },
-          { x: 0.44, y: 0.32 },
-          { x: 0.54, y: 0.26 }
+          { x: 0.53, y: 0.71 }, //1
+          { x: 0.58, y: 0.62 }, //1
+          { x: 0.63, y: 0.61 }, //1
+
+          { x: 0.69, y: 0.66}, //2
+          { x: 0.74, y: 0.58}, //2
+          { x: 0.80, y: 0.57}, //2
+
+          { x: 0.85, y: 0.60}, //3
+          { x: 0.63, y: 0.49}, //3
+          { x: 0.50, y: 0.51}, //3
+
+          { x: 0.36, y: 0.57}, //4
+          { x: 0.32, y: 0.52}, //4
+          { x: 0.29, y: 0.52}, //4
+
+          { x: 0.23, y: 0.55}, //5
+          { x: 0.18, y: 0.48}, //5
+          { x: 0.13, y: 0.50}, //5
+
+          { x: 0.09, y: 0.52}, //6
+          { x: 0.11, y: 0.38}, //6
+          { x: 0.16, y: 0.30}, //6
+
+          { x: 0.24, y: 0.36}, //7
+          { x: 0.28, y: 0.26}, //7
+          { x: 0.32, y: 0.27}, //7
+
+          { x: 0.38, y: 0.32}, //8
+          { x: 0.41, y: 0.23}, //8
+          { x: 0.49, y: 0.25}, //8
+
+          { x: 0.52, y: 0.28}, //9
+          { x: 0.55, y: 0.23}, //9
+          { x: 0.54, y: 0.20}, //9
         ],
         '12-direita': [
-          { x: 0.49, y: 0.54 },
-          { x: 0.49, y: 0.81 },
-          { x: 0.57, y: 0.79 },
-          { x: 0.65, y: 0.77 },
-          { x: 0.40, y: 0.73 },
-          { x: 0.31, y: 0.69 },
-          { x: 0.22, y: 0.65 },
-          { x: 0.61, y: 0.54 },
-          { x: 0.68, y: 0.48 },
-          { x: 0.76, y: 0.42 },
-          { x: 0.20, y: 0.36 },
-          { x: 0.33, y: 0.29 },
-          { x: 0.45, y: 0.24 }
+         { x: 0.51, y: 0.79 }, //1
+         { x: 0.55, y: 0.74 }, //1
+                   
+         { x: 0.60, y: 0.78}, //2
+         { x: 0.64, y: 0.70}, //2
+
+         { x: 0.70, y: 0.77}, //3
+         { x: 0.54, y: 0.64}, //3
+
+         { x: 0.39, y: 0.70}, //4
+         { x: 0.35, y: 0.65}, //4
+
+         { x: 0.30, y: 0.69}, //5
+         { x: 0.28, y: 0.60}, //5
+
+         { x: 0.22, y: 0.67}, //6
+         { x: 0.40, y: 0.49}, //6
+
+         { x: 0.67, y: 0.60}, //7
+         { x: 0.71, y: 0.54}, //7
+
+         { x: 0.76, y: 0.58}, //8
+         { x: 0.81, y: 0.52}, //8
+
+         { x: 0.87, y: 0.55}, //9
+         { x: 0.52, y: 0.37}, //9
+
+          { x: 0.35, y: 0.38}, //10
+          { x: 0.50, y: 0.30}, //10
+
+          { x: 0.64, y: 0.34}, //11
+          { x: 0.60, y: 0.22}, //11
+
+          { x: 0.48, y: 0.25}, //12
+          { x: 0.47, y: 0.20}, //12
+          
         ],
         '12-esquerda': [
-          { x: 0.51, y: 0.54 },
-          { x: 0.51, y: 0.81 },
-          { x: 0.43, y: 0.79 },
-          { x: 0.35, y: 0.77 },
-          { x: 0.60, y: 0.73 },
-          { x: 0.69, y: 0.69 },
-          { x: 0.78, y: 0.65 },
-          { x: 0.39, y: 0.54 },
-          { x: 0.32, y: 0.48 },
-          { x: 0.24, y: 0.42 },
-          { x: 0.80, y: 0.36 },
-          { x: 0.67, y: 0.29 },
-          { x: 0.55, y: 0.24 }
+         { x: 0.49, y: 0.80 }, //1
+         { x: 0.45, y: 0.74 }, //1
+                   
+         { x: 0.41, y: 0.78}, //2
+         { x: 0.37, y: 0.70}, //2
+
+         { x: 0.31, y: 0.77}, //3
+         { x: 0.54, y: 0.64}, //3
+
+         { x: 0.64, y: 0.70}, //4
+         { x: 0.67, y: 0.65}, //4
+
+         { x: 0.72, y: 0.69}, //5
+         { x: 0.74, y: 0.60}, //5
+
+         { x: 0.81, y: 0.67}, //6
+         { x: 0.65, y: 0.49}, //6
+
+         { x: 0.35, y: 0.60}, //7
+         { x: 0.30, y: 0.52}, //7
+
+         { x: 0.25, y: 0.58}, //8
+         { x: 0.20, y: 0.50}, //8
+
+         { x: 0.15, y: 0.55}, //9
+         { x: 0.50, y: 0.37}, //9
+
+          { x: 0.69, y: 0.38}, //10
+          { x: 0.49, y: 0.30}, //10
+
+          { x: 0.37, y: 0.34}, //11
+          { x: 0.42, y: 0.21}, //11
+
+          { x: 0.52, y: 0.24}, //12
+          { x: 0.55, y: 0.15}, //12
         ]
       };
 
@@ -2316,7 +2532,7 @@
       }
 
       /** Chamado ao soltar o botão: para a nota e aplica a lógica do modo (desafio/learn/free). */
-      function onNoteEnd(noteId, freqHz, stringKey) {
+      function onNoteEnd(noteId, freqHz, stringKey, position) {
         var nota = NOTAS.find(function (n) { return n.id === noteId; });
         if (!nota) return;
 
@@ -2327,9 +2543,39 @@
         } else if (currentMode === 'challenge' && challengeTarget) {
           totalChallenges++;
           var noteMatch = noteId === challengeTarget.id;
-          var pitchMatch = (challengeTarget.freq == null || freqHz == null) ? true : freqClose(freqHz, challengeTarget.freq);
           var stringMatch = challengeTarget.stringKey ? (stringKey === challengeTarget.stringKey) : true;
-          var isCorrect = noteMatch && pitchMatch && stringMatch;
+          // Equivalência entre 4º dedo e corda seguinte solta:
+          // Ré(4º dedo na Sol) == Ré(corda Ré solta), etc.
+          var equivalentOpenStringMatch = false;
+          if (
+            currentInstrument &&
+            currentInstrument.tipo === 'corda' &&
+            challengeTarget.stringKey &&
+            typeof challengeTarget.pos === 'number' &&
+            stringKey &&
+            typeof position === 'number'
+          ) {
+            var targetStringIdx = CORDAS.indexOf(challengeTarget.stringKey);
+            var attemptStringIdx = CORDAS.indexOf(stringKey);
+            if (targetStringIdx >= 0 && attemptStringIdx >= 0) {
+              var targetIsFourth = challengeTarget.pos === 4;
+              var targetIsOpen = challengeTarget.pos === 0;
+              var attemptIsOpen = position === 0;
+              var attemptIsFourth = position === 4;
+
+              // alvo no 4º dedo <-> tentativa corda seguinte solta
+              if (targetIsFourth && attemptIsOpen && attemptStringIdx === targetStringIdx + 1) {
+                equivalentOpenStringMatch = true;
+              }
+              // alvo corda solta <-> tentativa no 4º dedo da corda anterior
+              if (targetIsOpen && attemptIsFourth && attemptStringIdx === targetStringIdx - 1) {
+                equivalentOpenStringMatch = true;
+              }
+            }
+          }
+
+          // No desafio, valida nota + corda, aceitando equivalência 4º dedo <-> corda solta.
+          var isCorrect = noteMatch && (stringMatch || equivalentOpenStringMatch);
           var targetLabel = buildChallengeTargetLabel(challengeTarget);
           if (isCorrect) {
             score++;
@@ -2571,6 +2817,7 @@
           var noteId = cell.dataset.noteId;
           var freq = cell.dataset.freq ? parseFloat(cell.dataset.freq) : undefined;
           var stringKey = cell.dataset.stringKey || null;
+          var position = cell.dataset.position != null ? parseInt(cell.dataset.position, 10) : null;
           var nota = NOTAS.find(function (n) { return n.id === noteId; });
           if (!nota) return;
           stopNoteSound();
@@ -2584,7 +2831,7 @@
             cell.classList.add('highlight');
           }
           cell.classList.add('playing');
-          currentPressedCell = { noteId: noteId, freq: freq, stringKey: stringKey, cell: cell };
+          currentPressedCell = { noteId: noteId, freq: freq, stringKey: stringKey, position: position, cell: cell };
           document.addEventListener('mouseup', handleNoteEndOnce);
           document.addEventListener('touchend', handleNoteEndOnce, { passive: true });
         }
@@ -2593,7 +2840,7 @@
           document.removeEventListener('touchend', handleNoteEndOnce);
           stopNoteSound();
           if (!currentPressedCell) return;
-          onNoteEnd(currentPressedCell.noteId, currentPressedCell.freq, currentPressedCell.stringKey);
+          onNoteEnd(currentPressedCell.noteId, currentPressedCell.freq, currentPressedCell.stringKey, currentPressedCell.position);
           if (currentPressedCell.cell) currentPressedCell.cell.classList.remove('playing');
           currentPressedCell = null;
           document.querySelectorAll('.finger-cell.playing').forEach(function (c) { c.classList.remove('playing'); });
@@ -2743,10 +2990,28 @@
       function renderMetroDots() {
         if (!metroDotsEl) return;
         metroDotsEl.innerHTML = '';
+        var dotSize = 56;
+        if (metroBeatsPerBar >= 9) dotSize = 30;
+        else if (metroBeatsPerBar >= 6) dotSize = 34;
+        else if (metroBeatsPerBar >= 5) dotSize = 38;
+        metroDotsEl.style.setProperty('--dot-size', dotSize + 'px');
+
+        // Em muitas batidas, distribui em 2 linhas para não apertar.
+        var useTwoRows = metroBeatsPerBar >= 6;
+        metroDotsEl.classList.toggle('two-rows', useTwoRows);
+        if (useTwoRows) {
+          metroDotsEl.style.setProperty('--metro-dot-cols', String(Math.ceil(metroBeatsPerBar / 2)));
+        } else {
+          metroDotsEl.style.removeProperty('--metro-dot-cols');
+        }
+
         for (var i = 0; i < metroBeatsPerBar; i++) {
           var dot = document.createElement('span');
           dot.className = 'metro-dot';
           dot.dataset.beatIndex = String(i + 1);
+          dot.textContent = String(i + 1);
+          dot.setAttribute('aria-label', 'Batida ' + String(i + 1));
+          dot.style.setProperty('--dot-size', dotSize + 'px');
           metroDotsEl.appendChild(dot);
         }
       }
@@ -2796,16 +3061,16 @@
             highlightMetroBeat(beatIndex);
             // Atualiza posição da mão sincronizada na batida principal.
             if (metroSolfejoMode) {
-              // Queremos:
-              // - no começo da batida k, a mão já está na bolinha k
-              // - e ao final dessa batida (quando troca para k+1), a mão chega na bolinha k+1
-              // - ao finalizar a ultima batida, volta para "Preparação" (frame 0)
-              var toFrame = (beatIndex < metroBeatsPerBar) ? (beatIndex + 1) : 0;
+              triggerSolfejoHandTap();
+              // Sem preparação: frame 0 = ponto 1.
+              // No bip k (1..N), a mão fica no ponto k e desliza para k+1 (com loop).
+              var currentBeatFrame = beatIndex - 1; // 1->0, 2->1, ..., N->N-1
+              var toFrame = beatIndex % metroBeatsPerBar; // N->0
 
-              // Snap no frame atual (bolinha k) no exato instante do bip.
-              if (metroSolfejoCurrentFrame !== beatIndex) {
-                metroSolfejoCurrentFrame = beatIndex;
-                setSolfejoHandToFrame(beatIndex);
+              // Snap no ponto atual no exato instante do bip.
+              if (metroSolfejoCurrentFrame !== currentBeatFrame) {
+                metroSolfejoCurrentFrame = currentBeatFrame;
+                setSolfejoHandToFrame(currentBeatFrame);
               }
 
               // Desliza até o próximo ponto durante a duração da batida.
@@ -2845,6 +3110,9 @@
         }
 
         if (metroSolfejoMode) {
+          // Limpa cache para refletir ajustes manuais imediatamente.
+          metroSolfejoFramesCache = {};
+          metroSolfejoFramesPromises = {};
           metroSolfejoCurrentFrame = 0;
           // Garante que a área do solfejo fica visível e tenta carregar frames.
           updateMetronomeModeUI();
@@ -2889,8 +3157,16 @@
         if (isNaN(n)) return;
         metroBeatsPerBar = Math.max(1, Math.min(12, n));
         if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
+        var supportedBeats = [2, 3, 4, 6, 9, 12];
+        if (supportedBeats.indexOf(metroBeatsPerBar) === -1 && metroSolfejoMode) {
+          metroSolfejoMode = false;
+          if (metroSolfejoModeCheckboxEl) metroSolfejoModeCheckboxEl.checked = false;
+          if (metroSolfejoWrapEl) metroSolfejoWrapEl.classList.add('hidden');
+          if (metroSolfejoBaseImgEl) metroSolfejoBaseImgEl.removeAttribute('src');
+          if (metroSolfejoHandImgEl) metroSolfejoHandImgEl.removeAttribute('src');
+        }
         renderMetroDots();
-        if (metroSolfejoMode) updateSolfejoImagesSrc();
+        updateMetronomeModeUI();
         if (restartIfRunning && metroIsRunning) {
           stopMetronome();
           startMetronome();
@@ -2936,31 +3212,10 @@
 
       function updateMetronomeModeUI() {
         if (!metroSolfejoWrapEl) return;
-        metroSolfejoWrapEl.classList.toggle('hidden', !metroSolfejoMode);
-        if (metroSolfejoMode) updateSolfejoImagesSrc();
-        if (metroSolfejoDebugTextEl) {
-          var show = metroSolfejoMode && metroSolfejoDebugEnabled;
-          metroSolfejoDebugTextEl.classList.toggle('hidden', !show);
-        }
-      }
-
-      function logSolfejoDebug(info) {
-        if (!metroSolfejoDebugEnabled) return;
-        var text = '[solfejo] frame=' + info.frame +
-          ' pos=(' + info.nx.toFixed(1) + ',' + info.ny.toFixed(1) + ')' +
-          ' css=(' + info.left.toFixed(1) + ',' + info.top.toFixed(1) + ')' +
-          ' side=' + getSolfejoSide() +
-          ' beats=' + metroBeatsPerBar;
-
-        if (metroSolfejoDebugTextEl) {
-          metroSolfejoDebugTextEl.textContent = text;
-        }
-        // Evita flood exagerado no console (100ms)
-        var now = performance.now();
-        if (now - metroSolfejoDebugLastTs > 100) {
-          metroSolfejoDebugLastTs = now;
-          console.log(text);
-        }
+        var supportedBeats = [2, 3, 4, 6, 9, 12];
+        var canShowSolfejo = metroSolfejoMode && (supportedBeats.indexOf(metroBeatsPerBar) !== -1);
+        metroSolfejoWrapEl.classList.toggle('hidden', !canShowSolfejo);
+        if (canShowSolfejo) updateSolfejoImagesSrc();
       }
 
       function getSolfejoSide() {
@@ -2974,13 +3229,19 @@
         var side = getSolfejoSide();
         var beatsOk = supportedBeats.indexOf(metroBeatsPerBar) !== -1;
 
-        // Mesmo se não suportar esse numero, evita "quebrar" o placeholder.
-        if (beatsOk) {
-          metroSolfejoBaseImgEl.src = './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
-        } else {
+        if (!beatsOk) {
           metroSolfejoBaseImgEl.removeAttribute('src');
+          metroSolfejoHandImgEl.removeAttribute('src');
+          return;
         }
 
+        metroSolfejoBaseImgEl.src = './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
+
+        metroSolfejoHandImgEl.onload = function () {
+          // Assim que a imagem da mão carregar, reaplica o frame atual
+          // para evitar posição errada por naturalWidth ainda não disponível.
+          setSolfejoHandToFrame(metroSolfejoCurrentFrame);
+        };
         metroSolfejoHandImgEl.src = './imgs/mao-' + side + '.png';
       }
 
@@ -3007,6 +3268,8 @@
         if (!metroSolfejoHandImgEl) return;
         if (!metroSolfejoBaseImgEl) return;
         if (!pos) return;
+        if (!metroSolfejoBaseImgEl.complete || !metroSolfejoBaseImgEl.naturalWidth) return;
+        if (!metroSolfejoHandImgEl.complete || !metroSolfejoHandImgEl.naturalWidth) return;
 
         // pos.x/pos.y está no sistema natural da imagem; vamos converter para display.
         var rect = metroSolfejoBaseImgEl.getBoundingClientRect();
@@ -3027,6 +3290,7 @@
         }
 
         var handNaturalW = metroSolfejoHandImgEl.naturalWidth || 1;
+        if (!handNaturalW || handNaturalW <= 1) return;
         var handScale = handDisplayW / handNaturalW;
         var tipDisplayX = tip.x * handScale;
         var tipDisplayY = tip.y * handScale;
@@ -3040,13 +3304,6 @@
         metroSolfejoHandImgEl.style.left = finalLeft + 'px';
         metroSolfejoHandImgEl.style.top = finalTop + 'px';
 
-        logSolfejoDebug({
-          frame: metroSolfejoCurrentFrame,
-          nx: pos.x,
-          ny: pos.y,
-          left: finalLeft,
-          top: finalTop
-        });
       }
 
       function cancelSolfejoTween() {
@@ -3056,6 +3313,21 @@
         }
         metroSolfejoTweenFromPos = null;
         metroSolfejoTweenToPos = null;
+        metroSolfejoTweenFromFrame = 0;
+        metroSolfejoTweenToFrame = 0;
+      }
+
+      function triggerSolfejoHandTap() {
+        if (!metroSolfejoMode) return;
+        if (!metroSolfejoHandImgEl) return;
+        metroSolfejoHandImgEl.classList.remove('tapping-right', 'tapping-left');
+        // força reflow para reiniciar animação a cada bip
+        void metroSolfejoHandImgEl.offsetWidth;
+        if (getSolfejoSide() === 'esquerda') {
+          metroSolfejoHandImgEl.classList.add('tapping-left');
+        } else {
+          metroSolfejoHandImgEl.classList.add('tapping-right');
+        }
       }
 
       function startSolfejoHandTween(toFrameIndex) {
@@ -3075,8 +3347,23 @@
         if (fromIndex < 0) fromIndex = 0;
         if (fromIndex >= frames.length) fromIndex = frames.length - 1;
 
-        var fromPos = frames[fromIndex];
-        var toPos = frames[toFrameIndex];
+        // Mapeia batidas (0..N-1) para âncoras dentro da trilha manual (frames).
+        // Isso permite usar pontos extras e percorrer TODOS em loop.
+        var fromFrameForPath = fromIndex;
+        var toFrameForPath = toFrameIndex;
+        if (frames.length > metroBeatsPerBar) {
+          var anchors = [];
+          for (var ai = 0; ai < metroBeatsPerBar; ai++) {
+            var idx = Math.round((ai * frames.length) / metroBeatsPerBar);
+            if (idx >= frames.length) idx = frames.length - 1;
+            anchors.push(idx);
+          }
+          fromFrameForPath = anchors[fromIndex] != null ? anchors[fromIndex] : fromIndex;
+          toFrameForPath = anchors[toFrameIndex] != null ? anchors[toFrameIndex] : toFrameIndex;
+        }
+
+        var fromPos = frames[fromFrameForPath];
+        var toPos = frames[toFrameForPath];
         if (!fromPos || !toPos) {
           metroSolfejoCurrentFrame = toFrameIndex;
           setSolfejoHandToFrame(toFrameIndex);
@@ -3091,24 +3378,32 @@
 
         metroSolfejoTweenFromPos = fromPos;
         metroSolfejoTweenToPos = toPos;
+        metroSolfejoTweenFromFrame = fromFrameForPath;
+        metroSolfejoTweenToFrame = toFrameForPath;
         metroSolfejoTweenStartPerf = performance.now();
         metroSolfejoTweenDurationMs = (60 / metroBpm) * 1000;
         if (!metroSolfejoTweenDurationMs || metroSolfejoTweenDurationMs < 50) metroSolfejoTweenDurationMs = 250;
 
-        // Control point (quadratic bezier) para aproximar a curva da seta.
-        // Sinal muda conforme mão (direita/esquerda).
-        var dx = toPos.x - fromPos.x;
-        var dy = toPos.y - fromPos.y;
-        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        var perpX = -dy / dist;
-        var perpY = dx / dist;
-        var midX = (fromPos.x + toPos.x) / 2;
-        var midY = (fromPos.y + toPos.y) / 2;
-        var clockwise = getSolfejoSide() === 'direita';
-        var sign = clockwise ? 1 : -1;
-        var curveMag = dist * 0.25 * sign;
-        var ctrlX = midX + perpX * curveMag;
-        var ctrlY = midY + perpY * curveMag;
+        // Constrói caminho forward cíclico entre from -> to passando por todos os pontos intermediários.
+        var pathPoints = [];
+        var pi = fromFrameForPath;
+        var guard = 0;
+        while (guard < (frames.length + 2)) {
+          pathPoints.push(frames[pi]);
+          if (pi === toFrameForPath) break;
+          pi = (pi + 1) % frames.length;
+          guard++;
+        }
+        if (pathPoints.length < 2) pathPoints = [fromPos, toPos];
+
+        // Pré-cálculo de comprimentos acumulados para interpolar ao longo da polyline.
+        var cumulative = [0];
+        for (var si = 1; si < pathPoints.length; si++) {
+          var pdx = pathPoints[si].x - pathPoints[si - 1].x;
+          var pdy = pathPoints[si].y - pathPoints[si - 1].y;
+          cumulative.push(cumulative[si - 1] + Math.sqrt(pdx * pdx + pdy * pdy));
+        }
+        var totalLen = cumulative[cumulative.length - 1] || 1;
 
         cancelSolfejoTween();
 
@@ -3126,11 +3421,20 @@
             return;
           }
 
+          // Movimento contínuo durante toda a batida (sem freeze no ponto).
           var e = easeInOutCubic(Math.max(0, Math.min(1, t)));
-          // Quadratic Bézier: (1-e)^2*from + 2*(1-e)*e*ctrl + e^2*to
-          var one = 1 - e;
-          var ix = one * one * fromPos.x + 2 * one * e * ctrlX + e * e * toPos.x;
-          var iy = one * one * fromPos.y + 2 * one * e * ctrlY + e * e * toPos.y;
+          // Interpola por comprimento ao longo de todo o caminho.
+          var targetLen = totalLen * e;
+          var seg = 0;
+          while (seg < cumulative.length - 1 && cumulative[seg + 1] < targetLen) seg++;
+          var l0 = cumulative[seg];
+          var l1 = cumulative[seg + 1] || l0;
+          var span = (l1 - l0) || 1;
+          var tt = (targetLen - l0) / span;
+          var p0 = pathPoints[seg];
+          var p1 = pathPoints[seg + 1] || p0;
+          var ix = p0.x + (p1.x - p0.x) * tt;
+          var iy = p0.y + (p1.y - p0.y) * tt;
           setSolfejoHandToPosNatural({ x: ix, y: iy });
           metroSolfejoTweenRafId = requestAnimationFrame(loop);
         }
@@ -3602,8 +3906,8 @@
       function getManualSolfejoFrames(beatsPerBar, side, naturalW, naturalH) {
         var key = beatsPerBar + '-' + side;
         var points = SOLFEJO_MANUAL_POINTS[key];
-        var expected = beatsPerBar + 1;
-        if (!points || points.length !== expected) return null;
+        var minExpected = beatsPerBar;
+        if (!points || points.length === 0) return null;
 
         var frames = [];
         for (var i = 0; i < points.length; i++) {
@@ -3614,22 +3918,29 @@
             y: p.y * naturalH
           });
         }
+
+        // Se vier menos pontos do que o mínimo necessário para o compasso,
+        // completa repetindo o último ponto informado (comportamento previsível no ajuste manual).
+        while (frames.length < minExpected) {
+          var last = frames[frames.length - 1];
+          frames.push({ x: last.x, y: last.y });
+        }
+
         return frames;
       }
 
       function ensureSolfejoFramesLoaded() {
         var key = metroBeatsPerBar + '-' + getSolfejoSide();
-        var expectedLen = metroBeatsPerBar + 1;
-
-        if (metroSolfejoFramesCache[key] && metroSolfejoFramesCache[key].length === expectedLen) {
-          return Promise.resolve(metroSolfejoFramesCache[key]);
-        }
+        var minExpectedLen = metroBeatsPerBar;
+        // Sempre recalcula no modo manual para evitar usar trilha antiga em cache
+        // durante calibração (edições frequentes de pontos).
+        delete metroSolfejoFramesCache[key];
+        delete metroSolfejoFramesPromises[key];
 
         if (metroSolfejoFramesPromises[key]) return metroSolfejoFramesPromises[key];
 
         var baseSrc = getSolfejoBaseUrl();
         var handSide = getSolfejoSide();
-
         metroSolfejoHandImgEl.src = './imgs/mao-' + handSide + '.png';
         metroSolfejoBaseImgEl.src = baseSrc;
 
@@ -3642,33 +3953,30 @@
               (metroSolfejoBaseImgEl.naturalHeight || 1)
             );
 
-            if (manualFrames && manualFrames.length === expectedLen) {
+            if (manualFrames && manualFrames.length >= minExpectedLen) {
               metroSolfejoFramesCache[key] = manualFrames;
+              setSolfejoHandToFrame(metroSolfejoCurrentFrame);
               resolve(manualFrames);
               return;
             }
 
-            analyzeSolfejoFramesFromImageV2(metroSolfejoBaseImgEl, metroBeatsPerBar, handSide).then(function (frames) {
-              if (!frames || !frames.length) frames = [];
-              // Garante tamanho mínimo com fallback simples
-              if (frames.length !== expectedLen) {
-                // fallback: se falhar detecção, coloca mão no centro (evita travar)
-                var cx = (metroSolfejoBaseImgEl.naturalWidth || 1) / 2;
-                var cy = (metroSolfejoBaseImgEl.naturalHeight || 1) / 2;
-                frames = [];
-                for (var i = 0; i < expectedLen; i++) frames.push({ x: cx, y: cy });
-              }
-              metroSolfejoFramesCache[key] = frames;
-              resolve(frames);
-            });
+            // Sem detecção automática: somente pontos manuais.
+            // Se não houver configuração válida, mantém a mão parada no centro.
+            var cxM = (metroSolfejoBaseImgEl.naturalWidth || 1) / 2;
+            var cyM = (metroSolfejoBaseImgEl.naturalHeight || 1) / 2;
+            var manualFallback = [];
+            for (var mi = 0; mi < minExpectedLen; mi++) manualFallback.push({ x: cxM, y: cyM });
+            metroSolfejoFramesCache[key] = manualFallback;
+            setSolfejoHandToFrame(metroSolfejoCurrentFrame);
+            resolve(manualFallback);
           };
           metroSolfejoBaseImgEl.onerror = function () {
             // se não carregar, fallback imediato
             var cx = (metroSolfejoBaseImgEl.naturalWidth || 1) / 2;
             var cy = (metroSolfejoBaseImgEl.naturalHeight || 1) / 2;
             var frames = [];
-            var expectedLen2 = metroBeatsPerBar + 1;
-            for (var i = 0; i < expectedLen2; i++) frames.push({ x: cx, y: cy });
+            var minExpectedLen2 = metroBeatsPerBar + 1;
+            for (var i = 0; i < minExpectedLen2; i++) frames.push({ x: cx, y: cy });
             metroSolfejoFramesCache[key] = frames;
             resolve(frames);
           };
@@ -3691,17 +3999,14 @@
         metroSolfejoHandImgEl = document.getElementById('metroSolfejoHandImg');
         metroSolfejoModeCheckboxEl = document.getElementById('chkMetroSolfejoMode');
         metroSolfejoLeftHandCheckboxEl = document.getElementById('chkMetroSolfejoLeftHand');
-        metroSolfejoDebugCheckboxEl = document.getElementById('chkMetroSolfejoDebug');
-        metroSolfejoDebugTextEl = document.getElementById('metroSolfejoDebugText');
 
         if (!metroModalEl || !metroDotsEl || !metroBpmSliderEl) return;
 
         // Estado inicial alinhado ao print
-        metroBeatsPerBar = 4;
+        metroBeatsPerBar = 12;
         metroSubdivision = 1;
         metroAccentFirst = false;
-        metroSolfejoMode = false;
-        metroSolfejoDebugEnabled = false;
+        metroSolfejoMode = true;
 
         metroBpm = parseInt(metroBpmSliderEl.value, 10) || metroBpm;
         if (metroBpmValueEl) metroBpmValueEl.textContent = String(metroBpm);
@@ -3710,7 +4015,6 @@
         if (metroAccentCheckboxEl) metroAccentCheckboxEl.checked = metroAccentFirst;
         if (metroSolfejoModeCheckboxEl) metroSolfejoModeCheckboxEl.checked = metroSolfejoMode;
         if (metroSolfejoLeftHandCheckboxEl) metroSolfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
-        if (metroSolfejoDebugCheckboxEl) metroSolfejoDebugCheckboxEl.checked = metroSolfejoDebugEnabled;
 
         if (metroBeatsValueEl) metroBeatsValueEl.textContent = String(metroBeatsPerBar);
 
@@ -3761,7 +4065,15 @@
         // Modo solfejo
         if (metroSolfejoModeCheckboxEl) {
           metroSolfejoModeCheckboxEl.addEventListener('change', function () {
-            metroSolfejoMode = !!this.checked;
+            var supportedBeats = [2, 3, 4, 6, 9, 12];
+            if (this.checked && supportedBeats.indexOf(metroBeatsPerBar) === -1) {
+              metroSolfejoMode = false;
+              this.checked = false;
+              if (metroSolfejoBaseImgEl) metroSolfejoBaseImgEl.removeAttribute('src');
+              if (metroSolfejoHandImgEl) metroSolfejoHandImgEl.removeAttribute('src');
+            } else {
+              metroSolfejoMode = !!this.checked;
+            }
             updateMetronomeModeUI();
             if (metroIsRunning) {
               stopMetronome();
@@ -3779,14 +4091,6 @@
               stopMetronome();
               startMetronome();
             }
-          });
-        }
-
-        // Debug de coordenadas
-        if (metroSolfejoDebugCheckboxEl) {
-          metroSolfejoDebugCheckboxEl.addEventListener('change', function () {
-            metroSolfejoDebugEnabled = !!this.checked;
-            updateMetronomeModeUI();
           });
         }
 
