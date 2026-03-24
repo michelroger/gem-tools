@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v17';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
@@ -7,6 +7,7 @@ const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './hinario5-curriculum.json',
   './icon-192.png',
   './icon-512.png'
 ];

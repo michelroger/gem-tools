@@ -202,6 +202,19 @@
       margin-bottom: 0.35rem;
     }
 
+    .challenge-stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .challenge-stats.hidden {
+      display: none;
+    }
+
     .progress-bar {
       height: 12px;
       background: rgba(0,0,0,0.06);
@@ -354,6 +367,13 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,0.6);
     }
 
+    .note-option-btn.challenge-discarded {
+      opacity: 0.4;
+      filter: grayscale(35%);
+      box-shadow: none;
+      pointer-events: none;
+    }
+
     .finger-cell.pos-0.highlight {
       color: #fff;
       text-shadow: 0 0 8px rgba(255,255,255,0.8);
@@ -445,6 +465,625 @@
     .note-option-btn.wrong {
       background: #f8d7da;
       color: #a94442;
+    }
+
+    /* ========== HINÁRIO 5 (controle local por aluno) ========== */
+    .hinos-section {
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .hinos-section-header {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .hinos-main-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin: 0 0 0.4rem;
+      color: var(--text);
+    }
+
+    .hinos-hint {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin: 0 auto;
+      line-height: 1.4;
+      max-width: 26rem;
+    }
+
+    .hinos-panel {
+      border: 1px solid rgba(125, 157, 122, 0.38);
+      border-radius: var(--radius);
+      padding: 0.9rem 1rem;
+      margin-bottom: 0.75rem;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .hinos-panel-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    .hinos-panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .hinos-panel-heading .hinos-panel-title {
+      margin: 0;
+    }
+
+    .hinos-icon-btn {
+      flex: 0 0 auto;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .hinos-icon-btn:hover {
+      background: rgba(125, 157, 122, 0.18);
+    }
+
+    .hinos-icon-btn:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .hinos-icon-btn svg {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    .hinos-new-student-card {
+      max-width: 400px;
+    }
+
+    .hinos-new-student-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 2rem 0.35rem 0;
+      color: var(--text);
+    }
+
+    .hinos-new-student-hint {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin: 0 0 1rem;
+      line-height: 1.35;
+    }
+
+    .hinos-modal-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .hinos-new-student-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+      margin-top: 1.1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(125, 157, 122, 0.25);
+    }
+
+    .hinos-new-student-card .hinos-select {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .hinos-new-student-card .btn {
+      height: 2.25rem;
+      padding: 0 0.9rem;
+      font-size: 0.9rem;
+      line-height: 1.15;
+      border-radius: 12px;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hinos-field {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    /* Evita <select> esticar no eixo vertical (flex-grow em coluna). */
+    .hinos-field > .hinos-select,
+    .hinos-field > .hinos-input {
+      flex: 0 0 auto;
+    }
+
+    .hinos-field-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin: 0 0 0.3rem;
+    }
+
+    .hinos-active-row-2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: flex-end;
+      margin-top: 0.5rem;
+    }
+
+    .hinos-field-voz-active {
+      flex: 1 1 12rem;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .hinos-remove-wrap {
+      flex: 0 0 auto;
+      padding-bottom: 0.1rem;
+    }
+
+    .hinos-panel .hinos-select {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* Campos compactos — altura fixa limita bug de <select> nativo + flex. */
+    .hinos-input {
+      width: 100%;
+      box-sizing: border-box;
+      min-width: 0;
+      height: 2.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      border: 2px solid rgba(125, 157, 122, 0.45);
+      font-family: inherit;
+      font-size: 0.9rem;
+      line-height: 1.15;
+      color: var(--text);
+      background: var(--card);
+    }
+
+    .hinos-select {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      height: 2.25rem;
+      padding: 0 1.75rem 0 0.45rem;
+      border-radius: 12px;
+      border: 2px solid rgba(125, 157, 122, 0.45);
+      font-family: inherit;
+      font-size: 0.9rem;
+      line-height: 1.15;
+      color: var(--text);
+      background-color: var(--card);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6560' d='M3,4.5 L6,8.5 L9,4.5Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.42rem center;
+      background-size: 10px 10px;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .hinos-select:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .hinos-panel .btn {
+      height: 2.25rem;
+      padding: 0 0.85rem;
+      font-size: 0.9rem;
+      line-height: 1.15;
+      border-radius: 12px;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    .hinos-afin-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .hinos-afin-btn {
+      padding: 0.5rem 0.95rem;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-family: inherit;
+    }
+
+    .hinos-afin-btn:hover {
+      background: rgba(125, 157, 122, 0.15);
+    }
+
+    .hinos-afin-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .hinos-pdf-row {
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+
+    .hinos-pdf-row a {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .hinos-hino-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .hinos-hino-row input[type='number'] {
+      width: 4.5rem;
+      text-align: center;
+      padding: 0.45rem;
+      border-radius: var(--radius);
+      border: 2px solid rgba(125, 157, 122, 0.45);
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .hinos-hino-row button {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: var(--radius);
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .hinos-voz-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .hinos-voz-btn {
+      min-width: 5.5rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.92rem;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .hinos-voz-btn small {
+      display: block;
+      font-weight: 500;
+      font-size: 0.72rem;
+      opacity: 0.85;
+    }
+
+    .hinos-voz-btn.on {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    .hinos-summary {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      margin: 0.5rem 0 0;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .hinos-overview {
+      background: rgba(125, 157, 122, 0.1);
+      border-radius: var(--radius);
+      padding: 0.85rem 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(125, 157, 122, 0.25);
+    }
+
+    .hinos-overview-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 0.65rem;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .hinos-stat-row {
+      margin-bottom: 0.55rem;
+    }
+
+    .hinos-stat-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .hinos-stat-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-bottom: 0.2rem;
+      gap: 0.5rem;
+    }
+
+    .hinos-stat-label strong {
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+
+    .hinos-prog-track {
+      height: 10px;
+      background: rgba(0, 0, 0, 0.07);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .hinos-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.45s ease;
+    }
+
+    .hinos-fase-list {
+      margin-bottom: 1rem;
+    }
+
+    .hinos-fase-details {
+      background: var(--card);
+      border: 1px solid rgba(125, 157, 122, 0.3);
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    .hinos-fase-details summary {
+      cursor: pointer;
+      padding: 0.55rem 0.65rem;
+      font-weight: 600;
+      font-size: 0.82rem;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.6rem;
+      user-select: none;
+    }
+
+    .hinos-fase-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .hinos-fase-pct {
+      margin-left: auto;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .hinos-fase-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 0.5rem 0.55rem 0.65rem;
+      justify-content: flex-start;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .hinos-fase-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.65rem;
+      align-items: flex-end;
+      padding: 0.5rem 0.55rem;
+      background: rgba(255, 255, 255, 0.6);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .hinos-filter-ton-wrap,
+    .hinos-filter-q-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      flex: 1 1 120px;
+      min-width: 100px;
+    }
+
+    .hinos-filter-label {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+
+    .hinos-filter-ton,
+    .hinos-filter-q {
+      padding: 0.35rem 0.45rem;
+      border-radius: 8px;
+      border: 1px solid rgba(125, 157, 122, 0.45);
+      font-family: inherit;
+      font-size: 0.85rem;
+      background: var(--card);
+    }
+
+    .hinos-filter-clear {
+      flex: 0 0 auto;
+      align-self: flex-end;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.8rem;
+    }
+
+    .hinos-grupo {
+      margin-bottom: 0.25rem;
+    }
+
+    .hinos-grupo-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 0.35rem 0.55rem 0.15rem;
+      margin: 0;
+    }
+
+    .hinos-cell {
+      min-width: 2.35rem;
+      min-height: 2.35rem;
+      padding: 0.15rem 0.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(125, 157, 122, 0.45);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text);
+      line-height: 1.05;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hinos-cell .hinos-cell-num {
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .hinos-cell .hinos-cell-voices {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--text-soft);
+      line-height: 1.05;
+      margin-top: 0.05rem;
+      max-width: 4rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hinos-cell .hinos-cell-ton {
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      max-width: 4.2rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hinos-grupo[data-only-geral="1"] .hinos-cell .hinos-cell-ton {
+      display: none;
+    }
+
+    .hinos-cell.coro {
+      min-width: 3.1rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .hinos-cell.empty {
+      opacity: 0.65;
+    }
+
+    .hinos-cell.partial {
+      background: rgba(255, 193, 7, 0.35);
+      border-color: #c9a010;
+    }
+
+    .hinos-cell.full {
+      background: rgba(125, 157, 122, 0.5);
+      border-color: var(--accent);
+      color: #1a1a1a;
+    }
+
+    .hinos-cell.current {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .hinos-detail-label {
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin: 0 0 0.35rem;
+      color: var(--text);
+    }
+
+    .hinos-hino-row input[type='number']:disabled {
+      opacity: 0.45;
+    }
+
+    .hinos-editor-card {
+      padding-top: 2.15rem;
+    }
+
+    .hinos-editor-card .hinos-summary {
+      margin-top: 0.65rem;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     /* ========== TONALIDADE ========== */
@@ -1086,6 +1725,11 @@
         <span>Seu progresso</span>
         <span id="progressText">0 / 0</span>
       </div>
+      <div class="challenge-stats hidden" id="challengeStats">
+        <span id="challengeTimer">⏱️ 00:00</span>
+        <span id="challengeRound">Rodada 0/20</span>
+        <span id="challengeErrors">❌ 0/3</span>
+      </div>
       <div class="progress-bar">
         <div class="progress-fill" id="progressFill"></div>
       </div>
@@ -1151,10 +1795,129 @@
       </div>
     </div>
 
+    <div class="hinos-section hidden" id="hinosSection">
+      <header class="hinos-section-header">
+        <h2 class="hinos-main-title">Hinário 5</h2>
+        <p class="hinos-hint">Toque num hino ou coro para marcar as vozes. A <strong>voz principal</strong> define as porcentagens da ficha.</p>
+      </header>
+
+      <section class="hinos-panel" aria-labelledby="hinosActiveHeading">
+        <div class="hinos-panel-heading">
+          <h3 class="hinos-panel-title" id="hinosActiveHeading">Aluno ativo</h3>
+          <button type="button" class="hinos-icon-btn" id="hinosOpenNewStudentModal" title="Incluir novo aluno" aria-label="Incluir novo aluno">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="19" y1="8" x2="19" y2="14" />
+              <line x1="22" y1="11" x2="16" y2="11" />
+            </svg>
+          </button>
+        </div>
+        <div class="hinos-field">
+          <label class="hinos-field-label" for="hinosStudentSelect">Aluno</label>
+          <select id="hinosStudentSelect" class="hinos-select" aria-label="Selecionar aluno"></select>
+        </div>
+        <div class="hinos-active-row-2">
+          <div class="hinos-field hinos-field-voz-active">
+            <label class="hinos-field-label" for="hinosActiveStudentVoz">Voz principal</label>
+            <select id="hinosActiveStudentVoz" class="hinos-select" aria-label="Voz principal do aluno selecionado" disabled>
+              <option value="S">Soprano</option>
+              <option value="C">Contralto</option>
+              <option value="T">Tenor</option>
+              <option value="B">Baixo</option>
+            </select>
+          </div>
+          <div class="hinos-remove-wrap">
+            <button type="button" class="btn btn-secondary" id="hinosRemoveStudent" aria-label="Remover aluno selecionado">Remover</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="hinos-afin-row" role="tablist" aria-label="Afinação do hinário">
+        <button type="button" class="hinos-afin-btn active" data-hinos-afin="do" role="tab">Hinário 5 (Dó)</button>
+        <button type="button" class="hinos-afin-btn" data-hinos-afin="mib" role="tab">Hinário 5 (Mib)</button>
+        <button type="button" class="hinos-afin-btn" data-hinos-afin="sib" role="tab">Hinário 5 (Sib)</button>
+      </div>
+      <div class="hinos-pdf-row">
+        <a id="hinosPdfLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Abrir ficha PDF desta afinação</a>
+      </div>
+      <div class="hinos-overview" id="hinosOverview" aria-live="polite">
+        <p class="hinos-overview-title">Visão geral nesta ficha</p>
+        <div class="hinos-stat-row">
+          <div class="hinos-stat-label"><strong>Voz principal (hinos + coros nesta ficha)</strong><span id="hinosPctVoicesLbl">0/0 · 0%</span></div>
+          <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctVoicesBar"></div></div>
+        </div>
+        <div class="hinos-stat-row">
+          <div class="hinos-stat-label"><strong>Hinos com a voz principal aprovada</strong><span id="hinosPctHinosAnyLbl">0/480 · 0%</span></div>
+          <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctHinosAnyBar"></div></div>
+        </div>
+        <div class="hinos-stat-row">
+          <div class="hinos-stat-label"><strong>Hinos com as 4 vozes</strong><span id="hinosPctHinosFullLbl">0/480 · 0%</span></div>
+          <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctHinosFullBar"></div></div>
+        </div>
+        <div class="hinos-stat-row">
+          <div class="hinos-stat-label"><strong>Coros com as 4 vozes</strong><span id="hinosPctCorosLbl">0/6 · 0%</span></div>
+          <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctCorosBar"></div></div>
+        </div>
+      </div>
+      <div class="hinos-fase-list" id="hinosFaseContainer"></div>
+    </div>
+
+    <div class="metronome-modal hidden" id="hinosNewStudentModal" role="dialog" aria-modal="true" aria-labelledby="hinosNewStudentTitle">
+      <div class="metronome-card hinos-new-student-card">
+        <button type="button" class="metronome-close" id="hinosNewStudentClose" aria-label="Fechar">✕</button>
+        <h2 class="hinos-new-student-title" id="hinosNewStudentTitle">Novo aluno</h2>
+        <p class="hinos-new-student-hint">Nome e voz principal na matrícula.</p>
+        <div class="hinos-modal-fields">
+          <div class="hinos-field">
+            <label class="hinos-field-label" for="hinosNewStudentName">Nome</label>
+            <input type="text" id="hinosNewStudentName" class="hinos-input" placeholder="Nome completo" maxlength="80" autocomplete="name" />
+          </div>
+          <div class="hinos-field">
+            <label class="hinos-field-label" for="hinosNewStudentVoz">Voz principal</label>
+            <select id="hinosNewStudentVoz" class="hinos-select" aria-label="Voz principal do novo aluno">
+              <option value="S">Soprano</option>
+              <option value="C">Contralto</option>
+              <option value="T">Tenor</option>
+              <option value="B">Baixo</option>
+            </select>
+          </div>
+        </div>
+        <div class="hinos-new-student-actions">
+          <button type="button" class="btn btn-secondary" id="hinosNewStudentCancel">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="hinosAddStudent">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="metronome-modal hidden" id="hinosEditorModal" role="dialog" aria-modal="true" aria-labelledby="hinosDetailLabel">
+      <div class="metronome-card hinos-editor-card">
+        <button type="button" class="metronome-close" id="hinosEditorClose" aria-label="Fechar editor de hino">✕</button>
+        <p class="hinos-detail-label" id="hinosDetailLabel">Hino 1</p>
+        <div class="hinos-hino-row">
+          <button type="button" id="hinosPrev" aria-label="Hino anterior">−</button>
+          <label class="visually-hidden" for="hinosHinoNum">Número do hino</label>
+          <input type="number" id="hinosHinoNum" min="1" max="480" value="1" />
+          <button type="button" id="hinosNext" aria-label="Próximo hino">+</button>
+        </div>
+        <div class="hinos-voz-row" id="hinosVozRow" aria-label="Vozes aprovadas">
+          <button type="button" class="hinos-voz-btn" data-hinos-voice="S">S <small>Soprano</small></button>
+          <button type="button" class="hinos-voz-btn" data-hinos-voice="C">C <small>Contralto</small></button>
+          <button type="button" class="hinos-voz-btn" data-hinos-voice="T">T <small>Tenor</small></button>
+          <button type="button" class="hinos-voz-btn" data-hinos-voice="B">B <small>Baixo</small></button>
+        </div>
+        <div style="text-align:center">
+          <button type="button" class="btn btn-secondary" id="hinosClearHino">Limpar este hino (todas as vozes)</button>
+        </div>
+        <p class="hinos-summary" id="hinosSummary"></p>
+      </div>
+    </div>
+
     <div class="mode-tabs" role="tablist">
       <button type="button" class="mode-btn active" data-mode="learn" role="tab">Aprender</button>
       <button type="button" class="mode-btn" data-mode="challenge" role="tab">Desafio</button>
       <button type="button" class="mode-btn" data-mode="staff" role="tab">Pentagrama</button>
+      <button type="button" class="mode-btn" data-mode="hinos" role="tab">Hinos</button>
       <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">Metrônomo</button>
     </div>
 
@@ -1577,6 +2340,11 @@
       let currentMode = 'learn';
       let challengeTarget = null;
       let challengeTimeout = null;
+      let challengeRound = 0;
+      let challengeErrors = 0;
+      let challengeStartTs = 0;
+      let challengeTimerInterval = null;
+      let challengeDiscardedAttempts = {};
       let score = 0;
       let totalChallenges = 0;
       let soundEnabled = true;
@@ -1647,6 +2415,916 @@
       const STAFF_STEP_PX = 6;
       const STAFF_MIN_DIFF = -5;
       const STAFF_MAX_DIFF = 11;
+      const CHALLENGE_ROUNDS_LIMIT = 20;
+      const CHALLENGE_ERRORS_LIMIT = 3;
+
+      const HINOS_STORAGE_KEY = 'gem-tools-hinos-v1';
+      const HINOS_TOTAL = 480;
+      const HINOS_VOZES = ['S', 'C', 'T', 'B'];
+      const HINARIO_PDF_BY_AFIN = {
+        do: 'Ficha Hinário 5 - Afinação em DÓ.pdf',
+        mib: 'Ficha Hinário 5 - Afinação em MIb.pdf',
+        sib: 'Ficha Hinário 5 - Afinação em SIb.pdf'
+      };
+
+      var hinosState = { version: 1, students: [], activeStudentId: null };
+      var hinosActiveAfinação = 'do';
+      /** Quando o instrumento muda, volta a sugerir a ficha; no mesmo instrumento, mantém a aba que o aluno escolheu. */
+      var hinosLastSyncInstrumentId = null;
+      var hinosCurriculum = null;
+      /** Chave atual no editor: número do hino ("158") ou "coro-5". */
+      var hinosSelectedKey = '1';
+      var hinosFaseBuiltForAfin = null;
+      /** Incrementar ao mudar a estrutura do grid (ex.: células com linha de vozes). */
+      var HINOS_FASE_PANEL_VER = 2;
+
+      function buildFallbackHinosCurriculum() {
+        var ord = [];
+        for (var i = 1; i <= HINOS_TOTAL; i++) ord.push(i);
+        var coroF1 = [
+          { id: 'coro-5', label: 'Coro 5' },
+          { id: 'coro-3', label: 'Coro 3' },
+          { id: 'coro-2', label: 'Coro 2' }
+        ];
+        var coroF3 = [
+          { id: 'coro-1', label: 'Coro 1' },
+          { id: 'coro-3', label: 'Coro 3' },
+          { id: 'coro-4', label: 'Coro 4' }
+        ];
+        var titles = [
+          '1ª FASE: ENSAIOS (100 hinos + 3 coros)',
+          '2ª FASE: RJM (50 hinos)',
+          '3ª FASE: CULTOS OFICIAIS (200 hinos + 3 coros)',
+          '4ª FASE: OFICIALIZAÇÃO (130 hinos)'
+        ];
+        function flatPhase(hArr, cArr) {
+          var it = [];
+          hArr.slice().sort(function (a, b) { return a - b; }).forEach(function (n) {
+            it.push({ t: 'hino', n: n });
+          });
+          (cArr || []).forEach(function (c) {
+            it.push({ t: 'coro', id: c.id, label: c.label });
+          });
+          return { titulo: '', grupos: [{ tonalidade: 'Geral (ordenado por nº)', itens: it }] };
+        }
+        var slices = [
+          ord.slice(0, 100),
+          ord.slice(100, 150),
+          ord.slice(150, 350),
+          ord.slice(350, 480)
+        ];
+        var blob = [
+          Object.assign({ titulo: titles[0] }, flatPhase(slices[0], coroF1)),
+          Object.assign({ titulo: titles[1] }, flatPhase(slices[1], [])),
+          Object.assign({ titulo: titles[2] }, flatPhase(slices[2], coroF3)),
+          Object.assign({ titulo: titles[3] }, flatPhase(slices[3], []))
+        ];
+        return { do: blob, mib: blob, sib: blob };
+      }
+
+      function getHinosPhasesForAfin(afin) {
+        if (!hinosCurriculum) return null;
+        var p = hinosCurriculum[afin];
+        return Array.isArray(p) && p.length ? p : null;
+      }
+
+      function hinosIsCoroKey(key) {
+        return String(key).indexOf('coro-') === 0;
+      }
+
+      function hinosVoiceCountInEntry(ent) {
+        if (!ent) return 0;
+        var n = 0;
+        HINOS_VOZES.forEach(function (v) {
+          if (ent[v]) n++;
+        });
+        return n;
+      }
+
+      function hinosEntryFull(ent) {
+        return hinosVoiceCountInEntry(ent) >= 4;
+      }
+
+      function hinosGetStudentVozPrincipal(st) {
+        if (!st) return 'S';
+        var v = st.vozPrincipal;
+        if (!v || HINOS_VOZES.indexOf(v) === -1) return 'S';
+        return v;
+      }
+
+      function hinosFormatVoicesShort(ent) {
+        if (!ent) return '';
+        var parts = [];
+        HINOS_VOZES.forEach(function (v) {
+          if (ent[v]) parts.push(v);
+        });
+        return parts.join('|');
+      }
+
+      function countHinosOverview(st, afin) {
+        var book = st && st.hinos && st.hinos[afin] ? st.hinos[afin] : {};
+        var vP = hinosGetStudentVozPrincipal(st);
+        var slotsTotal = HINOS_TOTAL * 4 + 6 * 4;
+        var filled = 0;
+        var hinosAny = 0;
+        var hinosFull = 0;
+        var corosFull = 0;
+        var primaryPiecesDone = 0;
+        var hinosWithPrimary = 0;
+        var primaryPiecesTotal = HINOS_TOTAL + 6;
+        for (var hi = 1; hi <= HINOS_TOTAL; hi++) {
+          var kn = String(hi);
+          var e = book[kn];
+          var vc = hinosVoiceCountInEntry(e);
+          filled += vc;
+          if (vc > 0) hinosAny++;
+          if (hinosEntryFull(e)) hinosFull++;
+          if (e && e[vP]) {
+            primaryPiecesDone++;
+            hinosWithPrimary++;
+          }
+        }
+        for (var c = 1; c <= 6; c++) {
+          var ck = 'coro-' + c;
+          var ec = book[ck];
+          var vcc = hinosVoiceCountInEntry(ec);
+          filled += vcc;
+          if (hinosEntryFull(ec)) corosFull++;
+          if (ec && ec[vP]) primaryPiecesDone++;
+        }
+        return {
+          slotsTotal: slotsTotal,
+          filled: filled,
+          hinosAny: hinosAny,
+          hinosFull: hinosFull,
+          corosFull: corosFull,
+          primaryPiecesDone: primaryPiecesDone,
+          primaryPiecesTotal: primaryPiecesTotal,
+          hinosWithPrimary: hinosWithPrimary
+        };
+      }
+
+      function hinosPhaseItemKeys(phase) {
+        var keys = [];
+        if (phase.grupos && phase.grupos.length) {
+          phase.grupos.forEach(function (g) {
+            (g.itens || []).forEach(function (it) {
+              if (it.t === 'hino') keys.push(String(it.n));
+              else if (it.t === 'coro' && it.id) keys.push(it.id);
+            });
+          });
+          return keys;
+        }
+        (phase.hinos || []).forEach(function (num) {
+          keys.push(String(num));
+        });
+        (phase.coros || []).forEach(function (c) {
+          keys.push(c.id);
+        });
+        return keys;
+      }
+
+      function countPhaseProgress(st, afin, phase) {
+        var book = st && st.hinos && st.hinos[afin] ? st.hinos[afin] : {};
+        var keys = hinosPhaseItemKeys(phase);
+        var vP = hinosGetStudentVozPrincipal(st);
+        var slots = keys.length;
+        var done = 0;
+        keys.forEach(function (k) {
+          var ent = book[k];
+          if (ent && ent[vP]) done++;
+        });
+        return { slots: slots, done: done, pct: slots ? Math.round((done / slots) * 100) : 0 };
+      }
+
+      function updateHinosOverviewBars() {
+        var st = getActiveHinosStudent();
+        var lblV = document.getElementById('hinosPctVoicesLbl');
+        var barV = document.getElementById('hinosPctVoicesBar');
+        var lblA = document.getElementById('hinosPctHinosAnyLbl');
+        var barA = document.getElementById('hinosPctHinosAnyBar');
+        var lblF = document.getElementById('hinosPctHinosFullLbl');
+        var barF = document.getElementById('hinosPctHinosFullBar');
+        var lblC = document.getElementById('hinosPctCorosLbl');
+        var barC = document.getElementById('hinosPctCorosBar');
+        if (!st) {
+          if (lblV) lblV.textContent = '—';
+          if (barV) barV.style.width = '0%';
+          if (lblA) lblA.textContent = '—';
+          if (barA) barA.style.width = '0%';
+          if (lblF) lblF.textContent = '—';
+          if (barF) barF.style.width = '0%';
+          if (lblC) lblC.textContent = '—';
+          if (barC) barC.style.width = '0%';
+          var phases0 = getHinosPhasesForAfin(hinosActiveAfinação);
+          if (phases0) {
+            phases0.forEach(function (ph, idx) {
+              var pctEl0 = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
+              if (!pctEl0) return;
+              var slots0 = hinosPhaseItemKeys(ph).length;
+              pctEl0.textContent = '0% · 0/' + slots0;
+            });
+          }
+          return;
+        }
+        var o = countHinosOverview(st, hinosActiveAfinação);
+        var pv = o.primaryPiecesTotal ? Math.round((o.primaryPiecesDone / o.primaryPiecesTotal) * 100) : 0;
+        var pa = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
+        var pf = Math.round((o.hinosFull / HINOS_TOTAL) * 100);
+        var pc = Math.round((o.corosFull / 6) * 100);
+        if (lblV) lblV.textContent = o.primaryPiecesDone + '/' + o.primaryPiecesTotal + ' · ' + pv + '%';
+        if (barV) barV.style.width = pv + '%';
+        if (lblA) lblA.textContent = o.hinosWithPrimary + '/' + HINOS_TOTAL + ' · ' + pa + '%';
+        if (barA) barA.style.width = pa + '%';
+        if (lblF) lblF.textContent = o.hinosFull + '/' + HINOS_TOTAL + ' · ' + pf + '%';
+        if (barF) barF.style.width = pf + '%';
+        if (lblC) lblC.textContent = o.corosFull + '/6 · ' + pc + '%';
+        if (barC) barC.style.width = pc + '%';
+
+        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+        if (phases) {
+          phases.forEach(function (ph, idx) {
+            var pctEl = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
+            if (!pctEl) return;
+            var pr = countPhaseProgress(st, hinosActiveAfinação, ph);
+            pctEl.textContent = pr.pct + '% · ' + pr.done + '/' + pr.slots;
+          });
+        }
+      }
+
+      function syncHinosDetailControlsFromKey() {
+        var numIn = document.getElementById('hinosHinoNum');
+        var prev = document.getElementById('hinosPrev');
+        var next = document.getElementById('hinosNext');
+        var lbl = document.getElementById('hinosDetailLabel');
+        var ton = '';
+        var qk = hinosIsCoroKey(hinosSelectedKey) ? hinosSelectedKey : String(clampHinoNum(hinosSelectedKey));
+        var cel = document.querySelector('.hinos-cell[data-hinos-key="' + qk + '"]');
+        if (cel) ton = cel.getAttribute('data-hinos-ton') || '';
+        var suf = ton ? ' · ' + ton : '';
+        if (hinosIsCoroKey(hinosSelectedKey)) {
+          if (numIn) {
+            numIn.disabled = true;
+            numIn.value = '';
+          }
+          if (prev) prev.disabled = true;
+          if (next) next.disabled = true;
+          if (lbl) lbl.textContent = 'Coro ' + hinosSelectedKey.replace('coro-', '') + suf;
+        } else {
+          if (numIn) {
+            numIn.disabled = false;
+            numIn.value = String(clampHinoNum(hinosSelectedKey));
+          }
+          if (prev) prev.disabled = false;
+          if (next) next.disabled = false;
+          if (lbl) lbl.textContent = 'Hino ' + clampHinoNum(hinosSelectedKey) + suf;
+        }
+      }
+
+      function setHinosSelectedKey(key) {
+        if (hinosIsCoroKey(key)) {
+          hinosSelectedKey = key;
+        } else {
+          hinosSelectedKey = String(clampHinoNum(key));
+        }
+      }
+
+      function updateHinosFaseGridCellClasses() {
+        var st = getActiveHinosStudent();
+        var book = st && st.hinos && st.hinos[hinosActiveAfinação] ? st.hinos[hinosActiveAfinação] : {};
+        document.querySelectorAll('.hinos-cell').forEach(function (el) {
+          var k = el.getAttribute('data-hinos-key');
+          if (!k) return;
+          var ent = book[k];
+          var vc = hinosVoiceCountInEntry(ent);
+          el.classList.remove('empty', 'partial', 'full');
+          if (vc === 0) el.classList.add('empty');
+          else if (vc >= 4) el.classList.add('full');
+          else el.classList.add('partial');
+          var voEl = el.querySelector('.hinos-cell-voices');
+          if (voEl) voEl.textContent = hinosFormatVoicesShort(ent);
+        });
+      }
+
+      function ensureHinosFasePanels() {
+        var container = document.getElementById('hinosFaseContainer');
+        if (!container) return;
+        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+        if (!phases) return;
+        var faseBuiltKey = hinosActiveAfinação + ':' + HINOS_FASE_PANEL_VER;
+        if (hinosFaseBuiltForAfin === faseBuiltKey && container.children.length) {
+          return;
+        }
+        container.innerHTML = '';
+        hinosFaseBuiltForAfin = faseBuiltKey;
+
+        function hinosSynthGrupos(ph) {
+          if (ph.grupos && ph.grupos.length) return ph.grupos;
+          var itens = [];
+          (ph.hinos || []).slice().sort(function (a, b) { return a - b; }).forEach(function (n) {
+            itens.push({ t: 'hino', n: n });
+          });
+          (ph.coros || []).forEach(function (c) {
+            itens.push({ t: 'coro', id: c.id, label: c.label });
+          });
+          return [{ tonalidade: 'Geral', itens: itens }];
+        }
+
+        phases.forEach(function (ph, idx) {
+          var det = document.createElement('details');
+          det.className = 'hinos-fase-details';
+          det.open = idx === 0;
+          var sum = document.createElement('summary');
+          var sp = document.createElement('span');
+          sp.textContent = ph.titulo || ('Fase ' + (idx + 1));
+          sum.appendChild(sp);
+          var pct = document.createElement('span');
+          pct.className = 'hinos-fase-pct';
+          pct.id = 'hinosFasePct-' + hinosActiveAfinação + '-' + idx;
+          pct.textContent = '0%';
+          sum.appendChild(pct);
+          det.appendChild(sum);
+
+          var toolbar = document.createElement('div');
+          toolbar.className = 'hinos-fase-toolbar';
+
+          var labTon = document.createElement('label');
+          labTon.className = 'hinos-filter-ton-wrap';
+          var spTon = document.createElement('span');
+          spTon.className = 'hinos-filter-label';
+          spTon.textContent = 'Tonalidade';
+          labTon.appendChild(spTon);
+          var selTon = document.createElement('select');
+          selTon.className = 'hinos-filter-ton';
+          var optAll = document.createElement('option');
+          optAll.value = '';
+          optAll.textContent = 'Todas';
+          selTon.appendChild(optAll);
+          var tonSeen = {};
+          hinosSynthGrupos(ph).forEach(function (g) {
+            var t = g.tonalidade || 'Geral';
+            tonSeen[t] = true;
+          });
+          Object.keys(tonSeen).sort(function (a, b) {
+            return a.localeCompare(b, 'pt');
+          }).forEach(function (t) {
+            var o = document.createElement('option');
+            o.value = t;
+            o.textContent = t;
+            selTon.appendChild(o);
+          });
+          labTon.appendChild(selTon);
+
+          var labQ = document.createElement('label');
+          labQ.className = 'hinos-filter-q-wrap';
+          var spQ = document.createElement('span');
+          spQ.className = 'hinos-filter-label';
+          spQ.textContent = 'Buscar nº';
+          labQ.appendChild(spQ);
+          var inpQ = document.createElement('input');
+          inpQ.type = 'search';
+          inpQ.className = 'hinos-filter-q';
+          inpQ.placeholder = 'ex.: 158';
+          inpQ.setAttribute('inputmode', 'numeric');
+          labQ.appendChild(inpQ);
+
+          var btnClr = document.createElement('button');
+          btnClr.type = 'button';
+          btnClr.className = 'btn btn-secondary hinos-filter-clear';
+          btnClr.textContent = 'Limpar filtros';
+
+          toolbar.appendChild(labTon);
+          toolbar.appendChild(labQ);
+          toolbar.appendChild(btnClr);
+          det.appendChild(toolbar);
+
+          var body = document.createElement('div');
+          body.className = 'hinos-fase-body';
+
+          var grupos = hinosSynthGrupos(ph);
+          var onlyGeral = grupos.length === 1 && (grupos[0].tonalidade || '').indexOf('Geral') === 0;
+
+          grupos.forEach(function (gr) {
+            var tonName = gr.tonalidade || 'Geral';
+            var wrap = document.createElement('div');
+            wrap.className = 'hinos-grupo';
+            wrap.setAttribute('data-ton-grupo', tonName);
+            if (onlyGeral) wrap.setAttribute('data-only-geral', '1');
+            if (tonName && !onlyGeral) {
+              var gt = document.createElement('div');
+              gt.className = 'hinos-grupo-title';
+              gt.textContent = tonName;
+              wrap.appendChild(gt);
+            }
+            var grid = document.createElement('div');
+            grid.className = 'hinos-fase-grid';
+            (gr.itens || []).forEach(function (item) {
+              if (item.t === 'hino') {
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'hinos-cell empty';
+                b.setAttribute('data-hinos-key', String(item.n));
+                b.setAttribute('data-hinos-ton', tonName);
+                var sn = document.createElement('span');
+                sn.className = 'hinos-cell-num';
+                sn.textContent = String(item.n);
+                var sv = document.createElement('span');
+                sv.className = 'hinos-cell-voices';
+                b.appendChild(sn);
+                b.appendChild(sv);
+                grid.appendChild(b);
+              } else if (item.t === 'coro') {
+                var b2 = document.createElement('button');
+                b2.type = 'button';
+                b2.className = 'hinos-cell coro empty';
+                b2.setAttribute('data-hinos-key', item.id);
+                b2.setAttribute('data-hinos-ton', tonName);
+                var sn2 = document.createElement('span');
+                sn2.className = 'hinos-cell-num';
+                sn2.textContent = item.label || item.id;
+                var sv2 = document.createElement('span');
+                sv2.className = 'hinos-cell-voices';
+                b2.appendChild(sn2);
+                b2.appendChild(sv2);
+                grid.appendChild(b2);
+              }
+            });
+            wrap.appendChild(grid);
+            body.appendChild(wrap);
+          });
+
+          det.appendChild(body);
+          container.appendChild(det);
+
+          function applyHinosFaseFilters() {
+            var ton = selTon.value || '';
+            var q = (inpQ.value || '').trim().toLowerCase();
+            body.querySelectorAll('.hinos-cell').forEach(function (cell) {
+              var tCell = cell.getAttribute('data-hinos-ton') || '';
+              var key = (cell.getAttribute('data-hinos-key') || '').toLowerCase();
+              var lab = (cell.textContent || '').toLowerCase();
+              var showTon = !ton || tCell === ton;
+              var showQ = !q || key.indexOf(q) !== -1 || lab.indexOf(q) !== -1;
+              cell.style.display = showTon && showQ ? '' : 'none';
+            });
+            body.querySelectorAll('.hinos-grupo').forEach(function (gw) {
+              var anyVis = false;
+              gw.querySelectorAll('.hinos-cell').forEach(function (c) {
+                if (c.style.display !== 'none') anyVis = true;
+              });
+              gw.style.display = anyVis ? '' : 'none';
+            });
+          }
+
+          selTon.addEventListener('change', applyHinosFaseFilters);
+          inpQ.addEventListener('input', applyHinosFaseFilters);
+          btnClr.addEventListener('click', function () {
+            selTon.value = '';
+            inpQ.value = '';
+            applyHinosFaseFilters();
+          });
+        });
+
+        container.addEventListener('click', function (e) {
+          var t = e.target.closest('.hinos-cell');
+          if (!t || !container.contains(t)) return;
+          var k = t.getAttribute('data-hinos-key');
+          if (k) {
+            setHinosSelectedKey(k);
+            refreshHinosVoiceButtonsCore();
+            openHinosEditorModal();
+          }
+        });
+      }
+
+      function closeHinosEditorModal() {
+        var m = document.getElementById('hinosEditorModal');
+        if (m) m.classList.add('hidden');
+      }
+
+      function closeHinosNewStudentModal() {
+        var m = document.getElementById('hinosNewStudentModal');
+        if (m) m.classList.add('hidden');
+      }
+
+      function openHinosNewStudentModal() {
+        var m = document.getElementById('hinosNewStudentModal');
+        if (!m || currentMode !== 'hinos') return;
+        closeHinosEditorModal();
+        var vozSel = document.getElementById('hinosNewStudentVoz');
+        if (vozSel) vozSel.value = 'S';
+        var inp = document.getElementById('hinosNewStudentName');
+        if (inp) inp.value = '';
+        m.classList.remove('hidden');
+        if (inp) inp.focus();
+      }
+
+      function openHinosEditorModal() {
+        var m = document.getElementById('hinosEditorModal');
+        if (!m || currentMode !== 'hinos') return;
+        closeHinosNewStudentModal();
+        m.classList.remove('hidden');
+        var btn = m.querySelector('.hinos-voz-btn');
+        if (btn) btn.focus();
+      }
+
+      function loadHinosCurriculum(done) {
+        if (hinosCurriculum) {
+          done();
+          return;
+        }
+        fetch('./hinario5-curriculum.json')
+          .then(function (r) {
+            if (!r.ok) throw new Error('no json');
+            return r.json();
+          })
+          .then(function (data) {
+            hinosCurriculum = data;
+            done();
+          })
+          .catch(function () {
+            hinosCurriculum = buildFallbackHinosCurriculum();
+            done();
+          });
+      }
+
+      function hinosGenerateId() {
+        return 's_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 9);
+      }
+
+      function loadHinosState() {
+        try {
+          var raw = localStorage.getItem(HINOS_STORAGE_KEY);
+          if (!raw) {
+            hinosState = { version: 1, students: [], activeStudentId: null };
+            return;
+          }
+          var parsed = JSON.parse(raw);
+          if (!parsed || !Array.isArray(parsed.students)) {
+            hinosState = { version: 1, students: [], activeStudentId: null };
+            return;
+          }
+          hinosState = {
+            version: parsed.version || 1,
+            students: parsed.students,
+            activeStudentId: parsed.activeStudentId || null
+          };
+          if (hinosState.students && hinosState.students.length) {
+            hinosState.students.forEach(ensureStudentHinosShape);
+            saveHinosState();
+          }
+        } catch (err) {
+          hinosState = { version: 1, students: [], activeStudentId: null };
+        }
+      }
+
+      function saveHinosState() {
+        try {
+          localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
+        } catch (err) {}
+      }
+
+      function ensureStudentHinosShape(st) {
+        if (!st) return;
+        if (!st.hinos) st.hinos = { do: {}, mib: {}, sib: {} };
+        ['do', 'mib', 'sib'].forEach(function (k) {
+          if (!st.hinos[k] || typeof st.hinos[k] !== 'object') st.hinos[k] = {};
+        });
+        if (!st.vozPrincipal || HINOS_VOZES.indexOf(st.vozPrincipal) === -1) st.vozPrincipal = 'S';
+      }
+
+      function getActiveHinosStudent() {
+        if (!hinosState.activeStudentId) return null;
+        return hinosState.students.find(function (s) { return s.id === hinosState.activeStudentId; }) || null;
+      }
+
+      /** Afinação sugerida da ficha conforme instrumento (aluno pode trocar a aba). */
+      function getDefaultHinarioAfinação(inst) {
+        if (!inst) return 'do';
+        if (inst.tipo === 'corda') return 'do';
+        if (inst.tipo === 'metal') return 'sib';
+        if (inst.tipo === 'sopro') return 'mib';
+        return 'do';
+      }
+
+      function setHinosAfinaçãoTab(afin) {
+        if (afin !== 'do' && afin !== 'mib' && afin !== 'sib') afin = 'do';
+        hinosActiveAfinação = afin;
+        document.querySelectorAll('.hinos-afin-btn').forEach(function (btn) {
+          var id = btn.getAttribute('data-hinos-afin');
+          btn.classList.toggle('active', id === afin);
+          btn.setAttribute('aria-selected', id === afin ? 'true' : 'false');
+        });
+        var link = document.getElementById('hinosPdfLink');
+        var file = HINARIO_PDF_BY_AFIN[afin];
+        if (link && file) link.setAttribute('href', './' + encodeURIComponent(file));
+      }
+
+      function syncHinosAfinaçãoFromInstrument(inst) {
+        setHinosAfinaçãoTab(getDefaultHinarioAfinação(inst || currentInstrument));
+      }
+
+      function clampHinoNum(n) {
+        var x = parseInt(n, 10);
+        if (isNaN(x)) x = 1;
+        return Math.min(HINOS_TOTAL, Math.max(1, x));
+      }
+
+      function syncHinosActiveStudentVozUI() {
+        var edit = document.getElementById('hinosActiveStudentVoz');
+        if (!edit) return;
+        var st = getActiveHinosStudent();
+        if (!st) {
+          edit.disabled = true;
+          edit.value = 'S';
+          return;
+        }
+        edit.disabled = false;
+        edit.value = hinosGetStudentVozPrincipal(st);
+      }
+
+      function renderHinosStudentSelect() {
+        var sel = document.getElementById('hinosStudentSelect');
+        if (!sel) return;
+        var prev = hinosState.activeStudentId;
+        sel.innerHTML = '';
+        hinosState.students.forEach(function (st) {
+          ensureStudentHinosShape(st);
+          var opt = document.createElement('option');
+          opt.value = st.id;
+          opt.textContent = st.name || 'Aluno';
+          sel.appendChild(opt);
+        });
+        if (!hinosState.students.length) {
+          hinosState.activeStudentId = null;
+          saveHinosState();
+          syncHinosActiveStudentVozUI();
+          return;
+        }
+        if (prev && hinosState.students.some(function (s) { return s.id === prev; })) {
+          sel.value = prev;
+        } else {
+          hinosState.activeStudentId = hinosState.students[0].id;
+          sel.value = hinosState.activeStudentId;
+          saveHinosState();
+        }
+        syncHinosActiveStudentVozUI();
+      }
+
+      function refreshHinosVoiceButtonsCore() {
+        var st = getActiveHinosStudent();
+        if (!hinosIsCoroKey(hinosSelectedKey)) {
+          hinosSelectedKey = String(clampHinoNum(hinosSelectedKey));
+        }
+        syncHinosDetailControlsFromKey();
+        var key = hinosSelectedKey;
+        document.querySelectorAll('.hinos-voz-btn').forEach(function (btn) {
+          var v = btn.getAttribute('data-hinos-voice');
+          var on = false;
+          if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
+            on = !!st.hinos[hinosActiveAfinação][key][v];
+          }
+          btn.classList.toggle('on', on);
+        });
+        var sumEl = document.getElementById('hinosSummary');
+        if (sumEl) {
+          if (!st) {
+            sumEl.textContent = 'Adicione um aluno para começar a marcar os hinos.';
+          } else {
+            var book = st.hinos[hinosActiveAfinação] || {};
+            var withAny = 0;
+            var voices = 0;
+            Object.keys(book).forEach(function (hk) {
+              var ent = book[hk];
+              var any = false;
+              HINOS_VOZES.forEach(function (vv) {
+                if (ent && ent[vv]) {
+                  any = true;
+                  voices++;
+                }
+              });
+              if (any) withAny++;
+            });
+            var afinLbl = hinosActiveAfinação === 'do' ? 'Dó' : hinosActiveAfinação === 'mib' ? 'Mib' : 'Sib';
+            var vP = hinosGetStudentVozPrincipal(st);
+            var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
+            sumEl.textContent = 'Nesta ficha (' + afinLbl + '), voz principal: ' + vName + ' — ' + withAny + ' itens com ao menos uma voz · ' + voices + ' marcações no total.';
+          }
+        }
+        updateHinosOverviewBars();
+        updateHinosFaseGridCellClasses();
+        document.querySelectorAll('.hinos-cell').forEach(function (el) {
+          el.classList.toggle('current', el.getAttribute('data-hinos-key') === hinosSelectedKey);
+        });
+      }
+
+      function refreshHinosVoiceButtons() {
+        loadHinosCurriculum(function () {
+          ensureHinosFasePanels();
+          refreshHinosVoiceButtonsCore();
+        });
+      }
+
+      function toggleHinosVoice(voice) {
+        var st = getActiveHinosStudent();
+        if (!st) {
+          setMessage('Adicione e selecione um aluno primeiro.');
+          return;
+        }
+        ensureStudentHinosShape(st);
+        var key = hinosSelectedKey;
+        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+        if (!st.hinos[hinosActiveAfinação][key]) {
+          st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false };
+        }
+        var cur = !!st.hinos[hinosActiveAfinação][key][voice];
+        st.hinos[hinosActiveAfinação][key][voice] = !cur;
+        saveHinosState();
+        refreshHinosVoiceButtons();
+      }
+
+      function clearCurrentHinoVoices() {
+        var st = getActiveHinosStudent();
+        if (!st) return;
+        ensureStudentHinosShape(st);
+        var key = hinosSelectedKey;
+        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+        delete st.hinos[hinosActiveAfinação][key];
+        saveHinosState();
+        refreshHinosVoiceButtons();
+      }
+
+      function bindHinosEvents() {
+        var sel = document.getElementById('hinosStudentSelect');
+        if (sel) {
+          sel.addEventListener('change', function () {
+            hinosState.activeStudentId = sel.value || null;
+            saveHinosState();
+            syncHinosActiveStudentVozUI();
+            refreshHinosVoiceButtons();
+          });
+        }
+        var vozActive = document.getElementById('hinosActiveStudentVoz');
+        if (vozActive) {
+          vozActive.addEventListener('change', function () {
+            var st = getActiveHinosStudent();
+            if (!st) return;
+            var v = vozActive.value;
+            if (HINOS_VOZES.indexOf(v) === -1) return;
+            st.vozPrincipal = v;
+            saveHinosState();
+            refreshHinosVoiceButtons();
+          });
+        }
+        var addBtn = document.getElementById('hinosAddStudent');
+        function hinosTryAddStudent() {
+          var inp = document.getElementById('hinosNewStudentName');
+          var vozSel = document.getElementById('hinosNewStudentVoz');
+          var name = inp && inp.value ? inp.value.trim() : '';
+          if (!name) {
+            setMessage('Digite o nome do aluno.');
+            return;
+          }
+          var voz = vozSel && vozSel.value ? vozSel.value : 'S';
+          if (HINOS_VOZES.indexOf(voz) === -1) voz = 'S';
+          var st = { id: hinosGenerateId(), name: name, vozPrincipal: voz, hinos: { do: {}, mib: {}, sib: {} } };
+          ensureStudentHinosShape(st);
+          hinosState.students.push(st);
+          hinosState.activeStudentId = st.id;
+          saveHinosState();
+          if (inp) inp.value = '';
+          closeHinosNewStudentModal();
+          renderHinosStudentSelect();
+          refreshHinosVoiceButtons();
+          setMessage('Aluno adicionado: ' + name + '.');
+        }
+        if (addBtn) {
+          addBtn.addEventListener('click', hinosTryAddStudent);
+        }
+        var nameInp = document.getElementById('hinosNewStudentName');
+        if (nameInp) {
+          nameInp.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              hinosTryAddStudent();
+            }
+          });
+        }
+        var remBtn = document.getElementById('hinosRemoveStudent');
+        if (remBtn) {
+          remBtn.addEventListener('click', function () {
+            var st = getActiveHinosStudent();
+            if (!st) return;
+            if (!window.confirm('Remover o aluno "' + (st.name || '') + '" e todo o progresso de hinos dele neste aparelho?')) return;
+            hinosState.students = hinosState.students.filter(function (s) { return s.id !== st.id; });
+            hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
+            saveHinosState();
+            renderHinosStudentSelect();
+            refreshHinosVoiceButtons();
+          });
+        }
+        document.querySelectorAll('.hinos-afin-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var a = btn.getAttribute('data-hinos-afin');
+            if (!a) return;
+            setHinosAfinaçãoTab(a);
+            refreshHinosVoiceButtons();
+          });
+        });
+        var prev = document.getElementById('hinosPrev');
+        var next = document.getElementById('hinosNext');
+        var numIn = document.getElementById('hinosHinoNum');
+        if (prev && numIn) {
+          prev.addEventListener('click', function () {
+            if (hinosIsCoroKey(hinosSelectedKey)) return;
+            var n = clampHinoNum(parseInt(numIn.value, 10) - 1);
+            hinosSelectedKey = String(n);
+            numIn.value = String(n);
+            refreshHinosVoiceButtons();
+          });
+        }
+        if (next && numIn) {
+          next.addEventListener('click', function () {
+            if (hinosIsCoroKey(hinosSelectedKey)) return;
+            var n = clampHinoNum(parseInt(numIn.value, 10) + 1);
+            hinosSelectedKey = String(n);
+            numIn.value = String(n);
+            refreshHinosVoiceButtons();
+          });
+        }
+        if (numIn) {
+          numIn.addEventListener('change', function () {
+            var n = clampHinoNum(numIn.value);
+            hinosSelectedKey = String(n);
+            numIn.value = String(n);
+            refreshHinosVoiceButtons();
+          });
+        }
+        document.querySelectorAll('.hinos-voz-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var v = btn.getAttribute('data-hinos-voice');
+            if (v) toggleHinosVoice(v);
+          });
+        });
+        var clr = document.getElementById('hinosClearHino');
+        if (clr) {
+          clr.addEventListener('click', function () {
+            clearCurrentHinoVoices();
+          });
+        }
+        var hinosEditModal = document.getElementById('hinosEditorModal');
+        var hinosEditClose = document.getElementById('hinosEditorClose');
+        if (hinosEditClose) {
+          hinosEditClose.addEventListener('click', function () {
+            closeHinosEditorModal();
+          });
+        }
+        if (hinosEditModal) {
+          hinosEditModal.addEventListener('click', function (e) {
+            if (e.target === hinosEditModal) closeHinosEditorModal();
+          });
+        }
+        var hinosNewModal = document.getElementById('hinosNewStudentModal');
+        var hinosNewClose = document.getElementById('hinosNewStudentClose');
+        var hinosNewCancel = document.getElementById('hinosNewStudentCancel');
+        var hinosOpenNewBtn = document.getElementById('hinosOpenNewStudentModal');
+        if (hinosNewClose) {
+          hinosNewClose.addEventListener('click', closeHinosNewStudentModal);
+        }
+        if (hinosNewCancel) {
+          hinosNewCancel.addEventListener('click', closeHinosNewStudentModal);
+        }
+        if (hinosOpenNewBtn) {
+          hinosOpenNewBtn.addEventListener('click', openHinosNewStudentModal);
+        }
+        if (hinosNewModal) {
+          hinosNewModal.addEventListener('click', function (e) {
+            if (e.target === hinosNewModal) closeHinosNewStudentModal();
+          });
+        }
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape') return;
+          var newM = document.getElementById('hinosNewStudentModal');
+          if (newM && !newM.classList.contains('hidden')) {
+            e.preventDefault();
+            closeHinosNewStudentModal();
+            return;
+          }
+          var m = document.getElementById('hinosEditorModal');
+          if (m && !m.classList.contains('hidden')) {
+            e.preventDefault();
+            closeHinosEditorModal();
+          }
+        });
+      }
+
+      function initHinosUI() {
+        loadHinosState();
+        renderHinosStudentSelect();
+        syncHinosAfinaçãoFromInstrument(currentInstrument);
+        hinosLastSyncInstrumentId = currentInstrument.id;
+        refreshHinosVoiceButtons();
+      }
 
       // Coordenadas manuais do solfejo por imagem/mão.
       // Formato: chave "N-lado" -> array com N ou mais pontos:
@@ -2497,6 +4175,11 @@
         });
         
         setMessage('Instrumento: ' + inst.nome + '. ' + (currentMode === 'learn' ? 'Mantenha pressionado numa nota para ouvir.' : 'Escolha um modo.'));
+        if (currentMode === 'hinos') {
+          syncHinosAfinaçãoFromInstrument(inst);
+          hinosLastSyncInstrumentId = inst.id;
+          refreshHinosVoiceButtons();
+        }
       }
       
       function createInstrumentButtons() {
@@ -2518,6 +4201,7 @@
       // ========== MODOS DE JOGO ==========
       function setMode(mode) {
         if (metroIsRunning) stopMetronome();
+        if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
         currentMode = mode;
         document.querySelectorAll('.mode-btn').forEach(function (btn) {
           btn.classList.toggle('active', btn.dataset.mode === mode);
@@ -2527,29 +4211,119 @@
 
         var violinSection = document.getElementById('violinSection');
         var staffSectionEl = document.getElementById('staffSection');
-        if (violinSection && staffSectionEl) {
-          if (mode === 'staff') {
+        var hinosSectionEl = document.getElementById('hinosSection');
+        if (violinSection && staffSectionEl && hinosSectionEl) {
+          if (mode === 'hinos') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.remove('hidden');
+          } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.remove('hidden');
+            hinosSectionEl.classList.add('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
           } else {
             violinSection.classList.remove('hidden');
             staffSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.add('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
           }
+        }
+        var progressSectionEl = document.getElementById('progressSection');
+        if (progressSectionEl) {
+          progressSectionEl.classList.toggle('hidden', mode === 'hinos');
         }
 
         if (mode === 'learn') {
+          updateChallengeStats();
           setMessage('Mantenha o dedo pressionado numa nota para ouvir o som.');
         } else if (mode === 'challenge') {
+          updateChallengeStats();
           totalChallenges = 0;
           score = 0;
           updateProgress();
           startChallenge();
         } else if (mode === 'staff') {
+          resetChallengeSession(true);
           score = 0;
           totalChallenges = 0;
           updateProgress();
           startStaffRound();
+        } else if (mode === 'hinos') {
+          updateChallengeStats();
+          if (hinosLastSyncInstrumentId !== currentInstrument.id) {
+            syncHinosAfinaçãoFromInstrument(currentInstrument);
+            hinosLastSyncInstrumentId = currentInstrument.id;
+          } else {
+            setHinosAfinaçãoTab(hinosActiveAfinação);
+          }
+          renderHinosStudentSelect();
+          refreshHinosVoiceButtons();
+          setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
         }
+      }
+
+      function formatChallengeTime(ms) {
+        var totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        var mm = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+        var ss = String(totalSeconds % 60).padStart(2, '0');
+        return mm + ':' + ss;
+      }
+
+      function stopChallengeTimer() {
+        if (challengeTimerInterval) {
+          clearInterval(challengeTimerInterval);
+          challengeTimerInterval = null;
+        }
+      }
+
+      function startChallengeTimer() {
+        challengeStartTs = Date.now();
+        stopChallengeTimer();
+        challengeTimerInterval = setInterval(updateChallengeStats, 250);
+      }
+
+      function getChallengeAttemptKey(noteId, stringKey, position) {
+        return String(noteId || '');
+      }
+
+      function clearChallengeDiscardedCells() {
+        document.querySelectorAll('.note-option-btn.challenge-discarded').forEach(function (cell) {
+          cell.classList.remove('challenge-discarded');
+        });
+      }
+
+      function resetChallengeSession(shouldRestartTimer) {
+        challengeRound = 0;
+        challengeErrors = 0;
+        challengeDiscardedAttempts = {};
+        clearChallengeDiscardedCells();
+        if (shouldRestartTimer) {
+          startChallengeTimer();
+        } else {
+          stopChallengeTimer();
+        }
+        updateChallengeStats();
+      }
+
+      function updateChallengeStats() {
+        var statsEl = document.getElementById('challengeStats');
+        if (!statsEl) return;
+        var isChallengeMode = currentMode === 'staff';
+        statsEl.classList.toggle('hidden', !isChallengeMode);
+        if (!isChallengeMode) return;
+
+        var timerEl = document.getElementById('challengeTimer');
+        var roundEl = document.getElementById('challengeRound');
+        var errorsEl = document.getElementById('challengeErrors');
+        if (timerEl) {
+          var elapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
+          timerEl.textContent = '⏱️ ' + formatChallengeTime(elapsed);
+        }
+        if (roundEl) roundEl.textContent = 'Rodada ' + challengeRound + '/' + CHALLENGE_ROUNDS_LIMIT;
+        if (errorsEl) errorsEl.textContent = '❌ ' + challengeErrors + '/' + CHALLENGE_ERRORS_LIMIT;
       }
 
       function startChallenge() {
@@ -2745,6 +4519,8 @@
         if (!staffNoteEllipse) initStaff();
         var positions = buildStaffPositionsForClef(currentClef);
         if (!positions.length) return;
+        challengeDiscardedAttempts = {};
+        clearChallengeDiscardedCells();
         var index = Math.floor(Math.random() * positions.length);
         var pos = positions[index];
         staffModeTarget = { id: pos.noteId, index: index };
@@ -2763,7 +4539,17 @@
           return;
         }
 
-        totalChallenges++;
+        if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+          setMessage('Desafio do pentagrama concluído. Toque em Reiniciar para jogar novamente.');
+          return;
+        }
+
+        var attemptKey = getChallengeAttemptKey(selectedId);
+        if (challengeDiscardedAttempts[attemptKey]) {
+          setMessage('Você já tentou essa opção nesta rodada. Escolha outra nota.');
+          return;
+        }
+
         var corretaNome = getNoteNameInKey(staffModeTarget.id, currentKey);
 
         document.querySelectorAll('.note-option-btn').forEach(function (btn) {
@@ -2772,37 +4558,70 @@
 
         if (selectedId === staffModeTarget.id) {
           score++;
+          challengeRound++;
+          totalChallenges = challengeRound;
           playGameSfx('correct');
           buttonEl.classList.add('correct');
           showPositiveFeedback();
+          updateChallengeStats();
+          updateProgress();
+          if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+            stopChallengeTimer();
+            var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
+            setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
+            speak('Parabéns! Você concluiu o pentagrama.');
+            return;
+          }
         } else {
           playGameSfx('wrong');
+          challengeDiscardedAttempts[attemptKey] = true;
+          if (buttonEl) buttonEl.classList.add('challenge-discarded');
+          challengeErrors++;
           buttonEl.classList.add('wrong');
           var correctBtn = document.querySelector('.note-option-btn[data-note-id="' + staffModeTarget.id + '"]');
           if (correctBtn) correctBtn.classList.add('correct');
-          setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '.');
+          var remainingErrors = Math.max(CHALLENGE_ERRORS_LIMIT - challengeErrors, 0);
+          setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '. Erros restantes: ' + remainingErrors + '.');
           speak('A nota correta era ' + corretaNome);
+          updateChallengeStats();
+          if (challengeErrors >= CHALLENGE_ERRORS_LIMIT) {
+            stopChallengeTimer();
+            setTimeout(function () {
+              setMessage('Você chegou a 3 erros. A partida do pentagrama foi reiniciada em 1/20.');
+              speak('Partida reiniciada.');
+              resetChallengeSession(true);
+              score = 0;
+              totalChallenges = 0;
+              updateProgress();
+              startStaffRound();
+            }, 900);
+            return;
+          }
         }
-
-        updateProgress();
 
         setTimeout(function () {
           document.querySelectorAll('.note-option-btn').forEach(function (btn) {
             btn.classList.remove('correct', 'wrong');
           });
+          updateProgress();
           startStaffRound();
         }, 1800);
       }
 
       // ========== PROGRESSO E ESTRELAS ==========
       function updateProgress() {
-        const total = Math.max(totalChallenges, 1);
-        const pct = totalChallenges === 0 ? 0 : Math.round((score / totalChallenges) * 100);
+        const progressTotal = currentMode === 'staff' ? CHALLENGE_ROUNDS_LIMIT : Math.max(totalChallenges, 1);
+        const pct = totalChallenges === 0 ? 0 : Math.round((totalChallenges / progressTotal) * 100);
         document.getElementById('progressFill').style.width = pct + '%';
-        document.getElementById('progressText').textContent = score + ' / ' + totalChallenges;
+        if (currentMode === 'staff') {
+          document.getElementById('progressText').textContent = challengeRound + ' / ' + CHALLENGE_ROUNDS_LIMIT;
+        } else {
+          document.getElementById('progressText').textContent = score + ' / ' + totalChallenges;
+        }
 
         const stars = document.querySelectorAll('.star');
-        const level = pct >= 90 ? 5 : pct >= 70 ? 4 : pct >= 50 ? 3 : pct >= 30 ? 2 : pct >= 10 ? 1 : 0;
+        const accuracy = totalChallenges === 0 ? 0 : Math.round((score / totalChallenges) * 100);
+        const level = accuracy >= 90 ? 5 : accuracy >= 70 ? 4 : accuracy >= 50 ? 3 : accuracy >= 30 ? 2 : accuracy >= 10 ? 1 : 0;
         stars.forEach(function (star, i) {
           star.classList.toggle('earned', i < level);
         });
@@ -2810,19 +4629,28 @@
 
       // ========== REINICIAR ==========
       function restart() {
+        stopChallengeTimer();
         score = 0;
         totalChallenges = 0;
+        challengeRound = 0;
+        challengeErrors = 0;
+        challengeDiscardedAttempts = {};
         challengeTarget = null;
         if (challengeTimeout) clearTimeout(challengeTimeout);
         updateProgress();
+        updateChallengeStats();
         document.getElementById('progressFill').style.width = '0%';
         document.getElementById('progressText').textContent = '0 / 0';
         document.querySelectorAll('.star').forEach(function (s) { s.classList.remove('earned'); });
         setMessage('Pronto para começar de novo! Escolha um modo.');
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
         clearViolinHighlight();
+        clearChallengeDiscardedCells();
         if (currentMode === 'challenge') startChallenge();
-        if (currentMode === 'staff') startStaffRound();
+        if (currentMode === 'staff') {
+          resetChallengeSession(true);
+          startStaffRound();
+        }
       }
 
       // ========== EVENTOS ==========
@@ -2923,6 +4751,8 @@
             }
           });
         });
+
+        bindHinosEvents();
 
         document.getElementById('btnRepeatInstruction').addEventListener('click', repeatInstruction);
 
@@ -4286,6 +6116,7 @@
         createNoteButtons();
         initMetronomeUI();
         bindEvents();
+        initHinosUI();
         updateFullscreenButton();
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
