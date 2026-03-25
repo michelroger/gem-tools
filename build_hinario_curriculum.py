@@ -245,10 +245,112 @@ def phase_to_grupos(
 def main():
     cur = extract_flat_curriculum_from_pdf_sample()
 
+    # Mapa global de tonalidades (unindo as 4 fases da ficha Dó).
+    # Isso permite classificar qualquer hino (1..480) mesmo que, nas outras
+    # afinações, o conjunto de hinos por fase venha com números diferentes.
+    GLOBAL_TONS: OrderedDict[str, set] = OrderedDict()
+    for tm in (F1_TONS, F2_TONS, F3_TONS, F4_TONS):
+        for ton, nums in tm.items():
+            if ton not in GLOBAL_TONS:
+                GLOBAL_TONS[ton] = set()
+            GLOBAL_TONS[ton].update(nums)
+
     # Coros 1ª fase Dó (ficha): 5 e 3 em Sib; 2 em Sol.
     f1_coro_place = {"coro-5": "Sib Maior", "coro-3": "Sib Maior", "coro-2": "Sol Maior"}
     # 3ª fase: Coro 3 em Sol; Coro 1 em Lá; Coro 4 em Láb.
     f3_coro_place = {"coro-3": "Sol Maior", "coro-1": "Lá Maior", "coro-4": "Láb Maior"}
+
+    # Conversões de tonalidade para classe de altura (PC) e nomes para saída.
+    # Mantém nomenclatura "portuguesa" usada no projeto (inclui sustenido onde necessário).
+    # Nota: no arquivo, alguns caracteres acentuados podem aparecer como "corrompidos"
+    # (ex.: "D�" em vez de "Dó"). Então aceitamos ambos para que a transposição funcione.
+    TON_TO_PC = {
+        # Versões "limpas"
+        "Dó Maior": 0,
+        "Dó# Maior": 1,
+        "Ré Maior": 2,
+        "Mib Maior": 3,
+        "Mi Maior": 4,
+        "Fá Maior": 5,
+        "Fá# Maior": 6,
+        "Sol Maior": 7,
+        "Láb Maior": 8,
+        "Lá Maior": 9,
+        "Sib Maior": 10,
+        "Si Maior": 11,
+
+        # Versões com encoding corrompido (como aparecem em F1_TONS etc)
+        "D� Maior": 0,
+        "R� Maior": 2,
+        "R�b Maior": 1,
+        "F� Maior": 5,
+        "L� Maior": 9,
+        "L�b Maior": 8,
+        # Observação: em geral "Mib/Mi/Sib/Si/Sol" não têm acento no nome do script.
+        "Mib Maior": 3,
+        "Mi Maior": 4,
+        "Sib Maior": 10,
+        "Si Maior": 11,
+        "Sol Maior": 7,
+    }
+    PC_TO_TON = {
+        0: "Dó Maior",
+        1: "Dó# Maior",
+        2: "Ré Maior",
+        3: "Mib Maior",
+        4: "Mi Maior",
+        5: "Fá Maior",
+        6: "Fá# Maior",
+        7: "Sol Maior",
+        8: "Láb Maior",
+        9: "Lá Maior",
+        10: "Sib Maior",
+        11: "Si Maior",
+    }
+
+    def shift_ton_name(ton_name: str, semitones: int) -> str:
+        base = TON_TO_PC.get(ton_name)
+        if base is None:
+            # Fallback: tenta inferir por prefixo/letra (funciona mesmo com acentos corrompidos).
+            tn = ton_name
+            if tn.startswith('D'):
+                base = 1 if '#' in tn else 0
+            elif tn.startswith('R'):
+                base = 1 if 'b' in tn else 2
+            elif tn.startswith('Mib'):
+                base = 3
+            elif tn.startswith('Mi'):
+                base = 4
+            elif tn.startswith('F'):
+                base = 6 if '#' in tn else 5
+            elif tn.startswith('Sol'):
+                base = 7
+            elif tn.startswith('L'):
+                base = 8 if 'b' in tn else 9
+            elif tn.startswith('Sib'):
+                base = 10
+            elif tn.startswith('Si'):
+                base = 11
+            else:
+                raise ValueError(f"ton_name não mapeada: {ton_name}")
+        pc2 = (base + semitones) % 12
+        return PC_TO_TON[pc2]
+
+    def shift_ton_map(ton_map: OrderedDict[str, set], semitones: int) -> OrderedDict[str, set]:
+        out: OrderedDict[str, set] = OrderedDict()
+        for nome, s in ton_map.items():
+            n2 = shift_ton_name(nome, semitones)
+            if n2 not in out:
+                out[n2] = set()
+            out[n2].update(s)
+        return out
+
+    # Hipótese: entre afinações, o "conjunto de hinos por tonalidade" transpoõe com deslocamento fixo.
+    # Se algum ponto não bater com a impressão do PDF, basta ajustar aqui.
+    AFIN_SHIFT = {
+        "mib": 2,
+        "sib": 3,
+    }
 
     out_all = {}
     for afin in ("do", "mib", "sib"):
@@ -273,11 +375,24 @@ def main():
                     ph3["hinos"] = flatten_ordered(F4_TONS)
                     new_phases.append(phase_to_grupos(ph3, F4_TONS, {}))
             else:
-                # Mib/Sib: ordenação por número; um grupo "Geral" (tonalidades na ficha própria).
+                sem = AFIN_SHIFT[afin]
+
+                # Mantém o mesmo conjunto de hinos por fase (vem do PDF), só muda a "etiqueta" de tonalidade.
+                tonmap = None
                 cp = {}
-                for c in ph.get("coros") or []:
-                    cp[c["id"]] = "Geral"
-                new_phases.append(phase_to_grupos(ph, None, cp))
+                # Para mib/sib: usa mapa global de tonalidades (unido das 4 fases do Dó),
+                # só muda o rótulo por transposição.
+                tonmap = shift_ton_map(GLOBAL_TONS, sem)
+
+                # Coros só aparecem na 1ª e 3ª fases.
+                if idx == 0:
+                    cp = {cid: shift_ton_name(gname, sem) for cid, gname in f1_coro_place.items()}
+                elif idx == 2:
+                    cp = {cid: shift_ton_name(gname, sem) for cid, gname in f3_coro_place.items()}
+                else:
+                    cp = {}
+
+                new_phases.append(phase_to_grupos(ph, tonmap, cp))
         out_all[afin] = new_phases
 
     with open("hinario5-curriculum.json", "w", encoding="utf-8") as f:

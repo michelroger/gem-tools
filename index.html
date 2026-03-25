@@ -599,7 +599,7 @@
 
     .hinos-new-student-card .btn {
       height: 2.25rem;
-      padding: 0 0.9rem;
+      padding: 0 0.85rem;
       font-size: 0.9rem;
       line-height: 1.15;
       border-radius: 12px;
@@ -607,6 +607,20 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .hinos-new-student-card .hinos-btn-icon {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .hinos-new-student-card .hinos-btn-icon svg {
+      width: 1rem;
+      height: 1rem;
     }
 
     .hinos-field {
@@ -648,6 +662,58 @@
     .hinos-remove-wrap {
       flex: 0 0 auto;
       padding-bottom: 0.1rem;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hinos-remove-student-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+      margin: 0;
+      border: 1px solid rgba(125, 157, 122, 0.55);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .hinos-remove-student-btn:hover {
+      background: rgba(125, 157, 122, 0.12);
+    }
+
+    .hinos-remove-student-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .hinos-remove-student-btn svg {
+      width: 1.05rem;
+      height: 1.05rem;
+    }
+
+    .hinos-new-student-card .hinos-backup-row {
+      flex: 1 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(125, 157, 122, 0.28);
+    }
+
+    .hinos-new-student-card .hinos-backup-hint {
+      flex: 1 1 100%;
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.35;
+      color: var(--text-soft);
     }
 
     .hinos-panel .hinos-select {
@@ -818,6 +884,17 @@
       color: #fff;
     }
 
+    .hinos-study-btn {
+      border-color: var(--re);
+      color: var(--re);
+    }
+
+    .hinos-study-btn.on {
+      background: var(--re);
+      border-color: var(--re);
+      color: #1a1a1a;
+    }
+
     .hinos-summary {
       font-size: 0.85rem;
       color: var(--text-soft);
@@ -963,20 +1040,87 @@
     .hinos-filter-clear {
       flex: 0 0 auto;
       align-self: flex-end;
-      padding: 0.4rem 0.65rem;
-      font-size: 0.8rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      padding: 0;
+      margin: 0;
+      border: 1px solid rgba(125, 157, 122, 0.55);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .hinos-filter-clear:hover {
+      background: rgba(125, 157, 122, 0.12);
+    }
+
+    .hinos-filter-clear:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    .hinos-filter-clear svg {
+      width: 0.95rem;
+      height: 0.95rem;
     }
 
     .hinos-grupo {
       margin-bottom: 0.25rem;
     }
 
+    .hinos-grupo-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      padding: 0.35rem 0.55rem 0.15rem;
+      margin: 0;
+    }
+
     .hinos-grupo-title {
       font-size: 0.78rem;
       font-weight: 700;
       color: var(--accent);
-      padding: 0.35rem 0.55rem 0.15rem;
       margin: 0;
+      flex: 1 1 10rem;
+      min-width: 0;
+    }
+
+    .hinos-grupo-bulk {
+      flex: 0 0 auto;
+      width: 1.75rem;
+      height: 1.75rem;
+      padding: 0;
+      margin: 0;
+      border: 1px solid rgba(125, 157, 122, 0.55);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .hinos-grupo-bulk:hover {
+      background: rgba(125, 157, 122, 0.12);
+    }
+
+    .hinos-grupo-bulk:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    .hinos-grupo-bulk svg {
+      width: 0.95rem;
+      height: 0.95rem;
     }
 
     .hinos-cell {
@@ -1013,6 +1157,26 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .hinos-cell .hinos-cell-study {
+      font-size: 0.54rem;
+      font-weight: 900;
+      color: var(--text-soft);
+      line-height: 1;
+      margin-top: 0.02rem;
+      height: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      user-select: none;
+    }
+
+    .hinos-cell .hinos-cell-study.on {
+      opacity: 1;
+      color: var(--accent);
     }
 
     .hinos-cell .hinos-cell-ton {
@@ -1137,31 +1301,68 @@
     /* ========== MODOS DE JOGO ========== */
     .mode-tabs {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.45rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
       justify-content: center;
+      align-items: stretch;
     }
 
     .mode-btn {
-      padding: 0.65rem 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.95rem;
+      min-height: 2.5rem;
       border: 2px solid var(--accent);
-      background: var(--card);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, var(--card) 100%);
       color: var(--accent);
       border-radius: 999px;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 600;
+      letter-spacing: 0.01em;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      font-family: inherit;
+      box-shadow: 0 1px 2px rgba(40, 55, 42, 0.08);
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.12s ease;
     }
 
     .mode-btn:hover {
-      background: rgba(125, 157, 122, 0.15);
+      background: rgba(125, 157, 122, 0.14);
+      box-shadow: 0 2px 6px rgba(40, 55, 42, 0.1);
+    }
+
+    .mode-btn:active {
+      transform: scale(0.98);
+    }
+
+    .mode-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     .mode-btn.active {
       background: var(--accent);
-      color: white;
+      color: #fff;
+      box-shadow: 0 3px 12px rgba(90, 118, 88, 0.35);
+    }
+
+    .mode-btn-icon {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .mode-btn-icon svg {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    .mode-btn-label {
+      white-space: nowrap;
     }
 
     /* ========== PAINEL DE CONFIGURAÇÕES ========== */
@@ -1796,11 +1997,6 @@
     </div>
 
     <div class="hinos-section hidden" id="hinosSection">
-      <header class="hinos-section-header">
-        <h2 class="hinos-main-title">Hinário 5</h2>
-        <p class="hinos-hint">Toque num hino ou coro para marcar as vozes. A <strong>voz principal</strong> define as porcentagens da ficha.</p>
-      </header>
-
       <section class="hinos-panel" aria-labelledby="hinosActiveHeading">
         <div class="hinos-panel-heading">
           <h3 class="hinos-panel-title" id="hinosActiveHeading">Aluno ativo</h3>
@@ -1828,7 +2024,9 @@
             </select>
           </div>
           <div class="hinos-remove-wrap">
-            <button type="button" class="btn btn-secondary" id="hinosRemoveStudent" aria-label="Remover aluno selecionado">Remover</button>
+            <button type="button" class="hinos-remove-student-btn" id="hinosRemoveStudent" aria-label="Remover aluno selecionado" title="Remover aluno selecionado">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </button>
           </div>
         </div>
       </section>
@@ -1837,9 +2035,6 @@
         <button type="button" class="hinos-afin-btn active" data-hinos-afin="do" role="tab">Hinário 5 (Dó)</button>
         <button type="button" class="hinos-afin-btn" data-hinos-afin="mib" role="tab">Hinário 5 (Mib)</button>
         <button type="button" class="hinos-afin-btn" data-hinos-afin="sib" role="tab">Hinário 5 (Sib)</button>
-      </div>
-      <div class="hinos-pdf-row">
-        <a id="hinosPdfLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Abrir ficha PDF desta afinação</a>
       </div>
       <div class="hinos-overview" id="hinosOverview" aria-live="polite">
         <p class="hinos-overview-title">Visão geral nesta ficha</p>
@@ -1883,9 +2078,26 @@
             </select>
           </div>
         </div>
+        <div class="hinos-backup-row">
+          <button type="button" class="btn btn-secondary" id="hinosExportBackup">
+            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+            <span>Exportar backup</span>
+          </button>
+          <button type="button" class="btn btn-secondary" id="hinosImportBackup">
+            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span>Importar backup</span>
+          </button>
+          <input type="file" id="hinosImportBackupFile" class="hidden" accept=".json,application/json" aria-hidden="true" tabindex="-1" />
+        </div>
         <div class="hinos-new-student-actions">
-          <button type="button" class="btn btn-secondary" id="hinosNewStudentCancel">Cancelar</button>
-          <button type="button" class="btn btn-primary" id="hinosAddStudent">Adicionar</button>
+          <button type="button" class="btn btn-secondary" id="hinosNewStudentCancel">
+            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span>
+            <span>Cancelar</span>
+          </button>
+          <button type="button" class="btn btn-primary" id="hinosAddStudent">
+            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span>
+            <span>Adicionar</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1905,6 +2117,7 @@
           <button type="button" class="hinos-voz-btn" data-hinos-voice="C">C <small>Contralto</small></button>
           <button type="button" class="hinos-voz-btn" data-hinos-voice="T">T <small>Tenor</small></button>
           <button type="button" class="hinos-voz-btn" data-hinos-voice="B">B <small>Baixo</small></button>
+          <button type="button" class="hinos-voz-btn hinos-study-btn" data-hinos-study="E">E <small>Estudar</small></button>
         </div>
         <div style="text-align:center">
           <button type="button" class="btn btn-secondary" id="hinosClearHino">Limpar este hino (todas as vozes)</button>
@@ -1914,11 +2127,28 @@
     </div>
 
     <div class="mode-tabs" role="tablist">
-      <button type="button" class="mode-btn active" data-mode="learn" role="tab">Aprender</button>
-      <button type="button" class="mode-btn" data-mode="challenge" role="tab">Desafio</button>
-      <button type="button" class="mode-btn" data-mode="staff" role="tab">Pentagrama</button>
-      <button type="button" class="mode-btn" data-mode="hinos" role="tab">Hinos</button>
-      <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">Metrônomo</button>
+      <button type="button" class="mode-btn active" data-mode="learn" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+        <span class="mode-btn-label">Aprender</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="challenge" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <span class="mode-btn-label">Desafio</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="staff" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="18" x2="22" y2="18"/><line x1="2" y1="6" x2="22" y2="6"/><path d="M17 4v14"/><ellipse cx="14" cy="11" rx="2.2" ry="1.7"/></svg></span>
+        <span class="mode-btn-label">Pentagrama</span>
+      </button>
+      
+      <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/></svg></span>
+        <span class="mode-btn-label">Metrônomo</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="hinos" role="tab">
+        
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span class="mode-btn-label">Hinos</span>
+      </button>
     </div>
 
     <!-- Metrônomo (tela/modal) -->
@@ -1972,14 +2202,14 @@
         <div class="metro-section">
           <label class="metro-check" title="Ativa a animação com movimento de solfejo sincronizada ao metrônomo">
             <input type="checkbox" id="chkMetroSolfejoMode" />
-            <span>Solfejo animado (mão acompanhando)</span>
+            <span>Solfejo animado</span>
           </label>
         </div>
 
         <div class="metro-section">
           <label class="metro-check" title="Usa o movimento de solfejo para canhotos (mão esquerda)">
             <input type="checkbox" id="chkMetroSolfejoLeftHand" />
-            <span>Mão esquerda (canhotos)</span>
+            <span>Mão esquerda</span>
           </label>
         </div>
 
@@ -2436,7 +2666,7 @@
       var hinosSelectedKey = '1';
       var hinosFaseBuiltForAfin = null;
       /** Incrementar ao mudar a estrutura do grid (ex.: células com linha de vozes). */
-      var HINOS_FASE_PANEL_VER = 2;
+      var HINOS_FASE_PANEL_VER = 7;
 
       function buildFallbackHinosCurriculum() {
         var ord = [];
@@ -2597,6 +2827,72 @@
         return { slots: slots, done: done, pct: slots ? Math.round((done / slots) * 100) : 0 };
       }
 
+      /** Mesma regra de `hinosSynthGrupos` em ensureHinosFasePanels — lista de grupos/itens da fase. */
+      function hinosSynthGruposForPhase(ph) {
+        if (ph.grupos && ph.grupos.length) return ph.grupos;
+        var itens = [];
+        (ph.hinos || []).slice().sort(function (a, b) {
+          return a - b;
+        }).forEach(function (n) {
+          itens.push({ t: 'hino', n: n });
+        });
+        (ph.coros || []).forEach(function (c) {
+          itens.push({ t: 'coro', id: c.id, label: c.label });
+        });
+        return [{ tonalidade: 'Geral', itens: itens }];
+      }
+
+      /** Marca a voz principal em todos os hinos de um grupo tonal (coros do grupo não entram). */
+      function hinosBulkMarkPrincipalInGroup(phaseIndex, tonalidade) {
+        var st = getActiveHinosStudent();
+        if (!st) {
+          setMessage('Adicione e selecione um aluno primeiro.');
+          return;
+        }
+        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+        if (!phases || phases[phaseIndex] === undefined) return;
+        var grupos = hinosSynthGruposForPhase(phases[phaseIndex]);
+        var ton = tonalidade || 'Geral';
+        var gr = grupos.find(function (g) {
+          return (g.tonalidade || 'Geral') === ton;
+        });
+        if (!gr) return;
+        var nums = [];
+        (gr.itens || []).forEach(function (it) {
+          if (it.t === 'hino') nums.push(String(it.n));
+        });
+        if (!nums.length) {
+          setMessage('Este grupo não tem hinos (apenas coros ou vazio).');
+          return;
+        }
+        var vP = hinosGetStudentVozPrincipal(st);
+        var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
+        if (
+          !window.confirm(
+            'Marcar a voz principal (' +
+              vName +
+              ') em ' +
+              nums.length +
+              ' hino(s) do grupo "' +
+              ton +
+              '"?\n\n' +
+              'Os coros deste grupo não são alterados. Você pode continuar abrindo cada hino para marcar ou desmarcar vozes individualmente.'
+          )
+        ) {
+          return;
+        }
+        ensureStudentHinosShape(st);
+        nums.forEach(function (key) {
+          if (!st.hinos[hinosActiveAfinação][key]) {
+            st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
+          }
+          st.hinos[hinosActiveAfinação][key][vP] = true;
+        });
+        saveHinosState();
+        refreshHinosVoiceButtons();
+        setMessage('Voz principal marcada em ' + nums.length + ' hino(s) em "' + ton + '".');
+      }
+
       function updateHinosOverviewBars() {
         var st = getActiveHinosStudent();
         var lblV = document.getElementById('hinosPctVoicesLbl');
@@ -2703,6 +2999,12 @@
           else el.classList.add('partial');
           var voEl = el.querySelector('.hinos-cell-voices');
           if (voEl) voEl.textContent = hinosFormatVoicesShort(ent);
+          var studyEl = el.querySelector('.hinos-cell-study');
+          if (studyEl) {
+            var isStudy = !!(ent && ent.E);
+            studyEl.classList.toggle('on', isStudy);
+            studyEl.textContent = isStudy ? 'E' : '';
+          }
         });
       }
 
@@ -2790,8 +3092,11 @@
 
           var btnClr = document.createElement('button');
           btnClr.type = 'button';
-          btnClr.className = 'btn btn-secondary hinos-filter-clear';
-          btnClr.textContent = 'Limpar filtros';
+          btnClr.className = 'hinos-filter-clear';
+          btnClr.setAttribute('aria-label', 'Limpar filtros');
+          btnClr.title = 'Limpar tonalidade e busca';
+          btnClr.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
 
           toolbar.appendChild(labTon);
           toolbar.appendChild(labQ);
@@ -2810,12 +3115,30 @@
             wrap.className = 'hinos-grupo';
             wrap.setAttribute('data-ton-grupo', tonName);
             if (onlyGeral) wrap.setAttribute('data-only-geral', '1');
-            if (tonName && !onlyGeral) {
-              var gt = document.createElement('div');
-              gt.className = 'hinos-grupo-title';
-              gt.textContent = tonName;
-              wrap.appendChild(gt);
+            var head = document.createElement('div');
+            head.className = 'hinos-grupo-head';
+            var gt = document.createElement('div');
+            gt.className = 'hinos-grupo-title';
+            gt.textContent = tonName;
+            head.appendChild(gt);
+            var hinoCountInGr = 0;
+            (gr.itens || []).forEach(function (it) {
+              if (it.t === 'hino') hinoCountInGr++;
+            });
+            if (hinoCountInGr > 0) {
+              var bulkBtn = document.createElement('button');
+              bulkBtn.type = 'button';
+              bulkBtn.className = 'hinos-grupo-bulk';
+              bulkBtn.setAttribute('aria-label', 'Marcar voz principal em todos os hinos deste grupo');
+              bulkBtn.title =
+                'Marca a voz principal do aluno em todos os hinos deste grupo. Coros não são alterados.';
+              bulkBtn.innerHTML =
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>';
+              bulkBtn.setAttribute('data-hinos-bulk-phase', String(idx));
+              bulkBtn.setAttribute('data-hinos-bulk-ton', tonName);
+              head.appendChild(bulkBtn);
             }
+            wrap.appendChild(head);
             var grid = document.createElement('div');
             grid.className = 'hinos-fase-grid';
             (gr.itens || []).forEach(function (item) {
@@ -2832,6 +3155,10 @@
                 sv.className = 'hinos-cell-voices';
                 b.appendChild(sn);
                 b.appendChild(sv);
+                var se = document.createElement('span');
+                se.className = 'hinos-cell-study';
+                se.setAttribute('aria-hidden', 'true');
+                b.appendChild(se);
                 grid.appendChild(b);
               } else if (item.t === 'coro') {
                 var b2 = document.createElement('button');
@@ -2846,6 +3173,10 @@
                 sv2.className = 'hinos-cell-voices';
                 b2.appendChild(sn2);
                 b2.appendChild(sv2);
+                var se2 = document.createElement('span');
+                se2.className = 'hinos-cell-study';
+                se2.setAttribute('aria-hidden', 'true');
+                b2.appendChild(se2);
                 grid.appendChild(b2);
               }
             });
@@ -2862,7 +3193,10 @@
             body.querySelectorAll('.hinos-cell').forEach(function (cell) {
               var tCell = cell.getAttribute('data-hinos-ton') || '';
               var key = (cell.getAttribute('data-hinos-key') || '').toLowerCase();
-              var lab = (cell.textContent || '').toLowerCase();
+              // Evita que o indicador E entre na busca (a busca é principalmente por nº/voz).
+              var numEl = cell.querySelector('.hinos-cell-num');
+              var voicesEl = cell.querySelector('.hinos-cell-voices');
+              var lab = ((numEl ? numEl.textContent : '') + ' ' + (voicesEl ? voicesEl.textContent : '')).toLowerCase();
               var showTon = !ton || tCell === ton;
               var showQ = !q || key.indexOf(q) !== -1 || lab.indexOf(q) !== -1;
               cell.style.display = showTon && showQ ? '' : 'none';
@@ -2885,16 +3219,28 @@
           });
         });
 
-        container.addEventListener('click', function (e) {
-          var t = e.target.closest('.hinos-cell');
-          if (!t || !container.contains(t)) return;
-          var k = t.getAttribute('data-hinos-key');
-          if (k) {
-            setHinosSelectedKey(k);
-            refreshHinosVoiceButtonsCore();
-            openHinosEditorModal();
-          }
-        });
+        if (!container._hinosFaseGridClickBound) {
+          container._hinosFaseGridClickBound = true;
+          container.addEventListener('click', function (e) {
+            var bulk = e.target.closest('.hinos-grupo-bulk');
+            if (bulk && container.contains(bulk)) {
+              e.preventDefault();
+              e.stopPropagation();
+              var phIdx = parseInt(bulk.getAttribute('data-hinos-bulk-phase'), 10);
+              var ton = bulk.getAttribute('data-hinos-bulk-ton') || 'Geral';
+              if (!isNaN(phIdx)) hinosBulkMarkPrincipalInGroup(phIdx, ton);
+              return;
+            }
+            var t = e.target.closest('.hinos-cell');
+            if (!t || !container.contains(t)) return;
+            var k = t.getAttribute('data-hinos-key');
+            if (k) {
+              setHinosSelectedKey(k);
+              refreshHinosVoiceButtonsCore();
+              openHinosEditorModal();
+            }
+          });
+        }
       }
 
       function closeHinosEditorModal() {
@@ -2984,6 +3330,95 @@
         } catch (err) {}
       }
 
+      function parseHinosBackupJson(text) {
+        var parsed = JSON.parse(text);
+        if (!parsed || !Array.isArray(parsed.students)) {
+          throw new Error('Arquivo inválido: é preciso uma lista de alunos (students).');
+        }
+        return parsed;
+      }
+
+      function cloneStudentForHinos(st) {
+        if (!st || typeof st !== 'object') return null;
+        var copy = JSON.parse(JSON.stringify(st));
+        if (!copy.id || typeof copy.id !== 'string') copy.id = hinosGenerateId();
+        ensureStudentHinosShape(copy);
+        return copy;
+      }
+
+      function exportHinosBackup() {
+        var payload = {
+          version: hinosState.version || 1,
+          students: hinosState.students,
+          activeStudentId: hinosState.activeStudentId,
+          exportedAt: new Date().toISOString(),
+          app: 'gem-tools-hinos'
+        };
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        var d = new Date();
+        var pad = function (n) {
+          return n < 10 ? '0' + n : '' + n;
+        };
+        a.download = 'gem-tools-hinos-backup-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setMessage('Backup exportado. Transfira o arquivo para o outro aparelho e use Importar backup.');
+      }
+
+      function applyHinosBackupImport(parsed, mode) {
+        var studentsIn = parsed.students.map(cloneStudentForHinos).filter(function (s) {
+          return s !== null;
+        });
+        if (mode === 'replace') {
+          hinosState = {
+            version: parsed.version || 1,
+            students: studentsIn,
+            activeStudentId: parsed.activeStudentId || null
+          };
+        } else {
+          studentsIn.forEach(function (incoming) {
+            var idx = hinosState.students.findIndex(function (s) {
+              return s.id === incoming.id;
+            });
+            if (idx >= 0) hinosState.students[idx] = incoming;
+            else hinosState.students.push(incoming);
+          });
+          if (
+            !hinosState.activeStudentId ||
+            !hinosState.students.some(function (s) {
+              return s.id === hinosState.activeStudentId;
+            })
+          ) {
+            var aid = parsed.activeStudentId;
+            hinosState.activeStudentId =
+              aid && hinosState.students.some(function (s) {
+                return s.id === aid;
+              })
+                ? aid
+                : hinosState.students.length
+                  ? hinosState.students[0].id
+                  : null;
+          }
+        }
+        if (
+          hinosState.activeStudentId &&
+          !hinosState.students.some(function (s) {
+            return s.id === hinosState.activeStudentId;
+          })
+        ) {
+          hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
+        }
+        saveHinosState();
+        renderHinosStudentSelect();
+        syncHinosActiveStudentVozUI();
+        refreshHinosVoiceButtons();
+      }
+
       function ensureStudentHinosShape(st) {
         if (!st) return;
         if (!st.hinos) st.hinos = { do: {}, mib: {}, sib: {} };
@@ -3015,9 +3450,6 @@
           btn.classList.toggle('active', id === afin);
           btn.setAttribute('aria-selected', id === afin ? 'true' : 'false');
         });
-        var link = document.getElementById('hinosPdfLink');
-        var file = HINARIO_PDF_BY_AFIN[afin];
-        if (link && file) link.setAttribute('href', './' + encodeURIComponent(file));
       }
 
       function syncHinosAfinaçãoFromInstrument(inst) {
@@ -3086,6 +3518,14 @@
           }
           btn.classList.toggle('on', on);
         });
+        document.querySelectorAll('.hinos-study-btn').forEach(function (btn) {
+          var flag = btn.getAttribute('data-hinos-study');
+          var on = false;
+          if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
+            on = !!st.hinos[hinosActiveAfinação][key][flag];
+          }
+          btn.classList.toggle('on', on);
+        });
         var sumEl = document.getElementById('hinosSummary');
         if (sumEl) {
           if (!st) {
@@ -3139,6 +3579,24 @@
         }
         var cur = !!st.hinos[hinosActiveAfinação][key][voice];
         st.hinos[hinosActiveAfinação][key][voice] = !cur;
+        saveHinosState();
+        refreshHinosVoiceButtons();
+      }
+
+      function toggleHinosStudyFlag(flag) {
+        var st = getActiveHinosStudent();
+        if (!st) {
+          setMessage('Adicione e selecione um aluno primeiro.');
+          return;
+        }
+        ensureStudentHinosShape(st);
+        var key = hinosSelectedKey;
+        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+        if (!st.hinos[hinosActiveAfinação][key]) {
+          st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
+        }
+        var cur = !!st.hinos[hinosActiveAfinação][key][flag];
+        st.hinos[hinosActiveAfinação][key][flag] = !cur;
         saveHinosState();
         refreshHinosVoiceButtons();
       }
@@ -3223,6 +3681,43 @@
             refreshHinosVoiceButtons();
           });
         }
+        var expBtn = document.getElementById('hinosExportBackup');
+        if (expBtn) {
+          expBtn.addEventListener('click', function () {
+            exportHinosBackup();
+          });
+        }
+        var impBtn = document.getElementById('hinosImportBackup');
+        var impFile = document.getElementById('hinosImportBackupFile');
+        if (impBtn && impFile) {
+          impBtn.addEventListener('click', function () {
+            impFile.value = '';
+            impFile.click();
+          });
+          impFile.addEventListener('change', function () {
+            var f = impFile.files && impFile.files[0];
+            if (!f) return;
+            var reader = new FileReader();
+            reader.onload = function () {
+              try {
+                var parsed = parseHinosBackupJson(String(reader.result || ''));
+                var merge = !window.confirm(
+                  'Substituir todos os alunos e o progresso deste aparelho pelos dados do arquivo?\n\n' +
+                    'OK = substituir tudo pelo backup.\n' +
+                    'Cancelar = mesclar: mantém alunos que não estão no arquivo e atualiza quem tiver o mesmo ID.'
+                );
+                applyHinosBackupImport(parsed, merge ? 'merge' : 'replace');
+                setMessage(merge ? 'Backup mesclado com os dados locais.' : 'Backup importado: dados substituídos.');
+              } catch (e) {
+                setMessage('Não foi possível importar: ' + (e && e.message ? e.message : 'arquivo inválido.'));
+              }
+            };
+            reader.onerror = function () {
+              setMessage('Não foi possível ler o arquivo.');
+            };
+            reader.readAsText(f, 'UTF-8');
+          });
+        }
         document.querySelectorAll('.hinos-afin-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var a = btn.getAttribute('data-hinos-afin');
@@ -3264,6 +3759,12 @@
           btn.addEventListener('click', function () {
             var v = btn.getAttribute('data-hinos-voice');
             if (v) toggleHinosVoice(v);
+          });
+        });
+        document.querySelectorAll('.hinos-study-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var flag = btn.getAttribute('data-hinos-study');
+            if (flag) toggleHinosStudyFlag(flag);
           });
         });
         var clr = document.getElementById('hinosClearHino');
