@@ -426,6 +426,209 @@
       text-align: center;
     }
 
+    .tuner-section {
+      background: var(--card);
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .tuner-title {
+      margin: 0 0 0.2rem;
+      text-align: center;
+      font-size: 1.02rem;
+      font-weight: 800;
+    }
+
+    .tuner-subtitle {
+      margin: 0 0 0.75rem;
+      text-align: center;
+      font-size: 0.83rem;
+      color: var(--text-soft);
+    }
+
+    .tuner-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: flex-end;
+      margin-bottom: 0.65rem;
+    }
+
+    .tuner-controls .hinos-field {
+      flex: 1 1 200px;
+    }
+
+    .tuner-btn-row {
+      display: flex;
+      gap: 0.45rem;
+      flex: 1 1 100%;
+      justify-content: center;
+      margin-top: 0.1rem;
+    }
+
+    .tuner-round-btn {
+      width: 2.7rem;
+      height: 2.7rem;
+      border-radius: 999px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--accent);
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .tuner-round-btn svg {
+      width: 1.15rem;
+      height: 1.15rem;
+      pointer-events: none;
+    }
+
+    .tuner-round-btn:active {
+      transform: scale(0.96);
+    }
+
+    .tuner-round-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .tuner-round-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .tuner-round-btn.start {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(90, 118, 88, 0.25);
+    }
+
+    .tuner-round-btn.start:hover:not(:disabled) {
+      background: #6f916c;
+    }
+
+    .tuner-round-btn.stop {
+      background: var(--card);
+      color: var(--accent);
+    }
+
+    .tuner-round-btn.stop:hover:not(:disabled) {
+      background: rgba(125, 157, 122, 0.12);
+    }
+
+    .tuner-note-main {
+      text-align: center;
+      font-size: clamp(2rem, 7vw, 2.8rem);
+      line-height: 1;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 0.1rem 0 0.2rem;
+    }
+
+    .tuner-status {
+      text-align: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-soft);
+      margin-bottom: 0.6rem;
+    }
+
+    .tuner-status.ok {
+      color: var(--success);
+    }
+
+    .tuner-status.flat,
+    .tuner-status.sharp {
+      color: #bf8a16;
+    }
+
+    .tuner-meter {
+      position: relative;
+      height: 14px;
+      background: rgba(0, 0, 0, 0.07);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 0.35rem;
+    }
+
+    .tuner-meter-center {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      transform: translateX(-50%);
+    }
+
+    .tuner-needle {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      transition: left 0.08s linear, background 0.15s ease;
+    }
+
+    .tuner-needle.ok {
+      background: var(--success);
+    }
+
+    .tuner-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      margin-bottom: 0.6rem;
+    }
+
+    .tuner-readings {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .tuner-reading {
+      text-align: center;
+      border: 1px solid rgba(125, 157, 122, 0.2);
+      border-radius: 10px;
+      background: rgba(125, 157, 122, 0.08);
+      padding: 0.35rem 0.4rem;
+    }
+
+    .tuner-reading b {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .tuner-reading span {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+
+    .tuner-chart {
+      width: 100%;
+      height: 120px;
+      display: block;
+      border-radius: 10px;
+      border: 1px solid rgba(125, 157, 122, 0.28);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
     .staff-svg {
       width: 100%;
       max-width: 420px;
@@ -1392,10 +1595,10 @@
 
     .mode-btn-label {
       white-space: nowrap;
-      font-size: 0.75rem;
+      font-size: 0.67rem;
       font-weight: 600;
       line-height: 1;
-      letter-spacing: 0.01em;
+      letter-spacing: 0;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -2032,6 +2235,54 @@
       </div>
     </div>
 
+    <div class="tuner-section hidden" id="tunerSection">
+      <div class="tuner-controls">
+        <div class="hinos-field">
+          <label class="hinos-field-label" for="tunerInstrumentSelect">Instrumentos</label>
+          <select id="tunerInstrumentSelect" class="hinos-select">
+            <option value="violino">Violino (G3 D4 A4 E5)</option>
+            <option value="viola">Viola de arco (C3 G3 D4 A4)</option>
+            <option value="violoncelo">Violoncelo (C2 G2 D3 A3)</option>
+            <option value="contrabaixo">Contrabaixo (E1 A1 D2 G2)</option>
+            <option value="flauta">Flauta (C4 D4 E4 F4 G4 A4 B4)</option>
+            <option value="clarinete">Clarinete (C4 D4 E4 F4 G4 A4 B4)</option>
+            <option value="oboe">Oboé (C4 D4 E4 F4 G4 A4 B4)</option>
+            <option value="fagote">Fagote (C3 D3 E3 F3 G3 A3 B3)</option>
+            <option value="trompete">Trompete (C4 D4 E4 F4 G4 A4 B4)</option>
+            <option value="trompa">Trompa (C4 D4 E4 F4 G4 A4 B4)</option>
+            <option value="trombone">Trombone (C3 D3 E3 F3 G3 A3 B3)</option>
+            <option value="chromatic">Cromático (qualquer nota)</option>
+          </select>
+        </div>
+        <div class="tuner-btn-row">
+          <button type="button" class="tuner-round-btn start" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span class="visually-hidden">Iniciar</span>
+          </button>
+          <button type="button" class="tuner-round-btn stop" id="tunerStopBtn" aria-label="Parar afinador" title="Parar afinador" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+            <span class="visually-hidden">Parar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tuner-note-main" id="tunerDetectedNote">--</div>
+      <div class="tuner-status" id="tunerStatus">Microfone parado</div>
+      <div class="tuner-meter" aria-hidden="true">
+        <div class="tuner-meter-center"></div>
+        <div class="tuner-needle" id="tunerNeedle"></div>
+      </div>
+      <div class="tuner-scale">
+        <span>-50c</span><span>0</span><span>+50c</span>
+      </div>
+      <div class="tuner-readings">
+        <div class="tuner-reading"><b id="tunerFreqValue">-- Hz</b><span>Frequência detectada</span></div>
+        <div class="tuner-reading"><b id="tunerTargetValue">-- Hz</b><span>Alvo da nota</span></div>
+        <div class="tuner-reading"><b id="tunerCentsValue">-- cents</b><span>Desvio</span></div>
+      </div>
+      <canvas id="tunerHzChart" class="tuner-chart" width="560" height="120" aria-label="Gráfico de frequência em tempo real"></canvas>
+    </div>
+
     <div class="hinos-section hidden" id="hinosSection">
       <section class="hinos-panel" aria-labelledby="hinosActiveHeading">
         <div class="hinos-panel-heading">
@@ -2173,17 +2424,21 @@
       </button>
       <button type="button" class="mode-btn" data-mode="staff" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="18" x2="22" y2="18"/><line x1="2" y1="6" x2="22" y2="6"/><path d="M17 4v14"/><ellipse cx="14" cy="11" rx="2.2" ry="1.7"/></svg></span>
-        <span class="mode-btn-label">Pentagrama</span>
+        <span class="mode-btn-label">Penta</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="tuner" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/><line x1="12" y1="12" x2="16" y2="8"/></svg></span>
+        <span class="mode-btn-label">Afinar</span>
       </button>
       
       <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/></svg></span>
-        <span class="mode-btn-label">Metrônomo</span>
+        <span class="mode-btn-label">Metro</span>
       </button>
       <button type="button" class="mode-btn" data-mode="hinos" role="tab">
         
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-        <span class="mode-btn-label">Hinos</span>
+        <span class="mode-btn-label">Controle</span>
       </button>
     </div>
 
@@ -2675,6 +2930,30 @@
       let metroSolfejoTweenFromFrame = 0;
       let metroSolfejoTweenToFrame = 0;
       let metroNoiseBuffer = null;
+
+      // ========== AFINADOR ==========
+      var TUNER_NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      var TUNER_PRESETS = {
+        violino: ['G3', 'D4', 'A4', 'E5'],
+        viola: ['C3', 'G3', 'D4', 'A4'],
+        violoncelo: ['C2', 'G2', 'D3', 'A3'],
+        contrabaixo: ['E1', 'A1', 'D2', 'G2'],
+        flauta: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+        clarinete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+        oboe: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+        fagote: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
+        trompete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+        trompa: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+        trombone: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
+        chromatic: []
+      };
+      var tunerStream = null;
+      var tunerAnalyzer = null;
+      var tunerSource = null;
+      var tunerData = null;
+      var tunerFrameId = 0;
+      var tunerRunning = false;
+      var tunerHistory = [];
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
       const STAFF_BOTTOM_LINE_Y = 118;
@@ -4746,10 +5025,292 @@
         });
       }
 
+      function tunerNoteToMidi(noteName) {
+        var m = /^([A-G])(#?)(-?\d+)$/.exec(String(noteName || '').trim());
+        if (!m) return null;
+        var key = m[1] + (m[2] || '');
+        var octave = parseInt(m[3], 10);
+        var index = TUNER_NOTE_NAMES.indexOf(key);
+        if (index === -1 || isNaN(octave)) return null;
+        return (octave + 1) * 12 + index;
+      }
+
+      function tunerMidiToName(midi) {
+        var idx = ((midi % 12) + 12) % 12;
+        var oct = Math.floor(midi / 12) - 1;
+        return TUNER_NOTE_NAMES[idx] + String(oct);
+      }
+
+      function tunerFreqToMidi(freq) {
+        return Math.round(69 + 12 * Math.log(freq / 440) / Math.log(2));
+      }
+
+      function tunerAutoCorrelate(buf, sampleRate) {
+        var size = buf.length;
+        var rms = 0;
+        for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
+        rms = Math.sqrt(rms / size);
+        if (rms < 0.01) return -1;
+
+        var r1 = 0;
+        var r2 = size - 1;
+        var threshold = 0.2;
+        for (var ii = 0; ii < size / 2; ii++) {
+          if (Math.abs(buf[ii]) < threshold) {
+            r1 = ii;
+            break;
+          }
+        }
+        for (var jj = 1; jj < size / 2; jj++) {
+          if (Math.abs(buf[size - jj]) < threshold) {
+            r2 = size - jj;
+            break;
+          }
+        }
+        buf = buf.slice(r1, r2);
+        size = buf.length;
+
+        var c = new Array(size).fill(0);
+        for (var x = 0; x < size; x++) {
+          for (var y = 0; y < size - x; y++) {
+            c[x] = c[x] + buf[y] * buf[y + x];
+          }
+        }
+
+        var d = 0;
+        while (d + 1 < c.length && c[d] > c[d + 1]) d++;
+        var maxval = -1;
+        var maxpos = -1;
+        for (var k = d; k < c.length; k++) {
+          if (c[k] > maxval) {
+            maxval = c[k];
+            maxpos = k;
+          }
+        }
+        var T0 = maxpos;
+        if (T0 <= 0) return -1;
+        if (T0 + 1 < c.length && T0 - 1 >= 0) {
+          var x1 = c[T0 - 1];
+          var x2 = c[T0];
+          var x3 = c[T0 + 1];
+          var a = (x1 + x3 - 2 * x2) / 2;
+          var b = (x3 - x1) / 2;
+          if (a) T0 = T0 - b / (2 * a);
+        }
+        if (!isFinite(T0) || T0 <= 0) return -1;
+        return sampleRate / T0;
+      }
+
+      function tunerPresetTargetForFreq(freq) {
+        var sel = document.getElementById('tunerInstrumentSelect');
+        var presetId = sel ? sel.value : 'chromatic';
+        var notes = TUNER_PRESETS[presetId] || [];
+        if (!notes.length) return null;
+        var best = null;
+        var bestDiff = Infinity;
+        notes.forEach(function (n) {
+          var midi = tunerNoteToMidi(n);
+          if (midi === null) return;
+          var f = midiToFreq(midi);
+          var diff = Math.abs(freq - f);
+          if (diff < bestDiff) {
+            bestDiff = diff;
+            best = { note: n, freq: f };
+          }
+        });
+        return best;
+      }
+
+      function updateTunerUINoSignal() {
+        var noteEl = document.getElementById('tunerDetectedNote');
+        var statusEl = document.getElementById('tunerStatus');
+        var fEl = document.getElementById('tunerFreqValue');
+        var tEl = document.getElementById('tunerTargetValue');
+        var cEl = document.getElementById('tunerCentsValue');
+        var needle = document.getElementById('tunerNeedle');
+        if (noteEl) noteEl.textContent = '--';
+        if (statusEl) {
+          statusEl.classList.remove('ok', 'flat', 'sharp');
+          statusEl.textContent = 'Ouvindo... toque uma nota';
+        }
+        if (fEl) fEl.textContent = '-- Hz';
+        if (tEl) tEl.textContent = '-- Hz';
+        if (cEl) cEl.textContent = '-- cents';
+        if (needle) {
+          needle.classList.remove('ok');
+          needle.style.left = '50%';
+        }
+      }
+
+      function drawTunerChart() {
+        var canvas = document.getElementById('tunerHzChart');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        var w = canvas.width;
+        var h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fillRect(0, 0, w, h);
+
+        if (!tunerHistory.length) return;
+        var min = Math.min.apply(null, tunerHistory);
+        var max = Math.max.apply(null, tunerHistory);
+        if (!isFinite(min) || !isFinite(max)) return;
+        if (max - min < 2) {
+          max += 1;
+          min -= 1;
+        }
+
+        ctx.strokeStyle = 'rgba(125,157,122,0.25)';
+        ctx.lineWidth = 1;
+        for (var g = 1; g <= 3; g++) {
+          var gy = (h / 4) * g;
+          ctx.beginPath();
+          ctx.moveTo(0, gy);
+          ctx.lineTo(w, gy);
+          ctx.stroke();
+        }
+
+        ctx.strokeStyle = '#5f9f77';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        tunerHistory.forEach(function (v, i) {
+          var x = (i / Math.max(1, tunerHistory.length - 1)) * w;
+          var y = h - ((v - min) / (max - min)) * h;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      function updateTunerUI(freq) {
+        var midi = tunerFreqToMidi(freq);
+        var targetFreq = midiToFreq(midi);
+        var cents = 1200 * Math.log(freq / targetFreq) / Math.log(2);
+        var noteName = tunerMidiToName(midi);
+        var presetTarget = tunerPresetTargetForFreq(freq);
+        if (presetTarget) {
+          targetFreq = presetTarget.freq;
+          cents = 1200 * Math.log(freq / targetFreq) / Math.log(2);
+          noteName = presetTarget.note;
+        }
+
+        var noteEl = document.getElementById('tunerDetectedNote');
+        var statusEl = document.getElementById('tunerStatus');
+        var fEl = document.getElementById('tunerFreqValue');
+        var tEl = document.getElementById('tunerTargetValue');
+        var cEl = document.getElementById('tunerCentsValue');
+        var needle = document.getElementById('tunerNeedle');
+        if (noteEl) noteEl.textContent = noteName;
+        if (fEl) fEl.textContent = freq.toFixed(2) + ' Hz';
+        if (tEl) tEl.textContent = targetFreq.toFixed(2) + ' Hz';
+        if (cEl) cEl.textContent = (cents >= 0 ? '+' : '') + cents.toFixed(1) + ' cents';
+        if (needle) {
+          var clamped = Math.max(-50, Math.min(50, cents));
+          needle.style.left = (50 + clamped * 0.92) + '%';
+          needle.classList.toggle('ok', Math.abs(cents) <= 5);
+        }
+        if (statusEl) {
+          statusEl.classList.remove('ok', 'flat', 'sharp');
+          if (Math.abs(cents) <= 5) {
+            statusEl.classList.add('ok');
+            statusEl.textContent = 'Afinado';
+          } else if (cents < 0) {
+            statusEl.classList.add('flat');
+            statusEl.textContent = 'Abaixo (suba a afinação)';
+          } else {
+            statusEl.classList.add('sharp');
+            statusEl.textContent = 'Acima (baixe a afinação)';
+          }
+        }
+      }
+
+      function tunerLoop() {
+        if (!tunerRunning || !tunerAnalyzer || !tunerData) return;
+        tunerAnalyzer.getFloatTimeDomainData(tunerData);
+        var freq = tunerAutoCorrelate(tunerData, tunerAnalyzer.context.sampleRate);
+        if (freq > 0) {
+          updateTunerUI(freq);
+          tunerHistory.push(freq);
+          if (tunerHistory.length > 90) tunerHistory.shift();
+        } else {
+          updateTunerUINoSignal();
+        }
+        drawTunerChart();
+        tunerFrameId = requestAnimationFrame(tunerLoop);
+      }
+
+      function stopTuner() {
+        tunerRunning = false;
+        if (tunerFrameId) {
+          cancelAnimationFrame(tunerFrameId);
+          tunerFrameId = 0;
+        }
+        if (tunerSource) {
+          try {
+            tunerSource.disconnect();
+          } catch (e) {}
+          tunerSource = null;
+        }
+        if (tunerStream) {
+          tunerStream.getTracks().forEach(function (t) {
+            try {
+              t.stop();
+            } catch (e) {}
+          });
+          tunerStream = null;
+        }
+        var st = document.getElementById('tunerStatus');
+        if (st) {
+          st.classList.remove('ok', 'flat', 'sharp');
+          st.textContent = 'Microfone parado';
+        }
+        var startBtn = document.getElementById('tunerStartBtn');
+        var stopBtn = document.getElementById('tunerStopBtn');
+        if (startBtn) startBtn.disabled = false;
+        if (stopBtn) stopBtn.disabled = true;
+      }
+
+      function startTuner() {
+        if (tunerRunning) return;
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          setMessage('Este navegador não suporta acesso ao microfone.');
+          return;
+        }
+        navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        }).then(function (stream) {
+          var ctx = getAudioContext();
+          if (!ctx) return;
+          tunerStream = stream;
+          tunerAnalyzer = ctx.createAnalyser();
+          tunerAnalyzer.fftSize = 4096;
+          tunerSource = ctx.createMediaStreamSource(stream);
+          tunerSource.connect(tunerAnalyzer);
+          tunerData = new Float32Array(tunerAnalyzer.fftSize);
+          tunerHistory = [];
+          tunerRunning = true;
+          var startBtn = document.getElementById('tunerStartBtn');
+          var stopBtn = document.getElementById('tunerStopBtn');
+          if (startBtn) startBtn.disabled = true;
+          if (stopBtn) stopBtn.disabled = false;
+          setMessage('Afinador ativo. Toque uma corda/nota do instrumento.');
+          tunerLoop();
+        }).catch(function () {
+          setMessage('Não foi possível acessar o microfone para o afinador.');
+        });
+      }
+
       // ========== MODOS DE JOGO ==========
       function setMode(mode) {
         if (metroIsRunning) stopMetronome();
         if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
+        if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
         currentMode = mode;
         document.querySelectorAll('.mode-btn').forEach(function (btn) {
           btn.classList.toggle('active', btn.dataset.mode === mode);
@@ -4760,20 +5321,31 @@
         var violinSection = document.getElementById('violinSection');
         var staffSectionEl = document.getElementById('staffSection');
         var hinosSectionEl = document.getElementById('hinosSection');
-        if (violinSection && staffSectionEl && hinosSectionEl) {
+        var tunerSectionEl = document.getElementById('tunerSection');
+        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl) {
           if (mode === 'hinos') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.remove('hidden');
           } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.remove('hidden');
+            tunerSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.add('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
+          } else if (mode === 'tuner') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.remove('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
           } else {
             violinSection.classList.remove('hidden');
             staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -4781,7 +5353,7 @@
         }
         var progressSectionEl = document.getElementById('progressSection');
         if (progressSectionEl) {
-          progressSectionEl.classList.toggle('hidden', mode === 'hinos');
+          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner');
         }
 
         if (mode === 'learn') {
@@ -4799,6 +5371,10 @@
           totalChallenges = 0;
           updateProgress();
           startStaffRound();
+        } else if (mode === 'tuner') {
+          updateChallengeStats();
+          updateProgress();
+          setMessage('Afinador pronto. Selecione o preset e toque em Iniciar.');
         } else if (mode === 'hinos') {
           updateChallengeStats();
           if (hinosLastSyncInstrumentId !== currentInstrument.id) {
@@ -5299,6 +5875,27 @@
             }
           });
         });
+
+        var tunerStartBtn = document.getElementById('tunerStartBtn');
+        var tunerStopBtn = document.getElementById('tunerStopBtn');
+        var tunerPresetSel = document.getElementById('tunerInstrumentSelect');
+        if (tunerStartBtn) {
+          tunerStartBtn.addEventListener('click', function () {
+            startTuner();
+          });
+        }
+        if (tunerStopBtn) {
+          tunerStopBtn.addEventListener('click', function () {
+            stopTuner();
+          });
+        }
+        if (tunerPresetSel) {
+          tunerPresetSel.addEventListener('change', function () {
+            if (!tunerRunning) return;
+            setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
+          });
+        }
+        window.addEventListener('beforeunload', stopTuner);
 
         bindHinosEvents();
 
@@ -6665,6 +7262,8 @@
         initMetronomeUI();
         bindEvents();
         initHinosUI();
+        updateTunerUINoSignal();
+        drawTunerChart();
         updateFullscreenButton();
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
