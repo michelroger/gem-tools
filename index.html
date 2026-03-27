@@ -551,47 +551,22 @@
       color: #bf8a16;
     }
 
-    .tuner-meter {
-      position: relative;
-      height: 14px;
-      background: rgba(0, 0, 0, 0.07);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 0.35rem;
+    .tuner-gauge-wrap {
+      margin: 0.25rem 0 0.55rem;
+      text-align: center;
+      background: #2b3544;
+      border: 1px solid rgba(35, 43, 55, 0.9);
+      border-radius: 14px;
+      padding: 0.45rem 0.45rem 0.35rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
-    .tuner-meter-center {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 2px;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.25);
-      transform: translateX(-50%);
-    }
-
-    .tuner-needle {
-      position: absolute;
-      top: 2px;
-      left: 50%;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      background: var(--accent);
-      transition: left 0.08s linear, background 0.15s ease;
-    }
-
-    .tuner-needle.ok {
-      background: var(--success);
-    }
-
-    .tuner-scale {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--text-soft);
-      margin-bottom: 0.6rem;
+    .tuner-gauge {
+      width: 100%;
+      max-width: 540px;
+      height: 206px;
+      display: block;
+      margin: 0 auto;
     }
 
     .tuner-readings {
@@ -2254,6 +2229,14 @@
             <option value="chromatic">Cromático (qualquer nota)</option>
           </select>
         </div>
+        <div class="hinos-field">
+          <label class="hinos-field-label" for="tunerSensitivitySelect">Sensibilidade</label>
+          <select id="tunerSensitivitySelect" class="hinos-select">
+            <option value="slow">Lento (mais estável)</option>
+            <option value="normal" selected>Normal</option>
+            <option value="fast">Rápido (mais responsivo)</option>
+          </select>
+        </div>
         <div class="tuner-btn-row">
           <button type="button" class="tuner-round-btn start" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
@@ -2268,12 +2251,8 @@
 
       <div class="tuner-note-main" id="tunerDetectedNote">--</div>
       <div class="tuner-status" id="tunerStatus">Microfone parado</div>
-      <div class="tuner-meter" aria-hidden="true">
-        <div class="tuner-meter-center"></div>
-        <div class="tuner-needle" id="tunerNeedle"></div>
-      </div>
-      <div class="tuner-scale">
-        <span>-50c</span><span>0</span><span>+50c</span>
+      <div class="tuner-gauge-wrap" aria-hidden="true">
+        <canvas id="tunerGauge" class="tuner-gauge" width="540" height="206"></canvas>
       </div>
       <div class="tuner-readings">
         <div class="tuner-reading"><b id="tunerFreqValue">-- Hz</b><span>Frequência detectada</span></div>
@@ -2878,7 +2857,7 @@
       var currentInstrumentSound = null;
       var instrumentLoadPromises = {};
       var currentSustainedNoteStop = null;
-      var currentPressedCell = null;
+      var activePointerNotes = {};
       let staffModeTarget = null;
       let staffNoteEllipse = null;
       let staffClefElement = null;
@@ -2954,6 +2933,14 @@
       var tunerFrameId = 0;
       var tunerRunning = false;
       var tunerHistory = [];
+      var tunerLastCents = 0;
+      var tunerLastStatus = 'idle';
+      var tunerLastNote = '--';
+      var tunerLastTargetFreq = 0;
+      var tunerLastFreq = 0;
+      var tunerSensitivity = 'normal';
+      var tunerSmoothedFreq = 0;
+      var wakeLockSentinel = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
       const STAFF_BOTTOM_LINE_Y = 118;
@@ -4579,6 +4566,18 @@
           try { currentSustainedNoteStop(); } catch (e) {}
           currentSustainedNoteStop = null;
         }
+        Object.keys(activePointerNotes).forEach(function (pid) {
+          var p = activePointerNotes[pid];
+          if (!p) return;
+          if (p.cancelInit) {
+            try { p.cancelInit(); } catch (e) {}
+          }
+          if (p.stop) {
+            try { p.stop(); } catch (e) {}
+          }
+          if (p.cell) p.cell.classList.remove('playing');
+        });
+        activePointerNotes = {};
       }
 
       /**
@@ -4599,7 +4598,7 @@
         loadInstrument(currentInstrument.id).then(function (inst) {
           if (inst) {
             var noteName = freqToMidiNoteName(freq);
-            var note = inst.play(noteName, 0, -1);
+            var note = inst.play(noteName, 0, { duration: 60, gain: calmMode ? 0.35 : 0.55 });
             if (note && typeof note.stop === 'function') {
               currentSustainedNoteStop = function () { note.stop(ctx.currentTime); };
             }
@@ -4639,6 +4638,82 @@
             osc.stop(t + 0.06);
           };
         });
+      }
+
+      /** Inicia nota sustentada por ponteiro (suporta múltiplos toques). */
+      function startNoteSoundForPointer(noteId, freqHz, onReady) {
+        if (!soundEnabled) return function () {};
+        var nota = NOTAS.find(function (n) { return n.id === noteId; });
+        if (!nota) return function () {};
+        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+        freq = getFreqInKey(noteId, freq, currentKey);
+        var ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        var cancelled = false;
+        var stopFn = null;
+        function setStop(fn) {
+          if (cancelled) {
+            try { fn(); } catch (e) {}
+            return;
+          }
+          stopFn = fn;
+          if (typeof onReady === 'function') onReady(fn);
+        }
+
+        loadInstrument(currentInstrument.id).then(function (inst) {
+          if (cancelled) return;
+          if (inst) {
+            var noteName = freqToMidiNoteName(freq);
+            var note = inst.play(noteName, 0, { duration: 60, gain: calmMode ? 0.35 : 0.55 });
+            if (note && typeof note.stop === 'function') {
+              setStop(function () { note.stop(ctx.currentTime); });
+            }
+          } else {
+            var now = ctx.currentTime;
+            var vol = calmMode ? 0.12 : 0.25;
+            var osc = ctx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+            var g = ctx.createGain();
+            g.gain.setValueAtTime(0, now);
+            g.gain.linearRampToValueAtTime(vol, now + 0.05);
+            osc.connect(g);
+            g.connect(ctx.destination);
+            osc.start(now);
+            setStop(function () {
+              var t = ctx.currentTime;
+              g.gain.linearRampToValueAtTime(0, t + 0.05);
+              osc.stop(t + 0.06);
+            });
+          }
+        }).catch(function () {
+          if (cancelled) return;
+          var now = ctx.currentTime;
+          var vol = calmMode ? 0.12 : 0.25;
+          var osc = ctx.createOscillator();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          var g = ctx.createGain();
+          g.gain.setValueAtTime(0, now);
+          g.gain.linearRampToValueAtTime(vol, now + 0.05);
+          osc.connect(g);
+          g.connect(ctx.destination);
+          osc.start(now);
+          setStop(function () {
+            var t = ctx.currentTime;
+            g.gain.linearRampToValueAtTime(0, t + 0.05);
+            osc.stop(t + 0.06);
+          });
+        });
+
+        return function () {
+          cancelled = true;
+          if (stopFn) {
+            try { stopFn(); } catch (e) {}
+            stopFn = null;
+          }
+        };
       }
 
       /**
@@ -5127,7 +5202,6 @@
         var fEl = document.getElementById('tunerFreqValue');
         var tEl = document.getElementById('tunerTargetValue');
         var cEl = document.getElementById('tunerCentsValue');
-        var needle = document.getElementById('tunerNeedle');
         if (noteEl) noteEl.textContent = '--';
         if (statusEl) {
           statusEl.classList.remove('ok', 'flat', 'sharp');
@@ -5136,10 +5210,147 @@
         if (fEl) fEl.textContent = '-- Hz';
         if (tEl) tEl.textContent = '-- Hz';
         if (cEl) cEl.textContent = '-- cents';
-        if (needle) {
-          needle.classList.remove('ok');
-          needle.style.left = '50%';
+        tunerLastCents = 0;
+        tunerLastStatus = 'idle';
+        tunerLastNote = '--';
+        tunerLastTargetFreq = 0;
+        tunerLastFreq = 0;
+        tunerSmoothedFreq = 0;
+        drawTunerGauge(0, 'idle');
+      }
+
+      function drawTunerGauge(cents, statusMode) {
+        var canvas = document.getElementById('tunerGauge');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        var w = canvas.width;
+        var h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        var cx = w / 2;
+        var cy = h - 42;
+        var radius = Math.min(w * 0.455, h * 0.70);
+
+        function degToRad(deg) {
+          return deg * Math.PI / 180;
         }
+
+        // Arco base (estilo afinador: 210° -> -30°)
+        var startAng = degToRad(210);
+        var endAng = degToRad(-30);
+        var span = endAng - startAng;
+
+        ctx.lineWidth = 9;
+        ctx.strokeStyle = 'rgba(199, 211, 228, 0.35)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, startAng, endAng, false);
+        ctx.stroke();
+
+        // Faixa "afinado" (-10..+10 cents)
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = 'rgba(106, 175, 234, 0.55)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius - 2, degToRad(258), degToRad(282), false);
+        ctx.stroke();
+
+        // Ticks e labels (escala principal limpa: -100, -50, 0, +50, +100)
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(203, 212, 225, 0.35)';
+        ctx.fillStyle = 'rgba(223, 231, 241, 0.7)';
+        ctx.font = '600 10px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (var t = -100; t <= 100; t += 10) {
+          var normalizedTick = (t + 100) / 200;
+          var a = startAng + normalizedTick * span;
+          var x1 = cx + (radius - 1) * Math.cos(a);
+          var y1 = cy + (radius - 1) * Math.sin(a);
+          var len = t % 50 === 0 ? 11 : t % 20 === 0 ? 7 : 4;
+          var x2 = cx + (radius - len) * Math.cos(a);
+          var y2 = cy + (radius - len) * Math.sin(a);
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+          if (t % 50 === 0) {
+            var lx = cx + (radius + 14) * Math.cos(a);
+            var ly = cy + (radius + 14) * Math.sin(a);
+            var lab = t > 0 ? '+' + String(t) : String(t);
+            ctx.fillText(lab, lx, ly);
+          }
+        }
+
+        // Símbolos laterais (bemol/sustenido) para leitura rápida
+        ctx.fillStyle = 'rgba(223, 231, 241, 0.48)';
+        ctx.font = '600 14px Segoe UI';
+        ctx.fillText('♭', cx - radius * 0.56, cy - radius * 0.29);
+        ctx.fillText('♯', cx + radius * 0.56, cy - radius * 0.29);
+
+        // Ponteiro
+        var clamped = Math.max(-100, Math.min(100, cents));
+        var normalized = (clamped + 100) / 200;
+        var ang = startAng + normalized * span;
+        var nx = cx + (radius - 14) * Math.cos(ang);
+        var ny = cy + (radius - 14) * Math.sin(ang);
+        ctx.strokeStyle = statusMode === 'ok' ? '#93f037' : '#ff4343';
+        ctx.lineWidth = 3.2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(nx, ny);
+        ctx.stroke();
+        ctx.fillStyle = statusMode === 'ok' ? '#93f037' : '#f3f5f8';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Legendas no próprio medidor (estilo afinador profissional)
+        var action = 'Ouvindo';
+        if (statusMode === 'ok') action = 'Afinado';
+        else if (statusMode === 'flat') action = 'Apertar';
+        else if (statusMode === 'sharp') action = 'Afrouxar';
+
+        // Título da nota alvo no topo do painel (ex.: E5 659.3)
+        ctx.fillStyle = '#9fd6ff';
+        ctx.font = '700 13px Segoe UI';
+        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? '  ' + tunerLastTargetFreq.toFixed(1) : ''), cx, 14);
+
+        // Badge de cents no lado direito (como apps de tuner)
+        var badgeX = cx + radius * 0.48;
+        var badgeY = cy - radius * 0.26;
+        var centsShown = Math.round(Math.max(-999, Math.min(999, cents)));
+        var badgeText = (centsShown >= 0 ? '+' : '') + centsShown + 'c';
+        ctx.fillStyle = 'rgba(58, 88, 122, 0.92)';
+        ctx.strokeStyle = 'rgba(130, 165, 207, 0.85)';
+        ctx.lineWidth = 1;
+        var bw = 72;
+        var bh = 34;
+        ctx.beginPath();
+        ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#8ec4ff';
+        ctx.font = '700 18px Segoe UI';
+        ctx.fillText(badgeText, badgeX, badgeY + 1);
+
+        // Bloco central com ação/frequência
+        var panelW = 170;
+        var panelH = 40;
+        var panelY = cy + 8;
+        ctx.fillStyle = 'rgba(22, 30, 40, 0.88)';
+        ctx.strokeStyle = 'rgba(99, 122, 149, 0.55)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(cx - panelW / 2, panelY, panelW, panelH, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = statusMode === 'ok' ? '#9cf14a' : '#d5dde8';
+        ctx.font = '700 14px Segoe UI';
+        ctx.fillText(action, cx, panelY + 13);
+        ctx.fillStyle = '#f2f6fb';
+        ctx.font = '700 17px Segoe UI';
+        ctx.fillText(tunerLastFreq ? tunerLastFreq.toFixed(1) + ' Hz' : '--', cx, panelY + 30);
       }
 
       function drawTunerChart() {
@@ -5201,29 +5412,31 @@
         var fEl = document.getElementById('tunerFreqValue');
         var tEl = document.getElementById('tunerTargetValue');
         var cEl = document.getElementById('tunerCentsValue');
-        var needle = document.getElementById('tunerNeedle');
         if (noteEl) noteEl.textContent = noteName;
         if (fEl) fEl.textContent = freq.toFixed(2) + ' Hz';
         if (tEl) tEl.textContent = targetFreq.toFixed(2) + ' Hz';
         if (cEl) cEl.textContent = (cents >= 0 ? '+' : '') + cents.toFixed(1) + ' cents';
-        if (needle) {
-          var clamped = Math.max(-50, Math.min(50, cents));
-          needle.style.left = (50 + clamped * 0.92) + '%';
-          needle.classList.toggle('ok', Math.abs(cents) <= 5);
-        }
+        tunerLastCents = cents;
+        tunerLastNote = noteName;
+        tunerLastTargetFreq = targetFreq;
+        tunerLastFreq = freq;
         if (statusEl) {
           statusEl.classList.remove('ok', 'flat', 'sharp');
           if (Math.abs(cents) <= 5) {
+            tunerLastStatus = 'ok';
             statusEl.classList.add('ok');
             statusEl.textContent = 'Afinado';
           } else if (cents < 0) {
+            tunerLastStatus = 'flat';
             statusEl.classList.add('flat');
-            statusEl.textContent = 'Abaixo (suba a afinação)';
+            statusEl.textContent = 'Apertar';
           } else {
+            tunerLastStatus = 'sharp';
             statusEl.classList.add('sharp');
-            statusEl.textContent = 'Acima (baixe a afinação)';
+            statusEl.textContent = 'Afrouxar';
           }
         }
+        drawTunerGauge(cents, tunerLastStatus);
       }
 
       function tunerLoop() {
@@ -5231,14 +5444,46 @@
         tunerAnalyzer.getFloatTimeDomainData(tunerData);
         var freq = tunerAutoCorrelate(tunerData, tunerAnalyzer.context.sampleRate);
         if (freq > 0) {
-          updateTunerUI(freq);
-          tunerHistory.push(freq);
+          var alpha = 0.32;
+          if (tunerSensitivity === 'slow') alpha = 0.15;
+          else if (tunerSensitivity === 'fast') alpha = 0.58;
+          if (!tunerSmoothedFreq) tunerSmoothedFreq = freq;
+          else tunerSmoothedFreq = tunerSmoothedFreq + alpha * (freq - tunerSmoothedFreq);
+          updateTunerUI(tunerSmoothedFreq);
+          tunerHistory.push(tunerSmoothedFreq);
           if (tunerHistory.length > 90) tunerHistory.shift();
         } else {
           updateTunerUINoSignal();
         }
         drawTunerChart();
         tunerFrameId = requestAnimationFrame(tunerLoop);
+      }
+
+      function requestScreenWakeLock() {
+        if (!('wakeLock' in navigator) || wakeLockSentinel) return;
+        navigator.wakeLock.request('screen').then(function (lock) {
+          wakeLockSentinel = lock;
+          lock.addEventListener('release', function () {
+            wakeLockSentinel = null;
+          });
+        }).catch(function () {});
+      }
+
+      function releaseScreenWakeLock() {
+        if (!wakeLockSentinel) return;
+        wakeLockSentinel.release().catch(function () {});
+        wakeLockSentinel = null;
+      }
+
+      function ensureMicrophonePermission() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          return Promise.resolve(false);
+        }
+        return navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        }).then(function (stream) {
+          return stream;
+        });
       }
 
       function stopTuner() {
@@ -5261,6 +5506,7 @@
           });
           tunerStream = null;
         }
+        releaseScreenWakeLock();
         var st = document.getElementById('tunerStatus');
         if (st) {
           st.classList.remove('ok', 'flat', 'sharp');
@@ -5278,15 +5524,12 @@
           setMessage('Este navegador não suporta acesso ao microfone.');
           return;
         }
-        navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        }).then(function (stream) {
+        ensureMicrophonePermission().then(function (stream) {
           var ctx = getAudioContext();
-          if (!ctx) return;
+          if (!ctx) {
+            stream.getTracks().forEach(function (t) { t.stop(); });
+            return;
+          }
           tunerStream = stream;
           tunerAnalyzer = ctx.createAnalyser();
           tunerAnalyzer.fftSize = 4096;
@@ -5294,14 +5537,18 @@
           tunerSource.connect(tunerAnalyzer);
           tunerData = new Float32Array(tunerAnalyzer.fftSize);
           tunerHistory = [];
+          tunerSmoothedFreq = 0;
           tunerRunning = true;
           var startBtn = document.getElementById('tunerStartBtn');
           var stopBtn = document.getElementById('tunerStopBtn');
           if (startBtn) startBtn.disabled = true;
           if (stopBtn) stopBtn.disabled = false;
+          requestScreenWakeLock();
           setMessage('Afinador ativo. Toque uma corda/nota do instrumento.');
           tunerLoop();
         }).catch(function () {
+          var st = document.getElementById('tunerStatus');
+          if (st) st.textContent = 'Permissão do microfone bloqueada';
           setMessage('Não foi possível acessar o microfone para o afinador.');
         });
       }
@@ -5375,6 +5622,7 @@
           updateChallengeStats();
           updateProgress();
           setMessage('Afinador pronto. Selecione o preset e toque em Iniciar.');
+          if (!tunerRunning) startTuner();
         } else if (mode === 'hinos') {
           updateChallengeStats();
           if (hinosLastSyncInstrumentId !== currentInstrument.id) {
@@ -5816,11 +6064,9 @@
           });
         }
 
-        // Espelho: nota toca enquanto o botão estiver pressionado (mousedown/touchstart = toca, mouseup/touchend = para)
+        // Espelho: nota toca enquanto o ponteiro/touch estiver pressionado.
         var board = document.getElementById('violinBoard');
-        function handleNoteStart(e) {
-          e.preventDefault();
-          var cell = e.target.closest('.finger-cell');
+        function pointerStartOnCell(pointerId, cell) {
           if (!cell || !cell.dataset.noteId) return;
           var noteId = cell.dataset.noteId;
           var freq = cell.dataset.freq ? parseFloat(cell.dataset.freq) : undefined;
@@ -5828,41 +6074,68 @@
           var position = cell.dataset.position != null ? parseInt(cell.dataset.position, 10) : null;
           var nota = NOTAS.find(function (n) { return n.id === noteId; });
           if (!nota) return;
-          stopNoteSound();
-          startNoteSound(noteId, freq);
+
+          if (activePointerNotes[pointerId]) {
+            var prev = activePointerNotes[pointerId];
+            if (prev.cancelInit) prev.cancelInit();
+            if (prev.stop) prev.stop();
+            if (prev.cell) prev.cell.classList.remove('playing');
+            onNoteEnd(prev.noteId, prev.freq, prev.stringKey, prev.position);
+          }
+
+          var data = { noteId: noteId, freq: freq, stringKey: stringKey, position: position, cell: cell, stop: null, cancelInit: null };
+          data.cancelInit = startNoteSoundForPointer(noteId, freq, function (fn) {
+            data.stop = fn;
+          });
+          activePointerNotes[pointerId] = data;
+
           if (currentMode === 'challenge') {
             document.getElementById('currentNoteDisplay').textContent = '?';
           } else {
             document.getElementById('currentNoteDisplay').textContent = getNoteNameInKey(noteId, currentKey);
             clearViolinHighlight();
-            // Destaca somente a célula que foi tocada (evita destacar todas as ocorrências da mesma nota).
             cell.classList.add('highlight');
           }
           cell.classList.add('playing');
-          currentPressedCell = { noteId: noteId, freq: freq, stringKey: stringKey, position: position, cell: cell };
-          document.addEventListener('mouseup', handleNoteEndOnce);
-          document.addEventListener('touchend', handleNoteEndOnce, { passive: true });
         }
-        function handleNoteEndOnce() {
-          document.removeEventListener('mouseup', handleNoteEndOnce);
-          document.removeEventListener('touchend', handleNoteEndOnce);
-          stopNoteSound();
-          if (!currentPressedCell) return;
-          onNoteEnd(currentPressedCell.noteId, currentPressedCell.freq, currentPressedCell.stringKey, currentPressedCell.position);
-          if (currentPressedCell.cell) currentPressedCell.cell.classList.remove('playing');
-          currentPressedCell = null;
-          document.querySelectorAll('.finger-cell.playing').forEach(function (c) { c.classList.remove('playing'); });
+
+        function pointerEnd(pointerId) {
+          var data = activePointerNotes[pointerId];
+          if (!data) return;
+          if (data.cancelInit) data.cancelInit();
+          if (data.stop) data.stop();
+          if (data.cell) data.cell.classList.remove('playing');
+          onNoteEnd(data.noteId, data.freq, data.stringKey, data.position);
+          delete activePointerNotes[pointerId];
         }
+
         if (board) {
-          board.addEventListener('mousedown', function (e) {
-            if (e.button !== 0) return;
-            handleNoteStart(e);
+          board.addEventListener('pointerdown', function (e) {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            var cell = e.target.closest('.finger-cell');
+            if (!cell || !board.contains(cell)) return;
+            e.preventDefault();
+            pointerStartOnCell(e.pointerId, cell);
+            if (cell.setPointerCapture) {
+              try { cell.setPointerCapture(e.pointerId); } catch (err) {}
+            }
           });
-          board.addEventListener('touchstart', function (e) {
-            handleNoteStart(e);
-          }, { passive: false });
-          board.addEventListener('mouseleave', function () {
-            if (currentPressedCell) handleNoteEndOnce();
+          board.addEventListener('pointermove', function (e) {
+            if (!activePointerNotes[e.pointerId]) return;
+            var under = document.elementFromPoint(e.clientX, e.clientY);
+            var cell = under ? under.closest('.finger-cell') : null;
+            if (!cell || !board.contains(cell)) return;
+            if (activePointerNotes[e.pointerId].cell === cell) return;
+            pointerStartOnCell(e.pointerId, cell);
+          });
+          board.addEventListener('pointerup', function (e) {
+            pointerEnd(e.pointerId);
+          });
+          board.addEventListener('pointercancel', function (e) {
+            pointerEnd(e.pointerId);
+          });
+          board.addEventListener('pointerleave', function (e) {
+            if (e.pointerType === 'mouse') pointerEnd(e.pointerId);
           });
         }
 
@@ -5879,6 +6152,7 @@
         var tunerStartBtn = document.getElementById('tunerStartBtn');
         var tunerStopBtn = document.getElementById('tunerStopBtn');
         var tunerPresetSel = document.getElementById('tunerInstrumentSelect');
+        var tunerSensitivitySel = document.getElementById('tunerSensitivitySelect');
         if (tunerStartBtn) {
           tunerStartBtn.addEventListener('click', function () {
             startTuner();
@@ -5895,6 +6169,19 @@
             setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
           });
         }
+        if (tunerSensitivitySel) {
+          tunerSensitivity = tunerSensitivitySel.value || 'normal';
+          tunerSensitivitySel.addEventListener('change', function () {
+            tunerSensitivity = tunerSensitivitySel.value || 'normal';
+            tunerSmoothedFreq = 0;
+            setMessage('Sensibilidade do afinador: ' + tunerSensitivitySel.options[tunerSensitivitySel.selectedIndex].text + '.');
+          });
+        }
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible' && currentMode === 'tuner' && tunerRunning) {
+            requestScreenWakeLock();
+          }
+        });
         window.addEventListener('beforeunload', stopTuner);
 
         bindHinosEvents();
@@ -7263,6 +7550,7 @@
         bindEvents();
         initHinosUI();
         updateTunerUINoSignal();
+        drawTunerGauge(0, 'idle');
         drawTunerChart();
         updateFullscreenButton();
         // PWA: registra o SW com atualização automática para a versão mais recente.
