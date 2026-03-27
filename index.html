@@ -8,12 +8,14 @@
   <meta name="theme-color" content="#7d9d7a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Music&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Noto+Music&display=swap" rel="stylesheet">
   <style>
     /* ========== VARIÁVEIS E BASE ========== */
     :root {
       --bg: #f5f0e8;
+      --bg-accent: #ebe4d8;
       --card: #fffef9;
+      --card-border: rgba(61, 58, 53, 0.07);
       --text: #3d3a35;
       --text-soft: #6b6560;
       --do: #e8b4bc;
@@ -24,16 +26,41 @@
       --la: #d1c4e9;
       --si: #ffccbc;
       --accent: #7d9d7a;
+      --accent-hover: #6f916c;
+      --accent-soft: rgba(125, 157, 122, 0.14);
       --success: #81c784;
+      --warn: #b8822a;
+      --danger-soft: #c45c5c;
       /* Cores das cordas do violino (foto 2: vermelho, laranja, azul, verde — versão pastel) */
       --string-sol: #e8a0a0;
       --string-re: #f5c88a;
       --string-la: #a0c8e8;
       --string-mi: #a0d8a0;
       --string-do: #1f1f1f;
+      --radius-sm: 12px;
       --radius: 16px;
-      --shadow: 0 4px 20px rgba(0,0,0,0.06);
-      --font: 'Segoe UI', 'Nunito', system-ui, sans-serif;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 2px rgba(45, 42, 38, 0.05), 0 2px 8px rgba(45, 42, 38, 0.04);
+      --shadow: 0 4px 20px rgba(45, 42, 38, 0.07);
+      --shadow-md: 0 10px 36px rgba(45, 42, 38, 0.1);
+      --shadow-nav: 0 12px 36px rgba(35, 34, 31, 0.14);
+      --font: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+      --font-music: 'Noto Music', 'Bravura', serif;
+      --ease: 0.18s ease;
+      --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+      --space-xs: 0.35rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.35rem;
+      --content-max: 900px;
+      --content-narrow: 520px;
+      --content-mid: 560px;
+      --content-wide: 620px;
+      --content-staff: 420px;
+      --content-metronome: 460px;
+      --content-metro-img: 380px;
+      --content-gauge: 540px;
+      --content-progress: 400px;
       --bottom-nav-safe-space: 112px;
     }
 
@@ -45,12 +72,13 @@
 
     body {
       font-family: var(--font);
-      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.5;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
       padding-bottom: 1rem;
+      background: linear-gradient(165deg, #faf7f0 0%, var(--bg) 38%, var(--bg-accent) 100%);
+      background-attachment: fixed;
     }
 
     body.show-bottom-nav {
@@ -63,9 +91,9 @@
 
     /* ========== LAYOUT PRINCIPAL ========== */
     .container {
-      max-width: 900px;
+      max-width: var(--content-max);
       margin: 0 auto;
-      padding: 1rem;
+      padding: var(--space-md);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -78,7 +106,7 @@
       position: fixed;
       inset: 0;
       z-index: 5000;
-      background: var(--bg);
+      background: linear-gradient(165deg, #faf7f0 0%, var(--bg) 38%, var(--bg-accent) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -128,7 +156,8 @@
 
     header h1 {
       font-size: clamp(1.4rem, 4vw, 1.8rem);
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: var(--text);
     }
 
@@ -180,6 +209,7 @@
       background: var(--card);
       padding: 0.85rem 1.1rem;
       border-radius: var(--radius);
+      border: 1px solid var(--card-border);
       margin-bottom: 0.9rem;
       min-height: unset;
       display: flex;
@@ -190,7 +220,7 @@
       font-size: 1.1rem;
       color: var(--text);
       width: 100%;
-      max-width: 520px;
+      max-width: var(--content-narrow);
     }
 
     .message-box .instruction-text {
@@ -200,7 +230,7 @@
     /* ========== BARRA DE PROGRESSO ========== */
     .progress-section {
       width: 100%;
-      max-width: 400px;
+      max-width: var(--content-progress);
       margin-bottom: 1rem;
     }
 
@@ -263,10 +293,11 @@
       background: var(--card);
       padding: 1.25rem;
       border-radius: var(--radius);
+      border: 1px solid var(--card-border);
       margin-bottom: 1rem;
       box-shadow: var(--shadow);
       width: 100%;
-      max-width: 520px;
+      max-width: var(--content-narrow);
       overflow: hidden;
     }
 
@@ -433,28 +464,32 @@
       background: var(--card);
       padding: 1.25rem;
       border-radius: var(--radius);
+      border: 1px solid var(--card-border);
       margin-bottom: 1rem;
       box-shadow: var(--shadow);
       width: 100%;
-      max-width: 520px;
+      max-width: var(--content-narrow);
       text-align: center;
     }
 
     .tuner-section {
       background: var(--card);
-      padding: 1rem;
-      border-radius: var(--radius);
+      padding: var(--space-lg) var(--space-md);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
       margin-bottom: 1rem;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
       width: 100%;
-      max-width: 620px;
+      max-width: var(--content-wide);
     }
 
     .tuner-title {
       margin: 0 0 0.2rem;
       text-align: center;
-      font-size: 1.02rem;
+      font-size: 1.05rem;
       font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
 
     .tuner-subtitle {
@@ -462,6 +497,7 @@
       text-align: center;
       font-size: 0.83rem;
       color: var(--text-soft);
+      line-height: 1.45;
     }
 
     .tuner-controls {
@@ -527,7 +563,7 @@
     }
 
     .tuner-round-btn.start:hover:not(:disabled) {
-      background: #6f916c;
+      background: var(--accent-hover);
     }
 
     .tuner-round-btn.stop {
@@ -562,22 +598,67 @@
 
     .tuner-status.flat,
     .tuner-status.sharp {
-      color: #bf8a16;
+      color: var(--warn);
     }
 
     .tuner-gauge-wrap {
-      margin: 0.25rem 0 0.55rem;
+      margin: 0.35rem 0 0.65rem;
       text-align: center;
-      background: #2b3544;
-      border: 1px solid rgba(35, 43, 55, 0.9);
-      border-radius: 14px;
+      background: linear-gradient(180deg, #323d4d 0%, #252e3a 100%);
+      border: 1px solid rgba(35, 43, 55, 0.95);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      overflow: hidden;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 8px 24px rgba(25, 32, 40, 0.35);
+    }
+
+    .tuner-gauge-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.45rem 0.65rem;
+      background: linear-gradient(90deg, var(--accent) 0%, #5d7a5a 100%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .tuner-gauge-header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .tuner-gauge-header-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+    }
+
+    .tuner-gauge-header-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.88);
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .tuner-gauge-canvas-wrap {
       padding: 0.45rem 0.45rem 0.35rem;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
     .tuner-gauge {
       width: 100%;
-      max-width: 540px;
+      max-width: var(--content-gauge);
       height: 224px;
       display: block;
       margin: 0 auto;
@@ -592,10 +673,11 @@
 
     .tuner-reading {
       text-align: center;
-      border: 1px solid rgba(125, 157, 122, 0.2);
-      border-radius: 10px;
+      border: 1px solid rgba(125, 157, 122, 0.22);
+      border-radius: var(--radius-sm);
       background: rgba(125, 157, 122, 0.08);
-      padding: 0.35rem 0.4rem;
+      padding: 0.4rem 0.45rem;
+      box-shadow: var(--shadow-sm);
     }
 
     .tuner-reading b {
@@ -613,16 +695,18 @@
       width: 100%;
       height: 120px;
       display: block;
-      border-radius: 10px;
-      border: 1px solid rgba(125, 157, 122, 0.28);
-      background: rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(125, 157, 122, 0.2);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 248, 244, 0.75) 100%);
+      box-shadow: var(--shadow-sm);
     }
 
     .staff-svg {
       width: 100%;
-      max-width: 420px;
+      max-width: var(--content-staff);
       display: block;
       margin: 0 auto 0.75rem;
+      font-family: var(--font-music);
     }
 
     .note-options {
@@ -638,11 +722,12 @@
       border: 2px solid var(--accent);
       background: var(--card);
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, transform 0.2s;
+      transition: background var(--ease), color var(--ease), transform var(--ease), border-color var(--ease), box-shadow var(--ease);
       font-family: inherit;
       min-width: 60px;
+      min-height: 44px;
       text-align: center;
     }
 
@@ -653,22 +738,26 @@
     .note-option-btn.correct {
       background: var(--success);
       color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 2px 8px rgba(90, 160, 100, 0.25);
     }
 
     .note-option-btn.wrong {
-      background: #f8d7da;
-      color: #a94442;
+      background: rgba(196, 92, 92, 0.12);
+      color: var(--danger-soft);
+      border-color: rgba(196, 92, 92, 0.45);
     }
 
     /* ========== HINÁRIO 5 (controle local por aluno) ========== */
     .hinos-section {
       background: var(--card);
       padding: 1.25rem;
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
       margin-bottom: 1rem;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
       width: 100%;
-      max-width: 560px;
+      max-width: var(--content-mid);
     }
 
     .hinos-section-header {
@@ -692,12 +781,12 @@
     }
 
     .hinos-panel {
-      border: 1px solid rgba(125, 157, 122, 0.38);
+      border: 1px solid rgba(125, 157, 122, 0.32);
       border-radius: var(--radius);
       padding: 0.9rem 1rem;
       margin-bottom: 0.75rem;
-      background: rgba(255, 255, 255, 0.88);
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-sm);
     }
 
     .hinos-panel-title {
@@ -752,7 +841,7 @@
     }
 
     .hinos-new-student-card {
-      max-width: 400px;
+      max-width: var(--content-progress);
     }
 
     .hinos-new-student-title {
@@ -955,6 +1044,11 @@
     .hinos-select:disabled {
       opacity: 0.65;
       cursor: not-allowed;
+    }
+
+    .hinos-select:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     .hinos-panel .btn {
@@ -1464,7 +1558,7 @@
     .instrument-section,
     .key-section {
       width: 100%;
-      max-width: 520px;
+      max-width: var(--content-narrow);
       margin-bottom: 1rem;
       text-align: center;
     }
@@ -1491,15 +1585,16 @@
       color: var(--accent);
       border-radius: var(--radius);
       font-size: 0.9rem;
-      font-weight: 600;
+      font-weight: 700;
+      min-height: 44px;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: background var(--ease), color var(--ease), transform var(--ease), box-shadow var(--ease);
       font-family: inherit;
     }
 
     .instrument-btn:hover,
     .key-btn:hover {
-      background: rgba(125, 157, 122, 0.15);
+      background: var(--accent-soft);
     }
 
     .instrument-btn.active,
@@ -1520,14 +1615,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.2rem;
-      padding: 0.3rem;
-      border-radius: 20px;
-      border: 1px solid rgba(125, 157, 122, 0.35);
-      background: rgba(255, 254, 249, 0.92);
-      backdrop-filter: blur(7px);
-      -webkit-backdrop-filter: blur(7px);
-      box-shadow: 0 10px 24px rgba(35, 34, 31, 0.14);
-      transition: opacity 0.2s ease, transform 0.25s ease;
+      padding: 0.35rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(125, 157, 122, 0.38);
+      background: rgba(255, 254, 249, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-nav);
+      transition: opacity var(--ease), transform 0.25s var(--ease-out);
     }
 
     .mode-tabs.nav-hidden {
@@ -1542,7 +1637,7 @@
       border: 0;
       background: transparent;
       color: var(--text-soft);
-      border-radius: 14px;
+      border-radius: var(--radius-sm);
       padding: 0.3rem 0.15rem 0.35rem;
       min-height: 56px;
       display: inline-flex;
@@ -1552,11 +1647,11 @@
       gap: 0.18rem;
       cursor: pointer;
       font-family: inherit;
-      transition: color 0.2s, background 0.2s, transform 0.12s ease, box-shadow 0.2s;
+      transition: color var(--ease), background var(--ease), transform 0.12s var(--ease-out), box-shadow var(--ease);
     }
 
     .mode-btn:hover {
-      background: rgba(125, 157, 122, 0.1);
+      background: var(--accent-soft);
       color: var(--accent);
     }
 
@@ -1572,7 +1667,7 @@
     .mode-btn.active {
       color: var(--accent);
       background: #ffffff;
-      box-shadow: 0 4px 12px rgba(90, 118, 88, 0.18);
+      box-shadow: var(--shadow-sm);
     }
 
     .mode-btn-icon {
@@ -1585,16 +1680,16 @@
     }
 
     .mode-btn-icon svg {
-      width: 1.05rem;
-      height: 1.05rem;
+      width: 1.12rem;
+      height: 1.12rem;
     }
 
     .mode-btn-label {
       white-space: nowrap;
-      font-size: 0.67rem;
-      font-weight: 600;
+      font-size: 0.64rem;
+      font-weight: 700;
       line-height: 1;
-      letter-spacing: 0;
+      letter-spacing: 0.01em;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1603,7 +1698,7 @@
     /* ========== PAINEL DE CONFIGURAÇÕES ========== */
     .settings-wrap {
       width: 100%;
-      max-width: 520px;
+      max-width: var(--content-narrow);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1627,6 +1722,7 @@
       margin-top: 0.6rem;
       background: var(--card);
       border-radius: var(--radius);
+      border: 1px solid var(--card-border);
       box-shadow: var(--shadow);
       padding: 0.9rem;
       width: 100%;
@@ -1658,14 +1754,15 @@
       color: var(--accent);
       border-radius: var(--radius);
       font-size: 0.9rem;
-      font-weight: 600;
+      font-weight: 700;
+      min-height: 44px;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: background var(--ease), color var(--ease), transform var(--ease);
       font-family: inherit;
     }
 
     .clef-btn:hover {
-      background: rgba(125, 157, 122, 0.15);
+      background: var(--accent-soft);
     }
 
     .clef-btn.active {
@@ -1688,9 +1785,14 @@
       border: none;
       border-radius: var(--radius);
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
       cursor: pointer;
-      transition: transform 0.2s, opacity 0.2s;
+      transition: transform var(--ease), opacity var(--ease), box-shadow var(--ease), background var(--ease), color var(--ease);
       font-family: inherit;
     }
 
@@ -1701,12 +1803,23 @@
     .btn-primary {
       background: var(--accent);
       color: white;
+      box-shadow: 0 2px 8px rgba(90, 118, 88, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
     }
 
     .btn-secondary {
       background: var(--card);
       color: var(--text);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover {
+      background: #fff;
+      border-color: rgba(125, 157, 122, 0.35);
     }
 
     .btn-icon {
@@ -1779,10 +1892,11 @@
 
     .metronome-card {
       width: 100%;
-      max-width: 460px;
+      max-width: var(--content-metronome);
       background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-md);
       padding: 1.15rem 1.15rem 1.05rem;
       position: relative;
       max-height: calc(100vh - 2rem);
@@ -1930,10 +2044,12 @@
 
     .metro-solfejo-img {
       width: 100%;
-      max-width: 380px;
+      max-width: var(--content-metro-img);
       height: auto;
       display: block;
-      border-radius: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
     }
 
     .metro-solfejo-stage {
@@ -2018,10 +2134,12 @@
     }
 
     .metro-section {
-      background: rgba(0,0,0,0.03);
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--card-border);
       border-radius: var(--radius);
       padding: 0.7rem 0.75rem;
       margin-top: 0.75rem;
+      box-shadow: var(--shadow-sm);
     }
 
     .metro-section-row {
@@ -2076,6 +2194,13 @@
       border: 2px solid rgba(0,0,0,0.06);
       font-weight: 800;
       color: var(--text-soft);
+      font-family: inherit;
+    }
+
+    .metro-timer-input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-color: rgba(125, 157, 122, 0.45);
     }
 
     .metro-subdiv-title,
@@ -2282,7 +2407,13 @@
       <div class="tuner-note-main" id="tunerDetectedNote">--</div>
       <div class="tuner-status" id="tunerStatus">Microfone parado</div>
       <div class="tuner-gauge-wrap" aria-hidden="true">
-        <canvas id="tunerGauge" class="tuner-gauge" width="540" height="224"></canvas>
+        <div class="tuner-gauge-header">
+          <span class="tuner-gauge-header-title"><span class="tuner-gauge-header-dot" aria-hidden="true"></span> Afinador</span>
+          <span class="tuner-gauge-header-badge">440 Hz ref.</span>
+        </div>
+        <div class="tuner-gauge-canvas-wrap">
+          <canvas id="tunerGauge" class="tuner-gauge" width="540" height="224"></canvas>
+        </div>
       </div>
       <div class="tuner-readings">
         <div class="tuner-reading"><b id="tunerFreqValue">-- Hz</b><span>Frequência detectada</span></div>
