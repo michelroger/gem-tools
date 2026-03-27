@@ -49,6 +49,10 @@
       min-height: 100vh;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      padding-bottom: 1rem;
+    }
+
+    body.show-bottom-nav {
       padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
     }
 
@@ -564,7 +568,7 @@
     .tuner-gauge {
       width: 100%;
       max-width: 540px;
-      height: 206px;
+      height: 224px;
       display: block;
       margin: 0 auto;
     }
@@ -1513,6 +1517,13 @@
       backdrop-filter: blur(7px);
       -webkit-backdrop-filter: blur(7px);
       box-shadow: 0 10px 24px rgba(35, 34, 31, 0.14);
+      transition: opacity 0.2s ease, transform 0.25s ease;
+    }
+
+    .mode-tabs.nav-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(16px);
     }
 
     .mode-btn {
@@ -2252,7 +2263,7 @@
       <div class="tuner-note-main" id="tunerDetectedNote">--</div>
       <div class="tuner-status" id="tunerStatus">Microfone parado</div>
       <div class="tuner-gauge-wrap" aria-hidden="true">
-        <canvas id="tunerGauge" class="tuner-gauge" width="540" height="206"></canvas>
+        <canvas id="tunerGauge" class="tuner-gauge" width="540" height="224"></canvas>
       </div>
       <div class="tuner-readings">
         <div class="tuner-reading"><b id="tunerFreqValue">-- Hz</b><span>Frequência detectada</span></div>
@@ -2392,7 +2403,7 @@
       </div>
     </div>
 
-    <div class="mode-tabs" role="tablist">
+    <div class="mode-tabs nav-hidden" id="modeTabs" role="tablist">
       <button type="button" class="mode-btn active" data-mode="learn" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
         <span class="mode-btn-label">Aprender</span>
@@ -5100,6 +5111,21 @@
         });
       }
 
+      function updateBottomNavVisibility() {
+        var nav = document.getElementById('modeTabs');
+        if (!nav) return;
+        var scrollBottom = window.scrollY + window.innerHeight;
+        var docHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.offsetHeight
+        );
+        var atBottom = scrollBottom >= docHeight - 8;
+        nav.classList.toggle('nav-hidden', !atBottom);
+        document.body.classList.toggle('show-bottom-nav', atBottom);
+      }
+
       function tunerNoteToMidi(noteName) {
         var m = /^([A-G])(#?)(-?\d+)$/.exec(String(noteName || '').trim());
         if (!m) return null;
@@ -5228,36 +5254,39 @@
         var h = canvas.height;
         ctx.clearRect(0, 0, w, h);
 
-        var cx = w / 2;
-        var cy = h - 42;
-        var radius = Math.min(w * 0.455, h * 0.70);
+        var cx = w * 0.5;
+        var cy = h * 0.84;
+        var radius = Math.min(w * 0.44, h * 0.62);
 
         function degToRad(deg) {
           return deg * Math.PI / 180;
         }
 
-        // Arco base (estilo afinador: 210° -> -30°)
-        var startAng = degToRad(210);
-        var endAng = degToRad(-30);
+        // Arco base (estilo tuner mobile)
+        var startAng = degToRad(200);
+        var endAng = degToRad(-20);
         var span = endAng - startAng;
 
-        ctx.lineWidth = 9;
-        ctx.strokeStyle = 'rgba(199, 211, 228, 0.35)';
+        // Arco externo
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = 'rgba(181, 197, 218, 0.42)';
         ctx.beginPath();
         ctx.arc(cx, cy, radius, startAng, endAng, false);
         ctx.stroke();
 
         // Faixa "afinado" (-10..+10 cents)
-        ctx.lineWidth = 18;
-        ctx.strokeStyle = 'rgba(106, 175, 234, 0.55)';
+        ctx.lineWidth = 20;
+        ctx.strokeStyle = 'rgba(96, 168, 234, 0.58)';
         ctx.beginPath();
-        ctx.arc(cx, cy, radius - 2, degToRad(258), degToRad(282), false);
+        var tuneStart = startAng + ((-10 + 100) / 200) * span;
+        var tuneEnd = startAng + ((10 + 100) / 200) * span;
+        ctx.arc(cx, cy, radius - 2, tuneStart, tuneEnd, false);
         ctx.stroke();
 
-        // Ticks e labels (escala principal limpa: -100, -50, 0, +50, +100)
+        // Ticks e labels
         ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(203, 212, 225, 0.35)';
-        ctx.fillStyle = 'rgba(223, 231, 241, 0.7)';
+        ctx.strokeStyle = 'rgba(205, 219, 238, 0.38)';
+        ctx.fillStyle = 'rgba(223, 231, 241, 0.74)';
         ctx.font = '600 10px Segoe UI';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -5266,7 +5295,7 @@
           var a = startAng + normalizedTick * span;
           var x1 = cx + (radius - 1) * Math.cos(a);
           var y1 = cy + (radius - 1) * Math.sin(a);
-          var len = t % 50 === 0 ? 11 : t % 20 === 0 ? 7 : 4;
+          var len = t % 50 === 0 ? 12 : t % 20 === 0 ? 8 : 5;
           var x2 = cx + (radius - len) * Math.cos(a);
           var y2 = cy + (radius - len) * Math.sin(a);
           ctx.beginPath();
@@ -5274,25 +5303,25 @@
           ctx.lineTo(x2, y2);
           ctx.stroke();
           if (t % 50 === 0) {
-            var lx = cx + (radius + 14) * Math.cos(a);
-            var ly = cy + (radius + 14) * Math.sin(a);
+            var lx = cx + (radius + 15) * Math.cos(a);
+            var ly = cy + (radius + 15) * Math.sin(a);
             var lab = t > 0 ? '+' + String(t) : String(t);
             ctx.fillText(lab, lx, ly);
           }
         }
 
         // Símbolos laterais (bemol/sustenido) para leitura rápida
-        ctx.fillStyle = 'rgba(223, 231, 241, 0.48)';
+        ctx.fillStyle = 'rgba(223, 231, 241, 0.52)';
         ctx.font = '600 14px Segoe UI';
-        ctx.fillText('♭', cx - radius * 0.56, cy - radius * 0.29);
-        ctx.fillText('♯', cx + radius * 0.56, cy - radius * 0.29);
+        ctx.fillText('♭', cx - radius * 0.55, cy - radius * 0.34);
+        ctx.fillText('♯', cx + radius * 0.55, cy - radius * 0.34);
 
         // Ponteiro
         var clamped = Math.max(-100, Math.min(100, cents));
         var normalized = (clamped + 100) / 200;
         var ang = startAng + normalized * span;
-        var nx = cx + (radius - 14) * Math.cos(ang);
-        var ny = cy + (radius - 14) * Math.sin(ang);
+        var nx = cx + (radius - 16) * Math.cos(ang);
+        var ny = cy + (radius - 16) * Math.sin(ang);
         ctx.strokeStyle = statusMode === 'ok' ? '#93f037' : '#ff4343';
         ctx.lineWidth = 3.2;
         ctx.beginPath();
@@ -5310,14 +5339,14 @@
         else if (statusMode === 'flat') action = 'Apertar';
         else if (statusMode === 'sharp') action = 'Afrouxar';
 
-        // Título da nota alvo no topo do painel (ex.: E5 659.3)
+        // Nota alvo no topo
         ctx.fillStyle = '#9fd6ff';
-        ctx.font = '700 13px Segoe UI';
-        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? '  ' + tunerLastTargetFreq.toFixed(1) : ''), cx, 14);
+        ctx.font = '700 12px Segoe UI';
+        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? '  ' + tunerLastTargetFreq.toFixed(1) : ''), cx, 16);
 
         // Badge de cents no lado direito (como apps de tuner)
-        var badgeX = cx + radius * 0.48;
-        var badgeY = cy - radius * 0.26;
+        var badgeX = cx + radius * 0.44;
+        var badgeY = cy - radius * 0.30;
         var centsShown = Math.round(Math.max(-999, Math.min(999, cents)));
         var badgeText = (centsShown >= 0 ? '+' : '') + centsShown + 'c';
         ctx.fillStyle = 'rgba(58, 88, 122, 0.92)';
@@ -5333,24 +5362,13 @@
         ctx.font = '700 18px Segoe UI';
         ctx.fillText(badgeText, badgeX, badgeY + 1);
 
-        // Bloco central com ação/frequência
-        var panelW = 170;
-        var panelH = 40;
-        var panelY = cy + 8;
-        ctx.fillStyle = 'rgba(22, 30, 40, 0.88)';
-        ctx.strokeStyle = 'rgba(99, 122, 149, 0.55)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.roundRect(cx - panelW / 2, panelY, panelW, panelH, 8);
-        ctx.fill();
-        ctx.stroke();
-
+        // Bloco central com ação/frequência (fora da base para não sobrepor)
         ctx.fillStyle = statusMode === 'ok' ? '#9cf14a' : '#d5dde8';
-        ctx.font = '700 14px Segoe UI';
-        ctx.fillText(action, cx, panelY + 13);
+        ctx.font = '700 15px Segoe UI';
+        ctx.fillText(action, cx, cy + 16);
         ctx.fillStyle = '#f2f6fb';
-        ctx.font = '700 17px Segoe UI';
-        ctx.fillText(tunerLastFreq ? tunerLastFreq.toFixed(1) + ' Hz' : '--', cx, panelY + 30);
+        ctx.font = '700 18px Segoe UI';
+        ctx.fillText(tunerLastFreq ? tunerLastFreq.toFixed(1) + ' Hz' : '--', cx, cy + 36);
       }
 
       function drawTunerChart() {
@@ -5635,6 +5653,7 @@
           refreshHinosVoiceButtons();
           setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
         }
+        setTimeout(updateBottomNavVisibility, 0);
       }
 
       function formatChallengeTime(ms) {
@@ -7553,6 +7572,9 @@
         drawTunerGauge(0, 'idle');
         drawTunerChart();
         updateFullscreenButton();
+        updateBottomNavVisibility();
+        window.addEventListener('scroll', updateBottomNavVisibility, { passive: true });
+        window.addEventListener('resize', updateBottomNavVisibility);
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
         setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
