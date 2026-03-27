@@ -283,6 +283,9 @@
       gap: 8px 10px;
       align-items: center;
       justify-items: center;
+      -webkit-touch-callout: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .violin-board .string-label {
@@ -313,7 +316,7 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      touch-action: none;
       user-select: none;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
@@ -2953,6 +2956,7 @@
       var tunerLastFreq = 0;
       var tunerSensitivity = 'normal';
       var tunerSmoothedFreq = 0;
+      var tunerRawHistory = [];
       var wakeLockSentinel = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -5244,17 +5248,48 @@
         tunerLastTargetFreq = 0;
         tunerLastFreq = 0;
         tunerSmoothedFreq = 0;
+        tunerRawHistory = [];
         drawTunerGauge(0, 'idle');
+      }
+
+      function resizeCanvasToDisplay(canvas) {
+        if (!canvas) return false;
+        var dpr = window.devicePixelRatio || 1;
+        var rect = canvas.getBoundingClientRect();
+        var w = Math.max(1, Math.round(rect.width * dpr));
+        var h = Math.max(1, Math.round(rect.height * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          return true;
+        }
+        return false;
+      }
+
+      function getTunerSmoothingConfig() {
+        if (tunerSensitivity === 'slow') return { alpha: 0.06, medianWindow: 9, jumpRatio: 1.08 };
+        if (tunerSensitivity === 'fast') return { alpha: 0.32, medianWindow: 3, jumpRatio: 1.30 };
+        return { alpha: 0.14, medianWindow: 5, jumpRatio: 1.16 };
+      }
+
+      function tunerMedian(values) {
+        if (!values || !values.length) return 0;
+        var arr = values.slice().sort(function (a, b) { return a - b; });
+        var m = Math.floor(arr.length / 2);
+        if (arr.length % 2) return arr[m];
+        return (arr[m - 1] + arr[m]) / 2;
       }
 
       function drawTunerGauge(cents, statusMode) {
         var canvas = document.getElementById('tunerGauge');
         if (!canvas) return;
+        resizeCanvasToDisplay(canvas);
         var ctx = canvas.getContext('2d');
         if (!ctx) return;
         var w = canvas.width;
         var h = canvas.height;
         ctx.clearRect(0, 0, w, h);
+        var s = Math.max(0.72, Math.min(1.6, w / 540));
 
         var cx = w * 0.5;
         var cy = h * 0.84;
@@ -5270,14 +5305,14 @@
         var span = endAng - startAng;
 
         // Arco externo
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 10 * s;
         ctx.strokeStyle = 'rgba(181, 197, 218, 0.42)';
         ctx.beginPath();
         ctx.arc(cx, cy, radius, startAng, endAng, false);
         ctx.stroke();
 
         // Faixa "afinado" (-10..+10 cents)
-        ctx.lineWidth = 20;
+        ctx.lineWidth = 20 * s;
         ctx.strokeStyle = 'rgba(96, 168, 234, 0.58)';
         ctx.beginPath();
         var tuneStart = startAng + ((-10 + 100) / 200) * span;
@@ -5286,10 +5321,10 @@
         ctx.stroke();
 
         // Ticks e labels
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1 * s;
         ctx.strokeStyle = 'rgba(205, 219, 238, 0.38)';
         ctx.fillStyle = 'rgba(223, 231, 241, 0.74)';
-        ctx.font = '600 10px Segoe UI';
+        ctx.font = '600 ' + Math.round(10 * s) + 'px Segoe UI';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         for (var t = -100; t <= 100; t += 10) {
@@ -5314,7 +5349,7 @@
 
         // Símbolos laterais (bemol/sustenido) para leitura rápida
         ctx.fillStyle = 'rgba(223, 231, 241, 0.52)';
-        ctx.font = '600 14px Segoe UI';
+        ctx.font = '600 ' + Math.round(14 * s) + 'px Segoe UI';
         ctx.fillText('♭', cx - radius * 0.55, cy - radius * 0.34);
         ctx.fillText('♯', cx + radius * 0.55, cy - radius * 0.34);
 
@@ -5325,14 +5360,14 @@
         var nx = cx + (radius - 16) * Math.cos(ang);
         var ny = cy + (radius - 16) * Math.sin(ang);
         ctx.strokeStyle = statusMode === 'ok' ? '#93f037' : '#ff4343';
-        ctx.lineWidth = 3.2;
+        ctx.lineWidth = 3.2 * s;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(nx, ny);
         ctx.stroke();
         ctx.fillStyle = statusMode === 'ok' ? '#93f037' : '#f3f5f8';
         ctx.beginPath();
-        ctx.arc(cx, cy, 4.4, 0, Math.PI * 2);
+        ctx.arc(cx, cy, 4.4 * s, 0, Math.PI * 2);
         ctx.fill();
 
         // Legendas no próprio medidor (estilo afinador profissional)
@@ -5343,7 +5378,7 @@
 
         // Nota alvo no topo
         ctx.fillStyle = '#9fd6ff';
-        ctx.font = '700 12px Segoe UI';
+        ctx.font = '700 ' + Math.round(12 * s) + 'px Segoe UI';
         ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? '  ' + tunerLastTargetFreq.toFixed(1) : ''), cx, 16);
 
         // Badge de cents no lado direito (como apps de tuner)
@@ -5353,29 +5388,30 @@
         var badgeText = (centsShown >= 0 ? '+' : '') + centsShown + 'c';
         ctx.fillStyle = 'rgba(58, 88, 122, 0.92)';
         ctx.strokeStyle = 'rgba(130, 165, 207, 0.85)';
-        ctx.lineWidth = 1;
-        var bw = 72;
-        var bh = 34;
+        ctx.lineWidth = 1 * s;
+        var bw = 72 * s;
+        var bh = 34 * s;
         ctx.beginPath();
-        ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5);
+        ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5 * s);
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = '#8ec4ff';
-        ctx.font = '700 18px Segoe UI';
+        ctx.font = '700 ' + Math.round(18 * s) + 'px Segoe UI';
         ctx.fillText(badgeText, badgeX, badgeY + 1);
 
         // Bloco central com ação/frequência (fora da base para não sobrepor)
         ctx.fillStyle = statusMode === 'ok' ? '#9cf14a' : '#d5dde8';
-        ctx.font = '700 15px Segoe UI';
+        ctx.font = '700 ' + Math.round(15 * s) + 'px Segoe UI';
         ctx.fillText(action, cx, cy + 16);
         ctx.fillStyle = '#f2f6fb';
-        ctx.font = '700 18px Segoe UI';
+        ctx.font = '700 ' + Math.round(18 * s) + 'px Segoe UI';
         ctx.fillText(tunerLastFreq ? tunerLastFreq.toFixed(1) + ' Hz' : '--', cx, cy + 36);
       }
 
       function drawTunerChart() {
         var canvas = document.getElementById('tunerHzChart');
         if (!canvas) return;
+        resizeCanvasToDisplay(canvas);
         var ctx = canvas.getContext('2d');
         if (!ctx) return;
         var w = canvas.width;
@@ -5464,11 +5500,20 @@
         tunerAnalyzer.getFloatTimeDomainData(tunerData);
         var freq = tunerAutoCorrelate(tunerData, tunerAnalyzer.context.sampleRate);
         if (freq > 0) {
-          var alpha = 0.32;
-          if (tunerSensitivity === 'slow') alpha = 0.15;
-          else if (tunerSensitivity === 'fast') alpha = 0.58;
-          if (!tunerSmoothedFreq) tunerSmoothedFreq = freq;
-          else tunerSmoothedFreq = tunerSmoothedFreq + alpha * (freq - tunerSmoothedFreq);
+          var cfg = getTunerSmoothingConfig();
+          tunerRawHistory.push(freq);
+          if (tunerRawHistory.length > 12) tunerRawHistory.shift();
+          var filtered = tunerMedian(tunerRawHistory.slice(-cfg.medianWindow));
+          if (!tunerSmoothedFreq) {
+            tunerSmoothedFreq = filtered;
+          } else {
+            var ratio = filtered > tunerSmoothedFreq ? (filtered / tunerSmoothedFreq) : (tunerSmoothedFreq / filtered);
+            if (!isFinite(ratio)) ratio = 1;
+            if (ratio > cfg.jumpRatio) {
+              filtered = tunerSmoothedFreq + (filtered - tunerSmoothedFreq) * 0.06;
+            }
+            tunerSmoothedFreq = tunerSmoothedFreq + cfg.alpha * (filtered - tunerSmoothedFreq);
+          }
           updateTunerUI(tunerSmoothedFreq);
           tunerHistory.push(tunerSmoothedFreq);
           if (tunerHistory.length > 90) tunerHistory.shift();
@@ -5557,6 +5602,7 @@
           tunerSource.connect(tunerAnalyzer);
           tunerData = new Float32Array(tunerAnalyzer.fftSize);
           tunerHistory = [];
+          tunerRawHistory = [];
           tunerSmoothedFreq = 0;
           tunerRunning = true;
           var startBtn = document.getElementById('tunerStartBtn');
@@ -6134,6 +6180,12 @@
           board.addEventListener('contextmenu', function (e) {
             e.preventDefault();
           });
+          board.addEventListener('touchstart', function (e) {
+            if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
+          }, { passive: false });
+          board.addEventListener('touchmove', function (e) {
+            if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
+          }, { passive: false });
           board.addEventListener('pointerdown', function (e) {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
             var cell = e.target.closest('.finger-cell');
@@ -6198,9 +6250,14 @@
           tunerSensitivitySel.addEventListener('change', function () {
             tunerSensitivity = tunerSensitivitySel.value || 'normal';
             tunerSmoothedFreq = 0;
+            tunerRawHistory = [];
             setMessage('Sensibilidade do afinador: ' + tunerSensitivitySel.options[tunerSensitivitySel.selectedIndex].text + '.');
           });
         }
+        window.addEventListener('resize', function () {
+          drawTunerGauge(tunerLastCents, tunerLastStatus);
+          drawTunerChart();
+        });
         document.addEventListener('visibilitychange', function () {
           if (document.visibilityState === 'visible' && currentMode === 'tuner' && tunerRunning) {
             requestScreenWakeLock();
