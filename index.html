@@ -315,6 +315,8 @@
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
       user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
       font-family: inherit;
       padding: 0;
       margin: 0;
@@ -6129,6 +6131,9 @@
         }
 
         if (board) {
+          board.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+          });
           board.addEventListener('pointerdown', function (e) {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
             var cell = e.target.closest('.finger-cell');
