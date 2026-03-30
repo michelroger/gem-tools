@@ -473,232 +473,265 @@
     }
 
     .tuner-section {
-      background: var(--card);
-      padding: var(--space-lg) var(--space-md);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--card-border);
-      margin-bottom: 1rem;
-      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
       width: 100%;
-      max-width: var(--content-wide);
-    }
-
-    .tuner-title {
-      margin: 0 0 0.2rem;
-      text-align: center;
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .tuner-subtitle {
-      margin: 0 0 0.75rem;
-      text-align: center;
-      font-size: 0.83rem;
-      color: var(--text-soft);
-      line-height: 1.45;
+      max-width: 420px;
+      margin: 0 auto 1rem;
+      padding: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #151821;
+      box-shadow: 0 10px 24px rgba(8, 10, 14, 0.38);
+      background: #f6f2e7;
     }
 
     .tuner-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: flex-end;
-      margin-bottom: 0.65rem;
+      order: 5;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 12px 10px 10px;
+      background: #fbf8ef;
+      border-top: 1px solid rgba(15, 18, 28, 0.12);
     }
 
     .tuner-controls .hinos-field {
-      flex: 1 1 200px;
+      margin: 0;
     }
 
-    .tuner-btn-row {
+    .tuner-controls .hinos-field-label {
+      color: #222738;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .tuner-controls .hinos-select {
+      min-height: 40px;
+      border-radius: 8px;
+      border: 1px solid #cad2e1;
+      background: #ffffff;
+      color: #1f2430;
+      font-weight: 600;
+    }
+
+    .tuner-preset-dynamic {
+      order: 2;
+      padding: 10px;
+      background: #f6f2e7;
+      border-top: 1px solid rgba(15, 18, 28, 0.08);
+    }
+
+    .tuner-preset-dynamic-title {
+      margin: 0 0 0.35rem;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #202736;
+      letter-spacing: 0.01em;
+    }
+
+    .tuner-preset-dynamic-list {
       display: flex;
-      gap: 0.45rem;
-      flex: 1 1 100%;
-      justify-content: center;
-      margin-top: 0.1rem;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    .tuner-round-btn {
-      width: 2.7rem;
-      height: 2.7rem;
-      border-radius: 999px;
-      padding: 0;
+    .tuner-preset-dynamic-item {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid var(--accent);
+      min-height: 30px;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #c7d3e8;
+      background: #ffffff;
+      color: #1f2940;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .tuner-preset-dynamic-empty {
+      font-size: 0.76rem;
+      color: #4f5b71;
+      font-weight: 600;
+    }
+
+    .tuner-shell {
+      order: 1;
+      background: #1f232d;
+      color: #e9eef9;
+    }
+
+    .tuner-topbar {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 0.75rem;
+      background: #0b0812;
+      border-bottom: 1px solid #1d2031;
+    }
+
+    .tuner-title {
+      margin: 0;
+      text-align: center;
+      color: #ffffff;
+      font-size: clamp(1.45rem, 5.2vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .tuner-main-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      background: #20242f;
+      border-bottom: 1px solid #2a2e3d;
+      padding: 4px;
+    }
+
+    .tuner-round-btn {
+      border-radius: 4px;
+      border: 1px solid #2a2f40;
+      min-height: 46px;
+      color: #ffffff;
       font-family: inherit;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.2s, background 0.2s, color 0.2s;
-    }
-
-    .tuner-round-btn svg {
-      width: 1.15rem;
-      height: 1.15rem;
-      pointer-events: none;
-    }
-
-    .tuner-round-btn:active {
-      transform: scale(0.96);
-    }
-
-    .tuner-round-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .tuner-round-btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
+      transition: transform 0.12s ease, filter 0.2s ease;
     }
 
     .tuner-round-btn.start {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(90, 118, 88, 0.25);
-    }
-
-    .tuner-round-btn.start:hover:not(:disabled) {
-      background: var(--accent-hover);
+      background: #4e8046;
     }
 
     .tuner-round-btn.stop {
-      background: var(--card);
-      color: var(--accent);
+      background: #2b2f3b;
+      color: #8f96a9;
     }
 
-    .tuner-round-btn.stop:hover:not(:disabled) {
-      background: rgba(125, 157, 122, 0.12);
+    .tuner-round-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      pointer-events: none;
     }
 
-    .tuner-note-main {
-      text-align: center;
-      font-size: clamp(2rem, 7vw, 2.8rem);
-      line-height: 1;
-      font-weight: 900;
-      color: var(--accent);
-      margin: 0.1rem 0 0.2rem;
+    .tuner-round-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .tuner-subline {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 14px 8px;
+      color: #f3f6ff;
+      font-size: clamp(1.05rem, 3.9vw, 2rem);
+      border-bottom: 1px solid rgba(136, 151, 188, 0.25);
     }
 
     .tuner-status {
+      order: 4;
+      display: block;
       text-align: center;
-      font-size: 0.92rem;
+      padding: 7px 10px;
+      margin: 0;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: var(--text-soft);
-      margin-bottom: 0.6rem;
-    }
-
-    .tuner-status.ok {
-      color: var(--success);
-    }
-
-    .tuner-status.flat,
-    .tuner-status.sharp {
-      color: var(--warn);
+      color: #2a3040;
+      background: #f6f2e7;
+      border-top: 1px solid rgba(15, 18, 28, 0.08);
     }
 
     .tuner-gauge-wrap {
-      margin: 0.35rem 0 0.65rem;
-      text-align: center;
-      background: linear-gradient(180deg, #323d4d 0%, #252e3a 100%);
-      border: 1px solid rgba(35, 43, 55, 0.95);
-      border-radius: var(--radius-lg);
-      padding: 0;
-      overflow: hidden;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        0 8px 24px rgba(25, 32, 40, 0.35);
-    }
-
-    .tuner-gauge-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      padding: 0.45rem 0.65rem;
-      background: linear-gradient(90deg, var(--accent) 0%, #5d7a5a 100%);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-    .tuner-gauge-header-title {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.95);
-    }
-
-    .tuner-gauge-header-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
-    }
-
-    .tuner-gauge-header-badge {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.88);
-      padding: 0.2rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.15);
+      margin: 0;
+      background: radial-gradient(circle at 50% 18%, #2d3444 0%, #222833 40%, #1d212b 100%);
     }
 
     .tuner-gauge-canvas-wrap {
-      padding: 0.45rem 0.45rem 0.35rem;
+      padding: 8px 8px 4px;
+    }
+
+    .tuner-gauge-header {
+      display: none;
     }
 
     .tuner-gauge {
       width: 100%;
-      max-width: var(--content-gauge);
-      height: 224px;
+      height: clamp(180px, 50vw, 255px);
       display: block;
       margin: 0 auto;
     }
 
+    .tuner-note-main-wrap {
+      background: #95ff17;
+      min-height: clamp(128px, 33vw, 172px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.22);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+    }
+
+    .tuner-note-main {
+      margin: 0;
+      color: #253151;
+      font-size: clamp(4.8rem, 19vw, 8.8rem);
+      font-weight: 500;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+    }
+
     .tuner-readings {
+      order: 6;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.45rem;
-      margin-bottom: 0.75rem;
+      gap: 8px;
+      padding: 0 10px 10px;
+      background: #fbf8ef;
     }
 
     .tuner-reading {
       text-align: center;
-      border: 1px solid rgba(125, 157, 122, 0.22);
-      border-radius: var(--radius-sm);
-      background: rgba(125, 157, 122, 0.08);
-      padding: 0.4rem 0.45rem;
-      box-shadow: var(--shadow-sm);
+      border: 1px solid #d6deec;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 0.4rem 0.35rem;
     }
 
     .tuner-reading b {
       display: block;
       font-size: 0.88rem;
-      color: var(--text);
+      color: #1f2430;
     }
 
     .tuner-reading span {
-      font-size: 0.72rem;
-      color: var(--text-soft);
+      font-size: 0.7rem;
+      color: #5e6575;
     }
 
     .tuner-chart {
-      width: 100%;
-      height: 120px;
+      order: 7;
       display: block;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(125, 157, 122, 0.2);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 248, 244, 0.75) 100%);
-      box-shadow: var(--shadow-sm);
+      width: calc(100% - 20px);
+      height: 120px;
+      margin: 0 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cad2e1;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
+    }
+
+    @media (max-width: 420px) {
+      .tuner-readings {
+        grid-template-columns: 1fr;
+      }
     }
 
     .staff-svg {
@@ -2392,7 +2425,14 @@
             <option value="high">Alto</option>
           </select>
         </div>
-        <div class="tuner-btn-row">
+      </div>
+
+      <div class="tuner-shell">
+        <div class="tuner-topbar">
+          <h2 class="tuner-title">Afinador</h2>
+        </div>
+
+        <div class="tuner-main-controls">
           <button type="button" class="tuner-round-btn start" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
             <span class="visually-hidden">Iniciar</span>
@@ -2402,19 +2442,23 @@
             <span class="visually-hidden">Parar</span>
           </button>
         </div>
+        <div class="tuner-status" id="tunerStatus">Microfone parado</div>
+        <div class="tuner-gauge-wrap" aria-hidden="true">
+          <div class="tuner-gauge-header"></div>
+          <div class="tuner-gauge-canvas-wrap">
+            <canvas id="tunerGauge" class="tuner-gauge" width="540" height="224"></canvas>
+          </div>
+        </div>
+        <div class="tuner-note-main-wrap">
+          <div class="tuner-note-main" id="tunerDetectedNote">--</div>
+        </div>
       </div>
 
-      <div class="tuner-note-main" id="tunerDetectedNote">--</div>
-      <div class="tuner-status" id="tunerStatus">Microfone parado</div>
-      <div class="tuner-gauge-wrap" aria-hidden="true">
-        <div class="tuner-gauge-header">
-          <span class="tuner-gauge-header-title"><span class="tuner-gauge-header-dot" aria-hidden="true"></span> Afinador</span>
-          <span class="tuner-gauge-header-badge">440 Hz ref.</span>
-        </div>
-        <div class="tuner-gauge-canvas-wrap">
-          <canvas id="tunerGauge" class="tuner-gauge" width="540" height="224"></canvas>
-        </div>
+      <div class="tuner-preset-dynamic" id="tunerPresetDynamic">
+        <p class="tuner-preset-dynamic-title">Notas alvo do instrumento</p>
+        <div class="tuner-preset-dynamic-list" id="tunerPresetDynamicList"></div>
       </div>
+
       <div class="tuner-readings">
         <div class="tuner-reading"><b id="tunerFreqValue">-- Hz</b><span>Frequência detectada</span></div>
         <div class="tuner-reading"><b id="tunerTargetValue">-- Hz</b><span>Alvo da nota</span></div>
@@ -3103,6 +3147,7 @@
       var tunerSmoothedFreq = 0;
       var tunerRawHistory = [];
       var tunerNoiseGate = 'low';
+      var tunerNoSignalFrames = 0;
       var wakeLockSentinel = null;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
@@ -5294,6 +5339,24 @@
         return TUNER_NOTE_NAMES[idx] + String(oct);
       }
 
+      function tunerHumanNoteLabel(noteName) {
+        var m = /^([A-G])(#?)(-?\d+)?$/.exec(String(noteName || '').trim());
+        if (!m) return String(noteName || '--');
+        var letter = m[1];
+        var sharp = m[2] || '';
+        var map = {
+          C: 'Do',
+          D: 'Re',
+          E: 'Mi',
+          F: 'Fa',
+          G: 'Sol',
+          A: 'La',
+          B: 'Si'
+        };
+        var base = map[letter] || letter;
+        return base + sharp;
+      }
+
       function tunerFreqToMidi(freq) {
         return Math.round(69 + 12 * Math.log(freq / 440) / Math.log(2));
       }
@@ -5312,54 +5375,54 @@
         for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
         rms = Math.sqrt(rms / size);
         if (rms < tunerNoiseThreshold()) return -1;
+        // Faixa ampla para cobrir E1 (~41Hz) ate notas agudas de sopro/cordas.
+        var minFreq = 30;
+        var maxFreq = 1400;
+        var minLag = Math.max(2, Math.floor(sampleRate / maxFreq));
+        var maxLag = Math.min(size - 2, Math.ceil(sampleRate / minFreq));
+        if (maxLag <= minLag) return -1;
 
-        var r1 = 0;
-        var r2 = size - 1;
-        var threshold = 0.2;
-        for (var ii = 0; ii < size / 2; ii++) {
-          if (Math.abs(buf[ii]) < threshold) {
-            r1 = ii;
-            break;
+        var bestLag = -1;
+        var bestCorr = -1;
+        var corr = new Array(maxLag + 1).fill(0);
+        for (var lag = minLag; lag <= maxLag; lag++) {
+          var num = 0;
+          var denA = 0;
+          var denB = 0;
+          var n = size - lag;
+          for (var j = 0; j < n; j++) {
+            var a = buf[j];
+            var b = buf[j + lag];
+            num += a * b;
+            denA += a * a;
+            denB += b * b;
+          }
+          var denom = Math.sqrt(denA * denB);
+          var cVal = denom > 0 ? (num / denom) : 0;
+          corr[lag] = cVal;
+          if (cVal > bestCorr) {
+            bestCorr = cVal;
+            bestLag = lag;
           }
         }
-        for (var jj = 1; jj < size / 2; jj++) {
-          if (Math.abs(buf[size - jj]) < threshold) {
-            r2 = size - jj;
-            break;
-          }
-        }
-        buf = buf.slice(r1, r2);
-        size = buf.length;
 
-        var c = new Array(size).fill(0);
-        for (var x = 0; x < size; x++) {
-          for (var y = 0; y < size - x; y++) {
-            c[x] = c[x] + buf[y] * buf[y + x];
-          }
-        }
+        // Rejeita leitura fraca (ruido/ambiguidade), mas sem travar sinais reais.
+        if (bestLag < 0 || bestCorr < 0.58) return -1;
 
-        var d = 0;
-        while (d + 1 < c.length && c[d] > c[d + 1]) d++;
-        var maxval = -1;
-        var maxpos = -1;
-        for (var k = d; k < c.length; k++) {
-          if (c[k] > maxval) {
-            maxval = c[k];
-            maxpos = k;
+        var lagRefined = bestLag;
+        if (bestLag > minLag && bestLag < maxLag) {
+          var y1 = corr[bestLag - 1];
+          var y2 = corr[bestLag];
+          var y3 = corr[bestLag + 1];
+          var denom2 = (y1 - 2 * y2 + y3);
+          if (Math.abs(denom2) > 1e-9) {
+            lagRefined = bestLag + (y1 - y3) / (2 * denom2);
           }
         }
-        var T0 = maxpos;
-        if (T0 <= 0) return -1;
-        if (T0 + 1 < c.length && T0 - 1 >= 0) {
-          var x1 = c[T0 - 1];
-          var x2 = c[T0];
-          var x3 = c[T0 + 1];
-          var a = (x1 + x3 - 2 * x2) / 2;
-          var b = (x3 - x1) / 2;
-          if (a) T0 = T0 - b / (2 * a);
-        }
-        if (!isFinite(T0) || T0 <= 0) return -1;
-        return sampleRate / T0;
+        if (!isFinite(lagRefined) || lagRefined <= 0) return -1;
+        var freq = sampleRate / lagRefined;
+        if (!isFinite(freq) || freq < minFreq || freq > maxFreq) return -1;
+        return freq;
       }
 
       function tunerPresetTargetForFreq(freq) {
@@ -5380,6 +5443,31 @@
           }
         });
         return best;
+      }
+
+      function renderTunerPresetDynamicInfo() {
+        var sel = document.getElementById('tunerInstrumentSelect');
+        var listEl = document.getElementById('tunerPresetDynamicList');
+        if (!sel || !listEl) return;
+        var presetId = sel.value || 'chromatic';
+        var notes = TUNER_PRESETS[presetId] || [];
+        listEl.innerHTML = '';
+        if (!notes.length) {
+          var empty = document.createElement('span');
+          empty.className = 'tuner-preset-dynamic-empty';
+          empty.textContent = 'Modo cromático: qualquer nota é válida.';
+          listEl.appendChild(empty);
+          return;
+        }
+        notes.forEach(function (noteName) {
+          var midi = tunerNoteToMidi(noteName);
+          if (midi === null) return;
+          var hz = midiToFreq(midi);
+          var chip = document.createElement('span');
+          chip.className = 'tuner-preset-dynamic-item';
+          chip.textContent = noteName + ' \u00b7 ' + hz.toFixed(1) + ' Hz';
+          listEl.appendChild(chip);
+        });
       }
 
       function updateTunerUINoSignal() {
@@ -5421,9 +5509,9 @@
       }
 
       function getTunerSmoothingConfig() {
-        if (tunerSensitivity === 'slow') return { alpha: 0.06, medianWindow: 9, jumpRatio: 1.08 };
+        if (tunerSensitivity === 'slow') return { alpha: 0.09, medianWindow: 9, jumpRatio: 1.10 };
         if (tunerSensitivity === 'fast') return { alpha: 0.32, medianWindow: 3, jumpRatio: 1.30 };
-        return { alpha: 0.14, medianWindow: 5, jumpRatio: 1.16 };
+        return { alpha: 0.18, medianWindow: 5, jumpRatio: 1.18 };
       }
 
       function tunerMedian(values) {
@@ -5434,7 +5522,7 @@
         return (arr[m - 1] + arr[m]) / 2;
       }
 
-      function drawTunerGauge(cents, statusMode) {
+      function drawTunerGauge(deviationHz, statusMode) {
         var canvas = document.getElementById('tunerGauge');
         if (!canvas) return;
         resizeCanvasToDisplay(canvas);
@@ -5449,119 +5537,119 @@
         var cx = w * 0.5;
         var cy = h * 0.84;
         var radius = Math.min(w * 0.44, h * 0.62);
+        var deviationRangeHz = 50;
 
         function degToRad(deg) {
           return deg * Math.PI / 180;
         }
 
-        // Arco base (estilo tuner mobile)
+        // Geometria da regua: -50 (esquerda/baixo) -> 0 (topo) -> +50 (direita/baixo)
+        // No canvas, para cruzar pelo topo precisamos usar o angulo final equivalente em 340deg.
         var startAng = degToRad(200);
-        var endAng = degToRad(-20);
+        var endAng = degToRad(340);
         var span = endAng - startAng;
 
-        // Arco externo
-        ctx.lineWidth = 10 * s;
-        ctx.strokeStyle = 'rgba(181, 197, 218, 0.42)';
+        // Arco azul (laterais)
+        ctx.lineWidth = 9 * s;
+        ctx.strokeStyle = '#88b5de';
+        var leftEnd = startAng + ((-10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
+        var rightStart = startAng + ((10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
         ctx.beginPath();
-        ctx.arc(cx, cy, radius, startAng, endAng, false);
+        ctx.arc(cx, cy, radius, startAng, leftEnd, false);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, rightStart, endAng, false);
         ctx.stroke();
 
-        // Faixa "afinado" (-10..+10 cents)
-        ctx.lineWidth = 20 * s;
-        ctx.strokeStyle = 'rgba(96, 168, 234, 0.58)';
+        // Faixa afinada central (verde)
+        ctx.lineWidth = 9 * s;
+        ctx.strokeStyle = '#9ed948';
         ctx.beginPath();
-        var tuneStart = startAng + ((-10 + 100) / 200) * span;
-        var tuneEnd = startAng + ((10 + 100) / 200) * span;
-        var innerRadius = Math.max(1, radius - 2 * s);
-        ctx.arc(cx, cy, innerRadius, tuneStart, tuneEnd, false);
+        ctx.arc(cx, cy, radius, leftEnd, rightStart, false);
         ctx.stroke();
 
-        // Ticks e labels
-        ctx.lineWidth = 1 * s;
-        ctx.strokeStyle = 'rgba(205, 219, 238, 0.38)';
-        ctx.fillStyle = 'rgba(223, 231, 241, 0.74)';
-        ctx.font = '600 ' + Math.round(10 * s) + 'px Segoe UI';
+        // Leque discreto central (fundo escuro transparente)
+        ctx.fillStyle = 'rgba(78, 104, 129, 0.24)';
+        ctx.beginPath();
+        ctx.moveTo(cx, cy + 2 * s);
+        ctx.arc(cx, cy, radius - 32 * s, leftEnd, rightStart, false);
+        ctx.closePath();
+        ctx.fill();
+
+        // Regua de desvio em Hz: -50 .. 0 .. +50 (de 10 em 10)
+        ctx.lineWidth = 1.2 * s;
+        ctx.font = '700 ' + Math.round(9 * s) + 'px Segoe UI';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        for (var t = -100; t <= 100; t += 10) {
-          var normalizedTick = (t + 100) / 200;
+        for (var t = -deviationRangeHz; t <= deviationRangeHz; t += 10) {
+          var normalizedTick = (t + deviationRangeHz) / (2 * deviationRangeHz);
           var a = startAng + normalizedTick * span;
           var x1 = cx + (radius - 1) * Math.cos(a);
           var y1 = cy + (radius - 1) * Math.sin(a);
-          var len = t % 50 === 0 ? 12 : t % 20 === 0 ? 8 : 5;
+          var len = t % 50 === 0 ? 12 : Math.abs(t) <= 10 ? 11 : 7;
           var x2 = cx + (radius - len) * Math.cos(a);
           var y2 = cy + (radius - len) * Math.sin(a);
+          var isCenterBand = Math.abs(t) <= 10;
+          ctx.strokeStyle = isCenterBand ? '#9ed948' : '#88b5de';
+          ctx.fillStyle = isCenterBand ? '#9ed948' : '#88b5de';
           ctx.beginPath();
           ctx.moveTo(x1, y1);
           ctx.lineTo(x2, y2);
           ctx.stroke();
-          if (t % 50 === 0) {
-            var lx = cx + (radius + 15) * Math.cos(a);
-            var ly = cy + (radius + 15) * Math.sin(a);
-            var lab = t > 0 ? '+' + String(t) : String(t);
+          if (t % 10 === 0) {
+            var lx = cx + (radius + 14) * Math.cos(a);
+            var ly = cy + (radius + 14) * Math.sin(a);
+            var lab = String(t);
             ctx.fillText(lab, lx, ly);
           }
         }
 
-        // Símbolos laterais (bemol/sustenido) para leitura rápida
-        ctx.fillStyle = 'rgba(223, 231, 241, 0.52)';
-        ctx.font = '600 ' + Math.round(14 * s) + 'px Segoe UI';
-        ctx.fillText('♭', cx - radius * 0.55, cy - radius * 0.34);
-        ctx.fillText('♯', cx + radius * 0.55, cy - radius * 0.34);
-
         // Ponteiro
-        var clamped = Math.max(-100, Math.min(100, cents));
-        var normalized = (clamped + 100) / 200;
+        var clamped = Math.max(-deviationRangeHz, Math.min(deviationRangeHz, deviationHz));
+        var normalized = (clamped + deviationRangeHz) / (2 * deviationRangeHz);
         var ang = startAng + normalized * span;
         var nx = cx + (radius - 16) * Math.cos(ang);
         var ny = cy + (radius - 16) * Math.sin(ang);
-        ctx.strokeStyle = statusMode === 'ok' ? '#93f037' : '#ff4343';
+        ctx.strokeStyle = '#db2730';
         ctx.lineWidth = 3.2 * s;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(nx, ny);
         ctx.stroke();
-        ctx.fillStyle = statusMode === 'ok' ? '#93f037' : '#f3f5f8';
+        var isInTune = statusMode === 'ok';
+        ctx.fillStyle = isInTune ? '#95ff17' : '#2a3344';
         ctx.beginPath();
-        ctx.arc(cx, cy, 4.4 * s, 0, Math.PI * 2);
+        ctx.arc(cx, cy, 12 * s, 0, Math.PI * 2);
         ctx.fill();
-
-        // Legendas no próprio medidor (estilo afinador profissional)
-        var action = 'Ouvindo';
-        if (statusMode === 'ok') action = 'Afinado';
-        else if (statusMode === 'flat') action = 'Apertar';
-        else if (statusMode === 'sharp') action = 'Afrouxar';
+        ctx.strokeStyle = isInTune ? '#678735' : '#5d6b85';
+        ctx.lineWidth = 1.2 * s;
+        ctx.stroke();
+        ctx.fillStyle = isInTune ? '#1f7240' : '#ff6c79';
+        ctx.font = '900 ' + Math.round(14 * s) + 'px Segoe UI';
+        ctx.fillText(isInTune ? '✓' : 'X', cx, cy);
 
         // Nota alvo no topo
-        ctx.fillStyle = '#9fd6ff';
-        ctx.font = '700 ' + Math.round(12 * s) + 'px Segoe UI';
-        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? '  ' + tunerLastTargetFreq.toFixed(1) : ''), cx, 16);
+        ctx.fillStyle = '#7fa8d3';
+        ctx.font = '700 ' + Math.round(13 * s) + 'px Segoe UI';
+        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? ': ' + Math.round(tunerLastTargetFreq) + 'Hz' : ''), cx, 18 * s);
 
         // Badge de cents no lado direito (como apps de tuner)
-        var badgeX = cx + radius * 0.44;
+        var badgeX = cx + radius * 0.48;
         var badgeY = cy - radius * 0.30;
-        var centsShown = Math.round(Math.max(-999, Math.min(999, cents)));
-        var badgeText = (centsShown >= 0 ? '+' : '') + centsShown + 'c';
-        ctx.fillStyle = 'rgba(58, 88, 122, 0.92)';
-        ctx.strokeStyle = 'rgba(130, 165, 207, 0.85)';
+        var liveHz = tunerLastFreq && isFinite(tunerLastFreq) ? tunerLastFreq.toFixed(1) : '--';
+        var badgeText = liveHz + 'Hz';
+        ctx.fillStyle = 'rgba(47, 71, 104, 0.9)';
+        ctx.strokeStyle = 'rgba(106, 145, 196, 0.9)';
         ctx.lineWidth = 1 * s;
-        var bw = 72 * s;
-        var bh = 34 * s;
+        var bw = 78 * s;
+        var bh = 38 * s;
         ctx.beginPath();
         ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5 * s);
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = '#8ec4ff';
-        ctx.font = '700 ' + Math.round(18 * s) + 'px Segoe UI';
+        ctx.fillStyle = '#8ab8f1';
+        ctx.font = '700 ' + Math.round(20 * s) + 'px Segoe UI';
         ctx.fillText(badgeText, badgeX, badgeY + 1);
-
-        // Bloco central com ação/frequência (fora da base para não sobrepor)
-        ctx.fillStyle = statusMode === 'ok' ? '#9cf14a' : '#d5dde8';
-        ctx.font = '700 ' + Math.round(15 * s) + 'px Segoe UI';
-        ctx.fillText(action, cx, cy + 16);
-        ctx.fillStyle = '#f2f6fb';
-        ctx.font = '700 ' + Math.round(18 * s) + 'px Segoe UI';
-        ctx.fillText(tunerLastFreq ? tunerLastFreq.toFixed(1) + ' Hz' : '--', cx, cy + 36);
       }
 
       function drawTunerChart() {
@@ -5610,12 +5698,13 @@
       function updateTunerUI(freq) {
         var midi = tunerFreqToMidi(freq);
         var targetFreq = midiToFreq(midi);
-        var cents = 1200 * Math.log(freq / targetFreq) / Math.log(2);
+        // Motor baseado em desvio absoluto de frequencia (Hz): 0 = afinado.
+        var deviationHz = freq - targetFreq;
         var noteName = tunerMidiToName(midi);
         var presetTarget = tunerPresetTargetForFreq(freq);
         if (presetTarget) {
           targetFreq = presetTarget.freq;
-          cents = 1200 * Math.log(freq / targetFreq) / Math.log(2);
+          deviationHz = freq - targetFreq;
           noteName = presetTarget.note;
         }
 
@@ -5624,21 +5713,21 @@
         var fEl = document.getElementById('tunerFreqValue');
         var tEl = document.getElementById('tunerTargetValue');
         var cEl = document.getElementById('tunerCentsValue');
-        if (noteEl) noteEl.textContent = noteName;
+        if (noteEl) noteEl.textContent = tunerHumanNoteLabel(noteName);
         if (fEl) fEl.textContent = freq.toFixed(2) + ' Hz';
         if (tEl) tEl.textContent = targetFreq.toFixed(2) + ' Hz';
-        if (cEl) cEl.textContent = (cents >= 0 ? '+' : '') + cents.toFixed(1) + ' cents';
-        tunerLastCents = cents;
+        if (cEl) cEl.textContent = (deviationHz >= 0 ? '+' : '') + deviationHz.toFixed(1) + ' Hz';
+        tunerLastCents = deviationHz;
         tunerLastNote = noteName;
         tunerLastTargetFreq = targetFreq;
         tunerLastFreq = freq;
         if (statusEl) {
           statusEl.classList.remove('ok', 'flat', 'sharp');
-          if (Math.abs(cents) <= 5) {
+          if (Math.abs(deviationHz) <= 0.8) {
             tunerLastStatus = 'ok';
             statusEl.classList.add('ok');
             statusEl.textContent = 'Afinado';
-          } else if (cents < 0) {
+          } else if (deviationHz < 0) {
             tunerLastStatus = 'flat';
             statusEl.classList.add('flat');
             statusEl.textContent = 'Apertar';
@@ -5648,7 +5737,7 @@
             statusEl.textContent = 'Afrouxar';
           }
         }
-        drawTunerGauge(cents, tunerLastStatus);
+        drawTunerGauge(deviationHz, tunerLastStatus);
       }
 
       function tunerLoop() {
@@ -5656,6 +5745,7 @@
         tunerAnalyzer.getFloatTimeDomainData(tunerData);
         var freq = tunerAutoCorrelate(tunerData, tunerAnalyzer.context.sampleRate);
         if (freq > 0) {
+          tunerNoSignalFrames = 0;
           var cfg = getTunerSmoothingConfig();
           tunerRawHistory.push(freq);
           if (tunerRawHistory.length > 12) tunerRawHistory.shift();
@@ -5674,7 +5764,8 @@
           tunerHistory.push(tunerSmoothedFreq);
           if (tunerHistory.length > 90) tunerHistory.shift();
         } else {
-          updateTunerUINoSignal();
+          tunerNoSignalFrames += 1;
+          if (tunerNoSignalFrames > 6) updateTunerUINoSignal();
         }
         drawTunerChart();
         tunerFrameId = requestAnimationFrame(tunerLoop);
@@ -5709,6 +5800,7 @@
 
       function stopTuner() {
         tunerRunning = false;
+        tunerNoSignalFrames = 0;
         if (tunerFrameId) {
           cancelAnimationFrame(tunerFrameId);
           tunerFrameId = 0;
@@ -5754,12 +5846,14 @@
           tunerStream = stream;
           tunerAnalyzer = ctx.createAnalyser();
           tunerAnalyzer.fftSize = 4096;
+          tunerAnalyzer.smoothingTimeConstant = 0;
           tunerSource = ctx.createMediaStreamSource(stream);
           tunerSource.connect(tunerAnalyzer);
           tunerData = new Float32Array(tunerAnalyzer.fftSize);
           tunerHistory = [];
           tunerRawHistory = [];
           tunerSmoothedFreq = 0;
+          tunerNoSignalFrames = 0;
           tunerRunning = true;
           var startBtn = document.getElementById('tunerStartBtn');
           var stopBtn = document.getElementById('tunerStopBtn');
@@ -6397,7 +6491,9 @@
           });
         }
         if (tunerPresetSel) {
+          renderTunerPresetDynamicInfo();
           tunerPresetSel.addEventListener('change', function () {
+            renderTunerPresetDynamicInfo();
             if (!tunerRunning) return;
             setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
           });
