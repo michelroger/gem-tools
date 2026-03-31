@@ -5345,16 +5345,32 @@
         var letter = m[1];
         var sharp = m[2] || '';
         var map = {
-          C: 'Do',
-          D: 'Re',
+          C: 'Dó',
+          D: 'Ré',
           E: 'Mi',
-          F: 'Fa',
+          F: 'Fá',
           G: 'Sol',
-          A: 'La',
+          A: 'Lá',
           B: 'Si'
         };
         var base = map[letter] || letter;
         return base + sharp;
+      }
+
+      function tunerHumanNoteWithOctave(noteName) {
+        var m = /^([A-G])(#?)(-?\d+)?$/.exec(String(noteName || '').trim());
+        if (!m) return String(noteName || '--');
+        var octave = m[3] || '';
+        return tunerHumanNoteLabel(m[1] + (m[2] || '')) + octave;
+      }
+
+      function tunerAdjacentHumanLabels(noteName) {
+        var midi = tunerNoteToMidi(noteName);
+        if (midi === null) return { prev: '--', next: '--' };
+        return {
+          prev: tunerHumanNoteLabel(tunerMidiToName(midi - 1)),
+          next: tunerHumanNoteLabel(tunerMidiToName(midi + 1))
+        };
       }
 
       function tunerFreqToMidi(freq) {
@@ -5664,10 +5680,17 @@
         ctx.font = '900 ' + Math.round(14 * s) + 'px Segoe UI';
         ctx.fillText(isInTune ? '✓' : 'X', cx, cy);
 
-        // Nota alvo no topo
+        // Nota atual com oitava no topo
+        var adjacent = tunerAdjacentHumanLabels(tunerLastNote);
         ctx.fillStyle = '#7fa8d3';
         ctx.font = '700 ' + Math.round(13 * s) + 'px Segoe UI';
-        ctx.fillText(tunerLastNote + (tunerLastTargetFreq ? ': ' + Math.round(tunerLastTargetFreq) + 'Hz' : ''), cx, 18 * s);
+        ctx.fillText(tunerHumanNoteWithOctave(tunerLastNote) + (tunerLastTargetFreq ? ': ' + Math.round(tunerLastTargetFreq) + 'Hz' : ''), cx, 18 * s);
+
+        // Nota anterior e proxima nas laterais da regua
+        ctx.fillStyle = '#7fa8d3';
+        ctx.font = '700 ' + Math.round(12 * s) + 'px Segoe UI';
+        ctx.fillText(adjacent.prev, cx - radius * 0.93, cy - radius * 0.13);
+        ctx.fillText(adjacent.next, cx + radius * 0.93, cy - radius * 0.13);
 
         // Badge de cents no lado direito (como apps de tuner)
         var badgeX = cx + radius * 0.48;
