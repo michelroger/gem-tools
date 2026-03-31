@@ -3317,6 +3317,7 @@
       var tunerNoiseGate = 'low';
       var tunerNoSignalFrames = 0;
       var wakeLockSentinel = null;
+      var wakeLockBootstrapped = false;
       const METRO_LOOKAHEAD_MS = 25;
       const METRO_SCHEDULE_AHEAD_S = 0.12;
       const STAFF_BOTTOM_LINE_Y = 118;
@@ -6068,6 +6069,15 @@
         }).catch(function () {});
       }
 
+      function bootstrapScreenWakeLock() {
+        if (wakeLockBootstrapped) return;
+        wakeLockBootstrapped = true;
+        requestScreenWakeLock();
+        ['pointerdown', 'touchstart', 'keydown'].forEach(function (eventName) {
+          window.addEventListener(eventName, requestScreenWakeLock, { passive: true });
+        });
+      }
+
       function releaseScreenWakeLock() {
         if (!wakeLockSentinel) return;
         wakeLockSentinel.release().catch(function () {});
@@ -6106,7 +6116,6 @@
           });
           tunerStream = null;
         }
-        releaseScreenWakeLock();
         var st = document.getElementById('tunerStatus');
         if (st) {
           st.classList.remove('ok', 'flat', 'sharp');
@@ -6887,11 +6896,14 @@
           drawTunerChart();
         });
         document.addEventListener('visibilitychange', function () {
-          if (document.visibilityState === 'visible' && currentMode === 'tuner' && tunerRunning) {
+          if (document.visibilityState === 'visible') {
             requestScreenWakeLock();
           }
         });
-        window.addEventListener('beforeunload', stopTuner);
+        window.addEventListener('beforeunload', function () {
+          stopTuner();
+          releaseScreenWakeLock();
+        });
 
         bindHinosEvents();
 
@@ -8212,6 +8224,7 @@
       }
 
       function init() {
+        bootstrapScreenWakeLock();
         createInstrumentButtons();
         createKeyButtons();
         createClefButtons();
