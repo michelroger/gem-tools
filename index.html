@@ -2870,41 +2870,45 @@
               <span style="display:inline-block; width:100%; color: var(--text); font-weight:900;">🎵 Sobre o GEM Tools</span>
               <br/>
               <span>
-                O GEM Tools é um aplicativo desenvolvido para auxiliar no aprendizado musical dos alunos do GEM – Grupo de Ensino Musical da CCB.
+                O GEM Tools é uma ferramenta de apoio ao estudo musical desenvolvida para os alunos do GEM - Grupo de Ensino Musical da CCB, reunindo recursos de prática, acompanhamento e consulta em um único aplicativo.
               </span>
             </div>
 
             <div style="margin-bottom:0.85rem;">
               <br/>
-              Ajudar alunos no desenvolvimento musical por meio de:
-              <br/>• Exercícios interativos
-              <br/>• Treinamento auditivo
-              <br/>• Leitura musical
-              <br/>• Prática com metrônomo
+              <span style="color: var(--text); font-weight:900;">Funcionalidades</span>
+              <br/>
+              • Controle local de estudo do Hinário 5 por aluno, voz principal e afinação
+              <br/>• Visão por fases, progresso e acompanhamento individual
+              <br/>• Espelho do instrumento com notas por corda, posição e dedilhado
+              <br/>• Exercícios de identificação de notas e desafios interativos
+              <br/>• Leitura musical com tela de pentagrama
+              <br/>• Afinador com leitura em tempo real, referência de nota e desvio
+              <br/>• Metrônomo com BPM, batidas, acentuação e modo de solfejo
+            </div>
+
+            <div style="margin-bottom:0.85rem;">
+              <span style="color: var(--text); font-weight:900;">📚 Objetivo</span>
+              <br/>
+              Oferecer uma base prática para o estudo diário, auxiliando na memorização das notas, no desenvolvimento auditivo, na leitura musical e no acompanhamento do repertório.
             </div>
 
             <div style="margin-bottom:0.85rem;">
               <span style="color: var(--text); font-weight:900;">♿ Inclusão</span>
               <br/>
-              O aplicativo também faz parte de uma iniciativa de GEM Inclusivo, buscando adaptar o ensino musical para todos os alunos, respeitando suas individualidades e promovendo acessibilidade no aprendizado.
+              O aplicativo também faz parte de uma proposta de GEM Inclusivo, buscando ampliar o acesso ao aprendizado musical com foco em praticidade, clareza e acessibilidade.
             </div>
 
             <div style="margin-bottom:0.85rem;">
-              <span style="color: var(--text); font-weight:900;">⚠️ Versão Beta</span>
+              <span style="color: var(--text); font-weight:900;">⚠️ Versão em evolução</span>
               <br/>
-              Este aplicativo encontra-se em fase Beta, podendo apresentar melhorias contínuas, ajustes e novas funcionalidades ao longo do tempo.
-            </div>
-
-            <div style="margin-bottom:0.85rem;">
-              <span style="color: var(--text); font-weight:900;">📢 Uso Livre</span>
-              <br/>
-              O GEM Tools é um projeto independente, sem fins lucrativos, e pode ser utilizado livremente para fins educacionais.
+              O GEM Tools continua em evolução, recebendo melhorias visuais, ajustes de usabilidade e novas funcionalidades conforme o uso real do aplicativo.
               <br/><br/>
               ✔ Sem propagandas.
               <br/>
               ✔ Sem coleta indevida de dados.
               <br/>
-              ✔ Uso permitido sem restrições de direitos para estudo.
+              ✔ Uso livre para apoio educacional.
             </div>
 
             <div>
@@ -2914,7 +2918,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: 1.0.0 - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.1.0</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>
@@ -2930,6 +2934,9 @@
   <script>
     (function () {
       'use strict';
+
+      const APP_VERSION = '1.1.0';
+      const APP_VERSION_LABEL = 'Beta';
 
       // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
       const NOTAS = [
@@ -8224,6 +8231,10 @@
       }
 
       function init() {
+        var aboutVersionNumber = document.getElementById('aboutVersionNumber');
+        var aboutVersionLabel = document.getElementById('aboutVersion');
+        if (aboutVersionNumber) aboutVersionNumber.textContent = APP_VERSION;
+        if (aboutVersionLabel) aboutVersionLabel.textContent = APP_VERSION_LABEL;
         bootstrapScreenWakeLock();
         createInstrumentButtons();
         createKeyButtons();
@@ -8237,6 +8248,7 @@
         updateTunerUINoSignal();
         drawTunerGauge(0, 'idle');
         drawTunerChart();
+        setMode(currentMode);
         updateFullscreenButton();
         initBottomNavObserver();
         updateBottomNavVisibility();
@@ -8244,7 +8256,9 @@
         window.addEventListener('resize', updateBottomNavVisibility);
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
-        setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+        if (currentMode !== 'hinos') {
+          setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+        }
         // Pequeno atraso para a transição de entrada ficar suave.
         setTimeout(hideSplashScreen, 700);
       }
