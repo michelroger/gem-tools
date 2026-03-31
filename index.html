@@ -175,14 +175,7 @@
     }
 
     .settings-top-toggle {
-      position: absolute;
-      right: 1rem;
-      top: 0.75rem;
-      z-index: 50;
-      width: auto;
-      display: flex;
-      justify-content: center;
-      margin: 0;
+      display: none;
     }
 
     /* ========== MASCOTE ========== */
@@ -470,6 +463,12 @@
       width: 100%;
       max-width: var(--content-narrow);
       text-align: center;
+    }
+
+    .staff-restart-wrap {
+      margin-top: 0.9rem;
+      display: flex;
+      justify-content: center;
     }
 
     .tuner-section {
@@ -1640,28 +1639,31 @@
     .mode-tabs {
       position: fixed;
       left: 50%;
-      bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
       transform: translateX(-50%);
       z-index: 1200;
-      width: min(680px, calc(100% - 1rem));
+      width: min(640px, calc(100% - 1.2rem));
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.2rem;
-      padding: 0.35rem;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(125, 157, 122, 0.38);
-      background: rgba(255, 254, 249, 0.94);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: var(--shadow-nav);
-      transition: opacity var(--ease), transform 0.25s var(--ease-out);
+      gap: 0.28rem;
+      padding: 0.5rem;
+      border-radius: 24px;
+      border: 1px solid rgba(176, 186, 168, 0.24);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(249, 247, 241, 0.96) 100%);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
+      box-shadow:
+        0 12px 34px rgba(48, 44, 36, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      transition: opacity var(--ease), transform 0.25s var(--ease-out), box-shadow 0.25s ease;
     }
 
     .mode-tabs.nav-hidden {
       opacity: 0;
       pointer-events: none;
-      transform: translateX(-50%) translateY(16px);
+      transform: translateX(-50%) translateY(24px);
     }
 
     .mode-btn {
@@ -1669,23 +1671,29 @@
       min-width: 0;
       border: 0;
       background: transparent;
-      color: var(--text-soft);
-      border-radius: var(--radius-sm);
-      padding: 0.3rem 0.15rem 0.35rem;
-      min-height: 56px;
+      color: rgba(92, 91, 86, 0.88);
+      border-radius: 18px;
+      padding: 0.4rem 0.22rem 0.42rem;
+      min-height: 60px;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.18rem;
+      gap: 0.28rem;
       cursor: pointer;
       font-family: inherit;
-      transition: color var(--ease), background var(--ease), transform 0.12s var(--ease-out), box-shadow var(--ease);
+      position: relative;
+      transition:
+        color 0.24s ease,
+        background 0.24s ease,
+        transform 0.16s var(--ease-out),
+        box-shadow 0.24s ease,
+        opacity 0.24s ease;
     }
 
     .mode-btn:hover {
-      background: var(--accent-soft);
-      color: var(--accent);
+      color: #4f7d56;
+      background: rgba(125, 157, 122, 0.08);
     }
 
     .mode-btn:active {
@@ -1698,9 +1706,11 @@
     }
 
     .mode-btn.active {
-      color: var(--accent);
-      background: #ffffff;
-      box-shadow: var(--shadow-sm);
+      color: #466e4b;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 250, 244, 0.98) 100%);
+      box-shadow:
+        0 10px 20px rgba(125, 157, 122, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     .mode-btn-icon {
@@ -1709,33 +1719,127 @@
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      opacity: 0.92;
+      opacity: 0.9;
+      width: 2.05rem;
+      height: 2.05rem;
+      border-radius: 999px;
+      background: transparent;
+      transition: background 0.24s ease, color 0.24s ease, transform 0.24s ease;
     }
 
     .mode-btn-icon svg {
-      width: 1.12rem;
-      height: 1.12rem;
+      width: 1.02rem;
+      height: 1.02rem;
     }
 
     .mode-btn-label {
       white-space: nowrap;
-      font-size: 0.64rem;
+      font-size: 0.63rem;
       font-weight: 700;
       line-height: 1;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.005em;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
+      opacity: 0.78;
+      transform: translateY(0);
+      transition: opacity 0.22s ease, color 0.22s ease, transform 0.22s ease;
+    }
+
+    .mode-btn.active .mode-btn-icon {
+      background: radial-gradient(circle at 30% 30%, #c8f08d 0%, #a9da58 45%, #8fca3f 100%);
+      color: #203122;
+      transform: translateY(-1px);
+      box-shadow:
+        0 6px 14px rgba(151, 205, 71, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .mode-btn.active .mode-btn-label {
+      opacity: 1;
+      color: #466e4b;
+    }
+
+    .mode-btn:not(.active) .mode-btn-label {
+      font-size: 0.6rem;
+    }
+
+    .mode-more-wrap {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+    }
+
+    .mode-more-menu {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 0.65rem);
+      min-width: 176px;
+      padding: 0.45rem;
+      border-radius: 18px;
+      border: 1px solid rgba(176, 186, 168, 0.22);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 20px 40px rgba(31, 36, 48, 0.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      z-index: 35;
+      transform-origin: bottom right;
+      animation: modeMorePop 0.16s ease-out;
+    }
+
+    .mode-more-menu.hidden {
+      display: none;
+    }
+
+    .mode-more-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      border-radius: 14px;
+      min-height: 44px;
+      padding: 0.65rem 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: background var(--ease), color var(--ease), transform 0.16s ease;
+    }
+
+    .mode-more-item:hover,
+    .mode-more-item.active {
+      background: rgba(125, 157, 122, 0.12);
+      color: #466e4b;
+      transform: translateY(-1px);
+    }
+
+    .mode-more-item svg {
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+    }
+
+    @keyframes modeMorePop {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     /* ========== PAINEL DE CONFIGURAÇÕES ========== */
     .settings-wrap {
       width: 100%;
-      max-width: var(--content-narrow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 1rem;
     }
 
     .settings-toggle {
@@ -1759,6 +1863,13 @@
       box-shadow: var(--shadow);
       padding: 0.9rem;
       width: 100%;
+    }
+
+    .settings-modal-card {
+      width: min(680px, calc(100vw - 1.2rem));
+      max-height: min(88vh, 900px);
+      overflow-y: auto;
+      margin: auto;
     }
 
     .settings-panel.hidden {
@@ -2289,6 +2400,50 @@
     }
 
     @media (max-width: 480px) {
+      body .container {
+        padding-bottom: calc(var(--bottom-nav-safe-space) + env(safe-area-inset-bottom, 0px));
+      }
+
+      .mode-tabs {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: none;
+        width: auto;
+        padding: 0.38rem 0.25rem calc(0.38rem + env(safe-area-inset-bottom, 0px));
+        gap: 0.18rem;
+        border-radius: 22px 22px 0 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+        box-sizing: border-box;
+      }
+
+      .mode-tabs.nav-hidden {
+        transform: translateY(28px);
+      }
+
+      .mode-btn {
+        min-height: 56px;
+        padding: 0.34rem 0.1rem 0.36rem;
+      }
+
+      .mode-btn-icon {
+        width: 1.9rem;
+        height: 1.9rem;
+      }
+
+      .mode-btn-label {
+        font-size: 0.58rem;
+      }
+
+      .mode-more-menu {
+        right: -0.1rem;
+        min-width: 162px;
+      }
+
       .metronome-card {
         padding: 1rem 0.95rem 0.9rem;
       }
@@ -2307,9 +2462,6 @@
   </div>
 
   <div class="container">
-    <div class="settings-top-toggle">
-      <button type="button" class="btn btn-secondary btn-icon settings-toggle" id="btnSettingsToggleInline" aria-expanded="false" aria-controls="settingsPanel">⚙️</button>
-    </div>
     <div class="message-box" id="messageBox">
       <span class="instruction-text" id="instructionText">Clique em um botão para ouvir a nota. Escolha um modo acima.</span>
     </div>
@@ -2336,9 +2488,10 @@
       </div>
     </div>
 
-    <div class="settings-wrap">
-      
-      <div class="settings-panel hidden" id="settingsPanel">
+    <div class="metronome-modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <div class="metronome-card settings-modal-card settings-panel" id="settingsPanel">
+        <button type="button" class="metronome-close" id="btnSettingsClose" aria-label="Fechar configurações">✕</button>
+        <h2 class="hinos-new-student-title" id="settingsModalTitle">Configurações</h2>
         <div class="settings-group instrument-section" id="instrumentSection">
           <p class="key-label">Instrumento</p>
           <div class="instrument-tabs" id="instrumentTabs" role="group" aria-label="Escolha o instrumento">
@@ -2386,6 +2539,9 @@
       <svg id="staffSvg" class="staff-svg" role="img" aria-label="Pentagrama com uma nota"></svg>
       <div class="note-options" id="noteOptions" aria-label="Opções de notas">
         <!-- Botões Dó a Si (preenchidos via JS) -->
+      </div>
+      <div class="staff-restart-wrap hidden" id="staffRestartWrap">
+        <button type="button" class="btn btn-primary" id="btnStaffRestart">Jogar novamente</button>
       </div>
     </div>
 
@@ -2598,7 +2754,11 @@
     </div>
 
     <div class="mode-tabs nav-hidden" id="modeTabs" role="tablist">
-      <button type="button" class="mode-btn active" data-mode="learn" role="tab">
+      <button type="button" class="mode-btn active" data-mode="hinos" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span class="mode-btn-label">Controle</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="learn" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
         <span class="mode-btn-label">Aprender</span>
       </button>
@@ -2610,26 +2770,31 @@
         <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="18" x2="22" y2="18"/><line x1="2" y1="6" x2="22" y2="6"/><path d="M17 4v14"/><ellipse cx="14" cy="11" rx="2.2" ry="1.7"/></svg></span>
         <span class="mode-btn-label">Penta</span>
       </button>
-      <button type="button" class="mode-btn" data-mode="tuner" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/><line x1="12" y1="12" x2="16" y2="8"/></svg></span>
-        <span class="mode-btn-label">Afinar</span>
-      </button>
-      
-      <button type="button" class="mode-btn" id="btnMetronome" role="tab" aria-controls="metronomeModal" aria-expanded="false">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/></svg></span>
-        <span class="mode-btn-label">Metro</span>
-      </button>
-      <button type="button" class="mode-btn" data-mode="hinos" role="tab">
-        
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-        <span class="mode-btn-label">Controle</span>
-      </button>
+      <div class="mode-more-wrap">
+        <button type="button" class="mode-btn" id="btnMoreMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMoreMenu">
+          <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg></span>
+          <span class="mode-btn-label">Mais</span>
+        </button>
+        <div class="mode-more-menu hidden" id="modeMoreMenu" role="menu">
+          <button type="button" class="mode-more-item" id="btnMoreTuner" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12A9 9 0 1 1 12 3"/><path d="M12 12l5-5"/><circle cx="12" cy="12" r="1"/></svg>
+            <span>Afinador</span>
+          </button>
+          <button type="button" class="mode-more-item" id="btnMoreMetronome" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/><line x1="12" y1="12" x2="16" y2="8"/></svg>
+            <span>Metrônomo</span>
+          </button>
+          <button type="button" class="mode-more-item" id="btnMoreSettings" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.37 17l.06-.06A1.65 1.65 0 0 0 4.76 15a1.65 1.65 0 0 0-1.51-1H3.16a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.2 4.29l.06.06A1.65 1.65 0 0 0 9.08 4a1.65 1.65 0 0 0 1-1.51V2.4a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.63 7l-.06.06A1.65 1.65 0 0 0 19.24 9c.2.61.78 1.02 1.43 1.02h.17a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.35.98z"/></svg>
+            <span>Ajustes</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Metrônomo (tela/modal) -->
-    <div class="metronome-modal hidden" id="metronomeModal" role="dialog" aria-modal="true" aria-label="Metrônomo">
+    <!-- Metrônomo (aba/seção) -->
+    <div class="staff-section hidden" id="metroSection">
       <div class="metronome-card">
-        <button type="button" class="metronome-close" id="btnMetronomeClose" aria-label="Fechar">✕</button>
 
         <div class="metro-top">
           <div class="metro-bpm-badge">BPM</div>
@@ -2759,6 +2924,8 @@
     </div>
 
   </div>
+
+  <div id="bottomNavSentinel" aria-hidden="true"></div>
 
   <script>
     (function () {
@@ -3042,7 +3209,7 @@
 
       // ========== ESTADO GLOBAL ==========
       let audioCtx = null;
-      let currentMode = 'learn';
+      let currentMode = 'hinos';
       let challengeTarget = null;
       let challengeTimeout = null;
       let challengeRound = 0;
@@ -3064,6 +3231,7 @@
       var currentSustainedNoteStop = null;
       var activePointerNotes = {};
       let staffModeTarget = null;
+      let staffAnswerLocked = false;
       let staffNoteEllipse = null;
       let staffClefElement = null;
       let currentClef = 'sol';
@@ -5308,9 +5476,17 @@
         });
       }
 
-      function updateBottomNavVisibility() {
+      function updateBottomNavVisibility(forceVisible) {
         var nav = document.getElementById('modeTabs');
         if (!nav) return;
+        if (typeof forceVisible === 'boolean') {
+          nav.classList.toggle('nav-hidden', !forceVisible);
+          document.body.classList.toggle('show-bottom-nav', !!forceVisible);
+          return;
+        }
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        var scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+        if (viewportHeight <= 0) return;
         var scrollBottom = window.scrollY + window.innerHeight;
         var docHeight = Math.max(
           document.body.scrollHeight,
@@ -5318,9 +5494,64 @@
           document.body.offsetHeight,
           document.documentElement.offsetHeight
         );
-        var atBottom = scrollBottom >= docHeight - 8;
+        var distanceFromBottom = Math.max(0, docHeight - (scrollTop + viewportHeight));
+        var threshold = Math.max(28, Math.round(viewportHeight * 0.035));
+        var atBottom = distanceFromBottom <= threshold;
         nav.classList.toggle('nav-hidden', !atBottom);
         document.body.classList.toggle('show-bottom-nav', atBottom);
+      }
+
+      function initBottomNavObserver() {
+        var sentinel = document.getElementById('bottomNavSentinel');
+        if (!sentinel) return;
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            var entry = entries && entries[0];
+            updateBottomNavVisibility(!!(entry && entry.isIntersecting));
+          }, {
+            root: null,
+            threshold: 0,
+            rootMargin: '0px 0px -12px 0px'
+          });
+          observer.observe(sentinel);
+          return;
+        }
+        updateBottomNavVisibility();
+      }
+
+      function setMoreMenuOpen(isOpen) {
+        var menu = document.getElementById('modeMoreMenu');
+        var btn = document.getElementById('btnMoreMenu');
+        if (!menu || !btn) return;
+        menu.classList.toggle('hidden', !isOpen);
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
+
+      function openSettingsPanel() {
+        var modal = document.getElementById('settingsModal');
+        var btn = document.getElementById('btnMoreSettings');
+        var btnMoreMenu = document.getElementById('btnMoreMenu');
+        if (!modal) return;
+        setMoreMenuOpen(false);
+        modal.classList.remove('hidden');
+        if (btnMoreMenu) btnMoreMenu.classList.add('active');
+        if (btn) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      function closeSettingsPanel() {
+        var modal = document.getElementById('settingsModal');
+        var btn = document.getElementById('btnMoreSettings');
+        var btnMoreMenu = document.getElementById('btnMoreMenu');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        if (btnMoreMenu && currentMode !== 'tuner') btnMoreMenu.classList.remove('active');
       }
 
       function tunerNoteToMidi(noteName) {
@@ -5931,9 +6162,19 @@
         if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
         if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
         currentMode = mode;
+        setMoreMenuOpen(false);
+        closeSettingsPanel();
         document.querySelectorAll('.mode-btn').forEach(function (btn) {
           btn.classList.toggle('active', btn.dataset.mode === mode);
         });
+        var btnMoreMenu = document.getElementById('btnMoreMenu');
+        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome');
+        var btnMoreTuner = document.getElementById('btnMoreTuner');
+        var btnMoreMetronome = document.getElementById('btnMoreMetronome');
+        var btnMoreSettings = document.getElementById('btnMoreSettings');
+        if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
+        if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
+        if (btnMoreSettings) btnMoreSettings.classList.remove('active');
         clearViolinHighlight();
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
 
@@ -5941,16 +6182,19 @@
         var staffSectionEl = document.getElementById('staffSection');
         var hinosSectionEl = document.getElementById('hinosSection');
         var tunerSectionEl = document.getElementById('tunerSection');
-        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl) {
+        var metroSectionEl = document.getElementById('metroSection');
+        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl) {
           if (mode === 'hinos') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.add('hidden');
             hinosSectionEl.classList.remove('hidden');
           } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.remove('hidden');
             tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -5958,6 +6202,15 @@
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.remove('hidden');
+            metroSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.add('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
+          } else if (mode === 'metronome') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.remove('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -5965,6 +6218,7 @@
             violinSection.classList.remove('hidden');
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -5972,7 +6226,7 @@
         }
         var progressSectionEl = document.getElementById('progressSection');
         if (progressSectionEl) {
-          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner');
+          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome');
         }
 
         if (mode === 'learn') {
@@ -5995,6 +6249,12 @@
           updateProgress();
           setMessage('Afinador pronto. Selecione o preset e toque em Iniciar.');
           if (!tunerRunning) startTuner();
+        } else if (mode === 'metronome') {
+          updateChallengeStats();
+          updateProgress();
+          updateMetronomeModeUI();
+          setMessage('Escolha um ritmo no metrônomo.');
+          if (metroIsRunning) updateMetroButtons();
         } else if (mode === 'hinos') {
           updateChallengeStats();
           if (hinosLastSyncInstrumentId !== currentInstrument.id) {
@@ -6264,6 +6524,7 @@
         if (!staffNoteEllipse) initStaff();
         var positions = buildStaffPositionsForClef(currentClef);
         if (!positions.length) return;
+        staffAnswerLocked = false;
         challengeDiscardedAttempts = {};
         clearChallengeDiscardedCells();
         var index = Math.floor(Math.random() * positions.length);
@@ -6284,7 +6545,13 @@
           return;
         }
 
+        if (staffAnswerLocked) {
+          return;
+        }
+
         if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+          var restartWrapDone = document.getElementById('staffRestartWrap');
+          if (restartWrapDone) restartWrapDone.classList.remove('hidden');
           setMessage('Desafio do pentagrama concluído. Toque em Reiniciar para jogar novamente.');
           return;
         }
@@ -6302,6 +6569,7 @@
         });
 
         if (selectedId === staffModeTarget.id) {
+          staffAnswerLocked = true;
           score++;
           challengeRound++;
           totalChallenges = challengeRound;
@@ -6313,11 +6581,14 @@
           if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
             stopChallengeTimer();
             var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
+            var restartWrap = document.getElementById('staffRestartWrap');
+            if (restartWrap) restartWrap.classList.remove('hidden');
             setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
             speak('Parabéns! Você concluiu o pentagrama.');
             return;
           }
         } else {
+          staffAnswerLocked = true;
           playGameSfx('wrong');
           challengeDiscardedAttempts[attemptKey] = true;
           if (buttonEl) buttonEl.classList.add('challenge-discarded');
@@ -6335,6 +6606,7 @@
               setMessage('Você chegou a 3 erros. A partida do pentagrama foi reiniciada em 1/20.');
               speak('Partida reiniciada.');
               resetChallengeSession(true);
+              staffAnswerLocked = false;
               score = 0;
               totalChallenges = 0;
               updateProgress();
@@ -6380,6 +6652,7 @@
         challengeRound = 0;
         challengeErrors = 0;
         challengeDiscardedAttempts = {};
+        staffAnswerLocked = false;
         challengeTarget = null;
         if (challengeTimeout) clearTimeout(challengeTimeout);
         updateProgress();
@@ -6391,6 +6664,8 @@
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
         clearViolinHighlight();
         clearChallengeDiscardedCells();
+        var staffRestartWrap = document.getElementById('staffRestartWrap');
+        if (staffRestartWrap) staffRestartWrap.classList.add('hidden');
         if (currentMode === 'challenge') startChallenge();
         if (currentMode === 'staff') {
           resetChallengeSession(true);
@@ -6400,10 +6675,14 @@
 
       // ========== EVENTOS ==========
       function bindEvents() {
-        var btnSettings = document.getElementById('btnSettingsToggle');
-        var btnSettingsInline = document.getElementById('btnSettingsToggleInline');
-        if (btnSettings) btnSettings.addEventListener('click', toggleSettingsPanel);
-        if (btnSettingsInline) btnSettingsInline.addEventListener('click', toggleSettingsPanel);
+        var btnSettingsClose = document.getElementById('btnSettingsClose');
+        if (btnSettingsClose) btnSettingsClose.addEventListener('click', closeSettingsPanel);
+        var settingsModal = document.getElementById('settingsModal');
+        if (settingsModal) {
+          settingsModal.addEventListener('click', function (e) {
+            if (e.target === settingsModal) closeSettingsPanel();
+          });
+        }
 
         document.querySelectorAll('.instrument-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
@@ -6525,10 +6804,35 @@
           btn.addEventListener('click', function () {
             if (this.dataset && this.dataset.mode) {
               setMode(this.dataset.mode);
-            } else if (this.id === 'btnMetronome') {
-              openMetronomeModal();
+            } else if (this.id === 'btnMoreMenu') {
+              var menu = document.getElementById('modeMoreMenu');
+              setMoreMenuOpen(!menu || menu.classList.contains('hidden'));
             }
           });
+        });
+        var btnMoreTuner = document.getElementById('btnMoreTuner');
+        if (btnMoreTuner) {
+          btnMoreTuner.addEventListener('click', function () {
+            setMode('tuner');
+          });
+        }
+        var btnMoreMetronome = document.getElementById('btnMoreMetronome');
+        if (btnMoreMetronome) {
+          btnMoreMetronome.addEventListener('click', function () {
+            openMetronomeModal();
+          });
+        }
+        var btnMoreSettings = document.getElementById('btnMoreSettings');
+        if (btnMoreSettings) {
+          btnMoreSettings.addEventListener('click', function () {
+            openSettingsPanel();
+          });
+        }
+        document.addEventListener('click', function (e) {
+          var menu = document.getElementById('modeMoreMenu');
+          var wrap = document.querySelector('.mode-more-wrap');
+          if (!menu || !wrap) return;
+          if (!wrap.contains(e.target)) setMoreMenuOpen(false);
         });
 
         var tunerStartBtn = document.getElementById('tunerStartBtn');
@@ -6570,6 +6874,12 @@
             tunerSmoothedFreq = 0;
             tunerRawHistory = [];
             setMessage('Anti-ruído: ' + tunerNoiseSel.options[tunerNoiseSel.selectedIndex].text + '.');
+          });
+        }
+        var btnStaffRestart = document.getElementById('btnStaffRestart');
+        if (btnStaffRestart) {
+          btnStaffRestart.addEventListener('click', function () {
+            restart();
           });
         }
         window.addEventListener('resize', function () {
@@ -6649,23 +6959,6 @@
         });
         updateStaffClefVisual();
         if (currentMode === 'staff') startStaffRound();
-      }
-
-      function toggleSettingsPanel() {
-        var panel = document.getElementById('settingsPanel');
-        var btn1 = document.getElementById('btnSettingsToggle');
-        var btn2 = document.getElementById('btnSettingsToggleInline');
-        if (!panel) return;
-        var opened = panel.classList.toggle('hidden') === false;
-        if (btn1) {
-          btn1.setAttribute('aria-expanded', opened ? 'true' : 'false');
-          btn1.setAttribute('title', opened ? 'Fechar configurações' : 'Abrir configurações');
-        }
-        if (btn2) {
-          btn2.setAttribute('aria-expanded', opened ? 'true' : 'false');
-          btn2.setAttribute('title', opened ? 'Fechar configurações' : 'Abrir configurações');
-          // Mantém apenas o ícone (sem texto), conforme pedido.
-        }
       }
 
       // ========== METRÔNOMO ==========
@@ -6905,26 +7198,12 @@
       }
 
       function openMetronomeModal() {
-        if (!metroModalEl) metroModalEl = document.getElementById('metronomeModal');
-        if (!metroModalEl) return;
-        metroModalEl.classList.remove('hidden');
-        updateMetronomeModeUI();
-        var btn = document.getElementById('btnMetronome');
-        if (btn) btn.setAttribute('aria-expanded', 'true');
-        if (!metroIsRunning) {
-          setMessage('Escolha um ritmo no metrônomo.');
-        }
-        if (metroIsRunning) updateMetroButtons();
+        setMode('metronome');
       }
 
       function closeMetronomeModal() {
-        if (!metroModalEl) metroModalEl = document.getElementById('metronomeModal');
-        if (!metroModalEl) return;
-        metroModalEl.classList.add('hidden');
-        var btn = document.getElementById('btnMetronome');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-        // Ao fechar, não deixa rodando no fundo.
         if (metroIsRunning) stopMetronome();
+        setMode('hinos');
       }
 
       function updateMetronomeModeUI() {
@@ -7703,7 +7982,7 @@
       }
 
       function initMetronomeUI() {
-        metroModalEl = document.getElementById('metronomeModal');
+        metroModalEl = document.getElementById('metroSection');
         metroDotsEl = document.getElementById('metroDots');
         metroBpmValueEl = document.getElementById('metroBpmValue');
         metroBpmLabelEl = document.getElementById('metroBpmLabel');
@@ -7825,12 +8104,6 @@
           });
         }
 
-        // Fechar modal
-        var btnClose = document.getElementById('btnMetronomeClose');
-        if (btnClose) btnClose.addEventListener('click', closeMetronomeModal);
-        metroModalEl.addEventListener('click', function (e) {
-          if (e.target === metroModalEl) closeMetronomeModal();
-        });
       }
 
       // ========== SOBRE ==========
@@ -7952,6 +8225,7 @@
         drawTunerGauge(0, 'idle');
         drawTunerChart();
         updateFullscreenButton();
+        initBottomNavObserver();
         updateBottomNavVisibility();
         window.addEventListener('scroll', updateBottomNavVisibility, { passive: true });
         window.addEventListener('resize', updateBottomNavVisibility);
