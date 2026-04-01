@@ -2564,23 +2564,6 @@
             <option value="chromatic">Cromático (qualquer nota)</option>
           </select>
         </div>
-        <div class="hinos-field">
-          <label class="hinos-field-label" for="tunerSensitivitySelect">Sensibilidade</label>
-          <select id="tunerSensitivitySelect" class="hinos-select">
-            <option value="slow">Lento (mais estável)</option>
-            <option value="normal" selected>Normal</option>
-            <option value="fast">Rápido (mais responsivo)</option>
-          </select>
-        </div>
-        <div class="hinos-field">
-          <label class="hinos-field-label" for="tunerNoiseSelect">Anti-ruído</label>
-          <select id="tunerNoiseSelect" class="hinos-select">
-            <option value="off">Desligado</option>
-            <option value="low" selected>Baixo</option>
-            <option value="medium">Médio</option>
-            <option value="high">Alto</option>
-          </select>
-        </div>
       </div>
 
       <div class="tuner-shell">
@@ -3310,6 +3293,7 @@
       var tunerAnalyzer = null;
       var tunerSource = null;
       var tunerData = null;
+      var tunerFreqData = null;
       var tunerFrameId = 0;
       var tunerRunning = false;
       var tunerHistory = [];
@@ -3318,10 +3302,8 @@
       var tunerLastNote = '--';
       var tunerLastTargetFreq = 0;
       var tunerLastFreq = 0;
-      var tunerSensitivity = 'normal';
       var tunerSmoothedFreq = 0;
       var tunerRawHistory = [];
-      var tunerNoiseGate = 'low';
       var tunerNoSignalFrames = 0;
       var wakeLockSentinel = null;
       var wakeLockBootstrapped = false;
@@ -5616,103 +5598,108 @@
         return Math.round(69 + 12 * Math.log(freq / 440) / Math.log(2));
       }
 
-      /** Gate RMS muito suave: anti-ruído só afina um pouco o limite, não “mata” o sinal. */
-      function tunerNoiseThreshold() {
-        if (tunerNoiseGate === 'off') return 0.0008;
-        if (tunerNoiseGate === 'low') return 0.002;
-        if (tunerNoiseGate === 'medium') return 0.006;
-        if (tunerNoiseGate === 'high') return 0.012;
-        return 0.002;
-      }
-
-      /**
-       * YIN (Cheveigne & Kawahara) — algoritmo comum em afinadores profissionais.
-       * Melhor que autocorrelação simples para notas musicais e harmônicos.
-       */
-      function tunerYinPitch(buf, sampleRate) {
-        var n = buf.length;
-        var half = Math.floor(n / 2);
-        var minFreq = 30;
-        var maxFreq = 1400;
-        var minTau = Math.max(2, Math.floor(sampleRate / maxFreq));
-        var maxTau = Math.min(half - 1, Math.ceil(sampleRate / minFreq));
-        if (maxTau <= minTau + 2) return -1;
-
+      /** Detector com autocorrelacao normalizada, priorizando a fundamental real. */
+      function tunerDetectPitch(buf, sampleRate) {
+        var size = buf.length;
+        if (!size) return -1;
         var rms = 0;
-        for (var i = 0; i < n; i++) rms += buf[i] * buf[i];
-        rms = Math.sqrt(rms / n);
-        if (rms < tunerNoiseThreshold()) return -1;
+        for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
+        rms = Math.sqrt(rms / size);
+        if (rms < 0.0018) return -1;
 
-        var d = new Float64Array(maxTau + 1);
-        for (var tau = 0; tau <= maxTau; tau++) {
-          var s = 0;
-          for (var j = 0; j < n - tau; j++) {
-            var delta = buf[j] - buf[j + tau];
-            s += delta * delta;
+        var minFreq = 35;
+        var maxFreq = 1200;
+        var minOffset = Math.floor(sampleRate / maxFreq);
+        var maxOffset = Math.floor(sampleRate / minFreq);
+        if (maxOffset >= size) maxOffset = size - 1;
+        if (minOffset < 2) minOffset = 2;
+        if (maxOffset <= minOffset) return -1;
+
+        var correlations = new Float32Array(maxOffset + 1);
+        var bestOffset = -1;
+        var bestCorrelation = 0;
+        for (var offset = minOffset; offset <= maxOffset; offset++) {
+          var correlation = 0;
+          var energy1 = 0;
+          var energy2 = 0;
+          var samples = size - offset;
+          for (var j = 0; j < samples; j++) {
+            var a = buf[j];
+            var b = buf[j + offset];
+            correlation += a * b;
+            energy1 += a * a;
+            energy2 += b * b;
           }
-          d[tau] = s;
+          var denom = Math.sqrt(energy1 * energy2);
+          correlation = denom > 0 ? correlation / denom : 0;
+          correlations[offset] = correlation;
+          if (correlation > bestCorrelation) {
+            bestCorrelation = correlation;
+            bestOffset = offset;
+          }
         }
 
-        var cumSum = 0;
-        var dPrime = new Float64Array(maxTau + 1);
-        dPrime[0] = 1;
-        for (var t = 1; t <= maxTau; t++) {
-          cumSum += d[t];
-          dPrime[t] = cumSum > 0 ? (d[t] * t) / cumSum : 1;
-        }
-
-        var yinThresh = 0.12;
-        var bestTau = -1;
-        for (var t2 = minTau; t2 < maxTau; t2++) {
-          if (dPrime[t2] < yinThresh) {
-            while (t2 + 1 <= maxTau && dPrime[t2 + 1] < dPrime[t2]) t2++;
-            bestTau = t2;
+        var foundDip = false;
+        for (var t = minOffset + 1; t < maxOffset - 1; t++) {
+          var corr = correlations[t];
+          if (!foundDip) {
+            if (corr < 0.65) foundDip = true;
+            continue;
+          }
+          if (corr > 0.78 && corr >= correlations[t - 1] && corr >= correlations[t + 1]) {
+            bestOffset = t;
+            bestCorrelation = corr;
             break;
           }
         }
-        if (bestTau < 0) {
-          var bestVal = Infinity;
-          for (var t3 = minTau; t3 <= maxTau; t3++) {
-            if (dPrime[t3] < bestVal) {
-              bestVal = dPrime[t3];
-              bestTau = t3;
-            }
-          }
-        }
-        if (bestTau < minTau || bestTau > maxTau) return -1;
 
-        var betterTau = bestTau;
-        if (bestTau > 1 && bestTau < maxTau) {
-          var s0 = dPrime[bestTau - 1];
-          var s1 = dPrime[bestTau];
-          var s2 = dPrime[bestTau + 1];
-          var den = s0 - 2 * s1 + s2;
-          if (Math.abs(den) > 1e-12) {
-            betterTau = bestTau + (s0 - s2) / (2 * den);
+        if (bestOffset < 0 || bestCorrelation < 0.68) return -1;
+
+        var refinedOffset = bestOffset;
+        if (bestOffset > minOffset && bestOffset < maxOffset) {
+          var prevCorr = correlations[bestOffset - 1];
+          var currCorr = correlations[bestOffset];
+          var nextCorr = correlations[bestOffset + 1];
+          var denom2 = prevCorr - 2 * currCorr + nextCorr;
+          if (Math.abs(denom2) > 1e-9) {
+            refinedOffset = bestOffset + (prevCorr - nextCorr) / (2 * denom2);
           }
         }
-        if (!isFinite(betterTau) || betterTau <= 0) return -1;
-        var freq = sampleRate / betterTau;
+
+        if (!isFinite(refinedOffset) || refinedOffset <= 0) return -1;
+        var freq = sampleRate / refinedOffset;
         if (!isFinite(freq) || freq < minFreq || freq > maxFreq) return -1;
         return freq;
       }
 
-      /** Reduz saltos de oitava: escolhe f, f/2, f*2, f/3, f*3 mais coerente com leitura anterior. */
-      function tunerSnapHarmonic(freq, prevFreq) {
-        if (!prevFreq || !isFinite(prevFreq) || prevFreq < 35 || prevFreq > 1300) return freq;
-        var cands = [freq, freq * 0.5, freq * 2, freq / 3, freq * 3];
-        var best = freq;
-        var bestLog = Math.abs(Math.log(freq / prevFreq));
-        for (var i = 0; i < cands.length; i++) {
-          var c = cands[i];
-          if (!isFinite(c) || c < 30 || c > 1400) continue;
-          var lg = Math.abs(Math.log(c / prevFreq));
-          if (lg < bestLog) {
-            bestLog = lg;
-            best = c;
+      function tunerNormalizeFrequency(freq) {
+        if (!isFinite(freq) || freq <= 0) return -1;
+        var candidates = [freq, freq / 2, freq / 3, freq / 4, freq * 2];
+        var sel = document.getElementById('tunerInstrumentSelect');
+        var presetId = sel ? sel.value : 'chromatic';
+        var notes = TUNER_PRESETS[presetId] || [];
+        var bestFreq = freq;
+        var bestScore = Infinity;
+
+        candidates.forEach(function (candidate) {
+          if (!isFinite(candidate) || candidate < 35 || candidate > 1200) return;
+          var score;
+          if (notes.length) {
+            var target = tunerPresetTargetForFreq(candidate);
+            if (!target) return;
+            score = Math.abs(Math.log(candidate / target.freq));
+          } else {
+            var midi = tunerFreqToMidi(candidate);
+            var targetFreq = midiToFreq(midi);
+            score = Math.abs(Math.log(candidate / targetFreq));
           }
-        }
-        return best;
+          if (score < bestScore) {
+            bestScore = score;
+            bestFreq = candidate;
+          }
+        });
+
+        return bestScore < 0.12 ? bestFreq : freq;
       }
 
       function tunerPresetTargetForFreq(freq) {
@@ -5771,15 +5758,13 @@
           statusEl.classList.remove('ok', 'flat', 'sharp');
           statusEl.textContent = 'Toque uma nota sustentada';
         }
-        if (fEl) fEl.textContent = '-- Hz';
+        if (fEl) fEl.textContent = tunerLastFreq && isFinite(tunerLastFreq) ? tunerLastFreq.toFixed(2) + ' Hz' : '-- Hz';
         if (tEl) tEl.textContent = '-- Hz';
         if (cEl) cEl.textContent = '-- Hz';
         tunerLastCents = 0;
         tunerLastStatus = 'idle';
         tunerLastNote = '--';
         tunerLastTargetFreq = 0;
-        tunerLastFreq = 0;
-        tunerSmoothedFreq = 0;
         tunerRawHistory = [];
         drawTunerGauge(0, 'idle');
       }
@@ -5798,11 +5783,8 @@
         return false;
       }
 
-      /** Estilo afinador profissional: resposta rápida com pouco “pulo” (EMA + mediana curta). */
       function getTunerSmoothingConfig() {
-        if (tunerSensitivity === 'slow') return { alpha: 0.14, medianWindow: 7 };
-        if (tunerSensitivity === 'fast') return { alpha: 0.42, medianWindow: 3 };
-        return { alpha: 0.28, medianWindow: 5 };
+        return { alpha: 0.55, medianWindow: 2 };
       }
 
       function tunerMedian(values) {
@@ -6041,13 +6023,13 @@
       function tunerLoop() {
         if (!tunerRunning || !tunerAnalyzer || !tunerData) return;
         tunerAnalyzer.getFloatTimeDomainData(tunerData);
-        var raw = tunerYinPitch(tunerData, tunerAnalyzer.context.sampleRate);
+        var raw = tunerDetectPitch(tunerData, tunerAnalyzer.context.sampleRate);
         if (raw > 0) {
           tunerNoSignalFrames = 0;
           var cfg = getTunerSmoothingConfig();
-          var snapped = tunerSnapHarmonic(raw, tunerSmoothedFreq || raw);
-          tunerRawHistory.push(snapped);
-          if (tunerRawHistory.length > 16) tunerRawHistory.shift();
+          var normalizedRaw = tunerNormalizeFrequency(raw);
+          tunerRawHistory.push(normalizedRaw);
+          if (tunerRawHistory.length > 6) tunerRawHistory.shift();
           var win = Math.min(cfg.medianWindow, tunerRawHistory.length);
           var filtered = tunerMedian(tunerRawHistory.slice(-win));
           if (!tunerSmoothedFreq) {
@@ -6060,7 +6042,18 @@
           if (tunerHistory.length > 90) tunerHistory.shift();
         } else {
           tunerNoSignalFrames += 1;
-          if (tunerNoSignalFrames > 3) updateTunerUINoSignal();
+          if (tunerSmoothedFreq > 0) {
+            tunerHistory.push(tunerSmoothedFreq);
+            if (tunerHistory.length > 90) tunerHistory.shift();
+            var holdFreqEl = document.getElementById('tunerFreqValue');
+            if (holdFreqEl) holdFreqEl.textContent = tunerSmoothedFreq.toFixed(2) + ' Hz';
+            tunerLastFreq = tunerSmoothedFreq;
+            drawTunerGauge(tunerLastCents, tunerLastStatus);
+          }
+          if (tunerNoSignalFrames > 16) {
+            tunerSmoothedFreq = 0;
+            updateTunerUINoSignal();
+          }
         }
         drawTunerChart();
         tunerFrameId = requestAnimationFrame(tunerLoop);
@@ -6096,7 +6089,12 @@
           return Promise.resolve(false);
         }
         return navigator.mediaDevices.getUserMedia({
-          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+          audio: {
+            channelCount: 1,
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
         }).then(function (stream) {
           return stream;
         });
@@ -6123,6 +6121,8 @@
           });
           tunerStream = null;
         }
+        tunerData = null;
+        tunerFreqData = null;
         var st = document.getElementById('tunerStatus');
         if (st) {
           st.classList.remove('ok', 'flat', 'sharp');
@@ -6153,6 +6153,7 @@
           tunerSource = ctx.createMediaStreamSource(stream);
           tunerSource.connect(tunerAnalyzer);
           tunerData = new Float32Array(tunerAnalyzer.fftSize);
+          tunerFreqData = new Uint8Array(tunerAnalyzer.frequencyBinCount);
           tunerHistory = [];
           tunerRawHistory = [];
           tunerSmoothedFreq = 0;
@@ -6854,8 +6855,6 @@
         var tunerStartBtn = document.getElementById('tunerStartBtn');
         var tunerStopBtn = document.getElementById('tunerStopBtn');
         var tunerPresetSel = document.getElementById('tunerInstrumentSelect');
-        var tunerSensitivitySel = document.getElementById('tunerSensitivitySelect');
-        var tunerNoiseSel = document.getElementById('tunerNoiseSelect');
         if (tunerStartBtn) {
           tunerStartBtn.addEventListener('click', function () {
             startTuner();
@@ -6870,26 +6869,10 @@
           renderTunerPresetDynamicInfo();
           tunerPresetSel.addEventListener('change', function () {
             renderTunerPresetDynamicInfo();
+            tunerSmoothedFreq = 0;
+            tunerRawHistory = [];
             if (!tunerRunning) return;
             setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
-          });
-        }
-        if (tunerSensitivitySel) {
-          tunerSensitivity = tunerSensitivitySel.value || 'normal';
-          tunerSensitivitySel.addEventListener('change', function () {
-            tunerSensitivity = tunerSensitivitySel.value || 'normal';
-            tunerSmoothedFreq = 0;
-            tunerRawHistory = [];
-            setMessage('Sensibilidade do afinador: ' + tunerSensitivitySel.options[tunerSensitivitySel.selectedIndex].text + '.');
-          });
-        }
-        if (tunerNoiseSel) {
-          tunerNoiseGate = tunerNoiseSel.value || 'low';
-          tunerNoiseSel.addEventListener('change', function () {
-            tunerNoiseGate = tunerNoiseSel.value || 'low';
-            tunerSmoothedFreq = 0;
-            tunerRawHistory = [];
-            setMessage('Anti-ruído: ' + tunerNoiseSel.options[tunerNoiseSel.selectedIndex].text + '.');
           });
         }
         var btnStaffRestart = document.getElementById('btnStaffRestart');
