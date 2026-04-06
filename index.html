@@ -3206,6 +3206,7 @@
       let challengeErrors = 0;
       let challengeStartTs = 0;
       let challengeTimerInterval = null;
+      let confettiAnimationId = null;
       let challengeDiscardedAttempts = {};
       let score = 0;
       let totalChallenges = 0;
@@ -6295,6 +6296,75 @@
         return mm + ':' + ss;
       }
 
+      /** Confetes ao concluir o desafio do pentagrama (20/20). Canvas em tela cheia, sem bloquear cliques. */
+      function launchStaffConfetti() {
+        try {
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        } catch (e) {}
+        var prev = document.getElementById('confettiCanvas');
+        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        if (confettiAnimationId) {
+          cancelAnimationFrame(confettiAnimationId);
+          confettiAnimationId = null;
+        }
+        var canvas = document.createElement('canvas');
+        canvas.id = 'confettiCanvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2500;';
+        document.body.appendChild(canvas);
+        var w = Math.max(1, window.innerWidth);
+        var h = Math.max(1, window.innerHeight);
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        var colors = ['#7d9d7a', '#81c784', '#a5d6a7', '#e8b4bc', '#f5d6a8', '#b3e5fc', '#d1c4e9', '#ffd54f', '#ffcc80', '#ce93d8', '#90caf9'];
+        var count = Math.min(150, Math.max(60, Math.floor(w / 5)));
+        var particles = [];
+        var i;
+        for (i = 0; i < count; i++) {
+          particles.push({
+            x: w * 0.5 + (Math.random() - 0.5) * w * 0.95,
+            y: -40 - Math.random() * h * 0.25,
+            w: 5 + Math.random() * 8,
+            h: 3 + Math.random() * 6,
+            vx: -3 + Math.random() * 6,
+            vy: 2 + Math.random() * 4,
+            rot: Math.random() * Math.PI * 2,
+            vr: -0.2 + Math.random() * 0.4,
+            c: colors[Math.floor(Math.random() * colors.length)]
+          });
+        }
+        var start = performance.now();
+        var duration = 4200;
+        function frame(now) {
+          var elapsed = now - start;
+          ctx.clearRect(0, 0, w, h);
+          var j;
+          for (j = 0; j < particles.length; j++) {
+            var p = particles[j];
+            p.vy += 0.11;
+            p.vx *= 0.997;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.c;
+            ctx.fillRect(-p.w * 0.5, -p.h * 0.5, p.w, p.h);
+            ctx.restore();
+          }
+          if (elapsed < duration) {
+            confettiAnimationId = requestAnimationFrame(frame);
+          } else {
+            confettiAnimationId = null;
+            if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+          }
+        }
+        confettiAnimationId = requestAnimationFrame(frame);
+      }
+
       function stopChallengeTimer() {
         if (challengeTimerInterval) {
           clearInterval(challengeTimerInterval);
@@ -6601,6 +6671,7 @@
             var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
             var restartWrap = document.getElementById('staffRestartWrap');
             if (restartWrap) restartWrap.classList.remove('hidden');
+            launchStaffConfetti();
             setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
             speak('Parabéns! Você concluiu o pentagrama.');
             return;
