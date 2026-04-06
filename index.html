@@ -648,6 +648,98 @@
       border-top: 1px solid rgba(15, 18, 28, 0.08);
     }
 
+    .tuner-mic-denied-wrap {
+      order: 5;
+      padding: 10px 12px 12px;
+      background: #fff8ee;
+      border-top: 1px solid rgba(196, 92, 92, 0.2);
+    }
+
+    .tuner-mic-denied-hint {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #4a3f38;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .tuner-mic-denied-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .tuner-mic-settings-btn,
+    .tuner-mic-instructions-btn {
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #c45c5c;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.12s ease;
+    }
+
+    .tuner-mic-settings-btn {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent-hover);
+    }
+
+    .tuner-mic-instructions-btn {
+      background: #fff;
+      color: #5e4038;
+    }
+
+    .tuner-mic-settings-btn:hover,
+    .tuner-mic-instructions-btn:hover {
+      filter: brightness(1.03);
+    }
+
+    .tuner-mic-settings-btn:active,
+    .tuner-mic-instructions-btn:active {
+      transform: scale(0.98);
+    }
+
+    .tuner-mic-help-card {
+      max-width: min(100%, 420px);
+      text-align: left;
+    }
+
+    .tuner-mic-help-heading {
+      margin: 0 0 0.75rem;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    .tuner-mic-help-content {
+      color: var(--text-soft);
+      font-weight: 700;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .tuner-mic-help-content p {
+      margin: 0 0 0.65rem;
+    }
+
+    .tuner-mic-help-content ol {
+      margin: 0 0 0.75rem 1.1rem;
+      padding: 0;
+    }
+
+    .tuner-mic-help-content li {
+      margin-bottom: 0.35rem;
+    }
+
+    .tuner-mic-help-footer {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
     .tuner-gauge-wrap {
       margin: 0;
       background: radial-gradient(circle at 50% 18%, #2d3444 0%, #222833 40%, #1d212b 100%);
@@ -2582,6 +2674,13 @@
           </button>
         </div>
         <div class="tuner-status" id="tunerStatus">Microfone parado</div>
+        <div class="tuner-mic-denied-wrap hidden" id="tunerMicDeniedWrap" role="region" aria-live="polite" aria-label="Microfone bloqueado">
+          <p class="tuner-mic-denied-hint">Para usar o afinador, é preciso permitir o microfone nas configurações do navegador ou do sistema.</p>
+          <div class="tuner-mic-denied-actions">
+            <button type="button" class="tuner-mic-settings-btn" id="tunerMicOpenSettingsBtn">Abrir configurações</button>
+            <button type="button" class="tuner-mic-instructions-btn" id="tunerMicInstructionsBtn">Ver passo a passo</button>
+          </div>
+        </div>
         <div class="tuner-gauge-wrap" aria-hidden="true">
           <div class="tuner-gauge-header"></div>
           <div class="tuner-gauge-canvas-wrap">
@@ -2906,6 +3005,18 @@
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Afinador: ajuda quando o microfone está bloqueado -->
+    <div class="metronome-modal hidden" id="tunerMicHelpModal" role="dialog" aria-modal="true" aria-labelledby="tunerMicHelpTitle">
+      <div class="metronome-card settings-modal-card tuner-mic-help-card">
+        <button type="button" class="metronome-close" id="tunerMicHelpCloseX" aria-label="Fechar">✕</button>
+        <h3 id="tunerMicHelpTitle" class="tuner-mic-help-heading">Permitir o microfone</h3>
+        <div class="tuner-mic-help-content" id="tunerMicHelpContent"></div>
+        <div class="tuner-mic-help-footer">
+          <button type="button" class="btn btn-primary" id="tunerMicHelpOk">Entendi</button>
         </div>
       </div>
     </div>
@@ -6102,6 +6213,82 @@
         });
       }
 
+      function setTunerMicDeniedVisible(visible) {
+        var wrap = document.getElementById('tunerMicDeniedWrap');
+        if (wrap) wrap.classList.toggle('hidden', !visible);
+      }
+
+      function guessAndroidBrowserPackage() {
+        var ua = navigator.userAgent || '';
+        if (/SamsungBrowser/i.test(ua)) return 'com.sec.android.app.sbrowser';
+        if (/Firefox/i.test(ua)) return 'org.mozilla.firefox';
+        if (/EdgA/i.test(ua)) return 'com.microsoft.emmx';
+        if (/Brave/i.test(ua)) return 'com.brave.browser';
+        if (/OPR|Opera/i.test(ua)) return 'com.opera.browser';
+        return 'com.android.chrome';
+      }
+
+      /** Android: tenta abrir a tela de detalhes do app do navegador (onde ficam as permissões). iOS/desktop: não há URL universal; abre o passo a passo. */
+      function tryOpenTunerMicrophoneSettings() {
+        var ua = navigator.userAgent || '';
+        if (/Android/i.test(ua)) {
+          var pkg = guessAndroidBrowserPackage();
+          var intentUrl = 'intent://#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:' + pkg + ';end';
+          try {
+            window.location.href = intentUrl;
+          } catch (e) {}
+          return;
+        }
+        openTunerMicHelpModal();
+      }
+
+      function buildTunerMicHelpHtml() {
+        var ua = navigator.userAgent || '';
+        if (/Android/i.test(ua)) {
+          return (
+            '<p><strong>Android</strong></p>' +
+            '<ol>' +
+            '<li>Abra <strong>Configurações</strong> do aparelho.</li>' +
+            '<li><strong>Aplicativos</strong> (ou Apps) → encontre o <strong>navegador</strong> que você usa (Chrome, Samsung Internet, Firefox…).</li>' +
+            '<li><strong>Permissões</strong> → <strong>Microfone</strong> → <strong>Permitir</strong>.</li>' +
+            '</ol>' +
+            '<p>O botão <strong>Abrir configurações</strong> tenta levar direto à página desse app. Se não abrir, siga os passos acima.</p>' +
+            '<p>No próprio site: toque no <strong>cadeado</strong> ou <strong>⋮</strong> na barra de endereço → <strong>Permissões</strong> → Microfone.</p>'
+          );
+        }
+        if (/iPhone|iPad|iPod/i.test(ua)) {
+          return (
+            '<p><strong>iPhone / iPad</strong></p>' +
+            '<p>O Safari não permite abrir Ajustes a partir de um site. Faça manualmente:</p>' +
+            '<ul style="margin:0 0 0.65rem 1rem;padding:0;">' +
+            '<li><strong>Safari:</strong> Ajustes → Safari → Microfone; ou Ajustes → Privacidade e segurança → Microfone.</li>' +
+            '<li>No site: toque em <strong>Aa</strong> à esquerda do endereço → <strong>Configurações do site</strong> → Microfone.</li>' +
+            '<li><strong>App na tela inicial (PWA):</strong> Ajustes → role até <strong>GEM Tools</strong> → Microfone.</li>' +
+            '</ul>'
+          );
+        }
+        return (
+          '<p><strong>Computador (Chrome / Edge / Firefox)</strong></p>' +
+          '<ol>' +
+          '<li>Clique no <strong>cadeado</strong> ou no ícone à esquerda do endereço.</li>' +
+          '<li><strong>Permissões do site</strong> ou <strong>Configurações do site</strong> → Microfone → <strong>Permitir</strong>.</li>' +
+          '</ol>' +
+          '<p>Ou: menu do navegador → Configurações → Privacidade e segurança → Configurações do site → Microfone.</p>'
+        );
+      }
+
+      function openTunerMicHelpModal() {
+        var modal = document.getElementById('tunerMicHelpModal');
+        var body = document.getElementById('tunerMicHelpContent');
+        if (body) body.innerHTML = buildTunerMicHelpHtml();
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      function closeTunerMicHelpModal() {
+        var modal = document.getElementById('tunerMicHelpModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
       function stopTuner() {
         tunerRunning = false;
         tunerNoSignalFrames = 0;
@@ -6161,6 +6348,7 @@
           tunerSmoothedFreq = 0;
           tunerNoSignalFrames = 0;
           tunerRunning = true;
+          setTunerMicDeniedVisible(false);
           var startBtn = document.getElementById('tunerStartBtn');
           var stopBtn = document.getElementById('tunerStopBtn');
           if (startBtn) startBtn.disabled = true;
@@ -6172,6 +6360,7 @@
           var st = document.getElementById('tunerStatus');
           if (st) st.textContent = 'Permissão do microfone bloqueada';
           setMessage('Não foi possível acessar o microfone para o afinador.');
+          setTunerMicDeniedVisible(true);
         });
       }
 
@@ -6947,6 +7136,36 @@
             setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
           });
         }
+        var tunerMicOpenSettingsBtn = document.getElementById('tunerMicOpenSettingsBtn');
+        var tunerMicInstructionsBtn = document.getElementById('tunerMicInstructionsBtn');
+        var tunerMicHelpOk = document.getElementById('tunerMicHelpOk');
+        var tunerMicHelpCloseX = document.getElementById('tunerMicHelpCloseX');
+        var tunerMicHelpModal = document.getElementById('tunerMicHelpModal');
+        if (tunerMicOpenSettingsBtn) {
+          tunerMicOpenSettingsBtn.addEventListener('click', function () {
+            tryOpenTunerMicrophoneSettings();
+          });
+        }
+        if (tunerMicInstructionsBtn) {
+          tunerMicInstructionsBtn.addEventListener('click', function () {
+            openTunerMicHelpModal();
+          });
+        }
+        if (tunerMicHelpOk) tunerMicHelpOk.addEventListener('click', closeTunerMicHelpModal);
+        if (tunerMicHelpCloseX) tunerMicHelpCloseX.addEventListener('click', closeTunerMicHelpModal);
+        if (tunerMicHelpModal) {
+          tunerMicHelpModal.addEventListener('click', function (e) {
+            if (e.target === tunerMicHelpModal) closeTunerMicHelpModal();
+          });
+        }
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape') return;
+          var tm = document.getElementById('tunerMicHelpModal');
+          if (tm && !tm.classList.contains('hidden')) {
+            e.preventDefault();
+            closeTunerMicHelpModal();
+          }
+        });
         var btnStaffRestart = document.getElementById('btnStaffRestart');
         if (btnStaffRestart) {
           btnStaffRestart.addEventListener('click', function () {
