@@ -5888,16 +5888,19 @@
         ctx.lineTo(nx, ny);
         ctx.stroke();
         var isInTune = statusMode === 'ok';
+        var statusR = 18 * s;
         ctx.fillStyle = isInTune ? '#95ff17' : '#2a3344';
         ctx.beginPath();
-        ctx.arc(cx, cy, 12 * s, 0, Math.PI * 2);
+        ctx.arc(cx, cy, statusR, 0, Math.PI * 2);
         ctx.fill();
         ctx.strokeStyle = isInTune ? '#678735' : '#5d6b85';
-        ctx.lineWidth = 1.2 * s;
+        ctx.lineWidth = 1.6 * s;
         ctx.stroke();
         ctx.fillStyle = isInTune ? '#1f7240' : '#ff6c79';
-        ctx.font = '900 ' + Math.round(14 * s) + 'px Segoe UI';
+        ctx.font = '900 ' + Math.round(22 * s) + 'px Segoe UI';
+        ctx.textBaseline = 'middle';
         ctx.fillText(isInTune ? '✓' : 'X', cx, cy);
+        ctx.textBaseline = 'alphabetic';
 
         // Nota atual com oitava no topo
         var adjacent = tunerAdjacentHumanLabels(tunerLastNote);
