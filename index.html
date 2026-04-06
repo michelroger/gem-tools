@@ -2649,19 +2649,19 @@
       <div class="hinos-overview" id="hinosOverview" aria-live="polite">
         <p class="hinos-overview-title">Visão geral nesta ficha</p>
         <div class="hinos-stat-row">
-          <div class="hinos-stat-label"><strong>Voz principal (hinos + coros nesta ficha)</strong><span id="hinosPctVoicesLbl">0/0 · 0%</span></div>
+          <div class="hinos-stat-label"><strong>Hinos com a voz principal aprovada</strong><span id="hinosPctVoicesLbl">0/480 · 0%</span></div>
           <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctVoicesBar"></div></div>
         </div>
         <div class="hinos-stat-row">
-          <div class="hinos-stat-label"><strong>Hinos com a voz principal aprovada</strong><span id="hinosPctHinosAnyLbl">0/480 · 0%</span></div>
+          <div class="hinos-stat-label"><strong>Coros com a voz principal aprovada</strong><span id="hinosPctHinosAnyLbl">0/6 · 0%</span></div>
           <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctHinosAnyBar"></div></div>
         </div>
         <div class="hinos-stat-row">
-          <div class="hinos-stat-label"><strong>Hinos com as 4 vozes</strong><span id="hinosPctHinosFullLbl">0/480 · 0%</span></div>
+          <div class="hinos-stat-label"><strong>Hinos com as 2 vozes</strong><span id="hinosPctHinosFullLbl">0/480 · 0%</span></div>
           <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctHinosFullBar"></div></div>
         </div>
         <div class="hinos-stat-row">
-          <div class="hinos-stat-label"><strong>Coros com as 4 vozes</strong><span id="hinosPctCorosLbl">0/6 · 0%</span></div>
+          <div class="hinos-stat-label"><strong>Coros com as 2 vozes</strong><span id="hinosPctCorosLbl">0/6 · 0%</span></div>
           <div class="hinos-prog-track"><div class="hinos-prog-fill" id="hinosPctCorosBar"></div></div>
         </div>
       </div>
@@ -2918,7 +2918,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.1.0';
+      const APP_VERSION = '1.1.5';
       const APP_VERSION_LABEL = 'Beta';
 
       // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
@@ -3319,6 +3319,8 @@
       const HINOS_STORAGE_KEY = 'gem-tools-hinos-v1';
       const HINOS_TOTAL = 480;
       const HINOS_VOZES = ['S', 'C', 'T', 'B'];
+      /** Hino/coro conta como “completo” quando tiver ao menos esta quantidade de vozes marcadas. */
+      const HINOS_FULL_VOICES_REQUIRED = 2;
       const HINARIO_PDF_BY_AFIN = {
         do: 'Ficha Hinário 5 - Afinação em DÓ.pdf',
         mib: 'Ficha Hinário 5 - Afinação em MIb.pdf',
@@ -3400,7 +3402,7 @@
       }
 
       function hinosEntryFull(ent) {
-        return hinosVoiceCountInEntry(ent) >= 4;
+        return hinosVoiceCountInEntry(ent) >= HINOS_FULL_VOICES_REQUIRED;
       }
 
       function hinosGetStudentVozPrincipal(st) {
@@ -3427,9 +3429,8 @@
         var hinosAny = 0;
         var hinosFull = 0;
         var corosFull = 0;
-        var primaryPiecesDone = 0;
         var hinosWithPrimary = 0;
-        var primaryPiecesTotal = HINOS_TOTAL + 6;
+        var corosWithPrimary = 0;
         for (var hi = 1; hi <= HINOS_TOTAL; hi++) {
           var kn = String(hi);
           var e = book[kn];
@@ -3437,10 +3438,7 @@
           filled += vc;
           if (vc > 0) hinosAny++;
           if (hinosEntryFull(e)) hinosFull++;
-          if (e && e[vP]) {
-            primaryPiecesDone++;
-            hinosWithPrimary++;
-          }
+          if (e && e[vP]) hinosWithPrimary++;
         }
         for (var c = 1; c <= 6; c++) {
           var ck = 'coro-' + c;
@@ -3448,7 +3446,7 @@
           var vcc = hinosVoiceCountInEntry(ec);
           filled += vcc;
           if (hinosEntryFull(ec)) corosFull++;
-          if (ec && ec[vP]) primaryPiecesDone++;
+          if (ec && ec[vP]) corosWithPrimary++;
         }
         return {
           slotsTotal: slotsTotal,
@@ -3456,9 +3454,8 @@
           hinosAny: hinosAny,
           hinosFull: hinosFull,
           corosFull: corosFull,
-          primaryPiecesDone: primaryPiecesDone,
-          primaryPiecesTotal: primaryPiecesTotal,
-          hinosWithPrimary: hinosWithPrimary
+          hinosWithPrimary: hinosWithPrimary,
+          corosWithPrimary: corosWithPrimary
         };
       }
 
@@ -3594,14 +3591,14 @@
           return;
         }
         var o = countHinosOverview(st, hinosActiveAfinação);
-        var pv = o.primaryPiecesTotal ? Math.round((o.primaryPiecesDone / o.primaryPiecesTotal) * 100) : 0;
         var pa = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
+        var pcorosVp = Math.round((o.corosWithPrimary / 6) * 100);
         var pf = Math.round((o.hinosFull / HINOS_TOTAL) * 100);
         var pc = Math.round((o.corosFull / 6) * 100);
-        if (lblV) lblV.textContent = o.primaryPiecesDone + '/' + o.primaryPiecesTotal + ' · ' + pv + '%';
-        if (barV) barV.style.width = pv + '%';
-        if (lblA) lblA.textContent = o.hinosWithPrimary + '/' + HINOS_TOTAL + ' · ' + pa + '%';
-        if (barA) barA.style.width = pa + '%';
+        if (lblV) lblV.textContent = o.hinosWithPrimary + '/' + HINOS_TOTAL + ' · ' + pa + '%';
+        if (barV) barV.style.width = pa + '%';
+        if (lblA) lblA.textContent = o.corosWithPrimary + '/6 · ' + pcorosVp + '%';
+        if (barA) barA.style.width = pcorosVp + '%';
         if (lblF) lblF.textContent = o.hinosFull + '/' + HINOS_TOTAL + ' · ' + pf + '%';
         if (barF) barF.style.width = pf + '%';
         if (lblC) lblC.textContent = o.corosFull + '/6 · ' + pc + '%';
@@ -3667,7 +3664,7 @@
           var vc = hinosVoiceCountInEntry(ent);
           el.classList.remove('empty', 'partial', 'full');
           if (vc === 0) el.classList.add('empty');
-          else if (vc >= 4) el.classList.add('full');
+          else if (vc >= HINOS_FULL_VOICES_REQUIRED) el.classList.add('full');
           else el.classList.add('partial');
           var voEl = el.querySelector('.hinos-cell-voices');
           if (voEl) voEl.textContent = hinosFormatVoicesShort(ent);
@@ -4248,7 +4245,7 @@
         var st = getActiveHinosStudent();
         if (!st) {
           setMessage('Adicione e selecione um aluno primeiro.');
-          return;
+          return false;
         }
         ensureStudentHinosShape(st);
         var key = hinosSelectedKey;
@@ -4260,6 +4257,7 @@
         st.hinos[hinosActiveAfinação][key][voice] = !cur;
         saveHinosState();
         refreshHinosVoiceButtons();
+        return true;
       }
 
       function toggleHinosStudyFlag(flag) {
@@ -4437,7 +4435,7 @@
         document.querySelectorAll('.hinos-voz-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var v = btn.getAttribute('data-hinos-voice');
-            if (v) toggleHinosVoice(v);
+            if (v && toggleHinosVoice(v)) closeHinosEditorModal();
           });
         });
         document.querySelectorAll('.hinos-study-btn').forEach(function (btn) {

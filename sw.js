@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v50';
+const CACHE_VERSION = 'v55';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
