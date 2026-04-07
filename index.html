@@ -2255,11 +2255,11 @@
       display: flex;
       justify-content: center;
       gap: 0.55rem;
-      margin-bottom: 1rem;
-      min-height: 26px;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      padding: 0.1rem 0.2rem 0.3rem;
+      margin: 0.2rem 0 1.1rem;
+      min-height: calc(var(--dot-size, 56px) + 20px);
+      overflow-x: visible;
+      overflow-y: visible;
+      padding: 0.45rem 0.4rem 0.55rem;
     }
 
     .metro-dots.two-rows {
@@ -2348,25 +2348,123 @@
       height: var(--dot-size);
       aspect-ratio: 1 / 1;
       border-radius: 50%;
-      background: rgba(0,0,0,0.12);
-      transition: transform 0.12s ease, background 0.12s ease;
+      position: relative;
+      border: 2px solid rgba(54, 66, 64, 0.18);
+      background: radial-gradient(circle at 32% 24%, #ffffff 0%, #f2f2ee 62%, #e7e7e2 100%);
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+      transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: clamp(0.75rem, 2.8vw, 1rem);
-      color: rgba(30, 30, 30, 0.62);
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      letter-spacing: 0.01em;
+      color: rgba(30, 30, 30, 0.72);
       user-select: none;
     }
 
     .metro-dot.active {
-      background: var(--accent);
-      transform: scale(1.05);
+      background: radial-gradient(circle at 35% 25%, #95b790 0%, #6f986a 65%, #5a8456 100%);
+      border-color: rgba(63, 96, 60, 0.95);
+      box-shadow: 0 0 0 3px rgba(125, 157, 122, 0.2), 0 7px 14px rgba(61, 97, 58, 0.27);
+      transform: scale(1.12);
       color: #fff;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+      animation: metro-dot-pop 170ms ease-out;
+    }
+
+    .metro-dot.active::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 999px;
+      border: 3px solid rgba(125, 157, 122, 0.5);
+      pointer-events: none;
+      animation: metro-dot-ring 220ms ease-out;
     }
 
     .metro-dot.accent {
-      background: #e67e22;
+      background: radial-gradient(circle at 35% 25%, #f1a84d 0%, #df7e22 67%, #c96917 100%);
+      border-color: rgba(172, 92, 18, 0.98);
+      box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.24), 0 7px 14px rgba(183, 86, 18, 0.33);
+    }
+
+    .metro-visual-flash {
+      width: min(92%, 370px);
+      height: 14px;
+      margin: -0.35rem auto 0.9rem;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(109, 133, 106, 0.38);
+      background: #e8efdf;
+    }
+
+    .metro-visual-flash-fill {
+      width: 100%;
+      height: 100%;
+      transform-origin: left center;
+      transform: scaleX(0);
+      opacity: 0.25;
+      background: linear-gradient(90deg, rgba(125, 157, 122, 0.9), rgba(149, 202, 142, 0.98));
+    }
+
+    .metro-visual-flash.pulse .metro-visual-flash-fill {
+      animation: metro-flash-fill 210ms ease-out;
+    }
+
+    .metro-visual-flash.accent .metro-visual-flash-fill {
+      background: linear-gradient(90deg, rgba(230, 126, 34, 0.92), rgba(243, 175, 82, 0.98));
+    }
+
+    @keyframes metro-dot-pop {
+      0% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.16);
+      }
+      100% {
+        transform: scale(1.12);
+      }
+    }
+
+    @keyframes metro-dot-ring {
+      0% {
+        opacity: 0.86;
+        transform: scale(0.84);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.18);
+      }
+    }
+
+    @keyframes metro-flash-fill {
+      0% {
+        transform: scaleX(0);
+        opacity: 0.18;
+      }
+      45% {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scaleX(1);
+        opacity: 0.24;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .metro-dot,
+      .metro-dot.active,
+      .metro-dot.active::after {
+        animation: none !important;
+      }
+      .metro-visual-flash.pulse .metro-visual-flash-fill {
+        animation: none !important;
+        transform: scaleX(1);
+        opacity: 0.45;
+      }
     }
 
     .metro-section {
@@ -2408,11 +2506,79 @@
     .metro-check {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: space-between;
+      gap: 0.85rem;
       color: var(--text-soft);
-      font-weight: 700;
-      margin-top: 0.45rem;
+      font-weight: 800;
+      margin-top: 0.35rem;
       user-select: none;
+      border: 1px solid rgba(125, 157, 122, 0.24);
+      border-radius: 12px;
+      padding: 0.55rem 0.65rem;
+      background: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .metro-check:hover {
+      border-color: rgba(125, 157, 122, 0.42);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .metro-check-label {
+      flex: 1;
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .metro-check input[type="checkbox"] {
+      --switch-w: 46px;
+      --switch-h: 26px;
+      appearance: none;
+      -webkit-appearance: none;
+      width: var(--switch-w);
+      min-width: var(--switch-w);
+      height: var(--switch-h);
+      border-radius: 999px;
+      border: 2px solid #b8c4b5;
+      background: #e8ece5;
+      position: relative;
+      margin: 0;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .metro-check input[type="checkbox"]::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translate(0, -50%);
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      transition: transform 0.18s ease;
+    }
+
+    .metro-check input[type="checkbox"]:checked {
+      background: #7d9d7a;
+      border-color: #6f916c;
+    }
+
+    .metro-check input[type="checkbox"]:checked::after {
+      transform: translate(19px, -50%);
+    }
+
+    .metro-check:has(input[type="checkbox"]:checked) {
+      border-color: rgba(125, 157, 122, 0.6);
+      background: rgba(125, 157, 122, 0.11);
+    }
+
+    .metro-check input[type="checkbox"]:focus-visible {
+      box-shadow: 0 0 0 3px rgba(125, 157, 122, 0.28);
     }
 
     .metro-timer-row {
@@ -2897,6 +3063,9 @@
 
         <div class="metro-beat-title">BATIDAS</div>
         <div class="metro-dots" id="metroDots" aria-hidden="true"></div>
+        <div class="metro-visual-flash" id="metroVisualFlash" aria-hidden="true">
+          <span class="metro-visual-flash-fill"></span>
+        </div>
 
         <div class="metro-solfejo-wrap hidden" id="metroSolfejoWrap" aria-hidden="true">
           <div class="metro-solfejo-stage" id="metroSolfejoStage" aria-hidden="true">
@@ -2916,22 +3085,22 @@
           </div>
 
           <label class="metro-check">
+            <span class="metro-check-label">Estresse primeira batida</span>
             <input type="checkbox" id="chkMetroAccent" />
-            <span>Estresse primeira batida</span>
           </label>
         </div>
 
         <div class="metro-section">
           <label class="metro-check" title="Ativa a animação com movimento de solfejo sincronizada ao metrônomo">
+            <span class="metro-check-label">Solfejo animado</span>
             <input type="checkbox" id="chkMetroSolfejoMode" />
-            <span>Solfejo animado</span>
           </label>
         </div>
 
         <div class="metro-section">
           <label class="metro-check" title="Usa o movimento de solfejo para canhotos (mão esquerda)">
+            <span class="metro-check-label">Mão esquerda</span>
             <input type="checkbox" id="chkMetroSolfejoLeftHand" />
-            <span>Mão esquerda</span>
           </label>
         </div>
 
@@ -3341,6 +3510,7 @@
       // ========== METRÔNOMO ==========
       let metroModalEl = null;
       let metroDotsEl = null;
+      let metroVisualFlashEl = null;
       let metroBpmValueEl = null;
       let metroBpmLabelEl = null;
       let metroBpmSliderEl = null;
@@ -3352,6 +3522,7 @@
       let metroSolfejoHandImgEl = null;
       let metroSolfejoModeCheckboxEl = null;
       let metroSolfejoLeftHandCheckboxEl = null;
+      let metroVisualPulseTimer = null;
 
       let metroAudioCtx = null;
       let metroSchedulerId = null;
@@ -7333,6 +7504,21 @@
         if (metroAccentFirst && beatIndex === 1) dot.classList.add('accent');
       }
 
+      /** Disparo visual extra para acessibilidade: flash horizontal sincronizado com cada batida. */
+      function triggerMetroVisualPulse(isAccent) {
+        if (!metroVisualFlashEl) return;
+        metroVisualFlashEl.classList.remove('pulse', 'accent');
+        // Forca reinicio da animacao no mesmo frame.
+        void metroVisualFlashEl.offsetWidth;
+        if (isAccent) metroVisualFlashEl.classList.add('accent');
+        metroVisualFlashEl.classList.add('pulse');
+        if (metroVisualPulseTimer) clearTimeout(metroVisualPulseTimer);
+        metroVisualPulseTimer = setTimeout(function () {
+          if (!metroVisualFlashEl) return;
+          metroVisualFlashEl.classList.remove('pulse', 'accent');
+        }, 240);
+      }
+
       function stopMetronome() {
         metroIsRunning = false;
         if (metroSchedulerId) clearInterval(metroSchedulerId);
@@ -7340,6 +7526,9 @@
         metroNextClickTime = 0;
         metroClickIndexInBar = 0;
         if (metroDotsEl) highlightMetroBeat(1);
+        if (metroVisualPulseTimer) clearTimeout(metroVisualPulseTimer);
+        metroVisualPulseTimer = null;
+        if (metroVisualFlashEl) metroVisualFlashEl.classList.remove('pulse', 'accent');
         // Reseta mão no modo solfejo
         if (metroSolfejoMode) {
           cancelSolfejoTween();
@@ -7362,6 +7551,7 @@
 
           if (isBeatStart) {
             highlightMetroBeat(beatIndex);
+            triggerMetroVisualPulse(isAccent);
             // Atualiza posição da mão sincronizada na batida principal.
             if (metroSolfejoMode) {
               triggerSolfejoHandTap();
@@ -8277,6 +8467,7 @@
       function initMetronomeUI() {
         metroModalEl = document.getElementById('metroSection');
         metroDotsEl = document.getElementById('metroDots');
+        metroVisualFlashEl = document.getElementById('metroVisualFlash');
         metroBpmValueEl = document.getElementById('metroBpmValue');
         metroBpmLabelEl = document.getElementById('metroBpmLabel');
         metroBpmSliderEl = document.getElementById('metroBpmSlider');
