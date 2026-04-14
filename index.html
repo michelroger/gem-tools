@@ -471,6 +471,314 @@
       justify-content: center;
     }
 
+    /* ========== PLAYER DE PARTITURA (MVP — MusicXML / MuseScore) ========== */
+    .player-section {
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: var(--content-max);
+      text-align: left;
+    }
+
+    .player-controls {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto auto auto auto 1fr auto;
+      gap: 0.45rem;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .player-ctl-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      width: 44px;
+      padding: 0;
+      border-radius: 12px;
+      border: 1px solid rgba(61, 58, 53, 0.14);
+      background: #fff;
+      color: var(--text);
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background var(--ease), transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+    }
+
+    .player-ctl-btn svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .player-ctl-btn:hover:not(:disabled) {
+      background: #f3efe7;
+      border-color: rgba(125, 157, 122, 0.35);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .player-ctl-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .player-ctl-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .player-ctl-btn.player-speed-icon {
+      width: 48px;
+      min-width: 48px;
+      color: var(--accent);
+      border-color: rgba(125, 157, 122, 0.35);
+      background: var(--accent-soft);
+    }
+
+    .player-ctl-btn.player-speed-icon:hover:not(:disabled) {
+      background: rgba(125, 157, 122, 0.22);
+    }
+
+    .player-seek {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .player-time {
+      min-width: 98px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.86rem;
+      color: var(--text-soft);
+      font-weight: 700;
+    }
+
+    .player-speed-popover {
+      position: absolute;
+      z-index: 40;
+      top: calc(100% + 0.3rem);
+      left: 15.2rem;
+      width: min(340px, calc(100vw - 2.2rem));
+      background: #fff;
+      border: 1px solid rgba(61, 58, 53, 0.16);
+      border-radius: 12px;
+      padding: 0.7rem 0.8rem 0.75rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .player-speed-popover.hidden {
+      display: none;
+    }
+
+    .player-speed-popover::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 18px;
+      width: 14px;
+      height: 14px;
+      border-left: 1px solid rgba(61, 58, 53, 0.16);
+      border-top: 1px solid rgba(61, 58, 53, 0.16);
+      background: #fff;
+      transform: rotate(45deg);
+    }
+
+    .player-speed-title {
+      margin: 0 0 0.5rem;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .player-speed-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .player-speed-input-wrap {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(61, 58, 53, 0.2);
+      border-radius: 8px;
+      background: #fff;
+      padding: 0 0.35rem;
+    }
+
+    .player-speed-input {
+      width: 62px;
+      min-height: 34px;
+      border: none;
+      outline: none;
+      font-weight: 700;
+      color: var(--text);
+      font-family: inherit;
+    }
+
+    .player-speed-unit {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-left: 0.15rem;
+    }
+
+    .player-speed-slider {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    /* Chaves ligado/desligado (metrônomo e auto-scroll) */
+    .player-levers {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem 0.75rem;
+    }
+
+    .player-lever-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .player-lever-name {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      max-width: 5.2rem;
+      line-height: 1.15;
+    }
+
+    .player-lever {
+      position: relative;
+      width: 52px;
+      height: 30px;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #dcd6cc 0%, #c9c2b6 100%);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .player-lever:focus {
+      outline: none;
+    }
+
+    .player-lever:focus-visible {
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), 0 0 0 3px var(--accent-soft);
+    }
+
+    .player-lever.on {
+      background: linear-gradient(180deg, #a8c4a4 0%, var(--accent) 100%);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .player-lever-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #fffef9 0%, #f0ebe2 100%);
+      box-shadow: 0 2px 6px rgba(45, 42, 38, 0.18);
+      transition: left 0.22s var(--ease-out), transform 0.15s ease;
+    }
+
+    .player-lever.on .player-lever-thumb {
+      left: 25px;
+    }
+
+    .player-lever:active .player-lever-thumb {
+      transform: scale(0.94);
+    }
+
+    .player-lever-legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .player-score-host {
+      min-height: 140px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(61, 58, 53, 0.22);
+      background: rgba(255, 255, 255, 0.55);
+      padding: 0.5rem 0.35rem 0.75rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+    }
+
+    .player-osmd-inner {
+      width: 100%;
+      min-height: 160px;
+      display: inline-block;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .player-score-placeholder {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      text-align: center;
+      max-width: 28rem;
+      line-height: 1.5;
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .player-score-placeholder.player-score-error {
+      color: #8a4a45;
+    }
+
+    .player-score-placeholder.player-score-error code {
+      font-size: 0.85em;
+    }
+
+    @media (max-width: 760px) {
+      .player-controls {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .player-levers {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+
+      .player-speed-popover {
+        left: 0.2rem;
+      }
+
+      .player-seek {
+        grid-column: 1 / -1;
+      }
+
+      .player-time {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
+    }
+
     .tuner-section {
       display: flex;
       flex-direction: column;
@@ -2709,6 +3017,8 @@
   </style>
   <!-- Som real de violino (soundfont MusyngKite) -->
   <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
+  <!-- Partitura MusicXML no modo Player (OpenSheetMusicDisplay) -->
+  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.9.6/build/opensheetmusicdisplay.min.js"></script>
 </head>
 <body>
   <div class="splash-screen" id="appSplash" aria-label="Tela de carregamento">
@@ -2933,6 +3243,60 @@
       <div class="hinos-fase-list" id="hinosFaseContainer"></div>
     </div>
 
+    <div class="player-section hidden" id="playerSection" aria-labelledby="playerSectionTitle">
+      <p class="violin-title" id="playerSectionTitle"></p>
+      <div class="player-controls" id="playerControls">
+        <button type="button" class="player-ctl-btn" id="btnPlayerPlay" aria-label="Play" title="Play">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button type="button" class="player-ctl-btn" id="btnPlayerPause" disabled aria-label="Pausar" title="Pausar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+        </button>
+        <button type="button" class="player-ctl-btn" id="btnPlayerStop" disabled aria-label="Parar" title="Parar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h12v12H6V6z"/></svg>
+        </button>
+        <button type="button" class="player-ctl-btn player-speed-icon" id="btnPlayerSpeed" aria-label="Velocidade: 100%" title="Velocidade: 100%" aria-haspopup="dialog" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="14" r="8"/>
+            <path d="M12 14V9"/>
+            <path d="M12 14l3.5 2"/>
+            <path d="M12 2v2"/>
+          </svg>
+        </button>
+        <div class="player-levers" role="group" aria-label="Metrônomo e rolagem automática da partitura">
+          <div class="player-lever-field">
+            <span class="player-lever-name" id="playerMetroLeverLabel">Metrônomo</span>
+            <button type="button" class="player-lever" id="playerMetronomeLever" role="switch" aria-checked="false" aria-labelledby="playerMetroLeverLabel">
+              <span class="player-lever-thumb" aria-hidden="true"></span>
+              <span class="player-lever-legend" id="playerMetronomeLeverLegend">Metrônomo desligado</span>
+            </button>
+          </div>
+          <div class="player-lever-field">
+            <span class="player-lever-name" id="playerScrollLeverLabel">Auto-scroll</span>
+            <button type="button" class="player-lever on" id="playerAutoScrollLever" role="switch" aria-checked="true" aria-labelledby="playerScrollLeverLabel">
+              <span class="player-lever-thumb" aria-hidden="true"></span>
+              <span class="player-lever-legend" id="playerAutoScrollLeverLegend">Rolagem automática ligada</span>
+            </button>
+          </div>
+        </div>
+        <input type="range" id="playerSeek" class="player-seek" min="0" max="1000" step="1" value="0" aria-label="Progresso do player" disabled />
+        <span class="player-time" id="playerTimeLabel">00:00 / 00:00</span>
+        <div class="player-speed-popover hidden" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Velocidade do player">
+          <p class="player-speed-title">Velocidade</p>
+          <div class="player-speed-row">
+            <label class="player-speed-input-wrap" for="playerSpeedInput">
+              <input type="number" id="playerSpeedInput" class="player-speed-input" min="30" max="300" step="1" value="100" />
+              <span class="player-speed-unit">%</span>
+            </label>
+            <input type="range" id="playerSpeedSlider" class="player-speed-slider" min="30" max="300" step="1" value="100" aria-label="Slider de velocidade em percentual" />
+          </div>
+        </div>
+      </div>
+      <div id="playerScoreHost" class="player-score-host">
+        <div id="playerOsmdContainer" class="player-osmd-inner" aria-live="polite"></div>
+      </div>
+    </div>
+
     <div class="metronome-modal hidden" id="hinosNewStudentModal" role="dialog" aria-modal="true" aria-labelledby="hinosNewStudentTitle">
       <div class="metronome-card hinos-new-student-card">
         <button type="button" class="metronome-close" id="hinosNewStudentClose" aria-label="Fechar">✕</button>
@@ -3031,6 +3395,10 @@
           <button type="button" class="mode-more-item" id="btnMoreMetronome" role="menuitem">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/><line x1="12" y1="12" x2="16" y2="8"/></svg>
             <span>Metrônomo</span>
+          </button>
+          <button type="button" class="mode-more-item" id="btnMorePlayer" role="menuitem">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Player</span>
           </button>
           <button type="button" class="mode-more-item" id="btnMoreSettings" role="menuitem">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.37 17l.06-.06A1.65 1.65 0 0 0 4.76 15a1.65 1.65 0 0 0-1.51-1H3.16a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.2 4.29l.06.06A1.65 1.65 0 0 0 9.08 4a1.65 1.65 0 0 0 1-1.51V2.4a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.63 7l-.06.06A1.65 1.65 0 0 0 19.24 9c.2.61.78 1.02 1.43 1.02h.17a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.35.98z"/></svg>
@@ -3200,6 +3568,8 @@
 
       const APP_VERSION = '1.1.5';
       const APP_VERSION_LABEL = 'Beta';
+      /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
+      const PLAYER_SCORE_URL = './xml/441_violino_soprano.musicxml';
 
       // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
       const NOTAS = [
@@ -3506,7 +3876,37 @@
       let staffNoteEllipse = null;
       let staffClefElement = null;
       let currentClef = 'sol';
-      
+
+      // ========== PLAYER (MusicXML / OpenSheetMusicDisplay) ==========
+      var playerOsmd = null;
+      var playerOsmdLoading = false;
+      var playerScoreData = null;
+      var playerPlayToken = 0;
+      var playerPlaybackRate = 1;
+      var playerMetronomeEnabled = false;
+      var playerAutoScrollEnabled = true;
+      var playerAutoScrollLastTs = 0;
+      var playerAutoScrollLastSystemTop = null;
+      var playerAutoScrollUserPausedUntil = 0;
+      var playerAutoScrollProgrammaticUntil = 0;
+      var playerAutoScrollNeedsInitial = false;
+      var playerAutoScrollSystemChanges = 0;
+      var playerAutoScrollReachedEnd = false;
+      var playerNoteAnchors = [];
+      var playerSpeedAdjusting = false;
+      var playerSpeedResumeAfterAdjust = false;
+      var playerSpeedFrozenSec = 0;
+      var playerPlayback = {
+        isPlaying: false,
+        startedAtCtx: 0,
+        positionSec: 0,
+        nextEventIndex: 0,
+        nextCursorIndex: 0,
+        nextBeatIndex: 0,
+        rafId: null,
+        activeStops: []
+      };
+
       // ========== METRÔNOMO ==========
       let metroModalEl = null;
       let metroDotsEl = null;
@@ -5723,7 +6123,10 @@
           btn.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
         
-        setMessage('Instrumento: ' + inst.nome + '. ' + (currentMode === 'learn' ? 'Mantenha pressionado numa nota para ouvir.' : 'Escolha um modo.'));
+        var instMsgSuffix = 'Escolha um modo.';
+        if (currentMode === 'learn') instMsgSuffix = 'Mantenha pressionado numa nota para ouvir.';
+        else if (currentMode === 'player') instMsgSuffix = 'O player usará este instrumento no playback quando o MusicXML estiver ligado.';
+        setMessage('Instrumento: ' + inst.nome + '. ' + instMsgSuffix);
         if (currentMode === 'hinos') {
           syncHinosAfinaçãoFromInstrument(inst);
           hinosLastSyncInstrumentId = inst.id;
@@ -6535,24 +6938,809 @@
         });
       }
 
+      function resizePlayerOsmdIfActive() {
+        if (currentMode !== 'player' || !playerOsmd) return;
+        try {
+          if (typeof playerOsmd.resize === 'function') playerOsmd.resize();
+        } catch (e) {}
+      }
+
+      function formatPlayerTime(seconds) {
+        var safe = Math.max(0, Math.floor(seconds || 0));
+        var mm = String(Math.floor(safe / 60)).padStart(2, '0');
+        var ss = String(safe % 60).padStart(2, '0');
+        return mm + ':' + ss;
+      }
+
+      function findPlayerEventIndexByTime(seconds) {
+        if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) return 0;
+        for (var i = 0; i < playerScoreData.events.length; i++) {
+          if (playerScoreData.events[i].startSec >= seconds) return i;
+        }
+        return playerScoreData.events.length;
+      }
+
+      function findPlayerCursorIndexByTime(seconds) {
+        if (!playerScoreData || !playerScoreData.cursorStarts || playerScoreData.cursorStarts.length === 0) return 0;
+        for (var i = 0; i < playerScoreData.cursorStarts.length; i++) {
+          if (playerScoreData.cursorStarts[i] >= seconds) return i;
+        }
+        return playerScoreData.cursorStarts.length;
+      }
+
+      function findPlayerBeatIndexByTime(seconds) {
+        if (!playerScoreData || !playerScoreData.beatEvents || playerScoreData.beatEvents.length === 0) return 0;
+        for (var i = 0; i < playerScoreData.beatEvents.length; i++) {
+          if (playerScoreData.beatEvents[i].sec >= seconds) return i;
+        }
+        return playerScoreData.beatEvents.length;
+      }
+
+      function getPlayerSpeedPercent() {
+        return Math.max(30, Math.min(300, Math.round((playerPlaybackRate || 1) * 100)));
+      }
+
+      function setPlayerSpeedPopoverOpen(open) {
+        var pop = document.getElementById('playerSpeedPopover');
+        var btn = document.getElementById('btnPlayerSpeed');
+        if (!pop || !btn) return;
+        pop.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      function syncPlayerSpeedUi() {
+        var pct = getPlayerSpeedPercent();
+        var btn = document.getElementById('btnPlayerSpeed');
+        var inp = document.getElementById('playerSpeedInput');
+        var slider = document.getElementById('playerSpeedSlider');
+        if (btn) {
+          var t = 'Velocidade: ' + pct + '%';
+          btn.setAttribute('aria-label', t);
+          btn.setAttribute('title', t);
+        }
+        if (inp) inp.value = String(pct);
+        if (slider) slider.value = String(pct);
+      }
+
+      function syncPlayerLeverUi() {
+        var metroBtn = document.getElementById('playerMetronomeLever');
+        var metroLeg = document.getElementById('playerMetronomeLeverLegend');
+        if (metroBtn) {
+          metroBtn.classList.toggle('on', !!playerMetronomeEnabled);
+          metroBtn.setAttribute('aria-checked', playerMetronomeEnabled ? 'true' : 'false');
+        }
+        if (metroLeg) metroLeg.textContent = playerMetronomeEnabled ? 'Metrônomo ligado' : 'Metrônomo desligado';
+
+        var scrollBtn = document.getElementById('playerAutoScrollLever');
+        var scrollLeg = document.getElementById('playerAutoScrollLeverLegend');
+        if (scrollBtn) {
+          scrollBtn.classList.toggle('on', !!playerAutoScrollEnabled);
+          scrollBtn.setAttribute('aria-checked', playerAutoScrollEnabled ? 'true' : 'false');
+        }
+        if (scrollLeg) scrollLeg.textContent = playerAutoScrollEnabled ? 'Rolagem automática ligada' : 'Rolagem automática desligada';
+      }
+
+      function previewPlayerSpeedPercent(percent) {
+        var pct = Math.max(30, Math.min(300, Math.round(percent || 100)));
+        var btn = document.getElementById('btnPlayerSpeed');
+        var inp = document.getElementById('playerSpeedInput');
+        var slider = document.getElementById('playerSpeedSlider');
+        if (btn) {
+          var t2 = 'Velocidade: ' + pct + '%';
+          btn.setAttribute('aria-label', t2);
+          btn.setAttribute('title', t2);
+        }
+        if (inp) inp.value = String(pct);
+        if (slider) slider.value = String(pct);
+      }
+
+      function applyPlayerSpeedPercent(percent, fromUser) {
+        var pct = Math.max(30, Math.min(300, Math.round(percent || 100)));
+        var nextRate = pct / 100;
+        if (!isFinite(nextRate) || nextRate <= 0) nextRate = 1;
+        var changed = Math.abs(nextRate - playerPlaybackRate) > 0.0001;
+        playerPlaybackRate = nextRate;
+        syncPlayerSpeedUi();
+        if (!changed) return;
+        var wasPlaying = playerPlayback.isPlaying;
+        if (wasPlaying) stopPlayerPlayback(true);
+        updatePlayerUiNow(playerPlayback.positionSec);
+        if (wasPlaying) startPlayerPlayback();
+        if (fromUser) setMessage('Velocidade ajustada para ' + pct + '%.');
+      }
+
+      function beginPlayerSpeedAdjust() {
+        if (playerSpeedAdjusting) return;
+        playerSpeedAdjusting = true;
+        playerSpeedResumeAfterAdjust = playerPlayback.isPlaying;
+        if (playerPlayback.isPlaying) {
+          stopPlayerPlayback(true);
+        }
+        playerSpeedFrozenSec = Math.max(0, playerPlayback.positionSec || 0);
+      }
+
+      function endPlayerSpeedAdjust(percent) {
+        var pct = parseInt(percent || String(getPlayerSpeedPercent()), 10);
+        if (!isFinite(pct)) pct = getPlayerSpeedPercent();
+        applyPlayerSpeedPercent(pct, true);
+        if (!playerSpeedAdjusting) return;
+        // Garante retomada exatamente no mesmo ponto congelado.
+        seekPlayerToTime(playerSpeedFrozenSec, false);
+        if (playerSpeedResumeAfterAdjust) startPlayerPlayback();
+        playerSpeedAdjusting = false;
+        playerSpeedResumeAfterAdjust = false;
+      }
+
+      function seekPlayerToTime(targetSec, resumeIfPlaying) {
+        if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+        var clamped = Math.max(0, Math.min(playerScoreData.totalDurationSec, targetSec || 0));
+        var wasPlaying = !!resumeIfPlaying && playerPlayback.isPlaying;
+        if (playerPlayback.isPlaying) stopPlayerPlayback(true);
+        playerPlayback.positionSec = clamped;
+        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
+        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
+        playerAutoScrollNeedsInitial = false;
+        resetPlayerCursorToCurrentPosition();
+        updatePlayerUiNow(clamped);
+        if (wasPlaying) startPlayerPlayback();
+      }
+
+      function buildPlayerNoteAnchorsFromDom() {
+        playerNoteAnchors = [];
+        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return;
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return;
+
+        var nonChordEvents = playerScoreData.events.filter(function (ev) {
+          return !ev.isChord;
+        });
+        if (!nonChordEvents.length) return;
+
+        var nodes = host.querySelectorAll(
+          '.vf-notehead, .vf-stavenote .vf-notehead, .vf-notehead path, g[class*="notehead"], [id*="notehead"]'
+        );
+        if (!nodes || !nodes.length) return;
+
+        var usableNodes = [];
+        nodes.forEach(function (n) {
+          var el = n && n.getBoundingClientRect ? n : null;
+          if (!el) return;
+          var r = el.getBoundingClientRect();
+          if (!r || r.width <= 0 || r.height <= 0) return;
+          usableNodes.push({ el: el, rect: r });
+        });
+        if (!usableNodes.length) return;
+
+        // Ordena visualmente (linha por linha) para casar com timeline da partitura.
+        usableNodes.sort(function (a, b) {
+          var dy = a.rect.top - b.rect.top;
+          if (Math.abs(dy) > 8) return dy;
+          return a.rect.left - b.rect.left;
+        });
+
+        var max = Math.min(nonChordEvents.length, usableNodes.length);
+        for (var i = 0; i < max; i++) {
+          var rr = usableNodes[i].rect;
+          playerNoteAnchors.push({
+            sec: nonChordEvents[i].startSec,
+            x: rr.left + (rr.width / 2),
+            y: rr.top + (rr.height / 2)
+          });
+        }
+      }
+
+      function seekPlayerFromClick(clientX, clientY) {
+        if (!playerNoteAnchors || playerNoteAnchors.length === 0) return false;
+        var best = null;
+        var bestD = Infinity;
+        for (var i = 0; i < playerNoteAnchors.length; i++) {
+          var a = playerNoteAnchors[i];
+          var dx = a.x - clientX;
+          var dy = a.y - clientY;
+          var d2 = (dx * dx) + (dy * dy);
+          if (d2 < bestD) {
+            bestD = d2;
+            best = a;
+          }
+        }
+        if (!best) return false;
+        // Limite: evita seek quando clique estiver muito fora da região útil.
+        if (bestD > (220 * 220)) return false;
+        seekPlayerToTime(best.sec, true);
+        return true;
+      }
+
+      function getPlayerCursorElement() {
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return null;
+        return host.querySelector('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
+      }
+
+      function autoScrollPlayerFollowingCursor(musicSec) {
+        if (!playerAutoScrollEnabled || currentMode !== 'player') return;
+        if (Date.now() < playerAutoScrollUserPausedUntil) return;
+        if (playerAutoScrollReachedEnd) return;
+        if (playerScoreData && playerScoreData.totalDurationSec && musicSec >= (playerScoreData.totalDurationSec - 0.15)) {
+          playerAutoScrollReachedEnd = true;
+          return;
+        }
+        var docHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.offsetHeight
+        );
+        var viewportBottom = (window.scrollY || 0) + (window.innerHeight || 0);
+        if (viewportBottom >= docHeight - 6) {
+          playerAutoScrollReachedEnd = true;
+          return;
+        }
+        var nowTs = performance.now();
+        if (nowTs - playerAutoScrollLastTs < 120) return;
+        playerAutoScrollLastTs = nowTs;
+
+        var scoreHost = document.getElementById('playerScoreHost');
+        var cursorEl = getPlayerCursorElement();
+
+        if (scoreHost && cursorEl) {
+          // Horizontal: mantém o cursor visível no contêiner.
+          var hostRect = scoreHost.getBoundingClientRect();
+          var curRect = cursorEl.getBoundingClientRect();
+          var curLeftInHost = (curRect.left - hostRect.left) + scoreHost.scrollLeft;
+          var desiredLeft = Math.max(0, curLeftInHost - (scoreHost.clientWidth * 0.42));
+          if (Math.abs(scoreHost.scrollLeft - desiredLeft) > 20) {
+            try {
+              scoreHost.scrollTo({ left: desiredLeft, behavior: 'smooth' });
+            } catch (e) {
+              scoreHost.scrollLeft = desiredLeft;
+            }
+          }
+
+          // Alinhamento inicial (importante no mobile): já posiciona a primeira pauta
+          // em área confortável de leitura, sem esperar troca de sistema.
+          if (playerAutoScrollNeedsInitial) {
+            playerAutoScrollNeedsInitial = false;
+            var targetYInitial = window.scrollY + curRect.top - ((window.innerHeight || 0) * 0.5);
+            targetYInitial = Math.max(0, targetYInitial);
+            playerAutoScrollProgrammaticUntil = Date.now() + 620;
+            try {
+              window.scrollTo({ top: targetYInitial, behavior: 'smooth' });
+            } catch (eInit) {
+              window.scrollTo(0, targetYInitial);
+            }
+            playerAutoScrollLastSystemTop = Math.round(curRect.top / 18) * 18;
+            playerAutoScrollSystemChanges = 0;
+            return;
+          }
+
+          // Vertical: rola apenas quando mudar de "sistema" (linha da partitura),
+          // evitando micro-scroll contínuo.
+          var currentSystemTop = Math.round(curRect.top / 18) * 18;
+          if (playerAutoScrollLastSystemTop == null) {
+            playerAutoScrollLastSystemTop = currentSystemTop;
+            return;
+          }
+
+          var changedSystem = Math.abs(currentSystemTop - playerAutoScrollLastSystemTop) >= 36;
+          if (changedSystem) {
+            playerAutoScrollLastSystemTop = currentSystemTop;
+            playerAutoScrollSystemChanges += 1;
+            // Só rola a cada 2 pentagramas/sistemas para evitar micro-ajustes.
+            if (playerAutoScrollSystemChanges >= 2) {
+              playerAutoScrollSystemChanges = 0;
+              var targetY = window.scrollY + curRect.top - ((window.innerHeight || 0) * 0.5);
+              targetY = Math.max(0, targetY);
+              var maxY = Math.max(0, docHeight - (window.innerHeight || 0));
+              if (targetY >= maxY - 4) {
+                playerAutoScrollReachedEnd = true;
+                return;
+              }
+              playerAutoScrollProgrammaticUntil = Date.now() + 520;
+              try {
+                window.scrollTo({ top: targetY, behavior: 'smooth' });
+              } catch (e2) {
+                window.scrollTo(0, targetY);
+              }
+            }
+          }
+          return;
+        }
+
+        // Fallback: sem cursor DOM detectável, usa progresso para manter a área da partitura em foco.
+        if (!scoreHost || !playerScoreData || !playerScoreData.totalDurationSec) return;
+        var ratio = Math.max(0, Math.min(1, musicSec / playerScoreData.totalDurationSec));
+        var hostBox = scoreHost.getBoundingClientRect();
+        var targetYFallback = window.scrollY + hostBox.top + (hostBox.height * ratio) - ((window.innerHeight || 0) * 0.5);
+        if (Math.abs(window.scrollY - targetYFallback) > 42) {
+          playerAutoScrollProgrammaticUntil = Date.now() + 520;
+          try {
+            window.scrollTo({ top: Math.max(0, targetYFallback), behavior: 'smooth' });
+          } catch (e3) {
+            window.scrollTo(0, Math.max(0, targetYFallback));
+          }
+        }
+      }
+
+      function stopAllPlayerNotes() {
+        if (!playerPlayback.activeStops || playerPlayback.activeStops.length === 0) return;
+        var ctx = getAudioContext();
+        while (playerPlayback.activeStops.length) {
+          var fn = playerPlayback.activeStops.pop();
+          if (typeof fn !== 'function') continue;
+          try {
+            fn(ctx ? ctx.currentTime : undefined);
+          } catch (e) {}
+        }
+      }
+
+      function resetPlayerCursorToCurrentPosition() {
+        if (!playerOsmd || !playerOsmd.cursor) return;
+        try {
+          playerOsmd.cursor.show();
+          playerOsmd.cursor.reset();
+          var steps = findPlayerCursorIndexByTime(playerPlayback.positionSec);
+          for (var i = 0; i < steps; i++) playerOsmd.cursor.next();
+        } catch (e) {}
+      }
+
+      function schedulePlayerMetronomeClick(startAtCtx, isAccent) {
+        var ctx = getAudioContext();
+        if (!ctx || !playerMetronomeEnabled) return;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var freq = isAccent ? 1080 : 820;
+        var vol = calmMode ? 0.045 : 0.08;
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, startAtCtx);
+        gain.gain.setValueAtTime(0.0001, startAtCtx);
+        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.004);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.055);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startAtCtx);
+        osc.stop(startAtCtx + 0.07);
+      }
+
+      function updatePlayerUiNow(nowSec) {
+        var total = (playerScoreData && playerScoreData.totalDurationSec) ? playerScoreData.totalDurationSec : 0;
+        var current = Math.max(0, nowSec != null ? nowSec : playerPlayback.positionSec || 0);
+        var seek = document.getElementById('playerSeek');
+        var lbl = document.getElementById('playerTimeLabel');
+        var playBtn = document.getElementById('btnPlayerPlay');
+        var pauseBtn = document.getElementById('btnPlayerPause');
+        var stopBtn = document.getElementById('btnPlayerStop');
+        var hasScore = !!(playerScoreData && playerScoreData.events && playerScoreData.events.length);
+
+        if (seek) {
+          seek.disabled = !hasScore;
+          var ratio = total > 0 ? Math.max(0, Math.min(1, current / total)) : 0;
+          seek.value = String(Math.round(ratio * 1000));
+        }
+        if (lbl) lbl.textContent = formatPlayerTime(current) + ' / ' + formatPlayerTime(total);
+        if (playBtn) playBtn.disabled = !hasScore || playerPlayback.isPlaying;
+        if (pauseBtn) pauseBtn.disabled = !playerPlayback.isPlaying;
+        if (stopBtn) stopBtn.disabled = !hasScore || (!playerPlayback.isPlaying && current <= 0.01);
+      }
+
+      function scheduleFallbackPlayerNote(freq, startAtCtx, durationSec) {
+        var ctx = getAudioContext();
+        if (!ctx) return;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var vol = calmMode ? 0.12 : 0.23;
+        var dur = Math.max(0.06, durationSec || 0.16);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, startAtCtx);
+        gain.gain.setValueAtTime(0.0001, startAtCtx);
+        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + Math.max(0.03, dur));
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startAtCtx);
+        osc.stop(startAtCtx + Math.max(0.05, dur) + 0.02);
+        playerPlayback.activeStops.push(function () {
+          try {
+            var t = ctx.currentTime;
+            gain.gain.cancelScheduledValues(t);
+            gain.gain.setValueAtTime(gain.gain.value, t);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+            osc.stop(t + 0.06);
+          } catch (e) {}
+        });
+      }
+
+      function schedulePlayerNote(event, startAtCtx, instrument) {
+        if (!event || event.isRest || !event.freq || event.freq <= 0) return;
+        var rate = Math.max(0.4, playerPlaybackRate || 1);
+        var dur = Math.max(0.06, (event.durationSec * 0.96) / rate);
+        if (instrument) {
+          var noteName = freqToMidiNoteName(event.freq);
+          var note = instrument.play(noteName, startAtCtx, { duration: dur, gain: calmMode ? 0.34 : 0.54 });
+          if (note && typeof note.stop === 'function') {
+            playerPlayback.activeStops.push(function (now) {
+              try {
+                note.stop(typeof now === 'number' ? now : getAudioContext().currentTime);
+              } catch (e) {}
+            });
+          }
+          return;
+        }
+        scheduleFallbackPlayerNote(event.freq, startAtCtx, dur);
+      }
+
+      function stopPlayerPlayback(keepPosition) {
+        if (playerPlayback.rafId) {
+          cancelAnimationFrame(playerPlayback.rafId);
+          playerPlayback.rafId = null;
+        }
+        if (playerPlayback.isPlaying) {
+          try {
+            var ctx = getAudioContext();
+            if (ctx) {
+              var rate = Math.max(0.4, playerPlaybackRate || 1);
+              playerPlayback.positionSec = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
+            }
+          } catch (e) {}
+        }
+        playerPlayback.isPlaying = false;
+        stopAllPlayerNotes();
+        if (!keepPosition) playerPlayback.positionSec = 0;
+        playerAutoScrollLastTs = 0;
+        playerAutoScrollLastSystemTop = null;
+        playerAutoScrollUserPausedUntil = 0;
+        playerAutoScrollProgrammaticUntil = 0;
+        playerAutoScrollNeedsInitial = false;
+        playerAutoScrollSystemChanges = 0;
+        playerAutoScrollReachedEnd = false;
+        if (!keepPosition && playerScoreData) {
+          playerNoteAnchors = playerNoteAnchors || [];
+        }
+        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+        resetPlayerCursorToCurrentPosition();
+        updatePlayerUiNow(playerPlayback.positionSec);
+      }
+
+      function playerTickPlaybackLoop(instrument) {
+        if (!playerPlayback.isPlaying || !playerScoreData) return;
+        var ctx = getAudioContext();
+        if (!ctx) {
+          stopPlayerPlayback(true);
+          return;
+        }
+        var rate = Math.max(0.4, playerPlaybackRate || 1);
+        var elapsed = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
+        var total = playerScoreData.totalDurationSec || 0;
+        var lookAhead = 0.22 * rate;
+
+        if (elapsed >= total + 0.03) {
+          stopPlayerPlayback(false);
+          if (currentMode !== 'player') setMessage('Playback concluído.');
+          return;
+        }
+
+        while (playerPlayback.nextEventIndex < playerScoreData.events.length) {
+          var ev = playerScoreData.events[playerPlayback.nextEventIndex];
+          if (!ev || ev.startSec > elapsed + lookAhead) break;
+          if (ev.startSec >= elapsed - 0.03) {
+            var when = playerPlayback.startedAtCtx + (ev.startSec / rate);
+            schedulePlayerNote(ev, when, instrument);
+          }
+          playerPlayback.nextEventIndex += 1;
+        }
+
+        if (playerMetronomeEnabled && playerScoreData.beatEvents && playerScoreData.beatEvents.length) {
+          while (playerPlayback.nextBeatIndex < playerScoreData.beatEvents.length) {
+            var beatEv = playerScoreData.beatEvents[playerPlayback.nextBeatIndex];
+            var beatAt = beatEv ? beatEv.sec : 0;
+            if (beatAt > elapsed + lookAhead) break;
+            if (beatAt >= elapsed - 0.03) {
+              var whenBeat = playerPlayback.startedAtCtx + (beatAt / rate);
+              schedulePlayerMetronomeClick(whenBeat, !!(beatEv && beatEv.accent));
+            }
+            playerPlayback.nextBeatIndex += 1;
+          }
+        }
+
+        if (playerOsmd && playerOsmd.cursor && playerScoreData.cursorStarts) {
+          while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
+                 playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= elapsed + 0.005) {
+            try { playerOsmd.cursor.next(); } catch (e) { break; }
+            playerPlayback.nextCursorIndex += 1;
+          }
+        }
+
+        playerPlayback.positionSec = elapsed;
+        updatePlayerUiNow(elapsed);
+        autoScrollPlayerFollowingCursor(elapsed);
+        playerPlayback.rafId = requestAnimationFrame(function () {
+          playerTickPlaybackLoop(instrument);
+        });
+      }
+
+      function startPlayerPlayback() {
+        if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) {
+          setMessage('Player: sem notas válidas no MusicXML.');
+          updatePlayerUiNow(0);
+          return;
+        }
+        if (playerPlayback.isPlaying) return;
+        var ctx = getAudioContext();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        var token = Date.now();
+        playerPlayToken = token;
+        var requestedInstrumentId = currentInstrument && currentInstrument.id ? currentInstrument.id : 'violin';
+        loadInstrument(requestedInstrumentId).then(function (instrument) {
+          if (playerPlayToken !== token) return;
+          if (!playerScoreData) return;
+          playerPlayback.isPlaying = true;
+          playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+          playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+          playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+          playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
+          playerAutoScrollNeedsInitial = true;
+          resetPlayerCursorToCurrentPosition();
+          updatePlayerUiNow(playerPlayback.positionSec);
+          playerTickPlaybackLoop(instrument || null);
+          setMessage('Playback em andamento.');
+        }).catch(function () {
+          if (playerPlayToken !== token) return;
+          playerPlayback.isPlaying = true;
+          playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+          playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+          playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+          playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
+          playerAutoScrollNeedsInitial = true;
+          resetPlayerCursorToCurrentPosition();
+          updatePlayerUiNow(playerPlayback.positionSec);
+          playerTickPlaybackLoop(null);
+          setMessage('Playback em andamento (modo síntese).');
+        });
+      }
+
+      function parsePlayerMusicXml(xmlText) {
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+        if (!xmlDoc || xmlDoc.getElementsByTagName('parsererror').length > 0) return null;
+        var part = xmlDoc.querySelector('score-partwise > part');
+        if (!part) return null;
+
+        var events = [];
+        var cursorStarts = [];
+        var timelineSec = 0;
+        var tempo = 60;
+        var divisions = 1;
+        var beatsPerMeasure = 4;
+        var beatType = 4;
+        var lastStartSec = 0;
+        var measureBeatEvents = [];
+
+        var measures = part.querySelectorAll('measure');
+        measures.forEach(function (measure, measureIdx) {
+          var measureStartSec = timelineSec;
+          var soundTag = measure.querySelector('sound[tempo]');
+          if (soundTag && soundTag.getAttribute('tempo')) {
+            var t = parseFloat(soundTag.getAttribute('tempo'));
+            if (isFinite(t) && t > 0) tempo = t;
+          }
+          var perMin = measure.querySelector('direction direction-type metronome per-minute');
+          if (perMin && perMin.textContent) {
+            var t2 = parseFloat(perMin.textContent);
+            if (isFinite(t2) && t2 > 0) tempo = t2;
+          }
+          var divNode = measure.querySelector('attributes divisions');
+          if (divNode && divNode.textContent) {
+            var divParsed = parseFloat(divNode.textContent);
+            if (isFinite(divParsed) && divParsed > 0) divisions = divParsed;
+          }
+          var beatsNode = measure.querySelector('attributes time beats');
+          var beatTypeNode = measure.querySelector('attributes time beat-type');
+          if (beatsNode && beatsNode.textContent) {
+            var bpmNum = parseInt(beatsNode.textContent || '4', 10);
+            if (isFinite(bpmNum) && bpmNum > 0) beatsPerMeasure = bpmNum;
+          }
+          if (beatTypeNode && beatTypeNode.textContent) {
+            var beatDen = parseInt(beatTypeNode.textContent || '4', 10);
+            if (isFinite(beatDen) && beatDen > 0) beatType = beatDen;
+          }
+
+          var notes = measure.querySelectorAll('note');
+          notes.forEach(function (noteNode) {
+            var voiceNode = noteNode.querySelector('voice');
+            if (voiceNode && voiceNode.textContent && voiceNode.textContent.trim() !== '1') return;
+
+            var durationNode = noteNode.querySelector('duration');
+            var durationDiv = durationNode ? parseFloat(durationNode.textContent || '0') : 0;
+            if (!isFinite(durationDiv) || durationDiv <= 0) durationDiv = 0;
+            var durSec = Math.max(0.06, (durationDiv / divisions) * (60 / tempo));
+            var isChord = !!noteNode.querySelector('chord');
+            var isRest = !!noteNode.querySelector('rest');
+            var startSec = isChord ? lastStartSec : timelineSec;
+
+            var freq = 0;
+            var midi = null;
+            if (!isRest) {
+              var stepNode = noteNode.querySelector('pitch step');
+              var octNode = noteNode.querySelector('pitch octave');
+              if (stepNode && octNode) {
+                var step = (stepNode.textContent || '').trim().toUpperCase();
+                var alterNode = noteNode.querySelector('pitch alter');
+                var alter = alterNode ? parseInt(alterNode.textContent || '0', 10) : 0;
+                var octave = parseInt(octNode.textContent || '4', 10);
+                var map = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+                if (typeof map[step] === 'number' && isFinite(octave)) {
+                  midi = ((octave + 1) * 12) + map[step] + alter;
+                  freq = midiToFreq(midi);
+                }
+              }
+            }
+
+            events.push({
+              startSec: startSec,
+              durationSec: durSec,
+              isRest: isRest,
+              isChord: isChord,
+              midi: midi,
+              freq: freq
+            });
+            if (!isChord) {
+              cursorStarts.push(startSec);
+              timelineSec += durSec;
+              lastStartSec = startSec;
+            }
+          });
+
+          var measureDurationSec = Math.max(0, timelineSec - measureStartSec);
+          var beatDurSec = (60 / Math.max(1, tempo)) * (4 / Math.max(1, beatType));
+          if (beatDurSec > 0 && measureDurationSec > 0.0001) {
+            var fullMeasureSec = beatDurSec * Math.max(1, beatsPerMeasure);
+            var missingSec = Math.max(0, fullMeasureSec - measureDurationSec);
+            var pickupBeats = measureIdx === 0 ? Math.round(missingSec / beatDurSec) : 0;
+            var startBeatIndex = ((pickupBeats % Math.max(1, beatsPerMeasure)) + Math.max(1, beatsPerMeasure)) % Math.max(1, beatsPerMeasure);
+            var beatCountThisMeasure = Math.max(1, Math.ceil(measureDurationSec / beatDurSec));
+            var bi;
+            if (!measureBeatEvents) measureBeatEvents = [];
+            for (bi = 0; bi < beatCountThisMeasure; bi++) {
+              var beatSec = measureStartSec + (bi * beatDurSec);
+              if (beatSec > timelineSec + 0.001) break;
+              var beatIdxInBar = (startBeatIndex + bi) % Math.max(1, beatsPerMeasure);
+              measureBeatEvents.push({
+                sec: beatSec,
+                accent: beatIdxInBar === 0
+              });
+            }
+          }
+        });
+
+        var totalDuration = 0;
+        events.forEach(function (ev) {
+          totalDuration = Math.max(totalDuration, ev.startSec + ev.durationSec);
+        });
+
+        if (!events.length || totalDuration <= 0) return null;
+        var beatEvents = measureBeatEvents && measureBeatEvents.length ? measureBeatEvents : [{ sec: 0, accent: true }];
+        return {
+          events: events,
+          cursorStarts: cursorStarts,
+          beatEvents: beatEvents,
+          totalDurationSec: totalDuration
+        };
+      }
+
+      /** Carrega e desenha o MusicXML da pasta xml/ (uma vez por sessão). */
+      function loadPlayerMusicXmlOnce() {
+        if (playerOsmd || playerOsmdLoading) {
+          resizePlayerOsmdIfActive();
+          return;
+        }
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return;
+        if (typeof opensheetmusicdisplay === 'undefined' || !opensheetmusicdisplay.OpenSheetMusicDisplay) {
+          host.innerHTML = '<p class="player-score-placeholder player-score-error">Biblioteca de partitura indisponível. Verifique a rede ou bloqueio de scripts.</p>';
+          setMessage('Player: OpenSheetMusicDisplay não carregou.');
+          return;
+        }
+        playerOsmdLoading = true;
+        host.innerHTML = '';
+        playerScoreData = null;
+        stopPlayerPlayback(false);
+        setMessage('Carregando MusicXML…');
+        var osmd;
+        try {
+          osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(host, {
+            backend: 'svg',
+            autoResize: true,
+            drawingParameters: 'default'
+          });
+        } catch (e) {
+          playerOsmdLoading = false;
+          host.innerHTML = '<p class="player-score-placeholder player-score-error">Não foi possível iniciar o visualizador de partitura.</p>';
+          setMessage('Player: erro ao criar o visualizador.');
+          return;
+        }
+        var url = PLAYER_SCORE_URL + '?v=' + encodeURIComponent(APP_VERSION);
+        Promise.all([
+          osmd.load(url),
+          fetch(url).then(function (res) {
+            if (!res.ok) throw new Error('http ' + res.status);
+            return res.text();
+          })
+        ]).then(function (loaded) {
+          playerOsmdLoading = false;
+          if (currentMode !== 'player') {
+            try {
+              if (typeof osmd.clear === 'function') osmd.clear();
+            } catch (eClear) {}
+            host.innerHTML = '';
+            return;
+          }
+          try {
+            osmd.render();
+          } catch (e2) {
+            playerOsmd = null;
+            host.innerHTML = '<p class="player-score-placeholder player-score-error">Erro ao desenhar o MusicXML.</p>';
+            setMessage('Player: falha ao renderizar a partitura.');
+            return;
+          }
+          var parsed = parsePlayerMusicXml(loaded[1]);
+          if (!parsed) {
+            playerOsmd = osmd;
+            playerScoreData = null;
+            updatePlayerUiNow(0);
+            setMessage('Partitura desenhada, mas não consegui extrair as notas para o playback.');
+            return;
+          }
+          playerOsmd = osmd;
+          playerScoreData = parsed;
+          playerPlayback.positionSec = 0;
+          playerPlayback.nextEventIndex = 0;
+          playerPlayback.nextCursorIndex = 0;
+          resetPlayerCursorToCurrentPosition();
+          updatePlayerUiNow(0);
+          setMessage('Partitura carregada (441 — violino/soprano). Use Play para iniciar.');
+          requestAnimationFrame(function () {
+            resizePlayerOsmdIfActive();
+            buildPlayerNoteAnchorsFromDom();
+          });
+          setTimeout(buildPlayerNoteAnchorsFromDom, 200);
+        }).catch(function () {
+          playerOsmdLoading = false;
+          playerOsmd = null;
+          playerScoreData = null;
+          playerNoteAnchors = [];
+          if (host) {
+            host.innerHTML = '<p class="player-score-placeholder player-score-error">Não foi possível carregar <code>xml/441_violino_soprano.musicxml</code>. Use HTTP (ex.: GitHub Pages ou <code>npx serve</code>); <code>file://</code> bloqueia o pedido.</p>';
+          }
+          updatePlayerUiNow(0);
+          setMessage('Player: falha ao carregar o MusicXML.');
+        });
+      }
+
       // ========== MODOS DE JOGO ==========
       function setMode(mode) {
         if (metroIsRunning) stopMetronome();
         if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
         if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
+        if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
         currentMode = mode;
         setMoreMenuOpen(false);
+        setPlayerSpeedPopoverOpen(false);
         closeSettingsPanel();
         document.querySelectorAll('.mode-btn').forEach(function (btn) {
           btn.classList.toggle('active', btn.dataset.mode === mode);
         });
         var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome');
+        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'player');
         var btnMoreTuner = document.getElementById('btnMoreTuner');
         var btnMoreMetronome = document.getElementById('btnMoreMetronome');
+        var btnMorePlayer = document.getElementById('btnMorePlayer');
         var btnMoreSettings = document.getElementById('btnMoreSettings');
         if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
         if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
+        if (btnMorePlayer) btnMorePlayer.classList.toggle('active', mode === 'player');
         if (btnMoreSettings) btnMoreSettings.classList.remove('active');
         clearViolinHighlight();
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
@@ -6562,18 +7750,21 @@
         var hinosSectionEl = document.getElementById('hinosSection');
         var tunerSectionEl = document.getElementById('tunerSection');
         var metroSectionEl = document.getElementById('metroSection');
-        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl) {
+        var playerSectionEl = document.getElementById('playerSection');
+        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl) {
           if (mode === 'hinos') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
             metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.remove('hidden');
           } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.remove('hidden');
             tunerSectionEl.classList.add('hidden');
             metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -6582,6 +7773,7 @@
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.remove('hidden');
             metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -6590,6 +7782,16 @@
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
             metroSectionEl.classList.remove('hidden');
+            playerSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.add('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
+          } else if (mode === 'player') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.remove('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -6598,6 +7800,7 @@
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
             metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
@@ -6605,7 +7808,7 @@
         }
         var progressSectionEl = document.getElementById('progressSection');
         if (progressSectionEl) {
-          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome');
+          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player');
         }
 
         if (mode === 'learn') {
@@ -6645,6 +7848,10 @@
           renderHinosStudentSelect();
           refreshHinosVoiceButtons();
           setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
+        } else if (mode === 'player') {
+          updateChallengeStats();
+          updateProgress();
+          loadPlayerMusicXmlOnce();
         }
         setTimeout(updateBottomNavVisibility, 0);
       }
@@ -7271,6 +8478,132 @@
             openMetronomeModal();
           });
         }
+        var btnMorePlayer = document.getElementById('btnMorePlayer');
+        if (btnMorePlayer) {
+          btnMorePlayer.addEventListener('click', function () {
+            setMode('player');
+          });
+        }
+        var btnPlayerPlay = document.getElementById('btnPlayerPlay');
+        if (btnPlayerPlay) {
+          btnPlayerPlay.addEventListener('click', function () {
+            startPlayerPlayback();
+          });
+        }
+        var btnPlayerPause = document.getElementById('btnPlayerPause');
+        if (btnPlayerPause) {
+          btnPlayerPause.addEventListener('click', function () {
+            if (!playerPlayback.isPlaying) return;
+            stopPlayerPlayback(true);
+            setMessage('Playback pausado.');
+          });
+        }
+        var btnPlayerStop = document.getElementById('btnPlayerStop');
+        if (btnPlayerStop) {
+          btnPlayerStop.addEventListener('click', function () {
+            stopPlayerPlayback(false);
+            setMessage('Playback parado.');
+          });
+        }
+        var btnPlayerSpeed = document.getElementById('btnPlayerSpeed');
+        var playerSpeedPopover = document.getElementById('playerSpeedPopover');
+        var playerSpeedInput = document.getElementById('playerSpeedInput');
+        var playerSpeedSlider = document.getElementById('playerSpeedSlider');
+        if (btnPlayerSpeed) {
+          btnPlayerSpeed.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var willOpen = !playerSpeedPopover || playerSpeedPopover.classList.contains('hidden');
+            setPlayerSpeedPopoverOpen(willOpen);
+          });
+        }
+        if (playerSpeedPopover) {
+          playerSpeedPopover.addEventListener('click', function (e) {
+            e.stopPropagation();
+          });
+        }
+        if (playerSpeedInput) {
+          playerSpeedInput.addEventListener('focus', function () {
+            beginPlayerSpeedAdjust();
+          });
+          playerSpeedInput.addEventListener('input', function () {
+            var pct = parseInt(this.value || '100', 10);
+            if (!isFinite(pct)) pct = 100;
+            previewPlayerSpeedPercent(pct);
+          });
+          playerSpeedInput.addEventListener('change', function () {
+            var pct = parseInt(this.value || '100', 10);
+            if (!isFinite(pct)) pct = 100;
+            endPlayerSpeedAdjust(pct);
+          });
+          playerSpeedInput.addEventListener('blur', function () {
+            if (!playerSpeedAdjusting) return;
+            var pct = parseInt(this.value || '100', 10);
+            if (!isFinite(pct)) pct = getPlayerSpeedPercent();
+            endPlayerSpeedAdjust(pct);
+          });
+        }
+        if (playerSpeedSlider) {
+          playerSpeedSlider.addEventListener('pointerdown', function () {
+            beginPlayerSpeedAdjust();
+          });
+          playerSpeedSlider.addEventListener('mousedown', function () {
+            beginPlayerSpeedAdjust();
+          });
+          playerSpeedSlider.addEventListener('touchstart', function () {
+            beginPlayerSpeedAdjust();
+          }, { passive: true });
+          playerSpeedSlider.addEventListener('input', function () {
+            var pct = parseInt(this.value || '100', 10);
+            if (!isFinite(pct)) pct = 100;
+            previewPlayerSpeedPercent(pct);
+          });
+          playerSpeedSlider.addEventListener('change', function () {
+            var pct = parseInt(this.value || '100', 10);
+            if (!isFinite(pct)) pct = 100;
+            endPlayerSpeedAdjust(pct);
+          });
+        }
+        var playerMetronomeLever = document.getElementById('playerMetronomeLever');
+        if (playerMetronomeLever) {
+          playerMetronomeLever.addEventListener('click', function () {
+            playerMetronomeEnabled = !playerMetronomeEnabled;
+            syncPlayerLeverUi();
+            setMessage(playerMetronomeEnabled ? 'Metrônomo do player ligado.' : 'Metrônomo do player desligado.');
+          });
+        }
+        var playerAutoScrollLever = document.getElementById('playerAutoScrollLever');
+        if (playerAutoScrollLever) {
+          playerAutoScrollLever.addEventListener('click', function () {
+            playerAutoScrollEnabled = !playerAutoScrollEnabled;
+            syncPlayerLeverUi();
+            setMessage(playerAutoScrollEnabled ? 'Rolagem automática ligada.' : 'Rolagem automática desligada.');
+          });
+        }
+        var playerSeek = document.getElementById('playerSeek');
+        if (playerSeek) {
+          playerSeek.addEventListener('input', function () {
+            if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+            var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
+            var targetSec = ratio * playerScoreData.totalDurationSec;
+            updatePlayerUiNow(targetSec);
+          });
+          playerSeek.addEventListener('change', function () {
+            if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+            var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
+            var targetSec = ratio * playerScoreData.totalDurationSec;
+            seekPlayerToTime(targetSec, true);
+          });
+        }
+        var playerHost = document.getElementById('playerScoreHost');
+        if (playerHost) {
+          playerHost.addEventListener('click', function (e) {
+            if (currentMode !== 'player' || !playerScoreData) return;
+            var acted = seekPlayerFromClick(e.clientX, e.clientY);
+            if (acted) {
+              setMessage('Posição ajustada na partitura.');
+            }
+          });
+        }
         var btnMoreSettings = document.getElementById('btnMoreSettings');
         if (btnMoreSettings) {
           btnMoreSettings.addEventListener('click', function () {
@@ -7282,6 +8615,19 @@
           var wrap = document.querySelector('.mode-more-wrap');
           if (!menu || !wrap) return;
           if (!wrap.contains(e.target)) setMoreMenuOpen(false);
+          var speedWrap = document.getElementById('playerControls');
+          if (!speedWrap || !speedWrap.contains(e.target)) setPlayerSpeedPopoverOpen(false);
+        });
+        function pausePlayerAutoScrollByUser() {
+          if (currentMode !== 'player') return;
+          if (Date.now() < playerAutoScrollProgrammaticUntil) return;
+          playerAutoScrollUserPausedUntil = Date.now() + 2200;
+        }
+        window.addEventListener('wheel', pausePlayerAutoScrollByUser, { passive: true });
+        window.addEventListener('touchmove', pausePlayerAutoScrollByUser, { passive: true });
+        window.addEventListener('keydown', function (e) {
+          var keys = ['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End', ' '];
+          if (keys.indexOf(e.key) >= 0) pausePlayerAutoScrollByUser();
         });
 
         var tunerStartBtn = document.getElementById('tunerStartBtn');
@@ -8709,6 +10055,9 @@
         createNoteButtons();
         initMetronomeUI();
         bindEvents();
+        updatePlayerUiNow(0);
+        syncPlayerSpeedUi();
+        syncPlayerLeverUi();
         initHinosUI();
         updateTunerUINoSignal();
         drawTunerGauge(0, 'idle');
@@ -8718,7 +10067,11 @@
         initBottomNavObserver();
         updateBottomNavVisibility();
         window.addEventListener('scroll', updateBottomNavVisibility, { passive: true });
-        window.addEventListener('resize', updateBottomNavVisibility);
+        window.addEventListener('resize', function onWindowResizePlayerAndNav() {
+          updateBottomNavVisibility();
+          resizePlayerOsmdIfActive();
+          buildPlayerNoteAnchorsFromDom();
+        });
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
         if (currentMode !== 'hinos') {
