@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v57';
+const CACHE_VERSION = 'v1.1.6';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
@@ -8,7 +8,8 @@ const PRECACHE_URLS = [
   './index.html',
   './manifest.webmanifest',
   './hinario5-curriculum.json',
-  './xml/441_violino_soprano.musicxml',
+  './xml/catalog.json',
+  './xml/do/441_violino_s.musicxml',
   './icon-192.png',
   './icon-512.png'
 ];
@@ -50,6 +51,22 @@ self.addEventListener('fetch', function (event) {
 
   // Não cacheia requisições cross-origin (ex.: soundfonts/CDN).
   if (url.origin !== self.location.origin) return;
+
+  // Catálogo precisa refletir mudanças imediatamente (evita lista de hinos defasada).
+  if (url.pathname.endsWith('/xml/catalog.json')) {
+    event.respondWith(
+      fetch(req).then(function (res) {
+        const copy = res.clone();
+        caches.open(CACHE_NAME).then(function (cache) {
+          cache.put(req, copy);
+        });
+        return res;
+      }).catch(function () {
+        return caches.match(req);
+      })
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(req).then(function (cached) {
