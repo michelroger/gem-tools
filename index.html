@@ -3352,10 +3352,14 @@
       <p class="violin-title" id="playerSectionTitle"></p>
       <div class="player-source-row" id="playerSourceRow">
         <div class="hinos-field">
-          <label class="hinos-field-label" for="playerSelectHino">Hino</label>
+          <label class="hinos-field-label" for="playerSelectCollection">Coleção</label>
+          <select id="playerSelectCollection" class="hinos-select" aria-label="Selecionar coleção"></select>
+        </div>
+        <div class="hinos-field">
+          <label class="hinos-field-label" for="playerSelectHino">Item</label>
           <div class="player-hino-picker" id="playerHinoPicker">
-            <input type="text" id="playerSelectHino" class="hinos-input" placeholder="Digite número ou título do hino" aria-label="Selecionar hino" autocomplete="off" />
-            <div id="playerHinoSuggestions" class="player-hino-suggestions hidden" role="listbox" aria-label="Sugestões de hinos"></div>
+            <input type="text" id="playerSelectHino" class="hinos-input" placeholder="Digite número ou título" aria-label="Selecionar item" autocomplete="off" />
+            <div id="playerHinoSuggestions" class="player-hino-suggestions hidden" role="listbox" aria-label="Sugestões de itens"></div>
           </div>
         </div>
         <div class="hinos-field">
@@ -3398,7 +3402,7 @@
             </svg>
           </button>
         </div>
-        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem automática, cor e dedilhado da partitura">
+        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem automática, loop, cor e dedilhado da partitura">
           <button type="button" class="player-toggle-btn" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
             <span class="player-toggle-icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3416,6 +3420,16 @@
                 <path d="M10.4 14v-1a1.2 1.2 0 1 1 2.4 0v1"></path>
                 <path d="M12.8 14v-.8a1.2 1.2 0 0 1 2.4 0V14"></path>
                 <path d="M15.2 14v-.4a1.2 1.2 0 0 1 2.4 0v2.4c0 2.2-1.8 4-4 4h-2.2c-1.7 0-3.2-.9-4-2.4L6.5 16"></path>
+              </svg>
+            </span>
+          </button>
+          <button type="button" class="player-toggle-btn" id="playerLoopToggle" aria-pressed="false" aria-label="Repetir partitura" title="Repetir partitura">
+            <span class="player-toggle-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 2l4 4-4 4"></path>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                <path d="M7 22l-4-4 4-4"></path>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
               </svg>
             </span>
           </button>
@@ -3721,10 +3735,10 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.1.6';
+      const APP_VERSION = '1.1.7';
       const APP_VERSION_LABEL = '';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
-      const PLAYER_SCORE_URL = './xml/do/violino/441_s.musicxml';
+      const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
       const PLAYER_CATALOG_URL = './xml/catalog.json';
 
       // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
@@ -4043,14 +4057,19 @@
       var playerScoreData = null;
       var playerCatalog = null;
       var playerCatalogPromise = null;
+      var playerSelectedCollectionId = 'hinario5-ccb';
       var playerSelectedAfinacao = 'do';
+      var playerSelectedItemId = null;
       var playerSelectedHinoNumero = null;
       var playerSelectedVoices = ['s'];
       var playerCurrentScorePath = '';
       var playerPlayToken = 0;
+      var playerPrepToken = 0;
+      var playerPrepTimeouts = [];
       var playerPlaybackRate = 1;
       var playerMetronomeEnabled = false;
       var playerAutoScrollEnabled = false;
+      var playerLoopEnabled = false;
       var playerColorizedNotes = false;
       var playerShowFingering = false;
       var playerAutoScrollLastTs = 0;
@@ -7200,6 +7219,8 @@
         if (metroToggle) metroToggle.setAttribute('aria-pressed', playerMetronomeEnabled ? 'true' : 'false');
         var scrollToggle = document.getElementById('playerAutoScrollToggle');
         if (scrollToggle) scrollToggle.setAttribute('aria-pressed', playerAutoScrollEnabled ? 'true' : 'false');
+        var loopToggle = document.getElementById('playerLoopToggle');
+        if (loopToggle) loopToggle.setAttribute('aria-pressed', playerLoopEnabled ? 'true' : 'false');
         var colorToggle = document.getElementById('playerColorToggle');
         if (colorToggle) colorToggle.setAttribute('aria-pressed', playerColorizedNotes ? 'true' : 'false');
         var fingeringToggle = document.getElementById('playerFingeringToggle');
@@ -7288,15 +7309,64 @@
         return one(voice);
       }
 
+      function normalizePlayerCatalogJson(json) {
+        if (json && Array.isArray(json.colecoes)) {
+          return {
+            version: json.version || '2.0.0',
+            lastUpdated: json.lastUpdated || '',
+            colecoes: json.colecoes.filter(function (c) { return c && Array.isArray(c.items); })
+          };
+        }
+        var legacyItems = (json && Array.isArray(json.items)) ? json.items : [];
+        return {
+          version: '2.0.0',
+          lastUpdated: (json && json.lastUpdated) ? json.lastUpdated : '',
+          colecoes: [
+            {
+              id: 'hinario5-ccb',
+              nome: 'Hinário 5 CCB',
+              tipo: 'hinario',
+              ordem: 1,
+              filtros: { afinacoes: ['do', 'mib', 'sib'], vozes: ['s', 'c', 't', 'b'] },
+              items: legacyItems
+            }
+          ]
+        };
+      }
+
+      function getPlayerCatalogCollections() {
+        if (!playerCatalog || !Array.isArray(playerCatalog.colecoes)) return [];
+        return playerCatalog.colecoes;
+      }
+
+      function getCurrentPlayerCollection() {
+        var cols = getPlayerCatalogCollections();
+        if (!cols.length) return null;
+        var i;
+        for (i = 0; i < cols.length; i++) {
+          if (String(cols[i].id || '') === String(playerSelectedCollectionId || '')) return cols[i];
+        }
+        return cols[0];
+      }
+
       function getPlayerCatalogItems() {
-        if (!playerCatalog || !Array.isArray(playerCatalog.items)) return [];
-        return playerCatalog.items;
+        var col = getCurrentPlayerCollection();
+        if (!col || !Array.isArray(col.items)) return [];
+        return col.items;
       }
 
       function getPlayerCatalogItemByNumero(numero) {
         var items = getPlayerCatalogItems();
         for (var i = 0; i < items.length; i++) {
           if (Number(items[i].numero) === Number(numero)) return items[i];
+        }
+        return null;
+      }
+
+      function getPlayerCatalogItemById(itemId) {
+        var items = getPlayerCatalogItems();
+        for (var i = 0; i < items.length; i++) {
+          if (String(items[i].id || '') === String(itemId || '')) return items[i];
         }
         return null;
       }
@@ -7356,9 +7426,11 @@
           titleEl.textContent = 'Player';
           return;
         }
+        var col = getCurrentPlayerCollection();
+        var colName = col && col.nome ? String(col.nome) : 'Coleção';
         var numero = item.numero != null ? String(item.numero) : '--';
         var nome = item.titulo ? String(item.titulo) : 'Sem título';
-        titleEl.textContent = numero + ' · ' + nome + ' · ' + playerVoiceLabel(voice);
+        titleEl.textContent = colName + ' · ' + numero + ' · ' + nome + ' · ' + playerVoiceLabel(voice);
       }
 
       function normalizePlayerSelectedVoices(availableVoices) {
@@ -7375,11 +7447,13 @@
       }
 
       function resolvePlayerCurrentSelection() {
-        var item = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+        var item = getPlayerCatalogItemById(playerSelectedItemId);
+        if (!item) item = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
         if (!item) {
           var items = getPlayerCatalogItems();
           if (!items.length) return null;
           item = items[0];
+          playerSelectedItemId = String(item.id || '');
           playerSelectedHinoNumero = Number(item.numero);
         }
         var availableVoices = getPlayerAvailableVoices(item);
@@ -7401,19 +7475,38 @@
       }
 
       function renderPlayerCatalogControls() {
+        var selCollection = document.getElementById('playerSelectCollection');
         var selAfin = document.getElementById('playerSelectAfinacao');
         var selHino = document.getElementById('playerSelectHino');
         var hinoSuggestions = document.getElementById('playerHinoSuggestions');
         var voiceChecks = document.getElementById('playerVoiceChecks');
-        var items = getPlayerCatalogItems();
+        var collections = getPlayerCatalogCollections();
 
-        if (!selAfin || !selHino || !hinoSuggestions || !voiceChecks) return;
+        if (!selCollection || !selAfin || !selHino || !hinoSuggestions || !voiceChecks) return;
+        if (!collections.length) {
+          selCollection.innerHTML = '<option value="">Sem coleção</option>';
+        } else {
+          collections.sort(function (a, b) {
+            return (Number(a.ordem) || 0) - (Number(b.ordem) || 0);
+          });
+          if (!collections.some(function (c) { return String(c.id || '') === String(playerSelectedCollectionId || ''); })) {
+            playerSelectedCollectionId = String(collections[0].id || '');
+            playerSelectedItemId = null;
+            playerSelectedHinoNumero = null;
+          }
+          selCollection.innerHTML = collections.map(function (c) {
+            return '<option value="' + String(c.id || '').replace(/"/g, '&quot;') + '">' + String(c.nome || c.id || 'Coleção') + '</option>';
+          }).join('');
+          selCollection.value = playerSelectedCollectionId;
+        }
+
+        var items = getPlayerCatalogItems();
         if (!items.length) {
           selAfin.innerHTML = '<option value="">Sem catálogo</option>';
           hinoSuggestions.innerHTML = '';
           hinoSuggestions.classList.add('hidden');
           selHino.value = '';
-          selHino.placeholder = 'Sem hinos';
+          selHino.placeholder = 'Sem itens';
           voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
             cb.disabled = true;
             cb.checked = cb.value === 's';
@@ -7461,21 +7554,25 @@
           return;
         }
         if (!hinosFiltrados.some(function (it) { return Number(it.numero) === Number(playerSelectedHinoNumero); })) {
-          playerSelectedHinoNumero = Number(hinosFiltrados[0].numero);
+          playerSelectedHinoNumero = Number(hinosFiltrados[0].numero || 0);
+          playerSelectedItemId = String(hinosFiltrados[0].id || '');
         }
 
-        selHino.placeholder = 'Digite número ou título do hino';
+        selHino.placeholder = 'Digite número ou título';
         hinoSuggestions.innerHTML = hinosFiltrados.map(function (it) {
           var n = Number(it.numero);
+          var itemId = String(it.id || '');
           var title = (it.titulo ? String(it.titulo) : 'Sem título').replace(/</g, '&lt;');
-          return '<button type="button" class="player-hino-suggestion" data-hino-numero="' + n + '" role="option">' + n + ' · ' + title + '</button>';
+          return '<button type="button" class="player-hino-suggestion" data-item-id="' + itemId.replace(/"/g, '&quot;') + '" data-hino-numero="' + n + '" role="option">' + n + ' · ' + title + '</button>';
         }).join('');
-        var selectedItem = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+        var selectedItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
         if (selectedItem && !searchTerm) {
+          playerSelectedItemId = String(selectedItem.id || '');
+          playerSelectedHinoNumero = Number(selectedItem.numero || 0);
           selHino.value = String(selectedItem.numero) + ' · ' + (selectedItem.titulo || 'Sem título');
         }
 
-        var currentItem = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+        var currentItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
         var voices = getPlayerAvailableVoices(currentItem);
         if (!voices.length) voices = ['s'];
         normalizePlayerSelectedVoices(voices);
@@ -7517,7 +7614,7 @@
 
       function ensurePlayerCatalogLoaded(forceReload) {
         if (forceReload) playerCatalog = null;
-        if (!forceReload && playerCatalog && Array.isArray(playerCatalog.items)) return Promise.resolve(playerCatalog);
+        if (!forceReload && playerCatalog && Array.isArray(playerCatalog.colecoes)) return Promise.resolve(playerCatalog);
         if (playerCatalogPromise) return playerCatalogPromise;
         var cacheBust = forceReload ? ('&ts=' + Date.now()) : '';
         var url = PLAYER_CATALOG_URL + '?v=' + encodeURIComponent(APP_VERSION) + cacheBust;
@@ -7525,11 +7622,11 @@
           if (!res.ok) throw new Error('http ' + res.status);
           return res.json();
         }).then(function (json) {
-          playerCatalog = json && Array.isArray(json.items) ? json : { items: [] };
+          playerCatalog = normalizePlayerCatalogJson(json);
           renderPlayerCatalogControls();
           return playerCatalog;
         }).catch(function () {
-          playerCatalog = { items: [] };
+          playerCatalog = { colecoes: [] };
           renderPlayerCatalogControls();
           return playerCatalog;
         }).finally(function () {
@@ -7754,6 +7851,14 @@
         }
       }
 
+      function clearPlayerPreparation() {
+        while (playerPrepTimeouts.length) {
+          var tm = playerPrepTimeouts.pop();
+          try { clearTimeout(tm); } catch (e) {}
+        }
+        playerPrepToken = 0;
+      }
+
       function resetPlayerCursorToCurrentPosition() {
         if (!playerOsmd || !playerOsmd.cursor) return;
         try {
@@ -7780,6 +7885,48 @@
         gain.connect(ctx.destination);
         osc.start(startAtCtx);
         osc.stop(startAtCtx + 0.07);
+      }
+
+      function schedulePlayerPreparationClick(startAtCtx, isAccent) {
+        var ctx = getAudioContext();
+        if (!ctx || !soundEnabled) return;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var freq = isAccent ? 1600 : 1250;
+        var vol = calmMode ? 0.07 : 0.12;
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, startAtCtx);
+        gain.gain.setValueAtTime(0.0001, startAtCtx);
+        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.002);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.045);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startAtCtx);
+        osc.stop(startAtCtx + 0.06);
+      }
+
+      function getPlayerPreparationBeatSec() {
+        if (playerScoreData && playerScoreData.beatEvents && playerScoreData.beatEvents.length > 1) {
+          var i;
+          for (i = 1; i < playerScoreData.beatEvents.length; i++) {
+            var d = (playerScoreData.beatEvents[i].sec || 0) - (playerScoreData.beatEvents[i - 1].sec || 0);
+            if (isFinite(d) && d > 0.2 && d < 2.0) return d;
+          }
+        }
+        return 0.6;
+      }
+
+      function beginPlayerPlaybackNow(ctx, instrument, fallbackMessage) {
+        playerPlayback.isPlaying = true;
+        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+        playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
+        playerAutoScrollNeedsInitial = true;
+        resetPlayerCursorToCurrentPosition();
+        updatePlayerUiNow(playerPlayback.positionSec);
+        playerTickPlaybackLoop(instrument || null);
+        setMessage(fallbackMessage ? 'Playback em andamento (modo síntese).' : 'Playback em andamento.');
       }
 
       function updatePlayerUiNow(nowSec) {
@@ -7850,6 +7997,8 @@
       }
 
       function stopPlayerPlayback(keepPosition) {
+        clearPlayerPreparation();
+        playerPlayToken = 0;
         if (playerPlayback.rafId) {
           cancelAnimationFrame(playerPlayback.rafId);
           playerPlayback.rafId = null;
@@ -7899,6 +8048,11 @@
 
         if (elapsed >= total + 0.03) {
           stopPlayerPlayback(false);
+          if (playerLoopEnabled && currentMode === 'player') {
+            startPlayerPlayback();
+            setMessage('Loop da partitura reiniciado.');
+            return;
+          }
           if (currentMode !== 'player') setMessage('Playback concluído.');
           return;
         }
@@ -7948,7 +8102,7 @@
           updatePlayerUiNow(0);
           return;
         }
-        if (playerPlayback.isPlaying) return;
+        if (playerPlayback.isPlaying || playerPrepToken) return;
         var ctx = getAudioContext();
         if (!ctx) return;
         if (ctx.state === 'suspended') ctx.resume();
@@ -7958,28 +8112,54 @@
         loadInstrument(requestedInstrumentId).then(function (instrument) {
           if (playerPlayToken !== token) return;
           if (!playerScoreData) return;
-          playerPlayback.isPlaying = true;
-          playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-          playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
-          playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
-          playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
-          playerAutoScrollNeedsInitial = true;
-          resetPlayerCursorToCurrentPosition();
-          updatePlayerUiNow(playerPlayback.positionSec);
-          playerTickPlaybackLoop(instrument || null);
-          setMessage('Playback em andamento.');
+          clearPlayerPreparation();
+          playerPrepToken = token;
+          var prepBeatSec = getPlayerPreparationBeatSec();
+          var prepTotal = 3;
+          var i;
+          for (i = 0; i < prepTotal; i++) {
+            (function (idx) {
+              var tm = setTimeout(function () {
+                if (playerPlayToken !== token || playerPrepToken !== token) return;
+                var remaining = prepTotal - idx;
+                var prepCtx = getAudioContext();
+                if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
+                setMessage('Preparação: ' + remaining + '...');
+              }, Math.round(idx * prepBeatSec * 1000));
+              playerPrepTimeouts.push(tm);
+            })(i);
+          }
+          var startTm = setTimeout(function () {
+            if (playerPlayToken !== token || playerPrepToken !== token) return;
+            clearPlayerPreparation();
+            beginPlayerPlaybackNow(ctx, instrument || null, false);
+          }, Math.round(prepTotal * prepBeatSec * 1000));
+          playerPrepTimeouts.push(startTm);
         }).catch(function () {
           if (playerPlayToken !== token) return;
-          playerPlayback.isPlaying = true;
-          playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-          playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
-          playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
-          playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
-          playerAutoScrollNeedsInitial = true;
-          resetPlayerCursorToCurrentPosition();
-          updatePlayerUiNow(playerPlayback.positionSec);
-          playerTickPlaybackLoop(null);
-          setMessage('Playback em andamento (modo síntese).');
+          clearPlayerPreparation();
+          playerPrepToken = token;
+          var prepBeatSec = getPlayerPreparationBeatSec();
+          var prepTotal = 3;
+          var i;
+          for (i = 0; i < prepTotal; i++) {
+            (function (idx) {
+              var tm = setTimeout(function () {
+                if (playerPlayToken !== token || playerPrepToken !== token) return;
+                var remaining = prepTotal - idx;
+                var prepCtx = getAudioContext();
+                if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
+                setMessage('Preparação: ' + remaining + '...');
+              }, Math.round(idx * prepBeatSec * 1000));
+              playerPrepTimeouts.push(tm);
+            })(i);
+          }
+          var startTm = setTimeout(function () {
+            if (playerPlayToken !== token || playerPrepToken !== token) return;
+            clearPlayerPreparation();
+            beginPlayerPlaybackNow(ctx, null, true);
+          }, Math.round(prepTotal * prepBeatSec * 1000));
+          playerPrepTimeouts.push(startTm);
         });
       }
 
@@ -9130,6 +9310,16 @@
             endPlayerSpeedAdjust(pct);
           });
         }
+        var playerSelectCollection = document.getElementById('playerSelectCollection');
+        if (playerSelectCollection) {
+          playerSelectCollection.addEventListener('change', function () {
+            playerSelectedCollectionId = String(this.value || '');
+            playerSelectedItemId = null;
+            playerSelectedHinoNumero = null;
+            renderPlayerCatalogControls();
+            loadPlayerFromCatalogSelection(true);
+          });
+        }
         var playerSelectAfinacao = document.getElementById('playerSelectAfinacao');
         if (playerSelectAfinacao) {
           playerSelectAfinacao.addEventListener('change', function () {
@@ -9146,7 +9336,14 @@
             var typed = String(playerSelectHino.value || '');
             var parsedNumero = parsePlayerNumeroFromInputValue(typed);
             if (isFinite(parsedNumero) && parsedNumero > 0) {
-              playerSelectedHinoNumero = parsedNumero;
+              var found = getPlayerCatalogItemByNumero(parsedNumero);
+              if (found) {
+                playerSelectedItemId = String(found.id || '');
+                playerSelectedHinoNumero = Number(found.numero || parsedNumero);
+              } else {
+                playerSelectedItemId = null;
+                playerSelectedHinoNumero = parsedNumero;
+              }
             }
             renderPlayerCatalogControls();
             loadPlayerFromCatalogSelection(true);
@@ -9186,10 +9383,17 @@
           playerHinoSuggestions.addEventListener('click', function (e) {
             var btn = e.target && e.target.closest ? e.target.closest('.player-hino-suggestion') : null;
             if (!btn) return;
+            var itemId = String(btn.getAttribute('data-item-id') || '');
             var n = parseInt(btn.getAttribute('data-hino-numero') || '0', 10);
-            if (!isFinite(n) || n <= 0) return;
-            playerSelectedHinoNumero = n;
-            var item = getPlayerCatalogItemByNumero(n);
+            if (!itemId && (!isFinite(n) || n <= 0)) return;
+            var item = itemId ? getPlayerCatalogItemById(itemId) : getPlayerCatalogItemByNumero(n);
+            if (item) {
+              playerSelectedItemId = String(item.id || '');
+              playerSelectedHinoNumero = Number(item.numero || 0);
+            } else {
+              playerSelectedItemId = null;
+              playerSelectedHinoNumero = n;
+            }
             if (item && playerSelectHino) playerSelectHino.value = String(item.numero) + ' · ' + (item.titulo || 'Sem título');
             if (playerSelectHino) playerSelectHino.dataset.openAll = '0';
             playerHinoSuggestions.classList.add('hidden');
@@ -9235,6 +9439,14 @@
             playerAutoScrollEnabled = !playerAutoScrollEnabled;
             syncPlayerLeverUi();
             setMessage(playerAutoScrollEnabled ? 'Rolagem automática ligada.' : 'Rolagem automática desligada.');
+          });
+        }
+        var playerLoopToggle = document.getElementById('playerLoopToggle');
+        if (playerLoopToggle) {
+          playerLoopToggle.addEventListener('click', function () {
+            playerLoopEnabled = !playerLoopEnabled;
+            syncPlayerLeverUi();
+            setMessage(playerLoopEnabled ? 'Loop da partitura ligado.' : 'Loop da partitura desligado.');
           });
         }
         var playerColorToggle = document.getElementById('playerColorToggle');
@@ -9310,6 +9522,23 @@
         window.addEventListener('keydown', function (e) {
           var keys = ['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End', ' '];
           if (keys.indexOf(e.key) >= 0) pausePlayerAutoScrollByUser();
+        });
+        window.addEventListener('keydown', function (e) {
+          var isSpace = e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar';
+          if (!isSpace) return;
+          if (currentMode !== 'player') return;
+          var target = e.target;
+          var tag = target && target.tagName ? String(target.tagName).toUpperCase() : '';
+          var typing = !!(target && (target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'));
+          if (typing) return;
+          if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return;
+          e.preventDefault();
+          if (playerPlayback.isPlaying || playerPrepToken) {
+            stopPlayerPlayback(true);
+            setMessage('Playback pausado.');
+            return;
+          }
+          startPlayerPlayback();
         });
 
         var tunerStartBtn = document.getElementById('tunerStartBtn');
