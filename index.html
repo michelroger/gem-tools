@@ -3735,7 +3735,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.1.8';
+      const APP_VERSION = '1.1.12';
       const APP_VERSION_LABEL = '';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
@@ -3981,6 +3981,29 @@
           },
           freqBoard: [
             [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+          ]
+        },
+        // VOZ (som GM + nome em solfejo na reprodução do player)
+        {
+          id: 'voz',
+          nome: 'Voz',
+          emoji: '🎤',
+          tipo: 'voz',
+          soundfont: 'voice_oohs',
+          descricao: 'Coro (GM) + solfejo cantado (timbre mais agudo / feminino, sintético)',
+          dedilhado: 'teclas',
+          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+          fingeringMap: {
+            do: 'player: vogal cantada (som)',
+            re: 'player: vogal cantada (som)',
+            mi: 'player: vogal cantada (som)',
+            fa: 'player: vogal cantada (som)',
+            sol: 'player: vogal cantada (som)',
+            la: 'player: vogal cantada (som)',
+            si: 'player: vogal cantada (som)'
+          },
+          freqBoard: [
+            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
           ]
         }
       ];
@@ -5710,6 +5733,239 @@
         return names[midi % 12] + Math.floor(midi / 12);
       }
 
+      /**
+       * Formantes base (neutro) + ajuste “voz feminina / mais aguda” no timbre (não muda a afinação da nota).
+       */
+      function vowelFormantsForPitchClass(pc) {
+        var rows = [
+          { f1: 780, bw1: 130, f2: 1180, bw2: 200, w1: 0.62, w2: 0.48, br: 0.42 },
+          { f1: 520, bw1: 110, f2: 1680, bw2: 240, w1: 0.5, w2: 0.62, br: 0.35 },
+          { f1: 520, bw1: 115, f2: 1760, bw2: 250, w1: 0.52, w2: 0.6, br: 0.34 },
+          { f1: 360, bw1: 100, f2: 2200, bw2: 280, w1: 0.42, w2: 0.72, br: 0.38 },
+          { f1: 300, bw1: 95, f2: 2320, bw2: 300, w1: 0.38, w2: 0.78, br: 0.4 },
+          { f1: 720, bw1: 140, f2: 1120, bw2: 190, w1: 0.65, w2: 0.46, br: 0.44 },
+          { f1: 580, bw1: 120, f2: 920, bw2: 170, w1: 0.58, w2: 0.5, br: 0.36 },
+          { f1: 540, bw1: 125, f2: 880, bw2: 165, w1: 0.56, w2: 0.52, br: 0.35 },
+          { f1: 470, bw1: 105, f2: 1080, bw2: 210, w1: 0.48, w2: 0.58, br: 0.33 },
+          { f1: 760, bw1: 135, f2: 1200, bw2: 195, w1: 0.64, w2: 0.5, br: 0.45 },
+          { f1: 380, bw1: 105, f2: 2100, bw2: 290, w1: 0.44, w2: 0.7, br: 0.37 },
+          { f1: 320, bw1: 100, f2: 2240, bw2: 300, w1: 0.4, w2: 0.76, br: 0.39 }
+        ];
+        var base = rows[((pc % 12) + 12) % 12];
+        var f1 = Math.min(960, base.f1 * 1.09);
+        var f2 = Math.min(2900, base.f2 * 1.11);
+        var f3 = Math.min(3800, Math.max(2680, f2 * 1.36 + 180));
+        return {
+          f1: f1,
+          bw1: Math.max(80, base.bw1 * 0.9),
+          f2: f2,
+          bw2: Math.max(150, base.bw2 * 0.88),
+          f3: f3,
+          bw3: Math.max(280, Math.min(520, f3 * 0.13 + 120)),
+          w1: base.w1 * 0.93,
+          w2: Math.min(0.88, base.w2 * 1.06),
+          w3: Math.min(0.33, 0.22 + Math.min(0.1, Math.max(0, f2 - 1000) / 8000)),
+          br: base.br * 0.9
+        };
+      }
+
+      /**
+       * “Laaaa / miii” sem TTS: pulso suave (triângulo) + sopro no ataque + dois formantes em paralelo (bandpass largo).
+       */
+      function schedulePlayerSungSolfejo(ctx, startAtCtx, freqHz, durationSec, playbackToken) {
+        if (!ctx || !soundEnabled) return;
+        if (playbackToken !== playerPlayToken || !playerPlayback.isPlaying) return;
+        if (!freqHz || !isFinite(freqHz) || freqHz <= 0) return;
+
+        var f = Math.max(90, Math.min(1800, freqHz));
+        var dur = Math.max(0.16, Math.min(durationSec || 0.35, 5));
+        var midi = Math.round(69 + 12 * Math.log2(f / 440));
+        midi = Math.max(0, Math.min(127, midi));
+        var pc = ((midi % 12) + 12) % 12;
+        var fm = vowelFormantsForPitchClass(pc);
+
+        var atk = Math.min(0.32, Math.max(0.08, dur * 0.24));
+        var rel = Math.min(0.42, Math.max(0.1, dur * 0.26));
+        var sustain = Math.max(0.05, dur - atk - rel);
+        var endT = startAtCtx + atk + sustain + rel + 0.06;
+
+        var peak = calmMode ? 0.36 : 0.5;
+
+        var master = ctx.createGain();
+        master.gain.setValueAtTime(0.0001, startAtCtx);
+        master.gain.exponentialRampToValueAtTime(peak, startAtCtx + atk);
+        master.gain.setValueAtTime(peak * 0.88, startAtCtx + atk + sustain);
+        master.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
+
+        function qFromBw(centerHz, bwHz) {
+          var bw = Math.max(40, bwHz);
+          var c = Math.max(80, centerHz);
+          return Math.max(0.9, Math.min(4.5, c / bw));
+        }
+
+        // --- Excitação periódica (menos “pure tone” que senoides + peaking) ---
+        var tri1 = ctx.createOscillator();
+        tri1.type = 'triangle';
+        tri1.frequency.setValueAtTime(f, startAtCtx);
+
+        var tri2 = ctx.createOscillator();
+        tri2.type = 'triangle';
+        tri2.frequency.setValueAtTime(f * 2, startAtCtx);
+        var gTri2 = ctx.createGain();
+        gTri2.gain.value = 0.095;
+
+        var tri3 = ctx.createOscillator();
+        tri3.type = 'triangle';
+        tri3.frequency.setValueAtTime(f * 3, startAtCtx);
+        var gTri3 = ctx.createGain();
+        gTri3.gain.value = 0.038;
+
+        var buzzMix = ctx.createGain();
+        buzzMix.gain.value = 1;
+        tri1.connect(buzzMix);
+        tri2.connect(gTri2);
+        gTri2.connect(buzzMix);
+        tri3.connect(gTri3);
+        gTri3.connect(buzzMix);
+
+        var buzzLp = ctx.createBiquadFilter();
+        buzzLp.type = 'lowpass';
+        buzzLp.frequency.setValueAtTime(Math.min(5200, Math.max(1900, f * 10)), startAtCtx);
+        buzzLp.Q.value = 0.65;
+        buzzMix.connect(buzzLp);
+
+        // --- Sopro (ruído) forte no começo, depois baixo — ajuda “fala” sem virar oboé ---
+        var nLen = Math.min(48000, Math.max(8000, Math.ceil(ctx.sampleRate * Math.min(0.55, dur + 0.12))));
+        var nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
+        var nd = nBuf.getChannelData(0);
+        var zi;
+        for (zi = 0; zi < nLen; zi++) nd[zi] = (Math.random() * 2 - 1) * 0.42;
+        var noise = ctx.createBufferSource();
+        noise.buffer = nBuf;
+        noise.loop = false;
+
+        var nHp = ctx.createBiquadFilter();
+        nHp.type = 'highpass';
+        nHp.frequency.value = 440;
+        nHp.Q.value = 0.65;
+        var nLp = ctx.createBiquadFilter();
+        nLp.type = 'lowpass';
+        nLp.frequency.value = 7800;
+        nLp.Q.value = 0.7;
+        noise.connect(nHp);
+        nHp.connect(nLp);
+
+        var breathGain = ctx.createGain();
+        breathGain.gain.setValueAtTime(0.0001, startAtCtx);
+        breathGain.gain.exponentialRampToValueAtTime(fm.br * (calmMode ? 0.85 : 1), startAtCtx + Math.min(0.07, atk * 0.45));
+        breathGain.gain.exponentialRampToValueAtTime(fm.br * 0.22, startAtCtx + atk + 0.02);
+        breathGain.gain.setValueAtTime(fm.br * 0.18, startAtCtx + atk + sustain * 0.5);
+        breathGain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
+        nLp.connect(breathGain);
+
+        var excite = ctx.createGain();
+        excite.gain.value = 1;
+        buzzLp.connect(excite);
+        breathGain.connect(excite);
+
+        var bp1 = ctx.createBiquadFilter();
+        bp1.type = 'bandpass';
+        bp1.frequency.value = fm.f1;
+        bp1.Q.value = qFromBw(fm.f1, fm.bw1);
+
+        var bp2 = ctx.createBiquadFilter();
+        bp2.type = 'bandpass';
+        bp2.frequency.value = fm.f2;
+        bp2.Q.value = qFromBw(fm.f2, fm.bw2);
+
+        var bp3 = ctx.createBiquadFilter();
+        bp3.type = 'bandpass';
+        bp3.frequency.value = fm.f3;
+        bp3.Q.value = qFromBw(fm.f3, fm.bw3);
+
+        var w1 = ctx.createGain();
+        w1.gain.value = fm.w1;
+        var w2 = ctx.createGain();
+        w2.gain.value = fm.w2;
+        var w3 = ctx.createGain();
+        w3.gain.value = fm.w3;
+
+        var formantSum = ctx.createGain();
+        formantSum.gain.value = 1;
+        excite.connect(bp1);
+        excite.connect(bp2);
+        excite.connect(bp3);
+        bp1.connect(w1);
+        bp2.connect(w2);
+        bp3.connect(w3);
+        w1.connect(formantSum);
+        w2.connect(formantSum);
+        w3.connect(formantSum);
+
+        var body = ctx.createBiquadFilter();
+        body.type = 'peaking';
+        body.frequency.value = 2550;
+        body.Q.value = 0.72;
+        body.gain.value = calmMode ? 2.0 : 3.4;
+
+        formantSum.connect(body);
+        body.connect(master);
+        master.connect(ctx.destination);
+
+        var vibStart = startAtCtx + Math.min(atk * 0.55, 0.1);
+        var lfo = ctx.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.setValueAtTime(5.1, startAtCtx);
+        var lfoGain = ctx.createGain();
+        lfoGain.gain.setValueAtTime(0, startAtCtx);
+        lfoGain.gain.linearRampToValueAtTime(calmMode ? 13 : 19, vibStart + 0.06);
+        lfo.connect(lfoGain);
+        lfoGain.connect(tri1.detune);
+
+        var nodes = [
+          tri1, tri2, tri3, gTri2, gTri3, buzzMix, buzzLp, noise, nHp, nLp, breathGain,
+          excite, bp1, bp2, bp3, w1, w2, w3, formantSum, body, master, lfo, lfoGain
+        ];
+
+        try {
+          tri1.start(startAtCtx);
+          tri2.start(startAtCtx);
+          tri3.start(startAtCtx);
+          noise.start(startAtCtx);
+          lfo.start(startAtCtx);
+          tri1.stop(endT);
+          tri2.stop(endT);
+          tri3.stop(endT);
+          noise.stop(endT);
+          lfo.stop(endT);
+        } catch (eStart) {
+          return;
+        }
+
+        playerPlayback.activeStops.push(function (now) {
+          var t = typeof now === 'number' ? now : ctx.currentTime;
+          try {
+            master.gain.cancelScheduledValues(t);
+            master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t);
+            master.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+          } catch (eG) {}
+          try {
+            tri1.stop(t + 0.05);
+            tri2.stop(t + 0.05);
+            tri3.stop(t + 0.05);
+            noise.stop(t + 0.05);
+            lfo.stop(t + 0.05);
+          } catch (eS) {}
+          setTimeout(function () {
+            nodes.forEach(function (n) {
+              try {
+                n.disconnect();
+              } catch (eD) {}
+            });
+          }, 140);
+        });
+      }
+
       /** Opções de reprodução para deixar o timbre menos "seco". */
       function buildSoundfontPlayOptions(durationSec, gainValue) {
         return {
@@ -5851,7 +6107,7 @@
         loadInstrument(currentInstrument.id).then(function (inst) {
           if (inst) {
             var noteName = freqToMidiNoteName(freq);
-            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.3 : 0.48));
+            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
             if (note && typeof note.stop === 'function') {
               currentSustainedNoteStop = function () { note.stop(ctx.currentTime); };
             }
@@ -5918,7 +6174,7 @@
           if (cancelled) return;
           if (inst) {
             var noteName = freqToMidiNoteName(freq);
-            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.3 : 0.48));
+            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
             if (note && typeof note.stop === 'function') {
               setStop(function () { note.stop(ctx.currentTime); });
             }
@@ -5985,7 +6241,7 @@
         loadInstrument(currentInstrument.id).then(function (inst) {
           if (inst) {
             var noteName = freqToMidiNoteName(freq);
-            inst.play(noteName, 0, buildSoundfontPlayOptions(1.25, calmMode ? 0.28 : 0.44));
+            inst.play(noteName, 0, buildSoundfontPlayOptions(1.25, calmMode ? 0.33 : 0.52));
           } else {
             playNoteSoundFallback(freq);
           }
@@ -6287,7 +6543,7 @@
           }
         }
         // Instrumentos de sopro/metal: teclas/válvulas simples (notas em linha)
-        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal') && currentInstrument.notas) {
+        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
           board.classList.add('wind-layout');
           board.style.gridTemplateColumns = '1fr '.repeat(currentInstrument.notas.length);
           board.style.gridTemplateRows = 'auto';
@@ -7983,7 +8239,14 @@
         var dur = Math.max(0.06, (event.durationSec * 0.96) / rate);
         if (instrument) {
           var noteName = freqToMidiNoteName(event.freq);
-          var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, calmMode ? 0.29 : 0.45));
+          var isVoiceInstrument = currentInstrument && currentInstrument.id === 'voz';
+          var gain = calmMode ? 0.36 : 0.56;
+          if (isVoiceInstrument) gain = calmMode ? 0.02 : 0.035;
+          var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, gain));
+          if (isVoiceInstrument) {
+            var ctxSf = getAudioContext();
+            if (ctxSf) schedulePlayerSungSolfejo(ctxSf, startAtCtx, event.freq, dur, playerPlayToken);
+          }
           if (note && typeof note.stop === 'function') {
             playerPlayback.activeStops.push(function (now) {
               try {
@@ -8200,6 +8463,7 @@
 
         var events = [];
         var cursorStarts = [];
+        var allCursorStarts = [];
         var beatEventsFromFirstPart = [];
         parts.forEach(function (part, partIndex) {
           var timelineSec = 0;
@@ -8210,6 +8474,8 @@
           var lastStartSec = 0;
           var measureBeatEvents = [];
           var partCursorStarts = [];
+          /** Índice do último evento de áudio por voz+MIDI quando há ligadura de valor em aberto. */
+          var tieOpenEventIndex = {};
 
           var measures = part.querySelectorAll('measure');
           measures.forEach(function (measure, measureIdx) {
@@ -8242,8 +8508,11 @@
 
             var notes = measure.querySelectorAll('note');
             notes.forEach(function (noteNode) {
+              if (noteNode.querySelector('grace')) return;
+
               var voiceNode = noteNode.querySelector('voice');
-              if (voiceNode && voiceNode.textContent && voiceNode.textContent.trim() !== '1') return;
+              var voiceNum = voiceNode && voiceNode.textContent ? voiceNode.textContent.trim() : '1';
+              if (voiceNum !== '1') return;
 
               var durationNode = noteNode.querySelector('duration');
               var durationDiv = durationNode ? parseFloat(durationNode.textContent || '0') : 0;
@@ -8252,6 +8521,16 @@
               var isChord = !!noteNode.querySelector('chord');
               var isRest = !!noteNode.querySelector('rest');
               var startSec = isChord ? lastStartSec : timelineSec;
+
+              var tieStart = false;
+              var tieStop = false;
+              var tieContinue = false;
+              noteNode.querySelectorAll('tie, notations tied').forEach(function (tn) {
+                var t = (tn.getAttribute('type') || '').toLowerCase();
+                if (t === 'start') tieStart = true;
+                if (t === 'stop') tieStop = true;
+                if (t === 'continue') tieContinue = true;
+              });
 
               var freq = 0;
               var midi = null;
@@ -8271,16 +8550,53 @@
                 }
               }
 
-              events.push({
-                startSec: startSec,
-                durationSec: durSec,
-                isRest: isRest,
-                isChord: isChord,
-                midi: midi,
-                freq: freq
-              });
+              var tieKey = voiceNum + ':' + (midi != null ? String(midi) : 'rest');
+              var extendedTie = false;
+              if (!isRest && midi != null && !isChord && tieStop) {
+                var prevIdx = tieOpenEventIndex[tieKey];
+                var prevEv = prevIdx != null ? events[prevIdx] : null;
+                if (!prevEv || prevEv.isRest || prevEv.midi !== midi) {
+                  for (var ei = events.length - 1; ei >= 0; ei--) {
+                    var cand = events[ei];
+                    if (!cand || cand.isRest || cand.midi !== midi) continue;
+                    var endAt = cand.startSec + cand.durationSec;
+                    if (Math.abs(endAt - startSec) < 0.0005) {
+                      prevIdx = ei;
+                      prevEv = cand;
+                      break;
+                    }
+                  }
+                }
+                if (prevEv && !prevEv.isRest && prevEv.midi === midi) {
+                  prevEv.durationSec = Math.max(0.06, (prevEv.durationSec || 0) + durSec);
+                  extendedTie = true;
+                  if (tieStart || tieContinue) tieOpenEventIndex[tieKey] = prevIdx;
+                  else delete tieOpenEventIndex[tieKey];
+                }
+              }
+
+              if (!extendedTie) {
+                events.push({
+                  startSec: startSec,
+                  durationSec: durSec,
+                  isRest: isRest,
+                  isChord: isChord,
+                  midi: midi,
+                  freq: freq
+                });
+                if (isRest && !isChord) {
+                  Object.keys(tieOpenEventIndex).forEach(function (k) {
+                    if (k.indexOf(voiceNum + ':') === 0) delete tieOpenEventIndex[k];
+                  });
+                } else if (!isRest && midi != null && !isChord) {
+                  if (tieStart || tieContinue) tieOpenEventIndex[tieKey] = events.length - 1;
+                  else if (!tieStop) delete tieOpenEventIndex[tieKey];
+                }
+              }
+
               if (!isChord) {
                 partCursorStarts.push(startSec);
+                allCursorStarts.push(startSec);
                 timelineSec += durSec;
                 lastStartSec = startSec;
               }
@@ -8308,15 +8624,32 @@
           });
 
           if (partIndex === 0) {
-            cursorStarts = partCursorStarts;
             beatEventsFromFirstPart = measureBeatEvents;
           }
         });
 
+        if (allCursorStarts.length) {
+          allCursorStarts.sort(function (a, b) { return a - b; });
+          var mergedCursorStarts = [];
+          for (var ci = 0; ci < allCursorStarts.length; ci++) {
+            var cs = allCursorStarts[ci];
+            // Partes diferentes podem gerar o mesmo instante com pequenas variações numéricas.
+            // Com tolerância maior, evitamos "passos" extras que adiantam o cursor.
+            if (!mergedCursorStarts.length || Math.abs(cs - mergedCursorStarts[mergedCursorStarts.length - 1]) > 0.02) {
+              mergedCursorStarts.push(cs);
+            }
+          }
+          cursorStarts = mergedCursorStarts;
+        }
+
         var totalDuration = 0;
+        var totalDurationAll = 0;
         events.forEach(function (ev) {
-          totalDuration = Math.max(totalDuration, ev.startSec + ev.durationSec);
+          var endAt = ev.startSec + ev.durationSec;
+          totalDurationAll = Math.max(totalDurationAll, endAt);
+          if (!ev.isRest) totalDuration = Math.max(totalDuration, endAt);
         });
+        if (totalDuration <= 0) totalDuration = totalDurationAll;
         events.sort(function (a, b) {
           if (a.startSec !== b.startSec) return a.startSec - b.startSec;
           if (!!a.isRest !== !!b.isRest) return a.isRest ? 1 : -1;
@@ -8745,7 +9078,7 @@
           freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
         }
         // Instrumentos de sopro/metal: escolhe nota aleatória
-        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal') && currentInstrument.notas) {
+        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
           var idx = Math.floor(Math.random() * currentInstrument.notas.length);
           noteId = currentInstrument.notas[idx];
           freq = currentInstrument.freqBoard[idx] ? currentInstrument.freqBoard[idx][0] : NOTAS.find(function(n) { return n.id === noteId; }).freq;
