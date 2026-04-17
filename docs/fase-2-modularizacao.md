@@ -1,0 +1,293 @@
+# Fase 2 - Modularizacao Incremental
+
+Esta fase inicia a separacao fisica de responsabilidades sem risco de regressao.
+
+## Objetivo desta entrega
+
+- Criar modulo JS fisico para utilitarios compartilhados.
+- Reduzir o `index.html` a marcação + encadeamento de scripts; a logica da aplicacao vive em `assets/js/app-main.js` e em `assets/js/modules/*.js`.
+- Substituir pontos de uso por chamadas ao modulo externo com fallback.
+
+## App principal (`app-main.js`)
+
+- `assets/js/app-main.js` — IIFE unico com estado, modos, player, hinos, metronomo, afinador, pentagrama, etc. (extraido do `<script>` inline do `index`).
+- O `index.html` no final do `<body>` inclui apenas `<script src="./assets/js/app-main.js"></script>` depois do markup e dos modulos no `<head>`.
+
+## Estilos (CSS externo)
+
+- `assets/css/app.css` — estilos que estavam no `<style>` do `index.html`; o `index` passa a referenciar com `<link rel="stylesheet" href="./assets/css/app.css">` (apos as fontes Google).
+
+## Arquivos criados
+
+- `assets/js/app-main.js` — aplicacao (IIFE), pontes `*BindingAccess`, init e fluxos ainda nao fatiados em modulos
+- `assets/js/modules/app-utils.js`
+  - `clampNumber(value, min, max)`
+- `assets/js/modules/hinos-events.js`
+  - `bindHinosEvents()` — listeners DOM; handlers em `window.HinosBindingAccess` (definido em `app-main.js`)
+- `assets/js/modules/hinos-curriculum-utils.js`
+  - `buildFallbackCurriculum(total)`, `isCoroKey`, `voiceCountInEntry`, `entryFull`, `getStudentVozPrincipal`, `formatVoicesShort`, `countOverview`, `phaseItemKeys`, `countPhaseProgress`, `synthGruposForPhase` — o `index` repassa `HINOS_TOTAL`, `HINOS_VOZES` e `HINOS_FULL_VOICES_REQUIRED`
+  - `generateStudentId`, `parseBackupJson`, `ensureStudentShape`, `cloneStudent`, `clampHinoNumber`, `defaultAfinaçãoForInstrument`
+  - `formatMmSs(seconds)`
+  - `normalizeSearchText(text)`
+  - `parseNumeroInput(value)`
+- `assets/js/modules/player-catalog.js`
+  - `normalizeCatalogJson(json)`
+  - `getCollections(catalog)`
+  - `getCurrentCollection(catalog, selectedCollectionId)`
+  - `getItems(catalog, selectedCollectionId)`
+  - `getItemByNumero(catalog, selectedCollectionId, numero)`
+  - `getItemById(catalog, selectedCollectionId, itemId)`
+- `assets/js/modules/player-selection.js`
+  - `getInstrumentFiles(item, instrumentId)`
+  - `getAvailableVoices(item, instrumentId)`
+  - `normalizeSelectedVoices(selectedVoices, availableVoices)`
+  - `buildVoicePaths(files, selectedVoices)`
+- `assets/js/modules/player-view-utils.js`
+  - `voiceLabel(voice)`
+  - `buildHeaderTitle(collectionName, item, voice)`
+- `assets/js/modules/player-filter-utils.js`
+  - `getAfinacoes(items)`
+  - `filterByAfinacao(items, afinacao)`
+  - `filterBySearch(items, searchTerm, normalizeFn)`
+  - `afinacaoLabel(afinacao)`
+  - `sortCollectionsByOrder(collections)`
+  - `resolveSelectedCollectionId(collections, selectedCollectionId)`
+  - `resolveSelectedItem(filteredItems, selectedNumero, selectedItemId)`
+- `assets/js/modules/player-render-utils.js`
+  - `buildCollectionOptions(collections)`
+  - `buildHinoSuggestions(items)`
+  - `buildSelectedHinoLabel(item)`
+  - `buildSingleOption(value, label)`
+  - `safeId(value)`
+- `assets/js/modules/player-speed-utils.js`
+  - `clampSpeedPercent(percent)`
+  - `rateToPercent(rate)`
+  - `percentToRate(percent)`
+  - `formatSpeedLabel(percent)`
+- `assets/js/modules/player-timeline-utils.js`
+  - `findEventIndexByTime(events, seconds)`
+  - `findCursorIndexByTime(cursorStarts, seconds)`
+  - `findBeatIndexByTime(beatEvents, seconds)`
+- `assets/js/modules/player-musicxml-utils.js`
+  - `buildDisplayMusicXml(xmlText, options)`
+  - `parseMusicXml(xmlText)` — extrai `events`, `cursorStarts`, `beatEvents` e `totalDurationSec` (usa `StaffMathUtils.midiToFreq` e `MetronomeUtils.fromMusicXmlElement`)
+- `assets/js/modules/player-xml-merge-utils.js`
+  - `mergeMusicXmlParts(xmlPrimary, xmlSecondary, secondaryPartId)`
+- `assets/js/modules/player-score-load-utils.js`
+  - `scoreCacheKey(scorePath)`
+  - `normalizeScorePaths(scorePath)`
+  - `fetchMusicXmlTexts(paths, appVersion)`
+  - `mergeXmlPartList(xmlTexts)` — encadeia `PlayerXmlMergeUtils.mergeMusicXmlParts`
+- `assets/js/modules/player-load-bindings.js`
+  - `getPlayerOsmdLoadBindings()` — delega a `window.PlayerLoadBindingAccess` e `PlayerMusicXmlUtils.parseMusicXml`
+  - `getPlayerMusicXmlLoadContext()` — contexto para `PlayerOsmdLoadUtils.runLoadPlayerMusicXml`
+- `assets/js/modules/player-osmd-load-utils.js`
+  - `isOsmdLibraryAvailable()`
+  - `setHostOsmdLibraryMissingHtml(host)`
+  - `tryCreateOsmdInstance(host)`
+  - `runLoadPlayerMusicXml(scorePath, titleLabel, forceReload, ctx)`
+  - `runFetchLoadAndFinalize(scorePath, appVersion, osmd, host, titleLabel, buildDisplayMusicXml, io)`
+  - `finalizeAfterXmlLoad(osmd, host, xmlText, titleLabel, io)`
+  - `handlePlayerScoreLoadError(host, io)`
+- `assets/js/modules/note-utils.js`
+  - `getNoteNameInKey(noteId, key)`
+  - `freqClose(a, b, toleranceHz)`
+  - `buildChallengeTargetLabel(target, key)`
+- `assets/js/modules/staff-math-utils.js`
+  - `diatonicValue(noteId, octave, noteDegreeMap)`
+  - `noteFromDiatonic(value, degreeNoteIdMap)`
+  - `naturalMidi(noteId, octave, noteSemitoneMap)`
+  - `midiToFreq(midi)`
+  - `getLedgerLineDiffs(diff)`
+- `assets/js/modules/ui-core.js`
+  - `setMessage(text)`
+  - `updateFullscreenButton()`
+  - `toggleFullscreen()`
+  - `updateBottomNavVisibility(forceVisible)`
+  - `hideSplashScreen()`
+  - `openAboutModal()`
+  - `closeAboutModal()`
+  - `resizeCanvasToDisplay(canvas)`
+  - `setAriaPressed(element, isPressed)`
+  - `setAriaExpanded(element, isExpanded)`
+  - `setSelectValue(selectEl, value)`
+  - `setInputValue(inputEl, value)`
+  - `setPlaceholder(inputEl, text)`
+  - `setDisabled(element, disabled)`
+  - `setAriaLabelAndTitle(element, text)`
+  - `setCheckboxState(checkboxEl, enabled, checked)`
+  - `setText(element, text)`
+  - `setHtml(element, html)`
+  - `toggleClass(element, className, enabled)`
+  - `replaceStatusClasses(element, classesToRemove, classToAdd)`
+  - `setHiddenClass(element, hidden)`
+- `assets/js/modules/metronome-scheduler.js`
+  - `metroScheduleLoop`, `startMetronome`, `stopMetronome` — constantes locais `METRO_LOOKAHEAD_MS` / `METRO_SCHEDULE_AHEAD_S`; estado via `MetronomeUiBindingAccess` (`sched*` + invokes)
+- `assets/js/modules/metronome-ui-core.js`
+  - `tempoLabel`, `renderMetroDots`, `highlightMetroBeat`, `triggerMetroVisualPulse`, `playMetroClick` — leem `MetroUiRefs` e `MetronomeUiBindingAccess` (`getMetroBeatsPerBar`, `getMetroAccentFirst`, `isSoundEnabled`, `isCalmMode`, `ensureMetroAudioCtx`)
+- `assets/js/modules/metronome-ui-init.js`
+  - `initMetronomeUI()` — cache de nós em `window.MetroUiRefs`; estado BPM/batidas via `window.MetronomeUiBindingAccess` no `index`
+- `assets/js/modules/metronome-utils.js`
+  - `beatUnitToQuarterFactor(beatUnit)`
+  - `toQuarterNotesPerMinute(beatUnit, beatsPerMinute)`
+  - `fromMusicXmlElement(metroEl)`
+- `assets/js/modules/tuner-utils.js`
+  - `noteToMidi(noteName)`
+  - `midiToName(midi)`
+  - `freqToMidi(freq)`
+  - `median(values)`
+  - `getSmoothingConfig()`
+  - `presetTargetForFreq(freq, notes, noteToMidiFn, midiToFreqFn)`
+  - `normalizeFrequency(freq, notes, deps)`
+  - `noteFrequency(noteName, noteToMidiFn, midiToFreqFn)`
+  - `statusFromDeviation(deviationHz, toleranceHz)`
+  - `formatHz(value, decimals)`
+  - `formatSignedHz(value, decimals)`
+  - `idleUiState()`
+  - `chartBounds(history, minSpan)`
+  - `analyzeFrequency(freq, deps)`
+  - `nextSmoothedFrequency(currentSmoothed, filteredValue, alpha)`
+  - `pushWithLimit(list, value, limit)`
+  - `noSignalPlaceholders()`
+  - `humanNoteLabel(noteName)`
+  - `humanNoteWithOctave(noteName)`
+  - `adjacentHumanLabels(noteName)`
+
+## Integracao no app
+
+- `index.html` no `<head>` carrega os modulos (ordem relevante para dependencias do parse MusicXML); no final do `<body>`, `./assets/js/app-main.js`:
+  - `./assets/js/modules/app-utils.js`
+  - `./assets/js/modules/hinos-curriculum-utils.js`
+  - `./assets/js/modules/hinos-events.js`
+  - `./assets/js/modules/player-catalog.js`
+  - `./assets/js/modules/player-selection.js`
+  - `./assets/js/modules/player-filter-utils.js`
+  - `./assets/js/modules/player-render-utils.js`
+  - `./assets/js/modules/player-view-utils.js`
+  - `./assets/js/modules/player-speed-utils.js`
+  - `./assets/js/modules/player-timeline-utils.js`
+  - `./assets/js/modules/staff-math-utils.js`
+  - `./assets/js/modules/metronome-utils.js`
+  - `./assets/js/modules/metronome-ui-core.js`
+  - `./assets/js/modules/metronome-scheduler.js`
+  - `./assets/js/modules/metronome-ui-init.js`
+  - `./assets/js/modules/player-musicxml-utils.js`
+  - `./assets/js/modules/player-xml-merge-utils.js`
+  - `./assets/js/modules/player-score-load-utils.js`
+  - `./assets/js/modules/player-osmd-load-utils.js`
+  - `./assets/js/modules/player-load-bindings.js`
+  - `./assets/js/modules/note-utils.js`
+  - `./assets/js/modules/ui-core.js`
+  - `./assets/js/modules/tuner-utils.js`
+  - `./assets/js/app-main.js` (bundle principal da aplicacao)
+- Funcoes internas passaram a consumir o modulo:
+  - `formatPlayerTime()` usa `AppUtils.formatMmSs()`
+  - `normalizePlayerSearchText()` usa `AppUtils.normalizeSearchText()`
+  - `parsePlayerNumeroFromInputValue()` usa `AppUtils.parseNumeroInput()`
+  - `normalizePlayerCatalogJson()` usa `PlayerCatalogModule.normalizeCatalogJson()`
+  - `getPlayerCatalogCollections()` usa `PlayerCatalogModule.getCollections()`
+  - `getCurrentPlayerCollection()` usa `PlayerCatalogModule.getCurrentCollection()`
+  - `getPlayerCatalogItems()` usa `PlayerCatalogModule.getItems()`
+  - `getPlayerCatalogItemByNumero()` usa `PlayerCatalogModule.getItemByNumero()`
+  - `getPlayerCatalogItemById()` usa `PlayerCatalogModule.getItemById()`
+  - `getPlayerInstrumentFiles()` usa `PlayerSelectionModule.getInstrumentFiles()`
+  - `getPlayerAvailableVoices()` usa `PlayerSelectionModule.getAvailableVoices()`
+  - `normalizePlayerSelectedVoices()` usa `PlayerSelectionModule.normalizeSelectedVoices()`
+  - `resolvePlayerCurrentSelection()` usa `PlayerSelectionModule.buildVoicePaths()`
+  - `playerVoiceLabel()` usa `PlayerViewUtils.voiceLabel()`
+  - `syncPlayerHeaderTitle()` usa `PlayerViewUtils.buildHeaderTitle()`
+  - `renderPlayerCatalogControls()` usa `PlayerFilterUtils` para:
+    - lista de afinacoes
+    - filtro por afinacao
+    - filtro por busca
+    - rotulo de afinacao
+    - ordenacao de colecoes
+    - resolucao de colecao selecionada
+    - resolucao de item selecionado apos filtro
+  - `renderPlayerCatalogControls()` usa `PlayerRenderUtils` para:
+    - opções de coleção
+    - lista de sugestões de hinos
+    - texto do hino selecionado no input
+    - options de estado vazio ("Sem coleção", "Sem catálogo")
+    - normalização de `data-item-id`
+  - `getPlayerSpeedPercent()` usa `PlayerSpeedUtils.rateToPercent()`
+  - `previewPlayerSpeedPercent()` usa `PlayerSpeedUtils.clampSpeedPercent()`
+  - `applyPlayerSpeedPercent()` usa `PlayerSpeedUtils.clampSpeedPercent()` e `PlayerSpeedUtils.percentToRate()`
+  - `syncPlayerSpeedUi()` e `previewPlayerSpeedPercent()` usam `PlayerSpeedUtils.formatSpeedLabel()`
+  - `findPlayerEventIndexByTime()`, `findPlayerCursorIndexByTime()` e `findPlayerBeatIndexByTime()` usam `PlayerTimelineUtils`
+  - `buildPlayerDisplayMusicXml()` usa `PlayerMusicXmlUtils.buildDisplayMusicXml()`
+  - `window.PlayerLoadBindingAccess` em `app-main.js` expoe estado/callbacks do player para `player-load-bindings.js`
+  - `window.HinosBindingAccess` em `app-main.js` centraliza handlers da tela Hinos usados por `hinos-events.js`
+  - `window.MetroUiRefs` agrega referencias DOM do metronomo; `MetronomeUiBindingAccess` expoe bootstrap, audio (`ensureMetroAudioCtx`) e getters para `metronome-ui-init.js` / `metronome-ui-core.js`
+  - Metodos `sched*` / `schedInvoke*` no `MetronomeUiBindingAccess` alimentam `metronome-scheduler.js` (loop e start/stop)
+  - `loadPlayerMusicXml()` delega para `PlayerOsmdLoadUtils.runLoadPlayerMusicXml` com `getPlayerMusicXmlLoadContext()` e `getPlayerOsmdLoadBindings()` (via contexto)
+  - `getNoteNameInKey()` usa `NoteUtils.getNoteNameInKey()`
+  - `freqClose()` usa `NoteUtils.freqClose()`
+  - `buildChallengeTargetLabel()` usa `NoteUtils.buildChallengeTargetLabel()`
+  - `getPlayerSpeedPercent()`, `previewPlayerSpeedPercent()` e `applyPlayerSpeedPercent()` usam `PlayerSpeedUtils`
+  - `playerVoiceLabel()` e `syncPlayerHeaderTitle()` usam `PlayerViewUtils`
+  - `normalizePlayerCatalogJson()`, `getPlayerCatalogCollections()`, `getCurrentPlayerCollection()` e `getPlayerCatalogItems()` usam `PlayerCatalogModule`
+  - `normalizePlayerSelectedVoices()` e `resolvePlayerCurrentSelection()` usam `PlayerSelectionModule`
+  - `renderPlayerCatalogControls()` usa `PlayerRenderUtils` e `PlayerFilterUtils` para montar listas e resolver filtros/selecao
+  - `diatonicValue()` usa `StaffMathUtils.diatonicValue()`
+  - `noteFromDiatonic()` usa `StaffMathUtils.noteFromDiatonic()`
+  - `naturalMidi()` usa `StaffMathUtils.naturalMidi()`
+  - `midiToFreq()` usa `StaffMathUtils.midiToFreq()`
+  - `getLedgerLineDiffs()` usa `StaffMathUtils.getLedgerLineDiffs()`
+  - `setMessage()` usa `UiCoreModule.setMessage()`
+  - `updateFullscreenButton()` usa `UiCoreModule.updateFullscreenButton()`
+  - `toggleFullscreen()` usa `UiCoreModule.toggleFullscreen()`
+  - `updateBottomNavVisibility()` usa `UiCoreModule.updateBottomNavVisibility()`
+  - `hideSplashScreen()` usa `UiCoreModule.hideSplashScreen()`
+  - `openAboutModal()` usa `UiCoreModule.openAboutModal()`
+  - `closeAboutModal()` usa `UiCoreModule.closeAboutModal()`
+  - `resizeCanvasToDisplay()` usa `UiCoreModule.resizeCanvasToDisplay()`
+  - `syncPlayerLeverUi()` usa `UiCoreModule.setAriaPressed()`
+  - `setMoreMenuOpen()`, `openSettingsPanel()`, `closeSettingsPanel()` e `setPlayerSpeedPopoverOpen()` usam `UiCoreModule.setAriaExpanded()`
+  - `renderPlayerCatalogControls()` usa `UiCoreModule.setSelectValue()`
+  - `syncPlayerSpeedUi()` e `previewPlayerSpeedPercent()` usam `UiCoreModule.setAriaLabelAndTitle()`
+  - `renderPlayerCatalogControls()` usa `UiCoreModule.setCheckboxState()`
+  - `updateTunerUINoSignal()` e `updateTunerUI()` usam `UiCoreModule.setText()`
+  - `renderPlayerCatalogControls()` usa `UiCoreModule.setHtml()`
+  - `updateBottomNavVisibility()`, `setMoreMenuOpen()` e `setPlayerSpeedPopoverOpen()` usam `UiCoreModule.toggleClass()`
+  - `updateTunerUINoSignal()` e `updateTunerUI()` usam `UiCoreModule.replaceStatusClasses()`
+  - `setTunerMicDeniedVisible()` e `setPlayerSpeedPopoverOpen()` usam `UiCoreModule.setHiddenClass()`
+  - `renderPlayerCatalogControls()` usa `UiCoreModule.setInputValue()`
+  - `renderPlayerCatalogControls()` usa `UiCoreModule.setPlaceholder()`
+  - `startTuner()`, `stopTuner()` e `updatePlayerUiNow()` usam `UiCoreModule.setDisabled()`
+  - `tunerNoteToMidi()` usa `TunerUtils.noteToMidi()`
+  - `tunerMidiToName()` usa `TunerUtils.midiToName()`
+  - `tunerFreqToMidi()` usa `TunerUtils.freqToMidi()`
+  - `tunerMedian()` usa `TunerUtils.median()`
+  - `getTunerSmoothingConfig()` usa `TunerUtils.getSmoothingConfig()`
+  - `tunerPresetTargetForFreq()` usa `TunerUtils.presetTargetForFreq()`
+  - `tunerNormalizeFrequency()` usa `TunerUtils.normalizeFrequency()`
+  - `renderTunerPresetDynamicInfo()` usa `TunerUtils.noteFrequency()`
+  - `updateTunerUI()` usa `TunerUtils.statusFromDeviation()`
+  - `renderTunerPresetDynamicInfo()`, `updateTunerUI()`, `updateTunerUINoSignal()` e `tunerLoop()` usam `TunerUtils.formatHz()`
+  - `updateTunerUI()` usa `TunerUtils.formatSignedHz()`
+  - `updateTunerUINoSignal()` usa `TunerUtils.idleUiState()`
+  - `drawTunerChart()` usa `TunerUtils.chartBounds()`
+  - `updateTunerUI()` usa `TunerUtils.analyzeFrequency()`
+  - `tunerLoop()` usa `TunerUtils.nextSmoothedFrequency()`
+  - `tunerLoop()` usa `TunerUtils.pushWithLimit()`
+  - `updateTunerUINoSignal()` usa `TunerUtils.noSignalPlaceholders()`
+  - `tunerHumanNoteLabel()` usa `TunerUtils.humanNoteLabel()`
+  - `tunerHumanNoteWithOctave()` usa `TunerUtils.humanNoteWithOctave()`
+  - `tunerAdjacentHumanLabels()` usa `TunerUtils.adjacentHumanLabels()`
+  - Currículo de hinos (`buildFallbackHinosCurriculum`, contagens de voz/fase, etc.) delega a `HinosCurriculumUtils` com constantes do `index`
+  - `APP_MODULES.player` inclui `loadPlayerMusicXml` e `getPlayerMusicXmlLoadContext()` (debug / descoberta)
+  - `APP_MODULES.hinos` expõe `initHinosUI`, `bindHinosEvents` e `curriculumUtils()`
+
+## Garantia de compatibilidade
+
+- Blocos maduros do afinador/UI ja estao em delegacao direta (sem fallback inline); o grosso do JS saiu do `index.html` para `app-main.js` e modulos.
+- Blocos maduros do player (catalogo/filtros/selecao/velocidade/titulos) tambem estao em delegacao direta.
+- A compatibilidade depende do carregamento correto de `assets/js/modules/*.js` antes da execucao das funcoes consumidoras.
+- A migracao segue incremental: cada bloco so perde fallback apos validacao funcional.
+
+## Proxima etapa recomendada
+
+- Continuar o dominio **Hinos**: paineis de fase / grid (`ensureHinosFasePanels`, etc.) ou estado persistido em modulo com ponte.
+- **Metronomo**: solfejo posicionamento (`setSolfejoHandToFrame`, tween, frames) ou consolidar `sched*` se o binding ficar grande demais.
+- **Audio / soundfont** e **pentagrama / jogo**: extrair por blocos apos teste manual entre cada entrega.

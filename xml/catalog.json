@@ -13464,74 +13464,7 @@
       ]
     },
     {
-      "id": "suzuki-vol1",
-      "nome": "Suzuki Volume 1",
-      "tipo": "metodo",
-      "ordem": 2,
-      "filtros": {
-        "afinacoes": [
-          "do"
-        ],
-        "vozes": [
-          "s",
-          "c",
-          "t",
-          "b"
-        ]
-      },
-      "items": [
-        {
-          "id": "suzuki-v1-licao-01",
-          "numero": 1,
-          "titulo": "Twinkle - Tema",
-          "afinacao": "do",
-          "compasso": "4/4",
-          "bpm": 72,
-          "arquivosPorInstrumento": {
-            "violin": {
-              "s": "xml/colecoes/suzuki-vol1/do/violino/licao-01-melodia.musicxml",
-              "c": "xml/colecoes/suzuki-vol1/do/violino/licao-01-acomp.musicxml",
-              "t": "",
-              "b": ""
-            }
-          }
-        },
-        {
-          "id": "suzuki-v1-licao-02",
-          "numero": 2,
-          "titulo": "Lightly Row",
-          "afinacao": "do",
-          "compasso": "4/4",
-          "bpm": 76,
-          "arquivosPorInstrumento": {
-            "violin": {
-              "s": "xml/colecoes/suzuki-vol1/do/violino/licao-02-melodia.musicxml",
-              "c": "xml/colecoes/suzuki-vol1/do/violino/licao-02-acomp.musicxml",
-              "t": "",
-              "b": ""
-            }
-          }
-        },
-        {
-          "id": "suzuki-v1-licao-03",
-          "numero": 3,
-          "titulo": "Song of the Wind",
-          "afinacao": "do",
-          "compasso": "3/4",
-          "bpm": 80,
-          "arquivosPorInstrumento": {
-            "violin": {
-              "s": "xml/colecoes/suzuki-vol1/do/violino/licao-03-melodia.musicxml",
-              "c": "",
-              "t": "",
-              "b": ""
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "metodo-inclusivo-ccb-violino",
+      "id": "metodo-inclusivo-ccb",
       "nome": "Metodo Musical Inclusivo",
       "tipo": "apostila",
       "ordem": 3,
@@ -13556,13 +13489,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/01- Minha primeira música.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/01- Minha primeira música.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/01- minha primeira música .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/01- minha primeira música .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/01- Minha primeira música .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13578,13 +13517,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/02- Notas e pausas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/02- Notas e pausas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/02- notas e pausas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/02- notas e pausas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/02- Notas e pausas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13600,13 +13545,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/03- Três é Demais.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/03- Três é Demais.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/03- três é demais.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/03- três é demais.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/03- Três é demais.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13622,13 +13573,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/04- Conseguindo o truque.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/04- Conseguindo o truque.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/04- conseguindo o truque.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/04- conseguindo o truque.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/04- Conseguindo o truque .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13644,13 +13601,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/05- Uma dupla engraçada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/05- Uma dupla engraçada.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/05- uma dupla engraçada .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/05- uma dupla engraçada .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/05- Uma dupla engraçada.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13666,13 +13629,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/06- Acelerando por ai.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/06- Acelerando por ai.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/06- acelerando por ai .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/06- acelerando por ai .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/06- Acelerando por ai.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13688,13 +13657,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/07- Sam do Skate.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/07- Sam do Skate.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/07- Sam do skate.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/07- Sam do skate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/07- Sam do Skate .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13710,13 +13685,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/08- Vamos brincar de pega-pega.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/08- Vamos brincar de pega-pega.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/08- vamos brincar de pega pega .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/08- vamos brincar de pega pega .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/08- Vamos brincar de pega pega.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13732,13 +13713,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/09- preguiçoso de sofá.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/09- preguiçoso de sofá.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/09- preguiçoso do sofá .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/09- preguiçoso do sofá .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/09- Preguiçoso do sofá .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13754,13 +13741,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/10- Conheça a equipe _LA_..musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/10- Conheça a equipe _LA_..musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/10- conheça a equipe Ré .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/10- conheça a equipe Ré .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/10- Conheça a equipe _Ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13776,13 +13769,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/11- música do cachorrinho.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/11- música do cachorrinho.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/11- música do cachorrinho .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/11- música do cachorrinho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/11- Música do cachorrinho .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13798,13 +13797,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/12- olhos na estrada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/12- olhos na estrada.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/12- olhos na estrada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/12- olhos na estrada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/12- Olhos na estrada .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13820,13 +13825,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/13- Maçã para o Professor.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/13- Maçã para o Professor.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/13- maçã para o professor .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/13- maçã para o professor .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/13- Maçã para o professor.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13842,13 +13853,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/14- Melodia do Papai.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/14- Melodia do Papai.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/14- melodia do papai .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/14- melodia do papai .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/14- Melodia do papai.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13864,13 +13881,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/15- Carrinhos de bate-bate.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/15- Carrinhos de bate-bate.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/15- carrinho de bate bate.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/15- carrinho de bate bate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/15- Carrinho de bate bate.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13886,13 +13909,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/16- Salto de Sapo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/16- Salto de Sapo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/16- salto de sapo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/16- salto de sapo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/16- Salto de sapo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13908,13 +13937,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/17- Fazendeiro Dave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/17- Fazendeiro Dave.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/17- fazendeiro Dave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/17- fazendeiro Dave.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/17- Fazendeiro Dave.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13930,13 +13965,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/18- Cuidado com os descansos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/18- Cuidado com os descansos.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/18- cuidado com os descansos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/18- cuidado com os descansos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/18- Cuidado com os descansos.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13952,13 +13993,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/19- Vai e volta.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/19- Vai e volta.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/19- vai e volta.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/19- vai e volta.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/19- Vai e volta.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13974,13 +14021,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/20 - Meu Primeiro Dedo - Mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/20 - Meu Primeiro Dedo - Mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/20- meu primeiro dedo _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/20- meu primeiro dedo _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/20- Meu primeiro dedo _Lá_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -13996,13 +14049,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/21- O Fabuloso Sr. Ed.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/21- O Fabuloso Sr. Ed.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/21- fabuloso Sr Ed.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/21- fabuloso Sr Ed.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/21- Fabuloso Sr. Ed.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14018,13 +14077,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/22- Diversão com ré e mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/22- Diversão com ré e mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/22- diversão com _sol_ e _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/22- diversão com _sol_ e _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/22- Diversão com _Sol_ e _Lá_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14040,13 +14105,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/23- Banana Split.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/23- Banana Split.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/23- banana split.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/23- banana split.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/23- Banana Split.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14062,13 +14133,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/24- Dois dedos para baixo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/24- Dois dedos para baixo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/24- dois dedos para baixo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/24- dois dedos para baixo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/24- Três dedos para baixo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14084,13 +14161,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/25- Dois ou nada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/25- Dois ou nada.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/25- dois ou nada .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/25- dois ou nada .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/25- Três ou nada.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14106,13 +14189,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/26- Seguindo em frente.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/26- Seguindo em frente.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/26- seguindo em frente .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/26- seguindo em frente .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/26- Seguindo em frente.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14128,13 +14217,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/27- Jogando Certo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/27- Jogando Certo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/27- jogando certo .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/27- jogando certo .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/27- Jogando certo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14150,13 +14245,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/28- Mínimas acontecem.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/28- Mínimas acontecem.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/28- mínimas acontecem.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/28- mínimas acontecem.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/28- Mínimas acontecem.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14172,13 +14273,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/29- Altos e baixos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/29- Altos e baixos.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/29- altos e baixos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/29- altos e baixos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/29- Altos e baixos.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14194,13 +14301,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/30- Pãezinhos doces com passas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/30- Pãezinhos doces com passas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/30- pãezinhos doces com passas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/30- pãezinhos doces com passas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/30- Pãezinhos doces com passas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14216,13 +14329,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/31- Maria tinha um cordeirinho.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/31- Maria tinha um cordeirinho.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/31- Maria tinha um cordeirinho .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/31- Maria tinha um cordeirinho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/31- Maria tinha um cordeirinho .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14238,13 +14357,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/32- Batatas fritas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/32- Batatas fritas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/32- batatas fritas .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/32- batatas fritas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/32- Batatas fritas .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14260,13 +14385,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/33- golpe de caratê.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/33- golpe de caratê.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/33- golpe de karatê .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/33- golpe de karatê .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/33- Golpe de karatê .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14282,13 +14413,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/34- Campeão de Futebol.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/34- Campeão de Futebol.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/34- campeão de futebol .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/34- campeão de futebol .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/34- Campeão de futebol .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14304,13 +14441,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/35- Ganhar o prêmio.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/35- Ganhar o prêmio.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/35- ganhar o prêmio .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/35- ganhar o prêmio .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/35- Ganhar o prêmio .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14326,13 +14469,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/36- As Bailarinas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/36- As Bailarinas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/36- as bailarinas .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/36- as bailarinas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/36- As bailarinas .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14348,13 +14497,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/37- O Escoteiro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/37- O Escoteiro.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/37- o escoteiro .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/37- o escoteiro .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/37- O escoteiro .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14370,13 +14525,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/38- Me dê um Sol.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/38- Me dê um Sol.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/38- me de o _dó_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/38- me de o _dó_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/38- Me de o _Dó_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14392,13 +14553,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/39- Canção Sol e Ré.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/39- Canção Sol e Ré.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/39- canção _si_ e _sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/39- canção _si_ e _sol_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/39- Canção _Si_ e _Sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14414,13 +14581,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/40- Subindo na vida.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/40- Subindo na vida.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/40- subindo na vida.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/40- subindo na vida.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/40- Subindo na vida .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14436,13 +14609,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/41- Fuga da Cidade .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/41- Fuga da Cidade .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/41- fuga da cidade .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/41- fuga da cidade .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/41- Fuga da cidade .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14458,13 +14637,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/42- Reme levemente.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/42- Reme levemente.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/42- reme levemente .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/42- reme levemente .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/42- Reme levemente .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14480,13 +14665,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/43- Melhor _Si_ Bom.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/43- Melhor _Si_ Bom.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/43- melhor _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/43- melhor _mi_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/43- Melhor _Mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14502,13 +14693,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/44- Lá x Si.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/44- Lá x Si.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/44- _ré_ x _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/44- _ré_ x _mi_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/44- _Ré_ x _Mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14524,13 +14721,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/45- Canção sem letras.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/45- Canção sem letras.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/45- canção sem letras.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/45- canção sem letras.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/45- Canção sem letras .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14546,13 +14749,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/46- Brilha, brilha, estrelinha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/46- Brilha, brilha, estrelinha.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/46- brilha, brilha estrelinha .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/46- brilha, brilha estrelinha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/46- Brilha, brilha estrelinha .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14568,13 +14777,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/47- Para baixo e para cima.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/47- Para baixo e para cima.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/47- para baixo e para cima.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/47- para baixo e para cima.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/47- Para cima e para baixo .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14590,13 +14805,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/48- Amo meu arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/48- Amo meu arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/48- amo meu arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/48- amo meu arco.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/48- Amo meu arco .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14612,13 +14833,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/49- Hora do arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/49- Hora do arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/49- hora do arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/49- hora do arco.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/49- Hora do arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14634,13 +14861,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/50- Recomeçando.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/50- Recomeçando.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/50- recomeçando.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/50- recomeçando.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/50- Recomeçando .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14656,13 +14889,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/51- Levante o arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/51- Levante o arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/51- levante o arco .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/51- levante o arco .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/51- Levante o arco .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14678,13 +14917,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/52- Levantar ou soltar.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/52- Levantar ou soltar.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/52- levantar ou soltar.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/52- levantar ou soltar.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/52- Levantar ou soltar .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14700,13 +14945,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/53- Amo Levantar o arco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/53- Amo Levantar o arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/53- amo levantar o arco .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/53- amo levantar o arco .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/53- Amo levantar o arco.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14722,13 +14973,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/54- Jingle Bells.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/54- Jingle Bells.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/54- Jingle Bells .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/54- Jingle Bells .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/54- Jingle Bells.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14744,13 +15001,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/55- Velho McDonald.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/55- Velho McDonald.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/55- velho McDonald.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/55- velho McDonald.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/55- Velho McDonald.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14766,13 +15029,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/56- Ponte de Londres.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/56- Ponte de Londres.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/56- ponte de Londres .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/56- ponte de Londres .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/56- Ponte de Londres .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14788,13 +15057,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/57- Três tempos cada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/57- Três tempos cada.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/57- três contagens cada.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/57- três contagens cada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/57- Três tempos cada .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14810,13 +15085,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/58- Balcão cuidadoso.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/58- Balcão cuidadoso.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/58- balcão cuidadoso.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/58- balcão cuidadoso.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/58- Balcão cuidadoso.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14832,13 +15113,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/59- Ei, Diddle, Diddle.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/59- Ei, Diddle, Diddle.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/59- hey, Diddle Diddle .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/59- hey, Diddle Diddle .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/59- Ei, Diddle, Diddle.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14854,13 +15141,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/60- pássaro cuco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/60- pássaro cuco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/60- pássaro cuco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/60- pássaro cuco.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/60- Pássaro Cuco.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14876,13 +15169,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/61- Vejo _Do_ nítido.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/61- Vejo _Do_ nítido.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/61- vejo _fá#_ nítido .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/61- vejo _fá#_ nítido .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/61- Vejo _Fa#_ nitido.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14898,13 +15197,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/62- Pãezinhos doces com passas na corda _la_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/62- Pãezinhos doces com passas na corda _la_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/62- pãezinhos doces com passas na corda _ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/62- pãezinhos doces com passas na corda _ré_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/62- Pãezinhos doces com passas na corda _Ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14920,13 +15225,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/63- Subindo e descendo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/63- Subindo e descendo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/63- subindo e descendo .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/63- subindo e descendo .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/63- Subindo e descendo .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14942,13 +15253,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/64- Entre de cabeça!.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/64- Entre de cabeça!.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/64- entre de cabeça .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/64- entre de cabeça .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/64- Entre de cabeça.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14964,13 +15281,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/65- Todos nós podemos ler.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/65- Todos nós podemos ler.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/65- todos nós podemos ler.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/65- todos nós podemos ler.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/65- Todos nós podemos ler.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -14986,13 +15309,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/66- Conheça o Sr. _Re_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/66- Conheça o Sr. _Re_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/66- conheça o Sr _sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/66- conheça o Sr _sol_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/66- Conheça o Sr _Sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15008,13 +15337,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/67- Meu chapéu .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/67- Meu chapéu .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/67- meu chapéu.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/67- meu chapéu.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/67- Meu chapéu .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15030,13 +15365,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/68- A valsa da águia.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/68- A valsa da águia.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/68- meu chapéu .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/68- meu chapéu .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/68- A valsa da águia .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15052,13 +15393,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/69- valsa do lápis e da borracha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/69- valsa do lápis e da borracha.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/69- valsa do lápis e da borracha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/69- valsa do lápis e da borracha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/69- Valsa do lápis e da borracha .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15074,13 +15421,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/70- Garotas de Búfalo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/70- Garotas de Búfalo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/70- garotas de buffalo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/70- garotas de buffalo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/70- Garotas de Buffalo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15096,13 +15449,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/71- Placar empatado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/71- Placar empatado.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/71- placar empatado .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/71- placar empatado .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/71- Placar empatado .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15118,13 +15477,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/72- Looby Loo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/72- Looby Loo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/72- looby loo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/72- looby loo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/72- Lobby Loo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15140,13 +15505,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/73- Corridas de Camptown.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/73- Corridas de Camptown.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/73- corridas de Camptown .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/73- corridas de Camptown .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/73- Corridas de Camptown.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15162,13 +15533,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/74- Meu baixo e grave _Sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/74- Meu baixo e grave _Sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/74- meu baixo e grave _dó_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/74- meu baixo e grave _dó_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/74- Meu baixo e grave _Dó_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15184,13 +15561,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/75- A música da vovó.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/75- A música da vovó.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/75- a música da vovó .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/75- a música da vovó .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/75- A música da vovó .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15206,13 +15589,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/76- Sr _Ré_ apresenta os dois _Sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/76- Sr _Ré_ apresenta os dois _Sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/76- Sr _sol_ apresenta os dois _dó_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/76- Sr _sol_ apresenta os dois _dó_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/76- Sr _Sol_ apresenta os dois _Dó_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15228,13 +15617,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/77- Meu primeiro dedo _La_ na corda _sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/77- Meu primeiro dedo _La_ na corda _sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/77- meu primeiro dedo _ré_ na corda _dó_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/77- meu primeiro dedo _ré_ na corda _dó_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/77- Meu primeiro dedo _Ré_ na corda _Dó_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15250,13 +15645,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/78- O fabuloso Sr La.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/78- O fabuloso Sr La.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/78- o fabuloso Sr _ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/78- o fabuloso Sr _ré_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/78- O fabuloso Sr _Ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15272,13 +15673,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/79- Diversão com sol e la.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/79- Diversão com sol e la.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/79- diversão com _dó_ e _ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/79- diversão com _dó_ e _ré_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/79- Diversão com _Dó_ e _Ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15294,13 +15701,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/80- Vamos pular corda.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/80- Vamos pular corda.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/80- vamos pular corda.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/80- vamos pular corda.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/80- Vamos pular corda.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15316,13 +15729,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/81- Segundo dedo na corda sol, conheço a nota _si_ grave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/81- Segundo dedo na corda sol, conheço a nota _si_ grave.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/81- segundo dedo na corda dó, conheço a nota _mi_ grave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/81- segundo dedo na corda dó, conheço a nota _mi_ grave.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/81- Terceiro dedo na corda _Dó_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15338,13 +15757,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/82- dois é pouco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/82- dois é pouco.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/82- dois é pouco.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/82- dois é pouco.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/82- Dois é pouco.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15360,13 +15785,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/83- vamos jogar certo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/83- vamos jogar certo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/83- vamos jogar certo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/83- vamos jogar certo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/83- Vamos jogar certo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15382,13 +15813,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/84- Pulando corda de _si_ a _si_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/84- Pulando corda de _si_ a _si_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/84- pulando corda de _mi_ a _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/84- pulando corda de _mi_ a _mi_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/84- Pulando corda de _Mi_ a _Mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15404,13 +15841,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/85- Sol sol, lá lá, si si (1).musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/85- Sol sol, lá lá, si si (1).musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/85- Do do, ré ré, mi mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/85- Do do, ré ré, mi mi.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/85- Dó dó Ré ré Mi mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15426,13 +15869,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/86- Treinando dedos nas três cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/86- Treinando dedos nas três cordas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/86- treinando dedos nas três cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/86- treinando dedos nas três cordas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/86- Treinando dedos nas três cordas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15448,13 +15897,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/87- Terceiro dedo da corda sol.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/87- Terceiro dedo da corda sol.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/87- terceiro dedo na corda dó .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/87- terceiro dedo na corda dó .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/87- Quarto dedo na corda Dó .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15470,13 +15925,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/88- Som do _do_ e _sol_ grave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/88- Som do _do_ e _sol_ grave.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/88- som do _fá_ e _dó_ grave.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/88- som do _fá_ e _dó_ grave.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/88- Som do _Fa_ e _Dó_ grave.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15492,13 +15953,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/89- sobe e desce na corda _sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/89- sobe e desce na corda _sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/89- sobe e desce na corda _dó_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/89- sobe e desce na corda _dó_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/89- Sobe e desce na corda Dó .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15514,13 +15981,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/90- Sobe desce em três cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/90- Sobe desce em três cordas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/90- sobe e desce em três cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/90- sobe e desce em três cordas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/90- Sobe e desce em 3 cordas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15536,13 +16009,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/91- O filhinho da mamãe ama pão.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/91- O filhinho da mamãe ama pão.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/91- o filhinho da mamãe ama pão .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/91- o filhinho da mamãe ama pão .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/91- O filhinho da mamãe ama pão .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15558,13 +16037,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/92- Pipoca.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/92- Pipoca.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/92- pipoca.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/92- pipoca.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/92- Pipoca.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15580,13 +16065,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/93- Oh Susannah.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/93- Oh Susannah.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/93- oh Sussanah.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/93- oh Sussanah.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/93- Oh Susannah.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15602,13 +16093,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/94- Vamos conhecer a corda mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/94- Vamos conhecer a corda mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/94- vamos conhecer a corda LÁ .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/94- vamos conhecer a corda LÁ .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/94- Vamos conhecer a corda LA.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15624,13 +16121,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/95- Nota _mi_ com pausas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/95- Nota _mi_ com pausas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/95- nota _lá_ com pausas .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/95- nota _lá_ com pausas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/95- Nota _Lá_ com pausas .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15646,13 +16149,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/96- Conheça o _fa_ da corda _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/96- Conheça o _fa_ da corda _mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/96- conheça o _si_ da corda _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/96- conheça o _si_ da corda _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/96- Conheça o _Si_ da corda LA.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15668,13 +16177,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/97- O brilhante _fa_ do _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/97- O brilhante _fa_ do _mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/97- o brilhante _si_ do _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/97- o brilhante _si_ do _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/97- O brilhante _Si_ do LA.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15690,13 +16205,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/98- Brincando com _fa_ e mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/98- Brincando com _fa_ e mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/98- brincando com _si_ e _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/98- brincando com _si_ e _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/98- Brincando com _Lá_ e _Si_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15712,13 +16233,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/99- Outro pulo de corda.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/99- Outro pulo de corda.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/99- outro pulo de corda.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/99- outro pulo de corda.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/99- Outro pulo de corda.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15734,13 +16261,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/100- Dedo dois na corda mi, descubro nota _sol_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/100- Dedo dois na corda mi, descubro nota _sol_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/100- dedo dois na corda _lá_, descubra a nota _dó#_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/100- dedo dois na corda _lá_, descubra a nota _dó#_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/100- Dedo Três na corda LA, descubro a nota _Dó #_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15756,13 +16289,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/101- Brincando na corda mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/101- Brincando na corda mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/101- brincando na corda _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/101- brincando na corda _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/101- Brincando na corda LA.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15778,13 +16317,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/102- Terceiro dedo na corda _mi_, encontrei um outro _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/102- Terceiro dedo na corda _mi_, encontrei um outro _lá_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/102- terceiro dedo na corda _lá_ encontrei um outro _ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/102- terceiro dedo na corda _lá_ encontrei um outro _ré_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/102- Quarto dedo na.corda LA, tem um outro _ Ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15800,13 +16345,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/103- _lá_ e _mi_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/103- _lá_ e _mi_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/103- _ré_ e _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/103- _ré_ e _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/103- _Ré_ e _Lá_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15822,13 +16373,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/104- Escalando a corda mi .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/104- Escalando a corda mi .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/104- escalando a corda _lá_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/104- escalando a corda _lá_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/104- Escalando a corda LA.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15844,13 +16401,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/105- Desce e sobe as 4 cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/105- Desce e sobe as 4 cordas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/105- desce e sobe as 4 cordas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/105- desce e sobe as 4 cordas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/105- Desce e sobe as quatro cordas .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15866,13 +16429,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/106- Brilha brilha estrelinha .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/106- Brilha brilha estrelinha .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/106- brilha brilha estrelinha .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/106- brilha brilha estrelinha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/106- Brilha, Brilha estrelinha .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15888,13 +16457,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/107- Corda solta, dedo 1, 2 e 3.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/107- Corda solta, dedo 1, 2 e 3.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/107- corda solta, dedo 1, 2 e 3.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/107- corda solta, dedo 1, 2 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/107- Corda solta, dedo 1, 3 e 4.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15910,13 +16485,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/108- Aprender com as colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/108- Aprender com as colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/108- aprendendo com as colcheias.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/108- aprendendo com as colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/108- Aprender com as colcheias.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15932,13 +16513,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/109- Acostumando com colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/109- Acostumando com colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/109- acostumando com as colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/109- acostumando com as colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/109- Acostumando com as colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15954,13 +16541,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/110- Dança das colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/110- Dança das colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/110- dança das colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/110- dança das colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/110- Dança das colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15976,13 +16569,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/111- Canção do Repolho.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/111- Canção do Repolho.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/111- canção do repolho .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/111- canção do repolho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/111- Canção do repolho.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -15998,13 +16597,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/112- Humpty Dumpty.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/112- Humpty Dumpty.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/112- Humpty Dumpty .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/112- Humpty Dumpty .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/112- Humpty Dumpty .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16020,13 +16625,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/113- Insultos escorregadios, ligaduras de portamento.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/113- Insultos escorregadios, ligaduras de portamento.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/113- insultos escorregadios, ligaduras de portamento .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/113- insultos escorregadios, ligaduras de portamento .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/113- Insultos escorregadios, ligaduras de portamento .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16042,13 +16653,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/114- Meu cachorro e eu.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/114- Meu cachorro e eu.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/114- meu cachorro e eu.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/114- meu cachorro e eu.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/114- Meu cachorro e eu .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16064,13 +16681,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/115- Palhaços de Paris.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/115- Palhaços de Paris.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/115- Palhaços de Paris.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/115- Palhaços de Paris.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/115- Palhaços de Paris.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16086,13 +16709,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/116- Hino a alegria.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/116- Hino a alegria.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/116- Hino a alegria.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/116- Hino a alegria.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/116- Hino a alegria .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16108,13 +16737,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/117- Recuar primeiro dedo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/117- Recuar primeiro dedo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/117- recuar primeiro dedo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/117- recuar primeiro dedo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/117- Recuar primeiro dedo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16130,13 +16765,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/119- Usando quarto dedo em sustenidos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/119- Usando quarto dedo em sustenidos.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/119- usando quarto dedo em sustenidos.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/119- usando quarto dedo em sustenidos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/119- Extensão do quarto dedo em #.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16152,13 +16793,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/120- Quarto dedo em bemóis.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/120- Quarto dedo em bemóis.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/120- quarto dedo em bemóis .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/120- quarto dedo em bemóis .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/120- Extensão quarto dedo em bemóis .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16174,13 +16821,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/121- Escalinha Sol maior - Fa#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/121- Escalinha Sol maior - Fa#.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/121- Escalinha Sol maior - Fa#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/121- Escalinha Sol maior - Fa#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/121- Escalinha de Sol maior - _Fa#_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16196,13 +16849,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/122- Parabéns a você.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/122- Parabéns a você.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/122- Parabéns a você.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/122- Parabéns a você.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/122- Parabéns a você .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16218,13 +16877,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/123- Escala Dó maior.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/123- Escala Dó maior.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/123- escala de dó maior.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/123- escala de dó maior.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/123- Escala de Dó maior.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16240,13 +16905,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/124- Alecrim dourado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/124- Alecrim dourado.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/124- Alecrim dourado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/124- Alecrim dourado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/124- Alecrim Dourado.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16262,13 +16933,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/125- A janelinha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/125- A janelinha.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/125- A janelinha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/125- A janelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/125- A janelinha .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16284,13 +16961,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/126- Fui ao mercado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/126- Fui ao mercado.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/126- Fui ao mercado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/126- Fui ao mercado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/126- Fui ao mercado .musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16306,13 +16989,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/127- Amigos para sempre.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/127- Amigos para sempre.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/127- amigos para sempre.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/127- amigos para sempre.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/127 - Amigos para sempre.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16328,13 +17017,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/128- Conheça as tercinas .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/128- Conheça as tercinas .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/128- Conheça as tercinas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/128- Conheça as tercinas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/128 - Conheça as tercinas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16350,13 +17045,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/129- Vamos aprender as pontuadas_!_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/129- Vamos aprender as pontuadas_!_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/129- Vamos aprender as pontuadas_!_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/129- Vamos aprender as pontuadas_!_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/129- Vamos aprender as pontuadas_!_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16372,13 +17073,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/130 - Pula pula pipoquinha na barra de repetição.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/130 - Pula pula pipoquinha na barra de repetição.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/130 - Pula pula pipoquinha na barra de repetição.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/130 - Pula pula pipoquinha na barra de repetição.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/130 - Pula pula pipoquinha na barra de repetição.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16394,13 +17101,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/131 - Escala Ré maior - Fa# Do#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/131 - Escala Ré maior - Fa# Do#.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/131- escala ré maior - fá# dó#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/131- escala ré maior - fá# dó#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/131 - Escala Ré maior - Fa# Do#.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16416,13 +17129,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/132- Minuet 1 - J.S. Bach.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/132- Minuet 1 - J.S. Bach.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/132- minuet 1 - J S Bach.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/132- minuet 1 - J S Bach.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/132- Minuet 1 - J.S. Bach.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16438,13 +17157,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/133- Andantino.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/133- Andantino.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/133- andantino.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/133- andantino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/133- Andantino.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16460,13 +17185,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/134 - Escala Lá maior - Fa# Do# Sol#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/134 - Escala Lá maior - Fa# Do# Sol#.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/134- escala lá maior - fá# dó# sol#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/134- escala lá maior - fá# dó# sol#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/134 - Escala Lá maior - Fa# Do# Sol#.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16482,13 +17213,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/135- GO TELL AUNT RHODY.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/135- GO TELL AUNT RHODY.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/135- go tell aunt rhody.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/135- go tell aunt rhody.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/135- GO TELL AUNT RHODY.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16504,13 +17241,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/136 - ALLEGRO.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/136 - ALLEGRO.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/136- allegro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/136- allegro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/136 - ALLEGRO.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16526,13 +17269,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/137 - PERPETUAL MOTION.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/137 - PERPETUAL MOTION.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/137- perpetual motion.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/137- perpetual motion.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/137 - PERPETUAL MOTION.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16548,13 +17297,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/138 - Escala de Mi maior - Fa# Do# Sol# Re#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/138 - Escala de Mi maior - Fa# Do# Sol# Re#.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/138- escala mi maior - fá# dó# sol# ré#.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/138- escala mi maior - fá# dó# sol# ré#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/138 - Escala de Mi maior - Fa# Do# Sol# Re#.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16570,16 +17325,22 @@
           "bpm": 40,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/139 - TEMA E.O EXCELL_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/139 - TEMA E.O EXCELL_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/139 - TEMA E.O EXCELL_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/139 - TEMA E.O EXCELL_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/139 - TEMA E.O EXCELL_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/139 - TEMA E.O EXCELL_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/139 - TEMA E.O EXCELL_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/139 - TEMA E.O EXCELL_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/139 - TEMA E.O EXCELL_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/139 - TEMA E.O EXCELL_b.musicxml"
             }
           }
         },
@@ -16592,13 +17353,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/140 - Escala de Fa maior - Sib.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/140 - Escala de Fa maior - Sib.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/140- escala fá maior - sib.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/140- escala fá maior - sib.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/140 - Escala de Fa maior - Sib.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16614,13 +17381,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/141 - A barata.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/141 - A barata.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/141- a barata.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/141- a barata.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/141 - A barata.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16636,13 +17409,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/142 - A dona aranha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/142 - A dona aranha.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/142 - A dona aranha.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/142 - A dona aranha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/142 - A dona aranha.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16658,13 +17437,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/143 - Escala de Sib maior - Sib Mib.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/143 - Escala de Sib maior - Sib Mib.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/143 - Escala de Sib maior - Sib Mib.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/143 - Escala de Sib maior - Sib Mib.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/143 - Escala de Sib maior - Sib Mib.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16680,13 +17465,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/144- Melody Anacreon in Heaven - JS Smith.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/144- Melody Anacreon in Heaven - JS Smith.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/144- melody anacreon in H. - JS Smith .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/144- melody anacreon in H. - JS Smith .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/144- Melody Anacreon in Heaven - JS Smith.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16702,13 +17493,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/145 - Escala de Mib - Sib Mib Lab.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/145 - Escala de Mib - Sib Mib Lab.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/145- escala mib maior - sib mib lab.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/145- escala mib maior - sib mib lab.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/145 - Escala de Mib - Sib Mib Lab.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16724,16 +17521,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/146- TEMA DE G.W. WARREN_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/146- TEMA DE G.W. WARREN_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/146- TEMA DE G.W. WARREN_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/146- TEMA DE G.W. WARREN_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/146- TEMA DE G.W. WARREN_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/146- TEMA DE G.W. WARREN_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/146- TEMA DE G.W. WARREN_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/146- TEMA DE G.W. WARREN_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/146- TEMA DE G.W. WARREN_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/146- TEMA DE G.W. WARREN_b.musicxml"
             }
           }
         },
@@ -16746,13 +17549,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/147- Escala de Lab maior - Sib Mib Lab Reb.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/147- Escala de Lab maior - Sib Mib Lab Reb.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/147- Escala de Lab maior - Sib Mib Lab Reb.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/147- Escala de Lab maior - Sib Mib Lab Reb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/147- Escala de Lab maior - Sib Mib Lab Reb.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16768,16 +17577,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/148- TEMA J.G BURT_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/148- TEMA J.G BURT_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/148- TEMA J.G BURT_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/148- TEMA J.G BURT_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/148- TEMA J.G BURT_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/148- TEMA J.G BURT_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/148- TEMA J.G BURT_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/148- TEMA J.G BURT_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/148- TEMA J.G BURT_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/148- TEMA J.G BURT_b.musicxml"
             }
           }
         },
@@ -16790,16 +17605,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/148- TEMA J.G BURT - Violino.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/148- TEMA J.G BURT - Violino.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/148- TEMA J.G BURT_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/148- TEMA J.G BURT_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/148- TEMA J.G BURT_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/148- TEMA J.G BURT_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/148- TEMA J.G BURT_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/148- TEMA J.G BURT_b.musicxml"
             }
           }
         },
@@ -16812,13 +17633,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/149- Escala Réb maior - Sib Mib Lab Reb Solb.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/149- Escala Réb maior - Sib Mib Lab Reb Solb.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/149- Escala Réb maior - Sib Mib Lab Reb Solb.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/149- Escala Réb maior - Sib Mib Lab Reb Solb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/149- Escala Réb maior - Sib Mib Lab Reb Solb.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16834,16 +17661,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/150- TEMA P.P. BLISS.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/150- TEMA P.P. BLISS.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/150- TEMA P.P. BLISS_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/150- TEMA P.P. BLISS_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/150- TEMA P.P. BLISS_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/150- TEMA P.P. BLISS_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/150- TEMA P.P. BLISS_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/150- TEMA P.P. BLISS_b.musicxml"
             }
           }
         },
@@ -16856,13 +17689,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/151- Descolorindo e tirando números da corda Sol e Re.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/151- Descolorindo e tirando números da corda Sol e Re.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/151- Descolorindo e tirando números da corda Sol e Re.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/151- Descolorindo e tirando números da corda Sol e Re.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/151- Descolorindo e tirando números da corda Sol e Re.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16878,13 +17717,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/152- Descolorindo e tirando números das cordas Lá e Mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/152- Descolorindo e tirando números das cordas Lá e Mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/152- Descolorindo e tirando números das cordas Lá.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/152- Descolorindo e tirando números das cordas Lá.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/152- Descolorindo e tirando números da corda Lá.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16900,13 +17745,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/153- Vamos tirar a cor da Sol.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/153- Vamos tirar a cor da Sol.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/153- Vamos tirar a cor da Sol.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/153- Vamos tirar a cor da Sol.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/153- Vamos tirar a cor da Sol.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16922,13 +17773,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/154- Cadê a cor da corda ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/154- Cadê a cor da corda ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/154- Cadê a cor da corda ré_.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/154- Cadê a cor da corda ré_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/154- Cadê a cor da corda ré_.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16944,13 +17801,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/155- Corda Lá sem cores.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/155- Corda Lá sem cores.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/155- Corda Lá sem cores.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/155- Corda Lá sem cores.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/155- Corda Lá sem cores.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16966,13 +17829,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/156- Sumindo a cor da corda Mi.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/156- Sumindo a cor da corda Mi.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/156- todas as cordas sem cores.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/156- todas as cordas sem cores.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/156- Todas as notas sem cores.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -16988,13 +17857,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/157- LONG, LONG AGO.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/157- LONG, LONG AGO.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/157- long, long ago.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/157- long, long ago.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/157- LONG, LONG AGO.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17010,13 +17885,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/158- brilha brilha estrelinha em seminimas e mínimas - oitava abaixo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/158- brilha brilha estrelinha em seminimas e mínimas - oitava abaixo.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/158- brilha brilha estrelinha em seminimas e mínimas - oitava abaixo.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/158- brilha brilha estrelinha em seminimas e mínimas - oitava abaixo.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/158- brilha brilha estrelinha em seminimas e mínimas - oitava abaixo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17032,13 +17913,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/159- brilha brilha estrelinha em colcheias, tercinas e pontuadas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/159- brilha brilha estrelinha em colcheias, tercinas e pontuadas.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/159- brilha brilha estrelinha em colcheias, tercinas e pontuadas.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/159- brilha brilha estrelinha em colcheias, tercinas e pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/159- brilha brilha estrelinha em colcheias, tercinas e pontuadas.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17054,13 +17941,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/160- Meu primeiro Hino 460- Vamos todos juntos cantar.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/160- Meu primeiro Hino 460- Vamos todos juntos cantar.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/160- Meu primeiro Hino 460- Vamos todos juntos cantar.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/160- Meu primeiro Hino 460- Vamos todos juntos cantar.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/160- Meu primeiro hino 460- Vamos todos juntos cantar - Violoncelo.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17076,13 +17969,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/161- finalmente semi colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/161- finalmente semi colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/161- finalmente semi colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/161- finalmente semi colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/161- finalmente semi colcheias.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17098,13 +17997,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/162- Escala de Dó com semi colcheias .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/162- Escala de Dó com semi colcheias .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/162- Escala de Dó com semicolcheias.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/162- Escala de Dó com semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/162- Escala de Dó com semi colcheias.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17120,13 +18025,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/163- Um binário simples cortado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/163- Um binário simples cortado.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/163- um binário simples cortado.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/163- um binário simples cortado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/163- Um binário simples cortado.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17142,13 +18053,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/164- Outro binário .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/164- Outro binário .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/164- Outro binário.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/164- Outro binário.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/164- Outro binário.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17164,13 +18081,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/165- Um ternário em quatro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/165- Um ternário em quatro.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/165- Um ternário em quatro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/165- Um ternário em quatro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/165- Um ternário em quatro.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17186,13 +18109,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/166- Outro três por quatro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/166- Outro três por quatro.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/166- outro três por quatro.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/166- outro três por quatro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/166- Outro três por quatro.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17208,13 +18137,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/167- Um quaternário simples .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/167- Um quaternário simples .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/167- um quaternário simples .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/167- um quaternário simples .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/167- Um quaternário simples.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17230,13 +18165,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/168- Outro simples quaternário .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/168- Outro simples quaternário .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/168- outro simples quaternário .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/168- outro simples quaternário .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/168- Outro simples quaternário.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17252,13 +18193,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/169- Oh when the saints.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/169- Oh when the saints.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/169- oh when the saints.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/169- oh when the saints.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/169- Oh when the saints.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17274,13 +18221,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/170- Theme from new world sinphony.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/170- Theme from new world sinphony.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/170- theme from new world sinphony.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/170- theme from new world sinphony.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/170- Theme from new world sinphony.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17296,13 +18249,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/171- Day 0.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/171- Day 0.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/171- Day 0.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/171- Day 0.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/171- Day 0.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17318,13 +18277,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/172- Binário composto 6_4.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/172- Binário composto 6_4.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/172- Binário composto 6_4.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/172- Binário composto 6_4.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/172- Binário composto 6_4.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17340,13 +18305,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/173- Um binário composto 6_8.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/173- Um binário composto 6_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/173- um binário composto 6_8.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/173- um binário composto 6_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/173- Um binário composto 6_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17362,13 +18333,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/174- Outro 6_8.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/174- Outro 6_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/174- Outro 6_8.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/174- Outro 6_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/174- Outro 6_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17384,13 +18361,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/175- Um ternário composto 9_8.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/175- Um ternário composto 9_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/175- um ternário composto.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/175- um ternário composto.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/175- Um ternário composto 9_8.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17406,13 +18389,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/176- Um quaternário composto com bemóis .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/176- Um quaternário composto com bemóis .musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/176- um quaternário composto com bemóis .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/176- um quaternário composto com bemóis .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/176- Um quaternário composto com bemóis.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17428,13 +18417,19 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/177- O último quaternário composto.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/177- O último quaternário composto.musicxml",
               "c": "",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/177- último quaternário composto .musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/177- último quaternário composto .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/177- O último quaternário composto.musicxml",
               "c": "",
               "t": "",
               "b": ""
@@ -17450,16 +18445,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/178- Saudade_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/178- Saudade_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/178- Saudade_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/178- Saudade_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/178- Saudade_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/178- Saudade_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/178- Saudade_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/178- Saudade_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/178- Saudade_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/178- Saudade_b.musicxml"
             }
           }
         },
@@ -17472,16 +18473,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/179- Toda a glória a Jesus_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/179- Toda a glória a Jesus_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/179- Toda a glória a Jesus_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/179- Toda a glória a Jesus_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/179- Toda a glória a Jesus_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/179- Toda a glória a Jesus_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/179- Toda a glória a Jesus_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/179- Toda a glória a Jesus_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/179- Toda a glória a Jesus_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/179- Toda a glória a Jesus_b.musicxml"
             }
           }
         },
@@ -17494,16 +18501,22 @@
           "bpm": 80,
           "arquivosPorInstrumento": {
             "violin": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/180- Ação de graças darei_s.musicxml",
-              "c": "xml/colecoes/metodo-inclusivo-ccb-violino/do/violino/180- Ação de graças darei_c.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violino/180- Ação de graças darei_s.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/violino/180- Ação de graças darei_c.musicxml",
               "t": "",
               "b": ""
             },
             "viola": {
-              "s": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/180- Ação de graças darei_s.musicxml",
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/viola/180- Ação de graças darei_s.musicxml",
               "c": "",
-              "t": "xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/180- Ação de graças darei_t.musicxml",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/viola/180- Ação de graças darei_t.musicxml",
               "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/180- Ação de graças darei_s.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/180- Ação de graças darei_b.musicxml"
             }
           }
         }

@@ -1,5 +1,5 @@
 /**
- * Atualiza xml/catalog.json na coleção metodo-inclusivo-ccb-violino:
+ * Atualiza xml/catalog.json na coleção metodo-inclusivo-ccb:
  * adiciona arquivosPorInstrumento.viola a partir dos .musicxml em do/viola.
  */
 import fs from 'fs';
@@ -13,7 +13,7 @@ const violaDir = path.join(
   root,
   'xml',
   'colecoes',
-  'metodo-inclusivo-ccb-violino',
+  'metodo-inclusivo-ccb',
   'do',
   'viola'
 );
@@ -43,7 +43,7 @@ function indexViolaFiles() {
       voice = String(vm[1]).toLowerCase();
       if (!'sctb'.includes(voice)) voice = 's';
     }
-    const rel = `xml/colecoes/metodo-inclusivo-ccb-violino/do/viola/${filename}`;
+    const rel = `xml/colecoes/metodo-inclusivo-ccb/do/viola/${filename}`;
     if (!byNum.has(num)) byNum.set(num, emptyVoices());
     const slot = byNum.get(num);
     slot[voice] = rel;
@@ -57,9 +57,9 @@ function main() {
   if (!data.colecoes || !Array.isArray(data.colecoes)) {
     throw new Error('catalog.json: sem colecoes[]');
   }
-  const col = data.colecoes.find((c) => c && c.id === 'metodo-inclusivo-ccb-violino');
+  const col = data.colecoes.find((c) => c && c.id === 'metodo-inclusivo-ccb');
   if (!col || !Array.isArray(col.items)) {
-    throw new Error('Coleção metodo-inclusivo-ccb-violino não encontrada');
+    throw new Error('Coleção metodo-inclusivo-ccb não encontrada');
   }
   const byNum = indexViolaFiles();
   let added = 0;
