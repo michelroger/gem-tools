@@ -101,7 +101,7 @@
 
     <div class="metronome-modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
       <div class="metronome-card settings-modal-card settings-panel" id="settingsPanel">
-        <button type="button" class="metronome-close" id="btnSettingsClose" aria-label="Fechar configurações">✕</button>
+        <button type="button" class="metronome-close" id="btnSettingsClose" aria-label="Fechar configurações"><i data-lucide="x"></i></button>
         <h2 class="hinos-new-student-title" id="settingsModalTitle">Configurações</h2>
         <div class="settings-group instrument-section" id="instrumentSection">
           <p class="key-label">Instrumento</p>
@@ -184,11 +184,11 @@
 
         <div class="tuner-main-controls">
           <button type="button" class="tuner-round-btn start" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <i data-lucide="play" aria-hidden="true"></i>
             <span class="visually-hidden">Iniciar</span>
           </button>
           <button type="button" class="tuner-round-btn stop" id="tunerStopBtn" aria-label="Parar afinador" title="Parar afinador" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+            <i data-lucide="square" aria-hidden="true"></i>
             <span class="visually-hidden">Parar</span>
           </button>
         </div>
@@ -229,12 +229,7 @@
         <div class="hinos-panel-heading">
           <h3 class="hinos-panel-title" id="hinosActiveHeading">Aluno ativo</h3>
           <button type="button" class="hinos-icon-btn" id="hinosOpenNewStudentModal" title="Incluir novo aluno" aria-label="Incluir novo aluno">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <line x1="19" y1="8" x2="19" y2="14" />
-              <line x1="22" y1="11" x2="16" y2="11" />
-            </svg>
+            <i data-lucide="user-plus" aria-hidden="true"></i>
           </button>
         </div>
         <div class="hinos-field">
@@ -253,7 +248,7 @@
           </div>
           <div class="hinos-remove-wrap">
             <button type="button" class="hinos-remove-student-btn" id="hinosRemoveStudent" aria-label="Remover aluno selecionado" title="Remover aluno selecionado">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
             </button>
           </div>
         </div>
@@ -317,71 +312,39 @@
       <div class="player-controls" id="playerControls">
         <div class="player-transport">
           <button type="button" class="player-ctl-btn" id="btnPlayerPlay" aria-label="Play" title="Play">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <i data-lucide="play" aria-hidden="true"></i>
           </button>
           <button type="button" class="player-ctl-btn" id="btnPlayerPause" disabled aria-label="Pausar" title="Pausar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+            <i data-lucide="pause" aria-hidden="true"></i>
           </button>
           <button type="button" class="player-ctl-btn" id="btnPlayerStop" disabled aria-label="Parar" title="Parar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h12v12H6V6z"/></svg>
+            <i data-lucide="square" aria-hidden="true"></i>
           </button>
           <button type="button" class="player-ctl-btn" id="btnPlayerSettings" aria-label="Configurações" title="Configurações do instrumento">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83l-.01.01a2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2h-.02a2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0l-.01-.01a2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2v-.02a2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83l.01-.01a2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33h0A1.65 1.65 0 0 0 10 3.09V3a2 2 0 0 1 2-2h.02a2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0l.01.01a2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0A1.65 1.65 0 0 0 20.91 10H21a2 2 0 0 1 2 2v.02a2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
+            <i data-lucide="settings" aria-hidden="true"></i>
           </button>
           <button type="button" class="player-ctl-btn player-speed-icon" id="btnPlayerSpeed" aria-label="Velocidade: 100%" title="Velocidade: 100%" aria-haspopup="dialog" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="14" r="8"/>
-              <path d="M12 14V9"/>
-              <path d="M12 14l3.5 2"/>
-              <path d="M12 2v2"/>
-            </svg>
+            <i data-lucide="gauge" aria-hidden="true"></i>
           </button>
         </div>
-        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem automática, loop, cor e dedilhado da partitura">
+        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem automática, loop, cor, nomes nas notas e dedilhado da partitura">
           <button type="button" class="player-toggle-btn" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
-            <span class="player-toggle-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3 7 20h10l-5-17"></path>
-                <line x1="12" y1="12" x2="16" y2="8"></line>
-              </svg>
-            </span>
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="metronome"></i></span>
           </button>
           <button type="button" class="player-toggle-btn" id="playerAutoScrollToggle" aria-pressed="false" aria-label="Auto-scroll" title="Auto-scroll">
-            <span class="player-toggle-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v5"></path>
-                <path d="M10 5l2-2 2 2"></path>
-                <path d="M8 14v-2.2a1.2 1.2 0 0 1 2.4 0V14"></path>
-                <path d="M10.4 14v-1a1.2 1.2 0 1 1 2.4 0v1"></path>
-                <path d="M12.8 14v-.8a1.2 1.2 0 0 1 2.4 0V14"></path>
-                <path d="M15.2 14v-.4a1.2 1.2 0 0 1 2.4 0v2.4c0 2.2-1.8 4-4 4h-2.2c-1.7 0-3.2-.9-4-2.4L6.5 16"></path>
-              </svg>
-            </span>
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="scroll-text"></i></span>
           </button>
           <button type="button" class="player-toggle-btn" id="playerLoopToggle" aria-pressed="false" aria-label="Repetir partitura" title="Repetir partitura">
-            <span class="player-toggle-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 2l4 4-4 4"></path>
-                <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-                <path d="M7 22l-4-4 4-4"></path>
-                <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-              </svg>
-            </span>
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="repeat"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerColorToggle" aria-pressed="false" aria-label="Colorido" title="Colorido">
-            <span class="player-toggle-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
-                <path d="M13 12V6l7-2v10"></path>
-                <path d="M20 14a3 3 0 1 1-3-3"></path>
-              </svg>
-            </span>
+          <button type="button" class="player-toggle-btn" id="playerColorToggle" aria-pressed="false" aria-label="Cores nas notas" title="Ativar ou desativar cores nas notas (por altura)">
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="palette"></i></span>
+          </button>
+          <button type="button" class="player-toggle-btn" id="playerNoteNamesToggle" aria-pressed="false" aria-label="Legenda dos nomes das notas" title="Mostrar ou ocultar nomes das notas na partitura (Dó, Ré…)">
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="captions"></i></span>
           </button>
           <button type="button" class="player-toggle-btn" id="playerFingeringToggle" aria-pressed="false" aria-label="Dedilhado" title="Dedilhado">
-            <span class="player-toggle-num-icon" aria-hidden="true">123</span>
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="list-ordered"></i></span>
           </button>
         </div>
         <div class="player-timeline">
@@ -406,7 +369,7 @@
 
     <div class="metronome-modal hidden" id="hinosNewStudentModal" role="dialog" aria-modal="true" aria-labelledby="hinosNewStudentTitle">
       <div class="metronome-card hinos-new-student-card">
-        <button type="button" class="metronome-close" id="hinosNewStudentClose" aria-label="Fechar">✕</button>
+        <button type="button" class="metronome-close" id="hinosNewStudentClose" aria-label="Fechar"><i data-lucide="x"></i></button>
         <h2 class="hinos-new-student-title" id="hinosNewStudentTitle">Novo aluno</h2>
         <p class="hinos-new-student-hint">Nome e voz principal na matrícula.</p>
         <div class="hinos-modal-fields">
@@ -426,22 +389,22 @@
         </div>
         <div class="hinos-backup-row">
           <button type="button" class="btn btn-secondary" id="hinosExportBackup">
-            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+            <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="download"></i></span>
             <span>Exportar backup</span>
           </button>
           <button type="button" class="btn btn-secondary" id="hinosImportBackup">
-            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="upload"></i></span>
             <span>Importar backup</span>
           </button>
           <input type="file" id="hinosImportBackupFile" class="hidden" accept=".json,application/json" aria-hidden="true" tabindex="-1" />
         </div>
         <div class="hinos-new-student-actions">
           <button type="button" class="btn btn-secondary" id="hinosNewStudentCancel">
-            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></span>
+            <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="x"></i></span>
             <span>Cancelar</span>
           </button>
           <button type="button" class="btn btn-primary" id="hinosAddStudent">
-            <span class="hinos-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span>
+            <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="user-plus"></i></span>
             <span>Adicionar</span>
           </button>
         </div>
@@ -450,7 +413,7 @@
 
     <div class="metronome-modal hidden" id="hinosEditorModal" role="dialog" aria-modal="true" aria-labelledby="hinosDetailLabel">
       <div class="metronome-card hinos-editor-card">
-        <button type="button" class="metronome-close" id="hinosEditorClose" aria-label="Fechar editor de hino">✕</button>
+        <button type="button" class="metronome-close" id="hinosEditorClose" aria-label="Fechar editor de hino"><i data-lucide="x"></i></button>
         <p class="hinos-detail-label" id="hinosDetailLabel">Hino 1</p>
         <div class="hinos-hino-row">
           <button type="button" id="hinosPrev" aria-label="Hino anterior">−</button>
@@ -474,41 +437,41 @@
 
     <div class="mode-tabs nav-hidden" id="modeTabs" role="tablist">
       <button type="button" class="mode-btn active" data-mode="hinos" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
         <span class="mode-btn-label">Controle</span>
       </button>
       <button type="button" class="mode-btn" data-mode="learn" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-2"></i></span>
         <span class="mode-btn-label">Aprender</span>
       </button>
       <button type="button" class="mode-btn" data-mode="challenge" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="target"></i></span>
         <span class="mode-btn-label">Desafio</span>
       </button>
       <button type="button" class="mode-btn" data-mode="staff" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="2" y1="18" x2="22" y2="18"/><line x1="2" y1="6" x2="22" y2="6"/><path d="M17 4v14"/><ellipse cx="14" cy="11" rx="2.2" ry="1.7"/></svg></span>
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-4"></i></span>
         <span class="mode-btn-label">Penta</span>
       </button>
       <div class="mode-more-wrap">
         <button type="button" class="mode-btn" id="btnMoreMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMoreMenu">
-          <span class="mode-btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg></span>
+          <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="ellipsis"></i></span>
           <span class="mode-btn-label">Mais</span>
         </button>
         <div class="mode-more-menu hidden" id="modeMoreMenu" role="menu">
           <button type="button" class="mode-more-item" id="btnMoreTuner" role="menuitem">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12A9 9 0 1 1 12 3"/><path d="M12 12l5-5"/><circle cx="12" cy="12" r="1"/></svg>
+            <i data-lucide="gauge" aria-hidden="true"></i>
             <span>Afinador</span>
           </button>
           <button type="button" class="mode-more-item" id="btnMoreMetronome" role="menuitem">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 20h10l-5-17"/><line x1="12" y1="12" x2="16" y2="8"/></svg>
+            <i data-lucide="metronome" aria-hidden="true"></i>
             <span>Metrônomo</span>
           </button>
           <button type="button" class="mode-more-item" id="btnMorePlayer" role="menuitem">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <i data-lucide="play" aria-hidden="true"></i>
             <span>Player</span>
           </button>
           <button type="button" class="mode-more-item" id="btnMoreSettings" role="menuitem">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 4.37 17l.06-.06A1.65 1.65 0 0 0 4.76 15a1.65 1.65 0 0 0-1.51-1H3.16a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.2 4.29l.06.06A1.65 1.65 0 0 0 9.08 4a1.65 1.65 0 0 0 1-1.51V2.4a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 19.63 7l-.06.06A1.65 1.65 0 0 0 19.24 9c.2.61.78 1.02 1.43 1.02h.17a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.35.98z"/></svg>
+            <i data-lucide="settings" aria-hidden="true"></i>
             <span>Ajustes</span>
           </button>
         </div>
@@ -532,8 +495,8 @@
         </div>
 
         <div class="metro-controls">
-          <button type="button" class="metro-btn metro-pause" id="btnMetroStop">◼</button>
-          <button type="button" class="metro-btn metro-start" id="btnMetroStart">▶</button>
+          <button type="button" class="metro-btn metro-pause" id="btnMetroStop" aria-label="Parar metrônomo"><i data-lucide="square"></i></button>
+          <button type="button" class="metro-btn metro-start" id="btnMetroStart" aria-label="Iniciar metrônomo"><i data-lucide="play"></i></button>
         </div>
 
         <div class="metro-beat-title">BATIDAS</div>
@@ -588,7 +551,7 @@
     <!-- Sobre (modal) -->
     <div class="metronome-modal hidden" id="aboutModal" role="dialog" aria-modal="true" aria-label="Sobre">
       <div class="metronome-card">
-        <button type="button" class="metronome-close" id="btnAboutClose" aria-label="Fechar">✕</button>
+        <button type="button" class="metronome-close" id="btnAboutClose" aria-label="Fechar"><i data-lucide="x"></i></button>
         <div style="text-align:center; padding-top: 0.2rem;">
           
           <div style="text-align:left; color: var(--text-soft); font-weight:700;">
@@ -644,7 +607,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.1.0</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.2.0</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>
@@ -656,7 +619,7 @@
     <!-- Afinador: ajuda quando o microfone está bloqueado -->
     <div class="metronome-modal hidden" id="tunerMicHelpModal" role="dialog" aria-modal="true" aria-labelledby="tunerMicHelpTitle">
       <div class="metronome-card settings-modal-card tuner-mic-help-card">
-        <button type="button" class="metronome-close" id="tunerMicHelpCloseX" aria-label="Fechar">✕</button>
+        <button type="button" class="metronome-close" id="tunerMicHelpCloseX" aria-label="Fechar"><i data-lucide="x"></i></button>
         <h3 id="tunerMicHelpTitle" class="tuner-mic-help-heading">Permitir o microfone</h3>
         <div class="tuner-mic-help-content" id="tunerMicHelpContent"></div>
         <div class="tuner-mic-help-footer">
@@ -669,6 +632,22 @@
 
   <div id="bottomNavSentinel" aria-hidden="true"></div>
 
+  <!-- Lucide: ícones declarados com data-lucide; gemRefreshLucide após HTML dinâmico -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+  <script>
+    (function () {
+      try {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+          window.gemRefreshLucide = function () {
+            try {
+              lucide.createIcons();
+            } catch (e2) {}
+          };
+        }
+      } catch (e) {}
+    })();
+  </script>
   <script src="./assets/js/app-main.js"></script>
 
 </body>

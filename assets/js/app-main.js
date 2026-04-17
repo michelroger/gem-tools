@@ -1,8 +1,8 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.1.12';
-      const APP_VERSION_LABEL = '';
+      const APP_VERSION = '1.2.0';
+      const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
       const PLAYER_CATALOG_URL = './xml/catalog.json';
@@ -358,6 +358,7 @@
       var playerAutoScrollEnabled = false;
       var playerLoopEnabled = false;
       var playerColorizedNotes = false;
+      var playerNoteNameLabels = false;
       var playerShowFingering = false;
       var playerAutoScrollLastTs = 0;
       var playerAutoScrollLastSystemTop = null;
@@ -854,8 +855,7 @@
           btnClr.className = 'hinos-filter-clear';
           btnClr.setAttribute('aria-label', 'Limpar filtros');
           btnClr.title = 'Limpar tonalidade e busca';
-          btnClr.innerHTML =
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+          btnClr.innerHTML = '<i data-lucide="circle-x" aria-hidden="true"></i>';
 
           toolbar.appendChild(labTon);
           toolbar.appendChild(labQ);
@@ -891,8 +891,7 @@
               bulkBtn.setAttribute('aria-label', 'Marcar voz principal em todos os hinos deste grupo');
               bulkBtn.title =
                 'Marca a voz principal do aluno em todos os hinos deste grupo. Coros não são alterados.';
-              bulkBtn.innerHTML =
-                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>';
+              bulkBtn.innerHTML = '<i data-lucide="list-checks" aria-hidden="true"></i>';
               bulkBtn.setAttribute('data-hinos-bulk-phase', String(idx));
               bulkBtn.setAttribute('data-hinos-bulk-ton', tonName);
               head.appendChild(bulkBtn);
@@ -977,6 +976,10 @@
             applyHinosFaseFilters();
           });
         });
+
+        if (typeof window.gemRefreshLucide === 'function') {
+          window.gemRefreshLucide();
+        }
 
         if (!container._hinosFaseGridClickBound) {
           container._hinosFaseGridClickBound = true;
@@ -3365,6 +3368,301 @@
         try {
           if (typeof playerOsmd.resize === 'function') playerOsmd.resize();
         } catch (e) {}
+        requestAnimationFrame(function () {
+          if (currentMode === 'player') buildPlayerNoteAnchorsFromDom();
+        });
+      }
+
+      function playerClientToSvgPoint(svg, clientX, clientY) {
+        try {
+          if (!svg || typeof svg.createSVGPoint !== 'function') return null;
+          var pt = svg.createSVGPoint();
+          pt.x = clientX;
+          pt.y = clientY;
+          var m = svg.getScreenCTM();
+          if (!m || typeof m.inverse !== 'function') return null;
+          return pt.matrixTransform(m.inverse());
+        } catch (ePt) {
+          return null;
+        }
+      }
+
+      /** Retângulo na tela que cobre a cabeça da nota (path costuma ter bbox minúsculo → usa só o pai imediato se for plausível). */
+      function playerNoteheadScreenRect(el) {
+        if (!el || !el.getBoundingClientRect) return null;
+        var tag = String(el.tagName || '').toLowerCase();
+        var r = el.getBoundingClientRect();
+        if (!r || r.width <= 0 || r.height <= 0) return null;
+        var best = { left: r.left, top: r.top, width: r.width, height: r.height };
+
+        if (tag === 'path') {
+          var p = el.parentElement;
+          if (p && p.getBoundingClientRect) {
+            var rp = p.getBoundingClientRect();
+            if (rp && rp.width > 0 && rp.height > 0) {
+              var nw = rp.width;
+              var nh = rp.height;
+              if (
+                nw >= best.width * 1.06 &&
+                nw <= Math.max(best.width * 10, 56) &&
+                nh <= Math.max(best.height * 5, 40)
+              ) {
+                best = { left: rp.left, top: rp.top, width: nw, height: nh };
+              }
+            }
+          }
+        }
+
+        if (best.width < 3 || best.height < 3) return null;
+        return best;
+      }
+
+      /** Converte nome OSMD/Vex (ex. A#4, Bb4, C4) em MIDI cromático padrão. */
+      function playerOsmdPitchStringToMidi(short) {
+        var t = String(short || '').trim();
+        if (!t || t === 'rest') return null;
+        if (window.TunerUtils) {
+          var direct = window.TunerUtils.noteToMidi(t);
+          if (direct != null) return direct;
+        }
+        var m = /^([A-G])(#|b|bb|##|n)?(-?\d+)$/.exec(t);
+        if (!m) return null;
+        var letter = m[1];
+        var acc = m[2] || '';
+        var oct = parseInt(m[3], 10);
+        var baseMap = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+        var base = baseMap[letter];
+        if (base == null || isNaN(oct)) return null;
+        var off = 0;
+        if (acc === '#') off = 1;
+        else if (acc === 'b') off = -1;
+        else if (acc === '##') off = 2;
+        else if (acc === 'bb') off = -2;
+        else if (acc === 'n') off = 0;
+        var midiVal = (oct + 1) * 12 + base + off;
+        if (midiVal < 0 || midiVal > 127) return null;
+        return midiVal;
+      }
+
+      /**
+       * Posições e alturas a partir do modelo gráfico do OSMD (respeita clave, armadura e notação).
+       * Fallback: timeline + DOM (menos fiável em partituras longas / várias pautas).
+       */
+      function collectPlayerOsmdNoteLabelPlacements(osmd) {
+        var placements = [];
+        if (!osmd) return placements;
+        var sheet = osmd.graphic || osmd.GraphicSheet;
+        if (!sheet) return placements;
+        var measureList = sheet.measureList || sheet.MeasureList;
+        if (!measureList || !measureList.length) return placements;
+
+        var i;
+        for (i = 0; i < measureList.length; i++) {
+          var measures = measureList[i];
+          if (!measures) continue;
+          if (!Array.isArray(measures)) measures = [measures];
+          var j;
+          for (j = 0; j < measures.length; j++) {
+            var measure = measures[j];
+            if (!measure || !measure.staffEntries) continue;
+            var k;
+            for (k = 0; k < measure.staffEntries.length; k++) {
+              var se = measure.staffEntries[k];
+              if (!se || !se.graphicalVoiceEntries) continue;
+              var l;
+              for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+                var gve = se.graphicalVoiceEntries[l];
+                if (!gve || !gve.notes) continue;
+                var mn;
+                for (mn = 0; mn < gve.notes.length; mn++) {
+                  var gn = gve.notes[mn];
+                  var sn = gn && gn.sourceNote;
+                  if (!sn) continue;
+                  if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+                  if (sn.IsGraceNote || sn.isGraceNote) continue;
+                  try {
+                    if (sn.PrintObject === false) continue;
+                  } catch (ePo) {}
+
+                  var pitch = sn.TransposedPitch || sn.Pitch;
+                  if (!pitch) continue;
+                  var shortStr = null;
+                  try {
+                    if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                  } catch (eTs) {}
+                  if (!shortStr) continue;
+
+                  var midi = playerOsmdPitchStringToMidi(shortStr);
+                  if (midi == null) continue;
+
+                  var el = null;
+                  if (typeof gn.getSVGGElement === 'function') {
+                    try {
+                      el = gn.getSVGGElement();
+                    } catch (eSvg) {}
+                  }
+                  if (!el || !el.getBoundingClientRect) continue;
+                  var r = el.getBoundingClientRect();
+                  if (!r || r.width < 2 || r.height < 2) continue;
+
+                  placements.push({
+                    cx: r.left + r.width * 0.5,
+                    noteBottom: r.top + r.height,
+                    midi: midi,
+                    dPx: Math.max(r.width, r.height)
+                  });
+                }
+              }
+            }
+          }
+        }
+
+        placements.sort(function (a, b) {
+          var ay = a.noteBottom != null ? a.noteBottom : a.cy;
+          var by = b.noteBottom != null ? b.noteBottom : b.cy;
+          var dy = ay - by;
+          if (Math.abs(dy) > 8) return dy;
+          return a.cx - b.cx;
+        });
+        return placements;
+      }
+
+      function collectPlayerNoteLabelPlacementsFromDomFallback() {
+        var placements = [];
+        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return placements;
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return placements;
+
+        var nonChordEvents = playerScoreData.events.filter(function (ev) {
+          return !ev.isChord;
+        });
+        if (!nonChordEvents.length) return placements;
+
+        var nodes = host.querySelectorAll(
+          '.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]'
+        );
+        if (!nodes || !nodes.length) return placements;
+
+        var usableNodes = [];
+        nodes.forEach(function (n) {
+          var rect = playerNoteheadScreenRect(n);
+          if (!rect) return;
+          usableNodes.push({ rect: rect });
+        });
+        if (!usableNodes.length) return placements;
+
+        usableNodes.sort(function (a, b) {
+          var dy = a.rect.top - b.rect.top;
+          if (Math.abs(dy) > 8) return dy;
+          return a.rect.left - b.rect.left;
+        });
+
+        var max = Math.min(nonChordEvents.length, usableNodes.length);
+        var pi;
+        for (pi = 0; pi < max; pi++) {
+          var ev = nonChordEvents[pi];
+          if (!ev || ev.isRest || ev.midi == null) continue;
+          var rr = usableNodes[pi].rect;
+          placements.push({
+            cx: rr.left + rr.width * 0.5,
+            noteBottom: rr.top + rr.height,
+            midi: ev.midi,
+            dPx: Math.max(rr.width, rr.height)
+          });
+        }
+        return placements;
+      }
+
+      /** Reduz sobreposição em colcheias / notas lado a lado (nudge vertical + fonte menor). */
+      function applyPlayerNoteLabelCrowdingAdjustments(arr) {
+        if (!arr || arr.length < 2) return;
+        var i;
+        for (i = 0; i < arr.length; i++) {
+          arr[i].cyNudgePx = 0;
+          arr[i].fontMult = 1;
+        }
+        var run = 0;
+        for (i = 1; i < arr.length; i++) {
+          var a = arr[i - 1];
+          var b = arr[i];
+          var ay = a.noteBottom != null ? a.noteBottom : a.cy;
+          var by = b.noteBottom != null ? b.noteBottom : b.cy;
+          var dy = Math.abs(by - ay);
+          var dx = b.cx - a.cx;
+          if (dy < 11 && dx < 36 && dx >= -3) {
+            run++;
+            b.cyNudgePx = run % 2 === 1 ? -4 : 4;
+            b.fontMult = 0.74;
+          } else {
+            run = 0;
+          }
+        }
+      }
+
+      /** Rótulos Dó/Ré/Sol dentro das cabeças (SVG). */
+      function syncPlayerNoteNameLabelOverlays() {
+        var host = document.getElementById('playerOsmdContainer');
+        if (host) {
+          var prev = host.querySelector('#gem-player-note-labels');
+          if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        }
+        if (!playerNoteNameLabels || !host) return;
+        var svg = host.querySelector('svg');
+        if (!svg) return;
+
+        var placements = collectPlayerOsmdNoteLabelPlacements(playerOsmd);
+        if (!placements || !placements.length) placements = collectPlayerNoteLabelPlacementsFromDomFallback();
+        if (!placements || !placements.length) return;
+        applyPlayerNoteLabelCrowdingAdjustments(placements);
+
+        var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        layer.setAttribute('id', 'gem-player-note-labels');
+        layer.setAttribute('pointer-events', 'none');
+        var ns = 'http://www.w3.org/2000/svg';
+        var pi;
+        for (pi = 0; pi < placements.length; pi++) {
+          var pl = placements[pi];
+          if (!pl || pl.midi == null) continue;
+
+          var rawLabel = tunerHumanNoteLabel(tunerMidiToName(pl.midi));
+          if (!rawLabel) continue;
+          var shortLabel = rawLabel.replace('♯', '#').replace('♭', 'b');
+          if (shortLabel.length > 5) shortLabel = shortLabel.slice(0, 5);
+
+          var dPx = Math.max(10, pl.dPx != null && isFinite(pl.dPx) ? pl.dPx : 14);
+          var fontMult = (pl.fontMult != null && isFinite(pl.fontMult) ? pl.fontMult : 1) * (shortLabel.length > 2 ? 0.84 : 1);
+          var fontPx = Math.max(5.2, Math.min(12, dPx * 0.34 * fontMult));
+          var noteBottom =
+            pl.noteBottom != null && isFinite(pl.noteBottom) ? pl.noteBottom : pl.cy + dPx * 0.35;
+          var gapPx = 1.5 + fontPx * 0.1;
+          var nudge = pl.cyNudgePx || 0;
+          var cyScreen = noteBottom + gapPx + nudge;
+          var p = playerClientToSvgPoint(svg, pl.cx, cyScreen);
+          if (!p || !isFinite(p.x) || !isFinite(p.y)) continue;
+
+          var strokeW = Math.max(0.7, fontPx * 0.15);
+          var letterSp = shortLabel.length > 3 ? '-0.06em' : '-0.03em';
+          var text = document.createElementNS(ns, 'text');
+          text.setAttribute('x', String(Math.round(p.x * 100) / 100));
+          text.setAttribute('y', String(Math.round(p.y * 100) / 100));
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'hanging');
+          text.setAttribute('fill', '#ffffff');
+          text.setAttribute(
+            'style',
+            'font-family: Nunito, "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: ' +
+              fontPx +
+              'px; letter-spacing: ' +
+              letterSp +
+              '; paint-order: stroke fill; stroke: #e87328; stroke-width: ' +
+              strokeW +
+              'px; filter: drop-shadow(0 0 1.5px rgba(232,115,40,0.95)) drop-shadow(0 1px 2px rgba(160,70,10,0.35));'
+          );
+          text.textContent = shortLabel;
+          layer.appendChild(text);
+        }
+
+        if (layer.childNodes.length) svg.appendChild(layer);
       }
 
       function formatPlayerTime(seconds) {
@@ -3426,6 +3724,8 @@
         window.UiCoreModule.setAriaPressed(loopToggle, playerLoopEnabled);
         var colorToggle = document.getElementById('playerColorToggle');
         window.UiCoreModule.setAriaPressed(colorToggle, playerColorizedNotes);
+        var noteNamesToggle = document.getElementById('playerNoteNamesToggle');
+        window.UiCoreModule.setAriaPressed(noteNamesToggle, playerNoteNameLabels);
         var fingeringToggle = document.getElementById('playerFingeringToggle');
         window.UiCoreModule.setAriaPressed(fingeringToggle, playerShowFingering);
       }
@@ -3719,17 +4019,15 @@
         if (!nonChordEvents.length) return;
 
         var nodes = host.querySelectorAll(
-          '.vf-notehead, .vf-stavenote .vf-notehead, .vf-notehead path, g[class*="notehead"], [id*="notehead"]'
+          '.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]'
         );
         if (!nodes || !nodes.length) return;
 
         var usableNodes = [];
         nodes.forEach(function (n) {
-          var el = n && n.getBoundingClientRect ? n : null;
-          if (!el) return;
-          var r = el.getBoundingClientRect();
-          if (!r || r.width <= 0 || r.height <= 0) return;
-          usableNodes.push({ el: el, rect: r });
+          var r = playerNoteheadScreenRect(n);
+          if (!r) return;
+          usableNodes.push({ el: n, rect: r });
         });
         if (!usableNodes.length) return;
 
@@ -3749,6 +4047,7 @@
             y: rr.top + (rr.height / 2)
           });
         }
+        syncPlayerNoteNameLabelOverlays();
       }
 
       function seekPlayerFromClick(clientX, clientY) {
@@ -5250,6 +5549,19 @@
             syncPlayerLeverUi();
             loadPlayerFromCatalogSelection(true);
             setMessage(playerColorizedNotes ? 'Partitura colorida ligada.' : 'Partitura em preto (padrão).');
+          });
+        }
+        var playerNoteNamesToggle = document.getElementById('playerNoteNamesToggle');
+        if (playerNoteNamesToggle) {
+          playerNoteNamesToggle.addEventListener('click', function () {
+            playerNoteNameLabels = !playerNoteNameLabels;
+            syncPlayerLeverUi();
+            if (playerOsmd && playerScoreData) {
+              syncPlayerNoteNameLabelOverlays();
+            }
+            setMessage(
+              playerNoteNameLabels ? 'Nomes nas notas ligados.' : 'Nomes nas notas desligados.'
+            );
           });
         }
         var playerFingeringToggle = document.getElementById('playerFingeringToggle');

@@ -788,13 +788,60 @@
       display: block;
     }
 
-    .player-toggle-num-icon {
-      font-size: 0.82rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      color: var(--text-soft);
-      font-family: inherit;
+    .player-toggle-icon [data-lucide] {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+
+    .player-ctl-btn [data-lucide] {
+      display: block;
+      width: 22px;
+      height: 22px;
+    }
+
+    .tuner-round-btn [data-lucide] {
+      display: block;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .hinos-icon-btn [data-lucide],
+    .hinos-btn-icon [data-lucide] {
+      display: block;
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    .hinos-new-student-card .hinos-btn-icon [data-lucide] {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .hinos-remove-student-btn [data-lucide] {
+      display: block;
+      width: 1.05rem;
+      height: 1.05rem;
+    }
+
+    .hinos-filter-clear [data-lucide],
+    .hinos-grupo-bulk [data-lucide] {
+      display: block;
+      width: 0.95rem;
+      height: 0.95rem;
+    }
+
+    .mode-btn-icon [data-lucide] {
+      display: block;
+      width: 1.02rem;
+      height: 1.02rem;
+    }
+
+    .mode-more-item [data-lucide] {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
     }
 
     .player-score-host {
@@ -1002,6 +1049,10 @@
       font-weight: 700;
       cursor: pointer;
       transition: transform 0.12s ease, filter 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
     .tuner-round-btn.start {
@@ -2552,6 +2603,16 @@
       border-radius: 10px;
       cursor: pointer;
       font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .metronome-close svg,
+    .metronome-close [data-lucide] {
+      width: 1.15rem;
+      height: 1.15rem;
+      display: block;
     }
 
     .metro-top {
@@ -2631,6 +2692,16 @@
       font-weight: 800;
       cursor: pointer;
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .metro-btn svg,
+    .metro-btn [data-lucide] {
+      width: 1.35rem;
+      height: 1.35rem;
+      display: block;
     }
 
     .metro-btn.metro-pause {
