@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.1';
+      const APP_VERSION = '1.2.2';
       const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
@@ -360,6 +360,13 @@
       var playerColorizedNotes = false;
       var playerNoteNameLabels = false;
       var playerShowFingering = false;
+      var playerShowMeasureNumbers = true;
+      /**
+       * Ajuste OSMD para marcas de ensaio («Coro», «Final»): em VexFlow, y maior = mais para baixo.
+       * OSMD usa yOffset = -RehearsalMarkYOffsetDefault - RehearsalMarkYOffset (default -15 → base 15).
+       * Valores POSITIVOS aqui DIMINUEM esse yOffset e sobem o texto, afastando do pentagrama.
+       */
+      var PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET = 24;
       var playerAutoScrollLastTs = 0;
       var playerAutoScrollLastSystemTop = null;
       var playerAutoScrollLastCursorLeftInHost = null;
@@ -389,7 +396,24 @@
         readPlayerOsmdLoading: function () { return playerOsmdLoading; },
         setPlayerOsmdLoading: function (v) { playerOsmdLoading = v; },
         setPlayerOsmd: function (v) { playerOsmd = v; },
-        setPlayerScoreData: function (v) { playerScoreData = v; },
+        applyPlayerOsmdDisplayOptions: function (osmd) {
+          if (!osmd || typeof osmd.setOptions !== 'function') return;
+          try {
+            osmd.setOptions({
+              drawMeasureNumbers: !!playerShowMeasureNumbers,
+              drawFingerings: !!playerShowFingering
+            });
+          } catch (eOsmdOpt) {}
+          try {
+            var er = osmd.EngravingRules || osmd.rules;
+            if (er) er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
+          } catch (eR) {}
+        },
+        setPlayerScoreData: function (v) {
+          playerScoreData = v;
+          if (v) playerPlaybackRate = 1;
+          syncPlayerSpeedUi();
+        },
         setPlayerNoteAnchors: function (v) { playerNoteAnchors = v; },
         isPlayerMode: function () { return currentMode === 'player'; },
         setMessage: function (t) { setMessage(t); },
@@ -421,6 +445,7 @@
           stopPlayerPlayback(false);
           playerCurrentScorePath = scoreKey;
           setMessage('Carregando MusicXML…');
+          syncPlayerSpeedUi();
         },
         onOsmdConstructorFailed: function () {
           playerOsmdLoading = false;
@@ -3690,8 +3715,9 @@
         );
       }
 
-      function getPlayerSpeedPercent() {
-        return window.PlayerSpeedUtils.rateToPercent(playerPlaybackRate || 1);
+      function getPlayerSpeedBpm() {
+        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+        return window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
       }
 
       function setPlayerSpeedPopoverOpen(open) {
@@ -3703,16 +3729,20 @@
       }
 
       function syncPlayerSpeedUi() {
-        var pct = getPlayerSpeedPercent();
+        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+        var bpm = window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
         var btn = document.getElementById('btnPlayerSpeed');
         var inp = document.getElementById('playerSpeedInput');
         var slider = document.getElementById('playerSpeedSlider');
+        var unit = document.getElementById('playerSpeedUnit');
         if (btn) {
-          var t = window.PlayerSpeedUtils.formatSpeedLabel(pct);
+          var t = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(bpm, beatU);
           window.UiCoreModule.setAriaLabelAndTitle(btn, t);
         }
-        if (inp) inp.value = String(pct);
-        if (slider) slider.value = String(pct);
+        if (inp) inp.value = String(bpm);
+        if (slider) slider.value = String(bpm);
+        if (unit) unit.textContent = window.PlayerSpeedUtils.beatUnitLabelPt(beatU);
       }
 
       function syncPlayerLeverUi() {
@@ -3728,6 +3758,8 @@
         window.UiCoreModule.setAriaPressed(noteNamesToggle, playerNoteNameLabels);
         var fingeringToggle = document.getElementById('playerFingeringToggle');
         window.UiCoreModule.setAriaPressed(fingeringToggle, playerShowFingering);
+        var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
+        window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
       }
 
       function buildPlayerDisplayMusicXml(xmlText) {
@@ -3737,22 +3769,25 @@
         });
       }
 
-      function previewPlayerSpeedPercent(percent) {
-        var pct = window.PlayerSpeedUtils.clampSpeedPercent(percent);
+      function previewPlayerSpeedBpm(bpm) {
+        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+        var clamped = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
         var btn = document.getElementById('btnPlayerSpeed');
         var inp = document.getElementById('playerSpeedInput');
         var slider = document.getElementById('playerSpeedSlider');
         if (btn) {
-          var t2 = window.PlayerSpeedUtils.formatSpeedLabel(pct);
+          var t2 = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(clamped, beatU);
           window.UiCoreModule.setAriaLabelAndTitle(btn, t2);
         }
-        if (inp) inp.value = String(pct);
-        if (slider) slider.value = String(pct);
+        if (inp) inp.value = String(clamped);
+        if (slider) slider.value = String(clamped);
       }
 
-      function applyPlayerSpeedPercent(percent, fromUser) {
-        var pct = window.PlayerSpeedUtils.clampSpeedPercent(percent);
-        var nextRate = window.PlayerSpeedUtils.percentToRate(pct);
+      function applyPlayerSpeedBpm(bpm, fromUser) {
+        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+        var nextRate = window.PlayerSpeedUtils.rateFromBpm(bpm, base);
         if (!isFinite(nextRate) || nextRate <= 0) nextRate = 1;
         var changed = Math.abs(nextRate - playerPlaybackRate) > 0.0001;
         playerPlaybackRate = nextRate;
@@ -3762,7 +3797,10 @@
         if (wasPlaying) stopPlayerPlayback(true);
         updatePlayerUiNow(playerPlayback.positionSec);
         if (wasPlaying) startPlayerPlayback();
-        if (fromUser) setMessage('Velocidade ajustada para ' + pct + '%.');
+        if (fromUser) {
+          var disp = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
+          setMessage('Tempo ajustado para ' + disp + ' ' + window.PlayerSpeedUtils.beatUnitLabelPt(beatU) + '.');
+        }
       }
 
       function beginPlayerSpeedAdjust() {
@@ -3775,10 +3813,11 @@
         playerSpeedFrozenSec = Math.max(0, playerPlayback.positionSec || 0);
       }
 
-      function endPlayerSpeedAdjust(percent) {
-        var pct = parseInt(percent || String(getPlayerSpeedPercent()), 10);
-        if (!isFinite(pct)) pct = getPlayerSpeedPercent();
-        applyPlayerSpeedPercent(pct, true);
+      function endPlayerSpeedAdjust(rawBpm) {
+        var cur = getPlayerSpeedBpm();
+        var bpm = parseInt(rawBpm != null && rawBpm !== '' ? String(rawBpm) : String(cur), 10);
+        if (!isFinite(bpm)) bpm = cur;
+        applyPlayerSpeedBpm(bpm, true);
         if (!playerSpeedAdjusting) return;
         // Garante retomada exatamente no mesmo ponto congelado.
         seekPlayerToTime(playerSpeedFrozenSec, false);
@@ -5366,20 +5405,19 @@
             beginPlayerSpeedAdjust();
           });
           playerSpeedInput.addEventListener('input', function () {
-            var pct = parseInt(this.value || '100', 10);
-            if (!isFinite(pct)) pct = 100;
-            previewPlayerSpeedPercent(pct);
+            var bpmVal = parseInt(this.value || '0', 10);
+            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+            previewPlayerSpeedBpm(bpmVal);
           });
           playerSpeedInput.addEventListener('change', function () {
-            var pct = parseInt(this.value || '100', 10);
-            if (!isFinite(pct)) pct = 100;
-            endPlayerSpeedAdjust(pct);
+            var bpmVal = parseInt(this.value || '0', 10);
+            endPlayerSpeedAdjust(bpmVal);
           });
           playerSpeedInput.addEventListener('blur', function () {
             if (!playerSpeedAdjusting) return;
-            var pct = parseInt(this.value || '100', 10);
-            if (!isFinite(pct)) pct = getPlayerSpeedPercent();
-            endPlayerSpeedAdjust(pct);
+            var bpmVal = parseInt(this.value || '0', 10);
+            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+            endPlayerSpeedAdjust(bpmVal);
           });
         }
         if (playerSpeedSlider) {
@@ -5393,14 +5431,13 @@
             beginPlayerSpeedAdjust();
           }, { passive: true });
           playerSpeedSlider.addEventListener('input', function () {
-            var pct = parseInt(this.value || '100', 10);
-            if (!isFinite(pct)) pct = 100;
-            previewPlayerSpeedPercent(pct);
+            var bpmVal = parseInt(this.value || '0', 10);
+            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+            previewPlayerSpeedBpm(bpmVal);
           });
           playerSpeedSlider.addEventListener('change', function () {
-            var pct = parseInt(this.value || '100', 10);
-            if (!isFinite(pct)) pct = 100;
-            endPlayerSpeedAdjust(pct);
+            var bpmVal = parseInt(this.value || '0', 10);
+            endPlayerSpeedAdjust(bpmVal);
           });
         }
         var playerSelectCollection = document.getElementById('playerSelectCollection');
@@ -5571,6 +5608,31 @@
             syncPlayerLeverUi();
             loadPlayerFromCatalogSelection(true);
             setMessage(playerShowFingering ? 'Dedilhado ligado.' : 'Dedilhado desligado.');
+          });
+        }
+        var playerMeasureNumbersToggle = document.getElementById('playerMeasureNumbersToggle');
+        if (playerMeasureNumbersToggle) {
+          playerMeasureNumbersToggle.addEventListener('click', function () {
+            playerShowMeasureNumbers = !playerShowMeasureNumbers;
+            syncPlayerLeverUi();
+            if (playerOsmd && typeof playerOsmd.setOptions === 'function') {
+              try {
+                window.PlayerLoadBindingAccess.applyPlayerOsmdDisplayOptions(playerOsmd);
+                playerOsmd.render();
+                requestAnimationFrame(function () {
+                  resizePlayerOsmdIfActive();
+                  buildPlayerNoteAnchorsFromDom();
+                });
+                setTimeout(buildPlayerNoteAnchorsFromDom, 200);
+              } catch (eMn) {
+                loadPlayerFromCatalogSelection(true);
+              }
+            } else {
+              loadPlayerFromCatalogSelection(true);
+            }
+            setMessage(
+              playerShowMeasureNumbers ? 'Números de compasso visíveis.' : 'Números de compasso ocultos.'
+            );
           });
         }
         var playerSeek = document.getElementById('playerSeek');

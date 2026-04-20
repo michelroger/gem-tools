@@ -323,11 +323,11 @@
           <button type="button" class="player-ctl-btn" id="btnPlayerSettings" aria-label="Configurações" title="Configurações do instrumento">
             <i data-lucide="settings" aria-hidden="true"></i>
           </button>
-          <button type="button" class="player-ctl-btn player-speed-icon" id="btnPlayerSpeed" aria-label="Velocidade: 100%" title="Velocidade: 100%" aria-haspopup="dialog" aria-expanded="false">
+          <button type="button" class="player-ctl-btn player-speed-icon" id="btnPlayerSpeed" aria-label="Tempo de reprodução" title="Tempo de reprodução" aria-haspopup="dialog" aria-expanded="false">
             <i data-lucide="gauge" aria-hidden="true"></i>
           </button>
         </div>
-        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem automática, loop, cor, nomes nas notas e dedilhado da partitura">
+        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem, loop, cor, nomes nas notas, dedilhado e números de compasso">
           <button type="button" class="player-toggle-btn" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="metronome"></i></span>
           </button>
@@ -346,19 +346,22 @@
           <button type="button" class="player-toggle-btn" id="playerFingeringToggle" aria-pressed="false" aria-label="Dedilhado" title="Dedilhado">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="list-ordered"></i></span>
           </button>
+          <button type="button" class="player-toggle-btn" id="playerMeasureNumbersToggle" aria-pressed="true" aria-label="Números de compasso" title="Mostrar ou ocultar números de compasso">
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="hash"></i></span>
+          </button>
         </div>
         <div class="player-timeline">
           <input type="range" id="playerSeek" class="player-seek" min="0" max="1000" step="1" value="0" aria-label="Progresso do player" disabled />
           <span class="player-time" id="playerTimeLabel">00:00 / 00:00</span>
         </div>
-        <div class="player-speed-popover hidden" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Velocidade do player">
-          <p class="player-speed-title">Velocidade</p>
+        <div class="player-speed-popover hidden" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Tempo de reprodução do player">
+          <p class="player-speed-title">Tempo <span class="player-speed-sub">(andamento da partitura)</span></p>
           <div class="player-speed-row">
             <label class="player-speed-input-wrap" for="playerSpeedInput">
-              <input type="number" id="playerSpeedInput" class="player-speed-input" min="30" max="300" step="1" value="100" />
-              <span class="player-speed-unit">%</span>
+              <input type="number" id="playerSpeedInput" class="player-speed-input" min="20" max="320" step="1" value="60" />
+              <span class="player-speed-unit" id="playerSpeedUnit">semínimas/min</span>
             </label>
-            <input type="range" id="playerSpeedSlider" class="player-speed-slider" min="30" max="300" step="1" value="100" aria-label="Slider de velocidade em percentual" />
+            <input type="range" id="playerSpeedSlider" class="player-speed-slider" min="20" max="320" step="1" value="60" aria-label="Tempo em batidas por minuto (unidade da marcação na partitura)" />
           </div>
         </div>
       </div>
@@ -607,7 +610,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.2.1</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.2.2</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>

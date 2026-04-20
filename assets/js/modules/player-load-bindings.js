@@ -9,6 +9,7 @@
       assignPlayerOsmd: a.setPlayerOsmd,
       assignPlayerScoreData: a.setPlayerScoreData,
       assignPlayerNoteAnchors: a.setPlayerNoteAnchors,
+      applyOsmdDisplayOptions: a.applyPlayerOsmdDisplayOptions,
       isPlayerMode: a.isPlayerMode,
       parseXml: function (xmlText) {
         return window.PlayerMusicXmlUtils.parseMusicXml(xmlText);

@@ -35,6 +35,9 @@
     var cursorStarts = [];
     var allCursorStarts = [];
     var beatEventsFromFirstPart = [];
+    /** Andamento “da partitura” para o controlo de velocidade (ex.: ♩=78 → 78, unidade semínima). */
+    var scoreBaselineMarkingBpm = null;
+    var scoreBaselineMarkingBeatUnit = 'quarter';
     parts.forEach(function (part, partIndex) {
       var timelineSec = 0;
       var tempo = 60;
@@ -60,6 +63,24 @@
         var tempoFromMetro = window.MetronomeUtils.fromMusicXmlElement(metroEl);
         if (tempoFromSound != null) tempo = tempoFromSound;
         else if (tempoFromMetro != null) tempo = tempoFromMetro;
+        if (partIndex === 0 && scoreBaselineMarkingBpm == null) {
+          if (tempoFromSound != null && isFinite(tempoFromSound) && tempoFromSound > 0) {
+            scoreBaselineMarkingBpm = tempoFromSound;
+            scoreBaselineMarkingBeatUnit = 'quarter';
+          } else if (metroEl) {
+            var perMinEl = metroEl.querySelector('per-minute');
+            if (perMinEl && perMinEl.textContent) {
+              var rawMark = parseFloat(perMinEl.textContent);
+              if (isFinite(rawMark) && rawMark > 0) {
+                scoreBaselineMarkingBpm = rawMark;
+                var buEl = metroEl.querySelector('beat-unit');
+                scoreBaselineMarkingBeatUnit = buEl && buEl.textContent
+                  ? String(buEl.textContent).trim().toLowerCase()
+                  : 'quarter';
+              }
+            }
+          }
+        }
         var divNode = measure.querySelector('attributes divisions');
         if (divNode && divNode.textContent) {
           var divParsed = parseFloat(divNode.textContent);
@@ -191,6 +212,10 @@
             });
           }
         }
+        if (partIndex === 0 && measureIdx === 0 && scoreBaselineMarkingBpm == null && isFinite(tempo) && tempo > 0) {
+          scoreBaselineMarkingBpm = tempo;
+          scoreBaselineMarkingBeatUnit = 'quarter';
+        }
       });
 
       if (partIndex === 0) {
@@ -226,11 +251,17 @@
 
     if (!events.length || totalDuration <= 0) return null;
     var beatEvents = beatEventsFromFirstPart && beatEventsFromFirstPart.length ? beatEventsFromFirstPart : [{ sec: 0, accent: true }];
+    if (!isFinite(scoreBaselineMarkingBpm) || scoreBaselineMarkingBpm <= 0) {
+      scoreBaselineMarkingBpm = 60;
+      scoreBaselineMarkingBeatUnit = 'quarter';
+    }
     return {
       events: events,
       cursorStarts: cursorStarts,
       beatEvents: beatEvents,
-      totalDurationSec: totalDuration
+      totalDurationSec: totalDuration,
+      baselineMarkingBpm: scoreBaselineMarkingBpm,
+      baselineMarkingBeatUnit: scoreBaselineMarkingBeatUnit
     };
   }
 

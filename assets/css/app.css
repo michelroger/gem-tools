@@ -692,6 +692,12 @@
       font-size: 0.92rem;
     }
 
+    .player-speed-sub {
+      font-weight: 600;
+      font-size: 0.82em;
+      color: var(--text-soft);
+    }
+
     .player-speed-row {
       display: grid;
       grid-template-columns: auto 1fr;

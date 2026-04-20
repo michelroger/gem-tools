@@ -83,6 +83,9 @@
       return;
     }
     try {
+      if (typeof io.applyOsmdDisplayOptions === 'function') {
+        io.applyOsmdDisplayOptions(osmd);
+      }
       osmd.render();
     } catch (e2) {
       io.assignPlayerOsmd(null);
