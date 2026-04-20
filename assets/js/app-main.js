@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.0';
+      const APP_VERSION = '1.2.1';
       const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
