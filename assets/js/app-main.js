@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.4';
+      const APP_VERSION = '1.2.5';
       const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
@@ -308,7 +308,7 @@
 
       // ========== ESTADO GLOBAL ==========
       let audioCtx = null;
-      let currentMode = 'hinos';
+      let currentMode = 'player';
       let challengeTarget = null;
       let challengeTimeout = null;
       let challengeRound = 0;
@@ -2762,7 +2762,7 @@
           btn.classList.remove('active');
           window.UiCoreModule.setAriaExpanded(btn, false);
         }
-        if (btnMoreMenu && currentMode !== 'tuner') btnMoreMenu.classList.remove('active');
+        if (btnMoreMenu && currentMode !== 'tuner' && currentMode !== 'hinos') btnMoreMenu.classList.remove('active');
       }
 
       function tunerNoteToMidi(noteName) {
@@ -4633,14 +4633,14 @@
           btn.classList.toggle('active', btn.dataset.mode === mode);
         });
         var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'player');
+        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos');
         var btnMoreTuner = document.getElementById('btnMoreTuner');
         var btnMoreMetronome = document.getElementById('btnMoreMetronome');
-        var btnMorePlayer = document.getElementById('btnMorePlayer');
+        var btnMoreHinos = document.getElementById('btnMoreHinos');
         var btnMoreSettings = document.getElementById('btnMoreSettings');
         if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
         if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
-        if (btnMorePlayer) btnMorePlayer.classList.toggle('active', mode === 'player');
+        if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
         if (btnMoreSettings) btnMoreSettings.classList.remove('active');
         clearViolinHighlight();
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
@@ -4661,6 +4661,7 @@
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.remove('hidden');
+            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
           } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.remove('hidden');
@@ -4670,6 +4671,7 @@
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
+            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
           } else if (mode === 'tuner') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
@@ -4679,6 +4681,7 @@
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
+            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
           } else if (mode === 'metronome') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
@@ -4688,6 +4691,7 @@
             hinosSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
+            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
           } else if (mode === 'player') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
@@ -5388,10 +5392,10 @@
             openMetronomeModal();
           });
         }
-        var btnMorePlayer = document.getElementById('btnMorePlayer');
-        if (btnMorePlayer) {
-          btnMorePlayer.addEventListener('click', function () {
-            setMode('player');
+        var btnMoreHinos = document.getElementById('btnMoreHinos');
+        if (btnMoreHinos) {
+          btnMoreHinos.addEventListener('click', function () {
+            setMode('hinos');
           });
         }
         var btnPlayerPlay = document.getElementById('btnPlayerPlay');
@@ -6158,7 +6162,7 @@
 
       function closeMetronomeModal() {
         if (metroIsRunning) stopMetronome();
-        setMode('hinos');
+        setMode('player');
       }
 
       function updateMetronomeModeUI() {
@@ -7166,7 +7170,7 @@
         }
         // PWA: registra o SW com atualização automática para a versão mais recente.
         registerServiceWorkerAutoUpdate();
-        if (currentMode !== 'hinos') {
+        if (currentMode !== 'hinos' && currentMode !== 'player') {
           setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
         }
         // Pequeno atraso para a transição de entrada ficar suave.

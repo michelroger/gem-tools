@@ -77,7 +77,7 @@
       <span class="instruction-text" id="instructionText">Clique em um botão para ouvir a nota. Escolha um modo acima.</span>
     </div>
 
-    <div class="progress-section" id="progressSection">
+    <div class="progress-section hidden" id="progressSection">
       <div class="progress-label">
         <span>Seu progresso</span>
         <span id="progressText">0 / 0</span>
@@ -137,7 +137,7 @@
       </div>
     </div>
 
-    <div class="violin-section" id="violinSection">
+    <div class="violin-section hidden" id="violinSection">
       <p class="violin-title" id="instrumentTitle">Espelho do instrumento</p>
       <div class="violin-board" id="violinBoard">
         <!-- Grade de posições — preenchida via JS conforme o instrumento -->
@@ -281,7 +281,7 @@
       <div class="hinos-fase-list" id="hinosFaseContainer"></div>
     </div>
 
-    <div class="player-section hidden" id="playerSection" aria-labelledby="playerSectionTitle">
+    <div class="player-section" id="playerSection" aria-labelledby="playerSectionTitle">
       <p class="violin-title" id="playerSectionTitle"></p>
       <div class="player-source-row" id="playerSourceRow">
         <div class="hinos-field">
@@ -439,9 +439,9 @@
     </div>
 
     <div class="mode-tabs nav-hidden" id="modeTabs" role="tablist">
-      <button type="button" class="mode-btn active" data-mode="hinos" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="book-open"></i></span>
-        <span class="mode-btn-label">Controle</span>
+      <button type="button" class="mode-btn active" data-mode="player" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="play"></i></span>
+        <span class="mode-btn-label">Player</span>
       </button>
       <button type="button" class="mode-btn" data-mode="learn" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-2"></i></span>
@@ -469,9 +469,9 @@
             <i data-lucide="metronome" aria-hidden="true"></i>
             <span>Metrônomo</span>
           </button>
-          <button type="button" class="mode-more-item" id="btnMorePlayer" role="menuitem">
-            <i data-lucide="play" aria-hidden="true"></i>
-            <span>Player</span>
+          <button type="button" class="mode-more-item" id="btnMoreHinos" role="menuitem">
+            <i data-lucide="book-open" aria-hidden="true"></i>
+            <span>Controle</span>
           </button>
           <button type="button" class="mode-more-item" id="btnMoreSettings" role="menuitem">
             <i data-lucide="settings" aria-hidden="true"></i>
