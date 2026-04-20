@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.3';
+      const APP_VERSION = '1.2.4';
       const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
@@ -3981,6 +3981,20 @@
             if (normalizePlayerSearchText(rawHinoInput) === normalizePlayerSearchText(canonicalLabel)) {
               searchTerm = '';
             }
+          }
+        }
+        /* Igualdade exata do rótulo pode falhar (apóstrofo, hífen, Unicode) e ainda zerar o filtro ao
+           fechar a lista. Formato "NNN · título" com o mesmo número do item selecionado = modo exibição. */
+        if (searchTerm && !forceShowAll) {
+          var trimmedForLead = String(rawHinoInput || '').trim();
+          var leadNumero = parsePlayerNumeroFromInputValue(trimmedForLead);
+          if (
+            isFinite(leadNumero) &&
+            leadNumero > 0 &&
+            Number(playerSelectedHinoNumero) === leadNumero &&
+            /^\d+\s*[\u00b7\u2022]\s*\S/.test(trimmedForLead)
+          ) {
+            searchTerm = '';
           }
         }
         if (searchTerm) {
