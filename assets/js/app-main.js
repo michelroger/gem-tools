@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.2';
+      const APP_VERSION = '1.2.3';
       const APP_VERSION_LABEL = 'Beta';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
@@ -3965,7 +3965,24 @@
         if (!hinosFiltrados.length) hinosFiltrados = items.slice();
 
         var forceShowAll = selHino.dataset.openAll === '1';
-        var searchTerm = forceShowAll ? '' : normalizePlayerSearchText(selHino.value);
+        var rawHinoInput = String(selHino.value || '');
+        var searchTerm = forceShowAll ? '' : normalizePlayerSearchText(rawHinoInput);
+        /* Valor após escolha na lista é "n · título"; filtrar por esse texto inteiro não bate com o
+           catálogo (combo usa espaço, não o separador do rótulo) e zera a lista — no mobile as vozes
+           ficam todas disabled até focar de novo no Item. */
+        if (searchTerm && !forceShowAll) {
+          var labelItem =
+            (playerSelectedItemId && getPlayerCatalogItemById(playerSelectedItemId)) ||
+            (isFinite(playerSelectedHinoNumero) && playerSelectedHinoNumero > 0
+              ? getPlayerCatalogItemByNumero(playerSelectedHinoNumero)
+              : null);
+          if (labelItem) {
+            var canonicalLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(labelItem);
+            if (normalizePlayerSearchText(rawHinoInput) === normalizePlayerSearchText(canonicalLabel)) {
+              searchTerm = '';
+            }
+          }
+        }
         if (searchTerm) {
           hinosFiltrados = window.PlayerFilterUtils.filterBySearch(hinosFiltrados, searchTerm, normalizePlayerSearchText);
         }
