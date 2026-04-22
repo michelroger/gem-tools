@@ -2864,6 +2864,27 @@
       display: block;
     }
 
+    /* Play/stop: Lucide em stroke fino ficava “fantasma” e deslocado; formas sólidas alinham melhor. */
+    .metro-icon-stop {
+      display: block;
+      width: 0.72rem;
+      height: 0.72rem;
+      background: currentColor;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .metro-icon-play {
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0.5rem 0 0.5rem 0.82rem;
+      border-color: transparent transparent transparent currentColor;
+      margin-left: 0.14rem;
+      flex-shrink: 0;
+    }
+
     .metro-btn.metro-pause {
       background: rgba(0,0,0,0.06);
       color: var(--text);
@@ -3477,6 +3498,138 @@
     html.theme-dark .metronome-close {
       background: rgba(255, 255, 255, 0.1);
       color: var(--text);
+    }
+
+    /* Metrônomo: painéis rgba(255,255,255,0.55) + --text-soft = texto claro em fundo claro (ilegível). */
+    html.theme-dark .metro-bpm-badge,
+    html.theme-dark .metro-bpm-label {
+      color: rgba(210, 210, 218, 0.9);
+    }
+
+    html.theme-dark .metro-beat-title {
+      color: rgba(232, 232, 238, 0.95);
+    }
+
+    html.theme-dark .metro-section {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    html.theme-dark .metro-section-label {
+      color: var(--text);
+    }
+
+    html.theme-dark .metro-stepper-value {
+      color: rgba(236, 236, 240, 0.96);
+    }
+
+    html.theme-dark .metro-check {
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.28);
+      border-color: rgba(125, 157, 122, 0.4);
+    }
+
+    html.theme-dark .metro-check:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(125, 157, 122, 0.52);
+    }
+
+    html.theme-dark .metro-check:has(input[type="checkbox"]:checked) {
+      background: rgba(125, 157, 122, 0.16);
+      border-color: rgba(125, 157, 122, 0.55);
+    }
+
+    html.theme-dark .metro-check-label {
+      color: var(--text);
+    }
+
+    html.theme-dark .metro-timer-input {
+      background: rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.14);
+      color: var(--text);
+    }
+
+    html.theme-dark .metro-subdiv-title {
+      color: rgba(228, 228, 234, 0.9);
+    }
+
+    html.theme-dark .metro-btn.metro-pause,
+    html.theme-dark .metro-btn.metro-pause.du-btn {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: var(--text) !important;
+      border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    }
+
+    html.theme-dark .metro-dot {
+      border-color: rgba(255, 255, 255, 0.22);
+      background: radial-gradient(circle at 32% 24%, #4a4d52 0%, #35373c 58%, #25262b 100%);
+      color: rgba(244, 244, 245, 0.95);
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    html.theme-dark .metro-visual-flash {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(125, 157, 122, 0.42);
+    }
+
+    html.theme-dark .metro-visual-flash-fill {
+      background: linear-gradient(90deg, rgba(125, 157, 122, 0.82), rgba(160, 210, 155, 0.92));
+    }
+
+    html.theme-dark .metro-visual-flash.accent .metro-visual-flash-fill {
+      background: linear-gradient(90deg, rgba(230, 150, 70, 0.88), rgba(250, 200, 120, 0.94));
+    }
+
+    html.theme-dark .metro-solfejo-stage {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+    }
+
+    html.theme-dark .metro-solfejo-img {
+      filter: brightness(1.14) contrast(1.22);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    html.theme-dark .metro-solfejo-hand-img {
+      filter: brightness(1.1) contrast(1.18) drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Pentagrama: traços e nota com cores fixas (#444/#222) somem no fundo escuro. */
+    html.theme-dark #staffSvg line {
+      stroke: rgba(236, 236, 240, 0.92) !important;
+    }
+
+    html.theme-dark #staffSvg text {
+      fill: rgba(236, 236, 240, 0.96) !important;
+    }
+
+    html.theme-dark #staffSvg ellipse {
+      fill: rgba(253, 224, 71, 0.95) !important;
+    }
+
+    html.theme-dark .staff-section .violin-title {
+      color: rgba(220, 220, 228, 0.88);
+    }
+
+    /* Progresso / estrelas no modo pentagrama */
+    html.theme-dark .progress-label,
+    html.theme-dark .challenge-stats {
+      color: rgba(210, 210, 218, 0.92);
+    }
+
+    html.theme-dark .progress-bar {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    html.theme-dark .star {
+      opacity: 0.5;
+      filter: brightness(1.35) saturate(1.15);
+    }
+
+    html.theme-dark .star.earned {
+      opacity: 1;
+      filter: brightness(1.25) saturate(1.4) drop-shadow(0 0 10px rgba(250, 204, 21, 0.35));
     }
 
     html.theme-dark .btn-secondary:hover {
