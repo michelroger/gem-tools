@@ -356,7 +356,7 @@
             <i data-lucide="gauge" aria-hidden="true"></i>
           </button>
         </div>
-        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem, loop, cor, nomes nas notas, dedilhado e números de compasso">
+        <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem, loop, cor, nomes nas notas, dedilhado, leitura ao vivo, silenciar partitura e números de compasso">
           <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="metronome"></i></span>
           </button>
@@ -375,6 +375,12 @@
           <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerFingeringToggle" aria-pressed="false" aria-label="Dedilhado" title="Dedilhado">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="list-ordered"></i></span>
           </button>
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerLiveListenToggle" aria-pressed="false" aria-label="Leitura ao vivo" title="Leitura ao vivo (escuta do microfone)">
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="mic"></i></span>
+          </button>
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerMutePlaybackToggle" aria-pressed="false" aria-label="Silenciar partitura" title="Silenciar áudio da partitura durante o playback">
+            <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="volume-x"></i></span>
+          </button>
           <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerMeasureNumbersToggle" aria-pressed="true" aria-label="Números de compasso" title="Mostrar ou ocultar números de compasso">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="hash"></i></span>
           </button>
@@ -382,6 +388,30 @@
         <div class="player-timeline">
           <input type="range" id="playerSeek" class="player-seek" min="0" max="1000" step="1" value="0" aria-label="Progresso do player" disabled />
           <span class="player-time" id="playerTimeLabel">00:00 / 00:00</span>
+        </div>
+        <div class="player-live-score hidden" id="playerLiveScore" aria-live="polite">
+          <div class="player-live-score-title">
+            <i data-lucide="activity" aria-hidden="true"></i>
+            <span>Leitura ao vivo</span>
+          </div>
+          <div class="player-live-score-grid">
+            <span class="player-live-score-chip">
+              <i data-lucide="music-2" aria-hidden="true"></i>
+              <span id="playerLiveScoreNotes">Notas: 0/0</span>
+            </span>
+            <span class="player-live-score-chip">
+              <i data-lucide="tuning-2" aria-hidden="true"></i>
+              <span id="playerLiveScorePitch">Afinação: 0%</span>
+            </span>
+            <span class="player-live-score-chip">
+              <i data-lucide="clock-3" aria-hidden="true"></i>
+              <span id="playerLiveScoreTiming">Tempo: 0%</span>
+            </span>
+            <span class="player-live-score-chip player-live-score-chip-strong">
+              <i data-lucide="badge-percent" aria-hidden="true"></i>
+              <span id="playerLiveScoreOverall">Score: 0%</span>
+            </span>
+          </div>
         </div>
         <div class="player-speed-popover hidden du-card border border-base-300 bg-base-100 shadow-xl" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Tempo de reprodução do player">
           <p class="player-speed-title">Tempo <span class="player-speed-sub">(andamento da partitura)</span></p>

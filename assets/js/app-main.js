@@ -365,7 +365,29 @@
       var playerColorizedNotes = false;
       var playerNoteNameLabels = false;
       var playerShowFingering = false;
+      var playerLiveListenEnabled = false;
+      var playerMutePlaybackEnabled = false;
       var playerShowMeasureNumbers = true;
+      var playerLiveListenRunning = false;
+      var playerLiveListenStream = null;
+      var playerLiveListenSource = null;
+      var playerLiveListenAnalyzer = null;
+      var playerLiveListenData = null;
+      var playerLiveListenFrameId = 0;
+      var playerLiveListenSmoothedFreq = 0;
+      var playerLiveListenRawHistory = [];
+      var playerLiveListenNoSignalFrames = 0;
+      var playerLiveListenLastFreq = 0;
+      var playerLiveFeedbackEventIndex = -1;
+      var playerLiveFeedbackStatus = '';
+      var playerLiveEventMetrics = {};
+      var playerLiveCurrentEventIndex = -1;
+      var playerLiveScoreTotals = {
+        notesTotal: 0,
+        notesPassed: 0,
+        pitchSum: 0,
+        timingSum: 0
+      };
       /**
        * Ajuste OSMD para marcas de ensaio («Coro», «Final»): em VexFlow, y maior = mais para baixo.
        * OSMD usa yOffset = -RehearsalMarkYOffsetDefault - RehearsalMarkYOffset (default -15 → base 15).
@@ -3853,6 +3875,10 @@
         window.UiCoreModule.setAriaPressed(noteNamesToggle, playerNoteNameLabels);
         var fingeringToggle = document.getElementById('playerFingeringToggle');
         window.UiCoreModule.setAriaPressed(fingeringToggle, playerShowFingering);
+        var liveListenToggle = document.getElementById('playerLiveListenToggle');
+        window.UiCoreModule.setAriaPressed(liveListenToggle, playerLiveListenEnabled);
+        var mutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
+        window.UiCoreModule.setAriaPressed(mutePlaybackToggle, playerMutePlaybackEnabled);
         var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
         window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
       }
@@ -3862,6 +3888,348 @@
           colorizedNotes: !!playerColorizedNotes,
           showFingering: !!playerShowFingering
         });
+      }
+
+      function stopPlayerLiveListen() {
+        playerLiveListenRunning = false;
+        playerLiveListenNoSignalFrames = 0;
+        if (playerLiveListenFrameId) {
+          cancelAnimationFrame(playerLiveListenFrameId);
+          playerLiveListenFrameId = 0;
+        }
+        if (playerLiveListenSource) {
+          try {
+            playerLiveListenSource.disconnect();
+          } catch (e) {}
+          playerLiveListenSource = null;
+        }
+        if (playerLiveListenStream) {
+          playerLiveListenStream.getTracks().forEach(function (t) {
+            try {
+              t.stop();
+            } catch (e) {}
+          });
+          playerLiveListenStream = null;
+        }
+        playerLiveListenAnalyzer = null;
+        playerLiveListenData = null;
+        playerLiveListenSmoothedFreq = 0;
+        playerLiveListenRawHistory = [];
+        playerLiveListenLastFreq = 0;
+        if (playerLiveCurrentEventIndex >= 0) {
+          finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+          playerLiveCurrentEventIndex = -1;
+        }
+        clearPlayerLiveFeedbackVisualOnly();
+        syncPlayerLiveScoreUi();
+      }
+
+      function playerLiveListenNormalizeFrequency(freq) {
+        return window.TunerUtils.normalizeFrequency(freq, [], {
+          freqToMidi: tunerFreqToMidi,
+          midiToFreq: midiToFreq,
+          noteToMidi: tunerNoteToMidi,
+          presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
+            return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
+          }
+        });
+      }
+
+      function playerLiveListenLoop() {
+        if (!playerLiveListenRunning || !playerLiveListenAnalyzer || !playerLiveListenData) return;
+        playerLiveListenAnalyzer.getFloatTimeDomainData(playerLiveListenData);
+        var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate);
+        if (raw > 0) {
+          playerLiveListenNoSignalFrames = 0;
+          var cfg = getTunerSmoothingConfig();
+          var normalizedRaw = playerLiveListenNormalizeFrequency(raw);
+          window.TunerUtils.pushWithLimit(playerLiveListenRawHistory, normalizedRaw, 6);
+          var win = Math.min(cfg.medianWindow, playerLiveListenRawHistory.length);
+          var filtered = tunerMedian(playerLiveListenRawHistory.slice(-win));
+          playerLiveListenSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(
+            playerLiveListenSmoothedFreq,
+            filtered,
+            cfg.alpha
+          );
+          playerLiveListenLastFreq = playerLiveListenSmoothedFreq;
+        } else {
+          playerLiveListenNoSignalFrames += 1;
+          if (playerLiveListenNoSignalFrames > 16) {
+            playerLiveListenSmoothedFreq = 0;
+          }
+        }
+        playerLiveListenFrameId = requestAnimationFrame(playerLiveListenLoop);
+      }
+
+      function startPlayerLiveListen() {
+        if (playerLiveListenRunning) return;
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          setMessage('Este navegador não suporta acesso ao microfone para leitura ao vivo.');
+          playerLiveListenEnabled = false;
+          syncPlayerLeverUi();
+          return;
+        }
+        ensureMicrophonePermission().then(function (stream) {
+          var ctx = getAudioContext();
+          if (!ctx) {
+            stream.getTracks().forEach(function (t) {
+              try { t.stop(); } catch (e) {}
+            });
+            playerLiveListenEnabled = false;
+            syncPlayerLeverUi();
+            return;
+          }
+          playerLiveListenStream = stream;
+          playerLiveListenAnalyzer = ctx.createAnalyser();
+          playerLiveListenAnalyzer.fftSize = 8192;
+          playerLiveListenAnalyzer.smoothingTimeConstant = 0;
+          playerLiveListenSource = ctx.createMediaStreamSource(stream);
+          playerLiveListenSource.connect(playerLiveListenAnalyzer);
+          playerLiveListenData = new Float32Array(playerLiveListenAnalyzer.fftSize);
+          playerLiveListenRawHistory = [];
+          playerLiveListenSmoothedFreq = 0;
+          playerLiveListenNoSignalFrames = 0;
+          playerLiveListenLastFreq = 0;
+          playerLiveListenRunning = true;
+          resetPlayerLiveScoreTotals();
+          clearPlayerLiveFeedback();
+          syncPlayerLiveScoreUi();
+          setMessage('Leitura ao vivo ativa: microfone captando frequência.');
+          playerLiveListenLoop();
+        }).catch(function () {
+          playerLiveListenEnabled = false;
+          syncPlayerLeverUi();
+          syncPlayerLiveScoreUi();
+          setMessage('Não foi possível acessar o microfone para leitura ao vivo.');
+        });
+      }
+
+      function getPlayerLiveFeedbackElementByEventIndex(eventIndex) {
+        if (!playerNoteAnchors || !playerNoteAnchors.length) return null;
+        for (var i = 0; i < playerNoteAnchors.length; i++) {
+          var a = playerNoteAnchors[i];
+          if (!a || a.eventIndex !== eventIndex) continue;
+          return a.feedbackEl || null;
+        }
+        return null;
+      }
+
+      function clearPlayerLiveFeedback() {
+        playerLiveFeedbackEventIndex = -1;
+        playerLiveFeedbackStatus = '';
+        playerLiveCurrentEventIndex = -1;
+        playerLiveEventMetrics = {};
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return;
+        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad').forEach(function (el) {
+          el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        });
+      }
+
+      function clearPlayerLiveFeedbackVisualOnly() {
+        playerLiveFeedbackEventIndex = -1;
+        playerLiveFeedbackStatus = '';
+        var host = document.getElementById('playerOsmdContainer');
+        if (!host) return;
+        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad').forEach(function (el) {
+          el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        });
+      }
+
+      function resetPlayerLiveScoreTotals() {
+        playerLiveScoreTotals = {
+          notesTotal: 0,
+          notesPassed: 0,
+          pitchSum: 0,
+          timingSum: 0
+        };
+      }
+
+      function syncPlayerLiveScoreUi() {
+        var panel = document.getElementById('playerLiveScore');
+        var notesEl = document.getElementById('playerLiveScoreNotes');
+        var pitchEl = document.getElementById('playerLiveScorePitch');
+        var timingEl = document.getElementById('playerLiveScoreTiming');
+        var overallEl = document.getElementById('playerLiveScoreOverall');
+        var show = !!(playerLiveListenEnabled && currentMode === 'player');
+        window.UiCoreModule.setHiddenClass(panel, !show);
+        if (!show) return;
+
+        var total = Math.max(0, playerLiveScoreTotals.notesTotal || 0);
+        var passed = Math.max(0, playerLiveScoreTotals.notesPassed || 0);
+        var pitchAvg = total > 0 ? (playerLiveScoreTotals.pitchSum / total) : 0;
+        var timingAvg = total > 0 ? (playerLiveScoreTotals.timingSum / total) : 0;
+        var overall = Math.round((pitchAvg * 0.65 + timingAvg * 0.35) * 100);
+        var pitchPct = Math.round(pitchAvg * 100);
+        var timingPct = Math.round(timingAvg * 100);
+
+        if (notesEl) notesEl.textContent = 'Notas: ' + passed + '/' + total;
+        if (pitchEl) pitchEl.textContent = 'Afinação: ' + pitchPct + '%';
+        if (timingEl) timingEl.textContent = 'Tempo: ' + timingPct + '%';
+        if (overallEl) overallEl.textContent = 'Score: ' + overall + '%';
+      }
+
+      function applyPlayerLiveFeedback(eventIndex, status, keepPrevious) {
+        if (eventIndex == null || eventIndex < 0) return;
+        if (playerLiveFeedbackEventIndex === eventIndex && playerLiveFeedbackStatus === status) return;
+        if (!keepPrevious) {
+          var prevEl = getPlayerLiveFeedbackElementByEventIndex(playerLiveFeedbackEventIndex);
+          if (prevEl) prevEl.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        }
+        playerLiveFeedbackEventIndex = eventIndex;
+        playerLiveFeedbackStatus = status || '';
+        var el = getPlayerLiveFeedbackElementByEventIndex(eventIndex);
+        if (!el) return;
+        el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        if (status === 'ok') el.classList.add('player-live-note-ok');
+        else if (status === 'bad') el.classList.add('player-live-note-bad');
+      }
+
+      function getPlayerInstrumentFreqRange() {
+        var board = currentInstrument && Array.isArray(currentInstrument.freqBoard) ? currentInstrument.freqBoard : [];
+        var min = Infinity;
+        var max = -Infinity;
+        board.forEach(function (row) {
+          if (!Array.isArray(row)) return;
+          row.forEach(function (f) {
+            if (!isFinite(f) || f <= 0) return;
+            if (f < min) min = f;
+            if (f > max) max = f;
+          });
+        });
+        if (!isFinite(min) || !isFinite(max) || min <= 0 || max <= 0 || max <= min) return null;
+        return { min: min * 0.9, max: max * 1.1 };
+      }
+
+      function alignDetectedFreqToExpected(detectedFreq, expectedFreq) {
+        if (!isFinite(detectedFreq) || detectedFreq <= 0 || !isFinite(expectedFreq) || expectedFreq <= 0) return -1;
+        var best = detectedFreq;
+        var bestDelta = Math.abs(Math.log(detectedFreq / expectedFreq));
+        var range = getPlayerInstrumentFreqRange();
+        var multipliers = [0.25, 0.5, 1, 2, 4];
+        multipliers.forEach(function (mul) {
+          var cand = detectedFreq * mul;
+          if (!isFinite(cand) || cand <= 0) return;
+          if (range && (cand < range.min || cand > range.max)) return;
+          var delta = Math.abs(Math.log(cand / expectedFreq));
+          if (delta < bestDelta) {
+            bestDelta = delta;
+            best = cand;
+          }
+        });
+        return best;
+      }
+
+      function getPlayerLiveExpectedFreq(eventObj) {
+        if (!eventObj || !isFinite(eventObj.freq) || eventObj.freq <= 0) return -1;
+        // A afinação (Dó/Mib/Sib) já é respeitada pela partitura carregada no player;
+        // aqui apenas consumimos a frequência esperada do evento ativo.
+        return eventObj.freq;
+      }
+
+      function ensurePlayerLiveMetric(eventIndex) {
+        var key = String(eventIndex);
+        var metric = playerLiveEventMetrics[key];
+        if (!metric) {
+          metric = {
+            totalFrames: 0,
+            signalFrames: 0,
+            tunedFrames: 0,
+            attackHit: false
+          };
+          playerLiveEventMetrics[key] = metric;
+        }
+        return metric;
+      }
+
+      function finalizePlayerLiveMetric(eventIndex) {
+        if (eventIndex == null || eventIndex < 0) return;
+        var metric = playerLiveEventMetrics[String(eventIndex)];
+        if (!metric) return;
+        if (metric.finalized) return;
+        var signalRatio = metric.totalFrames > 0 ? (metric.signalFrames / metric.totalFrames) : 0;
+        var tunedRatio = metric.signalFrames > 0 ? (metric.tunedFrames / metric.signalFrames) : 0;
+        var passed = metric.attackHit && signalRatio >= 0.45 && tunedRatio >= 0.6;
+        var timingRatio = Math.min(1, Math.max(0, signalRatio));
+        var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
+        playerLiveScoreTotals.notesTotal += 1;
+        if (passed) playerLiveScoreTotals.notesPassed += 1;
+        playerLiveScoreTotals.pitchSum += pitchRatio;
+        playerLiveScoreTotals.timingSum += timingRatio;
+        metric.finalized = true;
+        syncPlayerLiveScoreUi();
+        applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', true);
+      }
+
+      function findPlayerActivePlayableEventIndex(nowSec) {
+        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return -1;
+        var idx = findPlayerEventIndexByTime(nowSec);
+        var events = playerScoreData.events;
+        // Não antecipa avaliação antes do início da nota:
+        // durante pausas, isso evita marcar a próxima nota como "vermelha" cedo.
+        var timingPadBefore = 0;
+        var timingPadAfter = 0.09;
+        for (var k = Math.max(0, idx - 5); k <= Math.min(events.length - 1, idx + 3); k++) {
+          var ev = events[k];
+          if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
+          var start = ev.startSec || 0;
+          var end = start + Math.max(0.04, ev.durationSec || 0.06);
+          if (nowSec >= (start - timingPadBefore) && nowSec <= (end + timingPadAfter)) return k;
+        }
+        return -1;
+      }
+
+      function updatePlayerLiveFeedbackNow(nowSec) {
+        if (!playerLiveListenEnabled || !playerLiveListenRunning || !playerPlayback.isPlaying) {
+          if (playerLiveCurrentEventIndex >= 0) {
+            finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+            playerLiveCurrentEventIndex = -1;
+          }
+          clearPlayerLiveFeedbackVisualOnly();
+          return;
+        }
+        var eventIndex = findPlayerActivePlayableEventIndex(nowSec);
+        if (eventIndex < 0) {
+          if (playerLiveCurrentEventIndex >= 0) {
+            finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+            playerLiveCurrentEventIndex = -1;
+          }
+          return;
+        }
+        var ev = playerScoreData.events[eventIndex];
+        if (!ev || !isFinite(ev.freq) || ev.freq <= 0) {
+          applyPlayerLiveFeedback(eventIndex, 'bad', true);
+          return;
+        }
+
+        if (playerLiveCurrentEventIndex !== eventIndex) {
+          if (playerLiveCurrentEventIndex >= 0) finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+          playerLiveCurrentEventIndex = eventIndex;
+        }
+
+        var expectedFreq = getPlayerLiveExpectedFreq(ev);
+        var metric = ensurePlayerLiveMetric(eventIndex);
+        metric.totalFrames += 1;
+
+        var detected = playerLiveListenLastFreq;
+        if (!isFinite(detected) || detected <= 0) {
+          applyPlayerLiveFeedback(eventIndex, 'bad', true);
+          return;
+        }
+        metric.signalFrames += 1;
+        var alignedDetected = alignDetectedFreqToExpected(detected, expectedFreq);
+        var cents = 1200 * (Math.log(alignedDetected / expectedFreq) / Math.log(2));
+        var absCents = Math.abs(cents);
+        var tuned = absCents <= 35;
+        if (tuned) metric.tunedFrames += 1;
+
+        var start = ev.startSec || 0;
+        var attackWindowSec = Math.min(0.22, Math.max(0.08, (ev.durationSec || 0.2) * 0.22));
+        if ((nowSec - start) <= attackWindowSec && tuned) {
+          metric.attackHit = true;
+        }
+
+        applyPlayerLiveFeedback(eventIndex, tuned ? 'ok' : 'bad', true);
       }
 
       function previewPlayerSpeedBpm(bpm) {
@@ -4178,8 +4546,9 @@
         var host = document.getElementById('playerOsmdContainer');
         if (!host) return;
 
-        var nonChordEvents = playerScoreData.events.filter(function (ev) {
-          return !ev.isChord;
+        var nonChordEvents = [];
+        playerScoreData.events.forEach(function (ev, idx) {
+          if (ev && !ev.isChord) nonChordEvents.push({ ev: ev, eventIndex: idx });
         });
         if (!nonChordEvents.length) return;
 
@@ -4206,12 +4575,18 @@
         var max = Math.min(nonChordEvents.length, usableNodes.length);
         for (var i = 0; i < max; i++) {
           var rr = usableNodes[i].rect;
+          var anchorTarget = usableNodes[i].el;
+          var tag = String(anchorTarget && anchorTarget.tagName || '').toLowerCase();
+          if (tag === 'path' && anchorTarget.parentElement) anchorTarget = anchorTarget.parentElement;
           playerNoteAnchors.push({
-            sec: nonChordEvents[i].startSec,
+            sec: nonChordEvents[i].ev.startSec,
+            eventIndex: nonChordEvents[i].eventIndex,
+            feedbackEl: anchorTarget,
             x: rr.left + (rr.width / 2),
             y: rr.top + (rr.height / 2)
           });
         }
+        clearPlayerLiveFeedback();
         syncPlayerNoteNameLabelOverlays();
       }
 
@@ -4239,7 +4614,24 @@
       function getPlayerCursorElement() {
         var host = document.getElementById('playerOsmdContainer');
         if (!host) return null;
-        return host.querySelector('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
+        var candidates = host.querySelectorAll('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
+        if (!candidates || !candidates.length) return null;
+        var best = null;
+        var bestScore = -1;
+        candidates.forEach(function (el) {
+          if (!el || !el.getBoundingClientRect) return;
+          var r = null;
+          try { r = el.getBoundingClientRect(); } catch (e) {}
+          if (!r || r.width <= 0 || r.height <= 0) return;
+          var ratio = r.height / Math.max(1, r.width);
+          var hasShapes = !!(el.querySelector && el.querySelector('rect, line, path'));
+          var score = (ratio > 3 ? ratio : 0) + (hasShapes ? 20 : 0);
+          if (score > bestScore) {
+            bestScore = score;
+            best = el;
+          }
+        });
+        return best || candidates[0];
       }
 
       function getPlayerViewportSize() {
@@ -4469,6 +4861,7 @@
         window.UiCoreModule.setDisabled(playBtn, !hasScore || playerPlayback.isPlaying);
         window.UiCoreModule.setDisabled(pauseBtn, !playerPlayback.isPlaying);
         window.UiCoreModule.setDisabled(stopBtn, !hasScore || (!playerPlayback.isPlaying && current <= 0.01));
+        updatePlayerLiveFeedbackNow(current);
       }
 
       function scheduleFallbackPlayerNote(freq, startAtCtx, durationSec) {
@@ -4501,6 +4894,7 @@
 
       function schedulePlayerNote(event, startAtCtx, instrument) {
         if (!event || event.isRest || !event.freq || event.freq <= 0) return;
+        if (playerMutePlaybackEnabled) return;
         var rate = Math.max(0.4, playerPlaybackRate || 1);
         var dur = Math.max(0.06, (event.durationSec * 0.96) / rate);
         if (instrument) {
@@ -4559,6 +4953,10 @@
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
         playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+        if (playerLiveCurrentEventIndex >= 0) {
+          finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+        }
+        clearPlayerLiveFeedback();
         resetPlayerCursorToCurrentPosition();
         updatePlayerUiNow(playerPlayback.positionSec);
       }
@@ -4720,6 +5118,7 @@
         if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
         if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
         if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
+        if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
         currentMode = mode;
         setMoreMenuOpen(false);
         setPlayerSpeedPopoverOpen(false);
@@ -4856,12 +5255,15 @@
         } else if (mode === 'player') {
           updateChallengeStats();
           updateProgress();
+          if (playerLiveListenEnabled && !playerLiveListenRunning) startPlayerLiveListen();
+          syncPlayerLiveScoreUi();
           ensurePlayerCatalogLoaded(true).then(function () {
             loadPlayerFromCatalogSelection(false);
           }).catch(function () {
             loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', false);
           });
         }
+        syncPlayerLiveScoreUi();
         setTimeout(updateBottomNavVisibility, 0);
       }
 
@@ -5740,6 +6142,36 @@
             syncPlayerLeverUi();
             loadPlayerFromCatalogSelection(true);
             setMessage(playerShowFingering ? 'Dedilhado ligado.' : 'Dedilhado desligado.');
+          });
+        }
+        var playerLiveListenToggle = document.getElementById('playerLiveListenToggle');
+        if (playerLiveListenToggle) {
+          playerLiveListenToggle.addEventListener('click', function () {
+            playerLiveListenEnabled = !playerLiveListenEnabled;
+            syncPlayerLeverUi();
+            syncPlayerLiveScoreUi();
+            if (playerLiveListenEnabled) {
+              if (currentMode === 'player') startPlayerLiveListen();
+              else setMessage('Leitura ao vivo ligada. Abra o modo Player para iniciar a escuta.');
+            } else {
+              stopPlayerLiveListen();
+              clearPlayerLiveFeedback();
+              resetPlayerLiveScoreTotals();
+              syncPlayerLiveScoreUi();
+              setMessage('Leitura ao vivo desligada.');
+            }
+          });
+        }
+        var playerMutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
+        if (playerMutePlaybackToggle) {
+          playerMutePlaybackToggle.addEventListener('click', function () {
+            playerMutePlaybackEnabled = !playerMutePlaybackEnabled;
+            syncPlayerLeverUi();
+            setMessage(
+              playerMutePlaybackEnabled
+                ? 'Áudio da partitura silenciado no player.'
+                : 'Áudio da partitura reativado no player.'
+            );
           });
         }
         var playerMeasureNumbersToggle = document.getElementById('playerMeasureNumbersToggle');
@@ -7235,6 +7667,7 @@
         updatePlayerUiNow(0);
         syncPlayerSpeedUi();
         syncPlayerLeverUi();
+        syncPlayerLiveScoreUi();
         renderPlayerCatalogControls();
         initHinosUI();
         updateTunerUINoSignal();
