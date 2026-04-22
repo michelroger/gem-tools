@@ -4135,7 +4135,10 @@
             totalFrames: 0,
             signalFrames: 0,
             tunedFrames: 0,
-            attackHit: false
+            attackHit: false,
+            firstSignalSec: null,
+            firstTunedSec: null,
+            expectedStartSec: null
           };
           playerLiveEventMetrics[key] = metric;
         }
@@ -4149,9 +4152,17 @@
         if (metric.finalized) return;
         var signalRatio = metric.totalFrames > 0 ? (metric.signalFrames / metric.totalFrames) : 0;
         var tunedRatio = metric.signalFrames > 0 ? (metric.tunedFrames / metric.signalFrames) : 0;
-        var passed = metric.attackHit && signalRatio >= 0.45 && tunedRatio >= 0.6;
         var timingRatio = Math.min(1, Math.max(0, signalRatio));
+        if (metric.expectedStartSec != null && metric.firstSignalSec != null) {
+          // Penaliza entrada tardia/adiantada em relacao ao inicio esperado da nota.
+          var attackTolerance = Math.min(0.24, Math.max(0.09, (metric.expectedDurationSec || 0.2) * 0.28));
+          var delay = Math.abs(metric.firstSignalSec - metric.expectedStartSec);
+          var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
+          // Combina presenca durante a nota com precisao de ataque.
+          timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
+        }
         var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
+        var passed = metric.attackHit && timingRatio >= 0.55 && pitchRatio >= 0.6;
         playerLiveScoreTotals.notesTotal += 1;
         if (passed) playerLiveScoreTotals.notesPassed += 1;
         playerLiveScoreTotals.pitchSum += pitchRatio;
@@ -4210,6 +4221,8 @@
         var expectedFreq = getPlayerLiveExpectedFreq(ev);
         var metric = ensurePlayerLiveMetric(eventIndex);
         metric.totalFrames += 1;
+        metric.expectedStartSec = ev.startSec || 0;
+        metric.expectedDurationSec = Math.max(0.04, ev.durationSec || 0.06);
 
         var detected = playerLiveListenLastFreq;
         if (!isFinite(detected) || detected <= 0) {
@@ -4217,11 +4230,13 @@
           return;
         }
         metric.signalFrames += 1;
+        if (metric.firstSignalSec == null) metric.firstSignalSec = nowSec;
         var alignedDetected = alignDetectedFreqToExpected(detected, expectedFreq);
         var cents = 1200 * (Math.log(alignedDetected / expectedFreq) / Math.log(2));
         var absCents = Math.abs(cents);
         var tuned = absCents <= 35;
         if (tuned) metric.tunedFrames += 1;
+        if (tuned && metric.firstTunedSec == null) metric.firstTunedSec = nowSec;
 
         var start = ev.startSec || 0;
         var attackWindowSec = Math.min(0.22, Math.max(0.08, (ev.durationSec || 0.2) * 0.22));
