@@ -378,6 +378,9 @@
       var playerLiveListenRawHistory = [];
       var playerLiveListenNoSignalFrames = 0;
       var playerLiveListenLastFreq = 0;
+      var playerLiveListenLastCents = 0;
+      var playerLiveListenHasSignal = false;
+      var playerLiveCurrentAnchorEl = null;
       var playerLiveFeedbackEventIndex = -1;
       var playerLiveFeedbackStatus = '';
       var playerLiveEventMetrics = {};
@@ -414,6 +417,7 @@
         nextEventIndex: 0,
         nextCursorIndex: 0,
         nextBeatIndex: 0,
+        liveEventIndex: -1,
         rafId: null,
         activeStops: []
       };
@@ -3916,6 +3920,8 @@
         playerLiveListenSmoothedFreq = 0;
         playerLiveListenRawHistory = [];
         playerLiveListenLastFreq = 0;
+        playerLiveListenLastCents = 0;
+        playerLiveListenHasSignal = false;
         if (playerLiveCurrentEventIndex >= 0) {
           finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
           playerLiveCurrentEventIndex = -1;
@@ -3990,6 +3996,8 @@
           playerLiveListenSmoothedFreq = 0;
           playerLiveListenNoSignalFrames = 0;
           playerLiveListenLastFreq = 0;
+          playerLiveListenLastCents = 0;
+          playerLiveListenHasSignal = false;
           playerLiveListenRunning = true;
           resetPlayerLiveScoreTotals();
           clearPlayerLiveFeedback();
@@ -4004,14 +4012,212 @@
         });
       }
 
-      function getPlayerLiveFeedbackElementByEventIndex(eventIndex) {
-        if (!playerNoteAnchors || !playerNoteAnchors.length) return null;
-        for (var i = 0; i < playerNoteAnchors.length; i++) {
-          var a = playerNoteAnchors[i];
-          if (!a || a.eventIndex !== eventIndex) continue;
-          return a.feedbackEl || null;
-        }
+      function playerEventMidi(ev) {
+        if (!ev) return null;
+        if (isFinite(ev.midi)) return Number(ev.midi);
+        if (isFinite(ev.freq) && ev.freq > 0) return tunerFreqToMidi(ev.freq);
         return null;
+      }
+
+      function collectPlayerOsmdGraphicalNotes() {
+        var out = [];
+        if (!playerOsmd) return out;
+        var sheet = playerOsmd.graphic || playerOsmd.GraphicSheet;
+        if (!sheet) return out;
+        var measureList = sheet.measureList || sheet.MeasureList;
+        if (!measureList || !measureList.length) return out;
+        var seen = new Set();
+        var i;
+        for (i = 0; i < measureList.length; i++) {
+          var measures = measureList[i];
+          if (!measures) continue;
+          if (!Array.isArray(measures)) measures = [measures];
+          var j;
+          for (j = 0; j < measures.length; j++) {
+            var measure = measures[j];
+            if (!measure || !measure.staffEntries) continue;
+            var k;
+            for (k = 0; k < measure.staffEntries.length; k++) {
+              var se = measure.staffEntries[k];
+              if (!se || !se.graphicalVoiceEntries) continue;
+              var l;
+              for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+                var gve = se.graphicalVoiceEntries[l];
+                if (!gve || !gve.notes) continue;
+                var mn;
+                for (mn = 0; mn < gve.notes.length; mn++) {
+                  var gn = gve.notes[mn];
+                  var sn = gn && gn.sourceNote;
+                  if (!sn) continue;
+                  if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+                  if (sn.IsGraceNote || sn.isGraceNote) continue;
+                  try {
+                    if (sn.PrintObject === false) continue;
+                  } catch (ePo) {}
+                  var pitch = sn.TransposedPitch || sn.Pitch;
+                  if (!pitch) continue;
+                  var shortStr = null;
+                  try {
+                    if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                  } catch (eTs) {}
+                  var midi = playerOsmdPitchStringToMidi(shortStr);
+                  if (midi == null) continue;
+                  var el = null;
+                  if (typeof gn.getSVGGElement === 'function') {
+                    try { el = gn.getSVGGElement(); } catch (eSvg) {}
+                  }
+                  if (!el) continue;
+                  var anchorTarget = el;
+                  var tag = String(anchorTarget.tagName || '').toLowerCase();
+                  if (tag === 'path' && anchorTarget.parentElement) anchorTarget = anchorTarget.parentElement;
+                  if (!anchorTarget || seen.has(anchorTarget) || typeof anchorTarget.getBoundingClientRect !== 'function') continue;
+                  var rr = null;
+                  try { rr = anchorTarget.getBoundingClientRect(); } catch (eR) {}
+                  if (!rr || rr.width < 2 || rr.height < 2) continue;
+                  seen.add(anchorTarget);
+                  out.push({
+                    el: anchorTarget,
+                    midi: midi,
+                    cx: rr.left + rr.width * 0.5,
+                    cy: rr.top + rr.height * 0.5
+                  });
+                }
+              }
+            }
+          }
+        }
+        return out;
+      }
+
+      function resolvePlayerNoteElementForEvent(eventIndex, clientX, clientY) {
+        if (!playerScoreData || !playerScoreData.events || eventIndex == null || eventIndex < 0) return null;
+        var ev = playerScoreData.events[eventIndex];
+        if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) return null;
+        var targetMidi = playerEventMidi(ev);
+        if (targetMidi == null) return null;
+        var targetFreq = Number(ev.freq);
+        if (!isFinite(targetFreq) || targetFreq <= 0) return null;
+
+        var refX = Number(clientX);
+        var refY = Number(clientY);
+        if (!isFinite(refX) || !isFinite(refY)) {
+          var cursorEl = getPlayerCursorElement();
+          if (!cursorEl || !cursorEl.getBoundingClientRect) return null;
+          var cr = null;
+          try { cr = cursorEl.getBoundingClientRect(); } catch (e) {}
+          if (!cr) return null;
+          refX = cr.left + cr.width * 0.5;
+          refY = cr.top + cr.height * 0.5;
+        }
+
+        var notes = collectPlayerOsmdGraphicalNotes();
+        if (!notes.length) return null;
+
+        function pickBest(maxMidiDiff) {
+          var b = null;
+          var bs = Infinity;
+          var ni2;
+          for (ni2 = 0; ni2 < notes.length; ni2++) {
+            var n2 = notes[ni2];
+            if (!n2 || !n2.el) continue;
+            var dm2 = Math.abs((n2.midi || 0) - targetMidi);
+            if (dm2 > maxMidiDiff) continue;
+            var candFreq2 = window.StaffMathUtils && typeof window.StaffMathUtils.midiToFreq === 'function'
+              ? window.StaffMathUtils.midiToFreq(n2.midi)
+              : null;
+            var df2 = 0;
+            if (isFinite(candFreq2) && candFreq2 > 0) {
+              df2 = Math.abs(Math.log(candFreq2 / targetFreq));
+            }
+            if (df2 > 0.045) continue;
+            var dx2 = n2.cx - refX;
+            var dy2 = n2.cy - refY;
+            var dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            var score2 = dist2 + (dm2 * 18) + (df2 * 900);
+            if (score2 < bs) {
+              bs = score2;
+              b = n2.el;
+            }
+          }
+          return { el: b, score: bs };
+        }
+
+        var exact = pickBest(0);
+        var chosen = exact.el && isFinite(exact.score) ? exact : pickBest(1);
+        var best = chosen.el;
+        var bestScore = chosen.score;
+        if (!best || bestScore > 260) return null;
+        return best;
+      }
+
+      function getPlayerLiveFeedbackElementByEventIndex(eventIndex) {
+        return resolvePlayerNoteElementForEvent(eventIndex, NaN, NaN);
+      }
+
+      function clearPlayerLiveCurrentAnchorVisual() {
+        if (!playerLiveCurrentAnchorEl) return;
+        try {
+          playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+        } catch (e) {}
+        playerLiveCurrentAnchorEl = null;
+      }
+
+      function resolvePlayerLiveCurrentAnchorElement(eventIndexHint) {
+        var idx = Number(eventIndexHint);
+        if (!isFinite(idx) || idx < 0) idx = Number(playerLiveCurrentEventIndex);
+        if (isFinite(idx) && idx >= 0) {
+          var mapped = resolvePlayerNoteElementForEvent(idx, NaN, NaN);
+          if (mapped) return mapped;
+        }
+        var host = document.getElementById('playerOsmdContainer');
+        var cursorEl = getPlayerCursorElement();
+        if (!host || !cursorEl || !cursorEl.getBoundingClientRect) return null;
+        var cr = null;
+        try { cr = cursorEl.getBoundingClientRect(); } catch (e) {}
+        if (!cr) return null;
+        var cx = cr.left + (cr.width * 0.5);
+        var cy = cr.top + (cr.height * 0.5);
+        var nodes = host.querySelectorAll('.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]');
+        if (!nodes || !nodes.length) return null;
+        var bestEl = null;
+        var bestScore = Infinity;
+        nodes.forEach(function (n) {
+          var r = playerNoteheadScreenRect(n);
+          if (!r) return;
+          var nx = r.left + (r.width * 0.5);
+          var ny = r.top + (r.height * 0.5);
+          var dx = Math.abs(nx - cx);
+          var dy = Math.abs(ny - cy);
+          // Priorizamos proximidade horizontal ao cursor e penalizamos salto de linha.
+          var score = dx + (dy * 1.15) + (dy > 70 ? 999 : 0);
+          if (score < bestScore) {
+            bestScore = score;
+            bestEl = n;
+          }
+        });
+        if (!bestEl || bestScore > 180) return null;
+        var tag = String(bestEl.tagName || '').toLowerCase();
+        if (tag === 'path' && bestEl.parentElement) return bestEl.parentElement;
+        return bestEl;
+      }
+
+      function applyPlayerLiveCurrentAnchorStatus(status, eventIndexHint) {
+        var anchorEl = resolvePlayerLiveCurrentAnchorElement(eventIndexHint);
+        if (!anchorEl) {
+          clearPlayerLiveCurrentAnchorVisual();
+          return null;
+        }
+        if (playerLiveCurrentAnchorEl && playerLiveCurrentAnchorEl !== anchorEl) {
+          try {
+            playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+          } catch (e) {}
+        }
+        playerLiveCurrentAnchorEl = anchorEl;
+        anchorEl.classList.add('player-live-note-current');
+        anchorEl.classList.remove('player-live-note-current-ok', 'player-live-note-current-bad');
+        if (status === 'ok') anchorEl.classList.add('player-live-note-current-ok');
+        else if (status === 'bad') anchorEl.classList.add('player-live-note-current-bad');
+        return anchorEl;
       }
 
       function clearPlayerLiveFeedback() {
@@ -4021,19 +4227,23 @@
         playerLiveEventMetrics = {};
         var host = document.getElementById('playerOsmdContainer');
         if (!host) return;
-        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad').forEach(function (el) {
-          el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
+          el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
         });
+        clearPlayerLiveCurrentAnchorVisual();
+        hidePlayerLiveInlineBadge();
       }
 
-      function clearPlayerLiveFeedbackVisualOnly() {
+      function clearPlayerLiveFeedbackVisualOnly(preserveInlineBadge) {
         playerLiveFeedbackEventIndex = -1;
         playerLiveFeedbackStatus = '';
         var host = document.getElementById('playerOsmdContainer');
         if (!host) return;
-        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad').forEach(function (el) {
-          el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
+          el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
         });
+        clearPlayerLiveCurrentAnchorVisual();
+        if (!preserveInlineBadge) hidePlayerLiveInlineBadge();
       }
 
       function resetPlayerLiveScoreTotals() {
@@ -4045,6 +4255,148 @@
         };
       }
 
+      function ensurePlayerLiveInlineBadge() {
+        var el = document.getElementById('playerLiveInlineBadge');
+        if (el) return el;
+        el = document.createElement('div');
+        el.id = 'playerLiveInlineBadge';
+        el.className = 'player-live-note-badge hidden is-idle';
+        el.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(el);
+        return el;
+      }
+
+      function hidePlayerLiveInlineBadge() {
+        var el = document.getElementById('playerLiveInlineBadge');
+        if (!el) return;
+        el.classList.add('hidden');
+      }
+
+      function formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) {
+        var ali = Number(alignedHz);
+        var exp = Number(expectedHz);
+        var raw = Number(rawHz);
+        var aliTxt = isFinite(ali) && ali > 0 ? window.TunerUtils.formatHz(ali, 0) : '--';
+        var expTxt = isFinite(exp) && exp > 0 ? window.TunerUtils.formatHz(exp, 0) : '--';
+        var base = aliTxt + ' / ' + expTxt;
+        if (isFinite(raw) && raw > 0) {
+          return base + ' (' + window.TunerUtils.formatHz(raw, 0) + ' bruto)';
+        }
+        return base;
+      }
+
+      function renderPlayerLiveInlineBadge(eventIndex, cents, tuned, hasSignal, anchorElOverride, alignedHz, expectedHz, rawHz) {
+        var el = ensurePlayerLiveInlineBadge();
+        if (!el) {
+          hidePlayerLiveInlineBadge();
+          return;
+        }
+        var useEventFeedback = eventIndex != null && eventIndex >= 0;
+        // Ancorar na nota (se houver evento tocável); em pausa/silêncio ancorar no cursor.
+        var noteEl = useEventFeedback ? getPlayerLiveFeedbackElementByEventIndex(eventIndex) : null;
+        var anchorEl = anchorElOverride || noteEl || getPlayerCursorElement();
+        if (!anchorEl || typeof anchorEl.getBoundingClientRect !== 'function') {
+          hidePlayerLiveInlineBadge();
+          return;
+        }
+        var rr = anchorEl.getBoundingClientRect();
+        if (!rr || !isFinite(rr.left) || !isFinite(rr.top)) {
+          hidePlayerLiveInlineBadge();
+          return;
+        }
+        var x = rr.left + (rr.width / 2);
+        // Alguns px acima da cabeça da nota (mais estável que seguir o cursor).
+        var badgeOffsetPx = 10;
+        var y = rr.top - badgeOffsetPx;
+        el.style.left = Math.round(x) + 'px';
+        el.style.top = Math.round(y) + 'px';
+        el.classList.remove('hidden', 'is-ok', 'is-bad', 'is-idle');
+
+        if (!useEventFeedback) {
+          el.classList.add('is-idle');
+          if (!hasSignal) {
+            el.innerHTML = 'Silêncio / pausa<br><span class="player-live-note-badge-hz">—</span>';
+            return;
+          }
+          var rawGap = Number(rawHz);
+          var hzGap = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(rawGap, NaN, NaN) + '</span>';
+          el.innerHTML = 'Sem nota avaliada<br>' + hzGap;
+          return;
+        }
+
+        if (!hasSignal) {
+          el.classList.add('is-idle');
+          var expOnly = Number(expectedHz);
+          if (isFinite(expOnly) && expOnly > 0) {
+            el.innerHTML = 'Sem sinal<br><span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(NaN, expOnly, NaN) + '</span>';
+          } else {
+            el.textContent = 'Sem sinal';
+          }
+          return;
+        }
+        var rounded = Math.round(Number(cents) || 0);
+        var sign = rounded > 0 ? '+' : '';
+        var hzLine = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) + '</span>';
+        if (tuned) {
+          el.classList.add('is-ok');
+          el.innerHTML = 'Afinado ' + sign + String(rounded) + 'c<br>' + hzLine;
+          return;
+        }
+        el.classList.add('is-bad');
+        if (rounded > 0) {
+          el.innerHTML = 'Mais alto ' + sign + String(rounded) + 'c<br>' + hzLine;
+        } else {
+          el.innerHTML = 'Mais baixo ' + String(rounded) + 'c<br>' + hzLine;
+        }
+      }
+
+      function buildPlayerLiveAggregateTotals() {
+        var total = Math.max(0, playerLiveScoreTotals.notesTotal || 0);
+        var passed = Math.max(0, playerLiveScoreTotals.notesPassed || 0);
+        var pitchSum = Math.max(0, playerLiveScoreTotals.pitchSum || 0);
+        var timingSum = Math.max(0, playerLiveScoreTotals.timingSum || 0);
+
+        if (playerLiveCurrentEventIndex < 0) {
+          return {
+            total: total,
+            passed: passed,
+            pitchAvg: total > 0 ? (pitchSum / total) : 0,
+            timingAvg: total > 0 ? (timingSum / total) : 0
+          };
+        }
+
+        var liveMetric = playerLiveEventMetrics[String(playerLiveCurrentEventIndex)];
+        if (!liveMetric || liveMetric.finalized) {
+          return {
+            total: total,
+            passed: passed,
+            pitchAvg: total > 0 ? (pitchSum / total) : 0,
+            timingAvg: total > 0 ? (timingSum / total) : 0
+          };
+        }
+
+        var signalRatio = liveMetric.totalFrames > 0 ? (liveMetric.signalFrames / liveMetric.totalFrames) : 0;
+        var tunedRatio = liveMetric.signalFrames > 0 ? (liveMetric.tunedFrames / liveMetric.signalFrames) : 0;
+        var timingRatio = Math.min(1, Math.max(0, signalRatio));
+        if (liveMetric.expectedStartSec != null && liveMetric.firstSignalSec != null) {
+          var attackTolerance = Math.min(0.24, Math.max(0.09, (liveMetric.expectedDurationSec || 0.2) * 0.28));
+          var delay = Math.abs(liveMetric.firstSignalSec - liveMetric.expectedStartSec);
+          var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
+          timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
+        }
+        var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
+        var passedLive = liveMetric.attackHit && timingRatio >= 0.55 && pitchRatio >= 0.6;
+
+        var aggTotal = total + 1;
+        var aggPassed = passed + (passedLive ? 1 : 0);
+        return {
+          total: aggTotal,
+          passed: aggPassed,
+          pitchAvg: (pitchSum + pitchRatio) / aggTotal,
+          timingAvg: (timingSum + timingRatio) / aggTotal
+        };
+      }
+
       function syncPlayerLiveScoreUi() {
         var panel = document.getElementById('playerLiveScore');
         var notesEl = document.getElementById('playerLiveScoreNotes');
@@ -4053,12 +4405,16 @@
         var overallEl = document.getElementById('playerLiveScoreOverall');
         var show = !!(playerLiveListenEnabled && currentMode === 'player');
         window.UiCoreModule.setHiddenClass(panel, !show);
-        if (!show) return;
+        if (!show) {
+          hidePlayerLiveInlineBadge();
+          return;
+        }
 
-        var total = Math.max(0, playerLiveScoreTotals.notesTotal || 0);
-        var passed = Math.max(0, playerLiveScoreTotals.notesPassed || 0);
-        var pitchAvg = total > 0 ? (playerLiveScoreTotals.pitchSum / total) : 0;
-        var timingAvg = total > 0 ? (playerLiveScoreTotals.timingSum / total) : 0;
+        var aggregate = buildPlayerLiveAggregateTotals();
+        var total = aggregate.total;
+        var passed = aggregate.passed;
+        var pitchAvg = aggregate.pitchAvg;
+        var timingAvg = aggregate.timingAvg;
         var overall = Math.round((pitchAvg * 0.65 + timingAvg * 0.35) * 100);
         var pitchPct = Math.round(pitchAvg * 100);
         var timingPct = Math.round(timingAvg * 100);
@@ -4127,6 +4483,20 @@
         return eventObj.freq;
       }
 
+      function getPlayerLiveCentsTolerance(ev, nowSec) {
+        var baseTolerance = 35;
+        if (!ev) return baseTolerance;
+        var start = Number(ev.startSec) || 0;
+        var duration = Math.max(0.04, Number(ev.durationSec) || 0.06);
+        // Ataque da nota: deixa uma margem maior no começo para o instrumento "assentar".
+        var settleSec = Math.min(0.3, Math.max(0.14, duration * 0.35));
+        var attackTolerance = 62;
+        var elapsed = Math.max(0, nowSec - start);
+        if (elapsed >= settleSec) return baseTolerance;
+        var t = elapsed / settleSec;
+        return attackTolerance + ((baseTolerance - attackTolerance) * t);
+      }
+
       function ensurePlayerLiveMetric(eventIndex) {
         var key = String(eventIndex);
         var metric = playerLiveEventMetrics[key];
@@ -4169,47 +4539,73 @@
         playerLiveScoreTotals.timingSum += timingRatio;
         metric.finalized = true;
         syncPlayerLiveScoreUi();
-        applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', true);
+        applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', false);
       }
 
       function findPlayerActivePlayableEventIndex(nowSec) {
         if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return -1;
-        var idx = findPlayerEventIndexByTime(nowSec);
         var events = playerScoreData.events;
-        // Não antecipa avaliação antes do início da nota:
-        // durante pausas, isso evita marcar a próxima nota como "vermelha" cedo.
-        var timingPadBefore = 0;
-        var timingPadAfter = 0.09;
-        for (var k = Math.max(0, idx - 5); k <= Math.min(events.length - 1, idx + 3); k++) {
+        var liveIdx = Number(playerPlayback && playerPlayback.liveEventIndex);
+        if (isFinite(liveIdx) && liveIdx >= 0 && liveIdx < events.length) {
+          var liveEv = events[liveIdx];
+          if (liveEv && !liveEv.isRest && !liveEv.isChord && isFinite(liveEv.freq) && liveEv.freq > 0) {
+            var liveStart = liveEv.startSec || 0;
+            var liveEnd = liveStart + Math.max(0.04, liveEv.durationSec || 0.06);
+            if (nowSec >= liveStart && nowSec <= (liveEnd + 0.025)) return liveIdx;
+          }
+        }
+        var idx = findPlayerEventIndexByTime(nowSec);
+        // Segue exatamente o tempo do cursor: não antecipa nota futura.
+        var tailPadAfter = 0.025;
+        var candidates = [idx, idx - 1, idx + 1];
+        for (var i = 0; i < candidates.length; i++) {
+          var k = candidates[i];
+          if (k < 0 || k >= events.length) continue;
           var ev = events[k];
           if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
           var start = ev.startSec || 0;
           var end = start + Math.max(0.04, ev.durationSec || 0.06);
-          if (nowSec >= (start - timingPadBefore) && nowSec <= (end + timingPadAfter)) return k;
+          if (nowSec >= start && nowSec <= (end + tailPadAfter)) return k;
         }
         return -1;
       }
 
       function updatePlayerLiveFeedbackNow(nowSec) {
         if (!playerLiveListenEnabled || !playerLiveListenRunning || !playerPlayback.isPlaying) {
+          playerLiveListenHasSignal = false;
+          playerLiveListenLastCents = 0;
           if (playerLiveCurrentEventIndex >= 0) {
             finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
             playerLiveCurrentEventIndex = -1;
           }
           clearPlayerLiveFeedbackVisualOnly();
+          syncPlayerLiveScoreUi();
           return;
         }
         var eventIndex = findPlayerActivePlayableEventIndex(nowSec);
         if (eventIndex < 0) {
+          playerLiveListenLastCents = 0;
           if (playerLiveCurrentEventIndex >= 0) {
             finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
             playerLiveCurrentEventIndex = -1;
           }
+          clearPlayerLiveFeedbackVisualOnly(true);
+          var detGap = playerLiveListenLastFreq;
+          var hasSigGap = isFinite(detGap) && detGap > 0;
+          playerLiveListenHasSignal = hasSigGap;
+          renderPlayerLiveInlineBadge(-1, 0, false, hasSigGap, null, NaN, NaN, hasSigGap ? detGap : NaN);
+          syncPlayerLiveScoreUi();
           return;
         }
         var ev = playerScoreData.events[eventIndex];
+        var expectedFreqEarly = (!ev || !isFinite(ev.freq) || ev.freq <= 0) ? NaN : getPlayerLiveExpectedFreq(ev);
         if (!ev || !isFinite(ev.freq) || ev.freq <= 0) {
-          applyPlayerLiveFeedback(eventIndex, 'bad', true);
+          playerLiveListenHasSignal = false;
+          playerLiveListenLastCents = 0;
+          applyPlayerLiveFeedback(eventIndex, 'bad', false);
+          applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
+          renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreqEarly, NaN);
+          syncPlayerLiveScoreUi();
           return;
         }
 
@@ -4226,7 +4622,12 @@
 
         var detected = playerLiveListenLastFreq;
         if (!isFinite(detected) || detected <= 0) {
-          applyPlayerLiveFeedback(eventIndex, 'bad', true);
+          playerLiveListenHasSignal = false;
+          playerLiveListenLastCents = 0;
+          applyPlayerLiveFeedback(eventIndex, 'bad', false);
+          applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
+          renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreq, NaN);
+          syncPlayerLiveScoreUi();
           return;
         }
         metric.signalFrames += 1;
@@ -4234,7 +4635,10 @@
         var alignedDetected = alignDetectedFreqToExpected(detected, expectedFreq);
         var cents = 1200 * (Math.log(alignedDetected / expectedFreq) / Math.log(2));
         var absCents = Math.abs(cents);
-        var tuned = absCents <= 35;
+        var centsTolerance = getPlayerLiveCentsTolerance(ev, nowSec);
+        var tuned = absCents <= centsTolerance;
+        playerLiveListenHasSignal = true;
+        playerLiveListenLastCents = cents;
         if (tuned) metric.tunedFrames += 1;
         if (tuned && metric.firstTunedSec == null) metric.firstTunedSec = nowSec;
 
@@ -4244,7 +4648,11 @@
           metric.attackHit = true;
         }
 
-        applyPlayerLiveFeedback(eventIndex, tuned ? 'ok' : 'bad', true);
+        var liveStatus = tuned ? 'ok' : 'bad';
+        applyPlayerLiveFeedback(eventIndex, liveStatus, false);
+        applyPlayerLiveCurrentAnchorStatus(liveStatus, eventIndex);
+        renderPlayerLiveInlineBadge(eventIndex, cents, tuned, true, null, alignedDetected, expectedFreq, detected);
+        syncPlayerLiveScoreUi();
       }
 
       function previewPlayerSpeedBpm(bpm) {
@@ -4556,79 +4964,81 @@
       }
 
       function buildPlayerNoteAnchorsFromDom() {
+        // Mapeamento global por lista foi removido: a nota correta é resolvida por evento + midi + proximidade.
         playerNoteAnchors = [];
-        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return;
-        var host = document.getElementById('playerOsmdContainer');
-        if (!host) return;
-
-        var nonChordEvents = [];
-        playerScoreData.events.forEach(function (ev, idx) {
-          if (ev && !ev.isChord) nonChordEvents.push({ ev: ev, eventIndex: idx });
-        });
-        if (!nonChordEvents.length) return;
-
-        var nodes = host.querySelectorAll(
-          '.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]'
-        );
-        if (!nodes || !nodes.length) return;
-
-        var usableNodes = [];
-        nodes.forEach(function (n) {
-          var r = playerNoteheadScreenRect(n);
-          if (!r) return;
-          usableNodes.push({ el: n, rect: r });
-        });
-        if (!usableNodes.length) return;
-
-        // Ordena visualmente (linha por linha) para casar com timeline da partitura.
-        usableNodes.sort(function (a, b) {
-          var dy = a.rect.top - b.rect.top;
-          if (Math.abs(dy) > 8) return dy;
-          return a.rect.left - b.rect.left;
-        });
-
-        var max = Math.min(nonChordEvents.length, usableNodes.length);
-        for (var i = 0; i < max; i++) {
-          var rr = usableNodes[i].rect;
-          var anchorTarget = usableNodes[i].el;
-          var tag = String(anchorTarget && anchorTarget.tagName || '').toLowerCase();
-          if (tag === 'path' && anchorTarget.parentElement) anchorTarget = anchorTarget.parentElement;
-          playerNoteAnchors.push({
-            sec: nonChordEvents[i].ev.startSec,
-            eventIndex: nonChordEvents[i].eventIndex,
-            feedbackEl: anchorTarget,
-            x: rr.left + (rr.width / 2),
-            y: rr.top + (rr.height / 2)
-          });
-        }
         clearPlayerLiveFeedback();
         syncPlayerNoteNameLabelOverlays();
       }
 
       function seekPlayerFromClick(clientX, clientY) {
-        if (!playerNoteAnchors || playerNoteAnchors.length === 0) return false;
-        var best = null;
-        var bestD = Infinity;
-        for (var i = 0; i < playerNoteAnchors.length; i++) {
-          var a = playerNoteAnchors[i];
-          var dx = a.x - clientX;
-          var dy = a.y - clientY;
-          var d2 = (dx * dx) + (dy * dy);
-          if (d2 < bestD) {
-            bestD = d2;
-            best = a;
+        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return false;
+        if (!playerOsmd) return false;
+        var notes = collectPlayerOsmdGraphicalNotes();
+        if (!notes.length) return false;
+
+        var bestNote = null;
+        var bestDist = Infinity;
+        var ni;
+        for (ni = 0; ni < notes.length; ni++) {
+          var n = notes[ni];
+          if (!n) continue;
+          var dx = n.cx - clientX;
+          var dy = n.cy - clientY;
+          var d2 = dx * dx + dy * dy;
+          if (d2 < bestDist) {
+            bestDist = d2;
+            bestNote = n;
           }
         }
-        if (!best) return false;
-        // Limite: evita seek quando clique estiver muito fora da região útil.
-        if (bestD > (220 * 220)) return false;
-        seekPlayerToTime(best.sec, true);
+        if (!bestNote || bestDist > (220 * 220)) return false;
+
+        var bestEv = null;
+        var bestScore = Infinity;
+        var ei;
+        for (ei = 0; ei < playerScoreData.events.length; ei++) {
+          var ev = playerScoreData.events[ei];
+          if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
+          var em = playerEventMidi(ev);
+          if (em == null) continue;
+          var dm = Math.abs(em - bestNote.midi);
+          if (dm > 1) continue;
+          var score = Math.abs((ev.startSec || 0) - (playerPlayback.positionSec || 0)) * 0.35 + dm * 0.6;
+          if (score < bestScore) {
+            bestScore = score;
+            bestEv = ev;
+          }
+        }
+        if (!bestEv) return false;
+        seekPlayerToTime(bestEv.startSec, true);
         return true;
       }
 
       function getPlayerCursorElement() {
         var host = document.getElementById('playerOsmdContainer');
         if (!host) return null;
+        if (playerOsmd && playerOsmd.cursor) {
+          var oc = playerOsmd.cursor;
+          var keys = ['cursorElement', 'cursorHTMLElement', 'htmlElement', 'element'];
+          var ki;
+          for (ki = 0; ki < keys.length; ki++) {
+            var node = oc[keys[ki]];
+            if (node && node.getBoundingClientRect) {
+              try {
+                var r0 = node.getBoundingClientRect();
+                if (r0 && r0.width > 0 && r0.height > 0) return node;
+              } catch (eK) {}
+            }
+          }
+          if (typeof oc.getDomElement === 'function') {
+            try {
+              var de = oc.getDomElement();
+              if (de && de.getBoundingClientRect) {
+                var r1 = de.getBoundingClientRect();
+                if (r1 && r1.width > 0 && r1.height > 0) return de;
+              }
+            } catch (eDom) {}
+          }
+        }
         var candidates = host.querySelectorAll('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
         if (!candidates || !candidates.length) return null;
         var best = null;
@@ -4849,6 +5259,7 @@
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
         playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+        playerPlayback.liveEventIndex = -1;
         playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
         playerAutoScrollNeedsInitial = true;
         resetPlayerCursorToCurrentPosition();
@@ -4968,6 +5379,7 @@
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
         playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+        playerPlayback.liveEventIndex = -1;
         if (playerLiveCurrentEventIndex >= 0) {
           finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
         }
@@ -5002,6 +5414,9 @@
         while (playerPlayback.nextEventIndex < playerScoreData.events.length) {
           var ev = playerScoreData.events[playerPlayback.nextEventIndex];
           if (!ev || ev.startSec > elapsed + lookAhead) break;
+          if (!ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0 && ev.startSec <= elapsed + 0.005) {
+            playerPlayback.liveEventIndex = playerPlayback.nextEventIndex;
+          }
           if (ev.startSec >= elapsed - 0.03) {
             var when = playerPlayback.startedAtCtx + (ev.startSec / rate);
             schedulePlayerNote(ev, when, instrument);
