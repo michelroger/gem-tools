@@ -9,7 +9,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Noto+Music&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('orquestra-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'light';
+        var prefersDark = false;
+        try {
+          prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } catch (e2) {}
+        var effectiveDark = mode === 'dark' || (mode === 'system' && prefersDark);
+        var root = document.documentElement;
+        root.classList.remove('theme-light', 'theme-dark');
+        root.classList.add(effectiveDark ? 'theme-dark' : 'theme-light');
+        root.setAttribute('data-theme', effectiveDark ? 'dark' : 'light');
+        root.setAttribute('data-theme-mode', mode);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', effectiveDark ? '#0e0e10' : '#7d9d7a');
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="./assets/css/app.css">
+  <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
   <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
@@ -64,25 +85,26 @@
 </head>
 <body>
   <div class="splash-screen" id="appSplash" aria-label="Tela de carregamento">
-    <div class="splash-content">
+    <div class="splash-content du-card mx-auto w-full max-w-sm border border-base-300 bg-base-100/90 px-6 py-8 shadow-2xl backdrop-blur-md">
       <img src="./icon-192.png" alt="Logo GEM Tools" class="splash-logo" />
       <div class="splash-title">GEM Tools</div>
       <div class="splash-subtitle">Carregando...</div>
+      <span class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary" aria-hidden="true"></span>
       <div class="splash-version" id="splashVersion">v--</div>
     </div>
   </div>
 
   <div class="container">
-    <div class="message-box" id="messageBox">
+    <div class="message-box du-card border border-base-300 bg-base-100 shadow-sm" id="messageBox">
       <span class="instruction-text" id="instructionText">Clique em um botão para ouvir a nota. Escolha um modo acima.</span>
     </div>
 
-    <div class="progress-section hidden" id="progressSection">
+    <div class="progress-section hidden du-card border border-base-300 bg-base-100/90 shadow-sm p-3" id="progressSection">
       <div class="progress-label">
         <span>Seu progresso</span>
         <span id="progressText">0 / 0</span>
       </div>
-      <div class="challenge-stats hidden" id="challengeStats">
+      <div class="challenge-stats hidden rounded-lg border border-base-200 bg-base-200/50 px-2 py-1.5" id="challengeStats">
         <span id="challengeTimer">⏱️ 00:00</span>
         <span id="challengeRound">Rodada 0/20</span>
         <span id="challengeErrors">❌ 0/3</span>
@@ -100,7 +122,7 @@
     </div>
 
     <div class="metronome-modal hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
-      <div class="metronome-card settings-modal-card settings-panel" id="settingsPanel">
+      <div class="metronome-card settings-modal-card settings-panel du-card border border-base-300 bg-base-100 shadow-xl" id="settingsPanel">
         <button type="button" class="metronome-close" id="btnSettingsClose" aria-label="Fechar configurações"><i data-lucide="x"></i></button>
         <h2 class="hinos-new-student-title" id="settingsModalTitle">Configurações</h2>
         <div class="settings-group instrument-section" id="instrumentSection">
@@ -124,20 +146,27 @@
           </div>
         </div>
 
+        <div class="settings-group theme-section">
+          <p class="key-label">Aparência</p>
+          <div class="controls theme-controls">
+            <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnThemeCycle" title="Alternar entre tema claro, escuro e o tema do sistema">Tema: claro</button>
+          </div>
+        </div>
+
         <div class="settings-group controls">
-          <button type="button" class="btn btn-secondary" id="btnRepeatInstruction" title="Repetir instrução">🔁 Repetir</button>
-          <button type="button" class="btn btn-secondary" id="btnNarration" title="Narração (falar instruções)">🗣️ Narração</button>
-          <button type="button" class="btn btn-secondary" id="btnAmbient" title="Trilha ambiente suave">🎵 Ambiente</button>
-          <button type="button" class="btn btn-secondary" id="btnCalmMode" title="Modo calmo (volume baixo)">🔊 Modo calmo</button>
-          <button type="button" class="btn btn-secondary" id="btnSound" title="Ligar/desligar som">🔈 Som</button>
-          <button type="button" class="btn btn-secondary" id="btnFullscreen" title="Alternar tela cheia">⛶ Tela cheia</button>
-          <button type="button" class="btn btn-secondary" id="btnAbout" title="Informações do app">Sobre</button>
-          <button type="button" class="btn btn-primary" id="btnRestart" title="Reiniciar">Reiniciar</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnRepeatInstruction" title="Repetir instrução">🔁 Repetir</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnNarration" title="Narração (falar instruções)">🗣️ Narração</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnAmbient" title="Trilha ambiente suave">🎵 Ambiente</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnCalmMode" title="Modo calmo (volume baixo)">🔊 Modo calmo</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnSound" title="Ligar/desligar som">🔈 Som</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnFullscreen" title="Alternar tela cheia">⛶ Tela cheia</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnAbout" title="Informações do app">Sobre</button>
+          <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnRestart" title="Reiniciar">Reiniciar</button>
         </div>
       </div>
     </div>
 
-    <div class="violin-section hidden" id="violinSection">
+    <div class="violin-section hidden du-card border border-base-300 bg-base-100 shadow-sm" id="violinSection">
       <p class="violin-title" id="instrumentTitle">Espelho do instrumento</p>
       <div class="violin-board" id="violinBoard">
         <!-- Grade de posições — preenchida via JS conforme o instrumento -->
@@ -145,19 +174,19 @@
       <p class="note-name-display" id="currentNoteDisplay">&nbsp;</p>
     </div>
 
-    <div class="staff-section hidden" id="staffSection">
+    <div class="staff-section hidden du-card border border-base-300 bg-base-100 shadow-sm" id="staffSection">
       <p class="violin-title">Pentagrama — descubra a nota</p>
       <svg id="staffSvg" class="staff-svg" role="img" aria-label="Pentagrama com uma nota"></svg>
       <div class="note-options" id="noteOptions" aria-label="Opções de notas">
         <!-- Botões Dó a Si (preenchidos via JS) -->
       </div>
       <div class="staff-restart-wrap hidden" id="staffRestartWrap">
-        <button type="button" class="btn btn-primary" id="btnStaffRestart">Jogar novamente</button>
+        <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnStaffRestart">Jogar novamente</button>
       </div>
     </div>
 
     <div class="tuner-section hidden" id="tunerSection">
-      <div class="tuner-controls">
+      <div class="tuner-controls border-t border-base-300 bg-base-100/80">
         <div class="hinos-field">
           <label class="hinos-field-label" for="tunerInstrumentSelect">Instrumentos</label>
           <select id="tunerInstrumentSelect" class="hinos-select">
@@ -177,17 +206,17 @@
         </div>
       </div>
 
-      <div class="tuner-shell">
+      <div class="tuner-shell du-card border border-base-300 shadow-xl">
         <div class="tuner-topbar">
           <h2 class="tuner-title">Afinador</h2>
         </div>
 
         <div class="tuner-main-controls">
-          <button type="button" class="tuner-round-btn start" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
+          <button type="button" class="tuner-round-btn start du-btn du-btn-success du-btn-sm" id="tunerStartBtn" aria-label="Iniciar afinador" title="Iniciar afinador">
             <i data-lucide="play" aria-hidden="true"></i>
             <span class="visually-hidden">Iniciar</span>
           </button>
-          <button type="button" class="tuner-round-btn stop" id="tunerStopBtn" aria-label="Parar afinador" title="Parar afinador" disabled>
+          <button type="button" class="tuner-round-btn stop du-btn du-btn-outline du-btn-sm" id="tunerStopBtn" aria-label="Parar afinador" title="Parar afinador" disabled>
             <i data-lucide="square" aria-hidden="true"></i>
             <span class="visually-hidden">Parar</span>
           </button>
@@ -196,8 +225,8 @@
         <div class="tuner-mic-denied-wrap hidden" id="tunerMicDeniedWrap" role="region" aria-live="polite" aria-label="Microfone bloqueado">
           <p class="tuner-mic-denied-hint">Para usar o afinador, é preciso permitir o microfone nas configurações do navegador ou do sistema.</p>
           <div class="tuner-mic-denied-actions">
-            <button type="button" class="tuner-mic-settings-btn" id="tunerMicOpenSettingsBtn">Abrir configurações</button>
-            <button type="button" class="tuner-mic-instructions-btn" id="tunerMicInstructionsBtn">Ver passo a passo</button>
+            <button type="button" class="tuner-mic-settings-btn du-btn du-btn-error du-btn-sm" id="tunerMicOpenSettingsBtn">Abrir configurações</button>
+            <button type="button" class="tuner-mic-instructions-btn du-btn du-btn-outline du-btn-sm" id="tunerMicInstructionsBtn">Ver passo a passo</button>
           </div>
         </div>
         <div class="tuner-gauge-wrap" aria-hidden="true">
@@ -211,7 +240,7 @@
         </div>
       </div>
 
-      <div class="tuner-preset-dynamic" id="tunerPresetDynamic">
+      <div class="tuner-preset-dynamic border-t border-base-300 bg-base-100/80" id="tunerPresetDynamic">
         <p class="tuner-preset-dynamic-title">Notas alvo do instrumento</p>
         <div class="tuner-preset-dynamic-list" id="tunerPresetDynamicList"></div>
       </div>
@@ -225,10 +254,10 @@
     </div>
 
     <div class="hinos-section hidden" id="hinosSection">
-      <section class="hinos-panel" aria-labelledby="hinosActiveHeading">
+      <section class="hinos-panel du-card border border-base-300 bg-base-100 shadow-sm" aria-labelledby="hinosActiveHeading">
         <div class="hinos-panel-heading">
           <h3 class="hinos-panel-title" id="hinosActiveHeading">Aluno ativo</h3>
-          <button type="button" class="hinos-icon-btn" id="hinosOpenNewStudentModal" title="Incluir novo aluno" aria-label="Incluir novo aluno">
+          <button type="button" class="hinos-icon-btn du-btn du-btn-outline du-btn-sm du-btn-square" id="hinosOpenNewStudentModal" title="Incluir novo aluno" aria-label="Incluir novo aluno">
             <i data-lucide="user-plus" aria-hidden="true"></i>
           </button>
         </div>
@@ -247,7 +276,7 @@
             </select>
           </div>
           <div class="hinos-remove-wrap">
-            <button type="button" class="hinos-remove-student-btn" id="hinosRemoveStudent" aria-label="Remover aluno selecionado" title="Remover aluno selecionado">
+            <button type="button" class="hinos-remove-student-btn du-btn du-btn-outline du-btn-sm du-btn-square" id="hinosRemoveStudent" aria-label="Remover aluno selecionado" title="Remover aluno selecionado">
               <i data-lucide="trash-2" aria-hidden="true"></i>
             </button>
           </div>
@@ -255,11 +284,11 @@
       </section>
 
       <div class="hinos-afin-row" role="tablist" aria-label="Afinação do hinário">
-        <button type="button" class="hinos-afin-btn active" data-hinos-afin="do" role="tab">Hinário 5 (Dó)</button>
-        <button type="button" class="hinos-afin-btn" data-hinos-afin="mib" role="tab">Hinário 5 (Mib)</button>
-        <button type="button" class="hinos-afin-btn" data-hinos-afin="sib" role="tab">Hinário 5 (Sib)</button>
+        <button type="button" class="hinos-afin-btn du-btn du-btn-outline du-btn-sm active" data-hinos-afin="do" role="tab">Hinário 5 (Dó)</button>
+        <button type="button" class="hinos-afin-btn du-btn du-btn-outline du-btn-sm" data-hinos-afin="mib" role="tab">Hinário 5 (Mib)</button>
+        <button type="button" class="hinos-afin-btn du-btn du-btn-outline du-btn-sm" data-hinos-afin="sib" role="tab">Hinário 5 (Sib)</button>
       </div>
-      <div class="hinos-overview" id="hinosOverview" aria-live="polite">
+      <div class="hinos-overview du-card border border-base-300 bg-base-100/80 shadow-sm" id="hinosOverview" aria-live="polite">
         <p class="hinos-overview-title">Visão geral nesta ficha</p>
         <div class="hinos-stat-row">
           <div class="hinos-stat-label"><strong>Hinos com a voz principal aprovada</strong><span id="hinosPctVoicesLbl">0/480 · 0%</span></div>
@@ -311,42 +340,42 @@
       </div>
       <div class="player-controls" id="playerControls">
         <div class="player-transport">
-          <button type="button" class="player-ctl-btn" id="btnPlayerPlay" aria-label="Play" title="Play">
+          <button type="button" class="player-ctl-btn du-btn du-btn-outline du-btn-sm" id="btnPlayerPlay" aria-label="Play" title="Play">
             <i data-lucide="play" aria-hidden="true"></i>
           </button>
-          <button type="button" class="player-ctl-btn" id="btnPlayerPause" disabled aria-label="Pausar" title="Pausar">
+          <button type="button" class="player-ctl-btn du-btn du-btn-outline du-btn-sm" id="btnPlayerPause" disabled aria-label="Pausar" title="Pausar">
             <i data-lucide="pause" aria-hidden="true"></i>
           </button>
-          <button type="button" class="player-ctl-btn" id="btnPlayerStop" disabled aria-label="Parar" title="Parar">
+          <button type="button" class="player-ctl-btn du-btn du-btn-outline du-btn-sm" id="btnPlayerStop" disabled aria-label="Parar" title="Parar">
             <i data-lucide="square" aria-hidden="true"></i>
           </button>
-          <button type="button" class="player-ctl-btn" id="btnPlayerSettings" aria-label="Configurações" title="Configurações do instrumento">
+          <button type="button" class="player-ctl-btn du-btn du-btn-outline du-btn-sm" id="btnPlayerSettings" aria-label="Configurações" title="Configurações do instrumento">
             <i data-lucide="settings" aria-hidden="true"></i>
           </button>
-          <button type="button" class="player-ctl-btn player-speed-icon" id="btnPlayerSpeed" aria-label="Tempo de reprodução" title="Tempo de reprodução" aria-haspopup="dialog" aria-expanded="false">
+          <button type="button" class="player-ctl-btn player-speed-icon du-btn du-btn-outline du-btn-sm" id="btnPlayerSpeed" aria-label="Tempo de reprodução" title="Tempo de reprodução" aria-haspopup="dialog" aria-expanded="false">
             <i data-lucide="gauge" aria-hidden="true"></i>
           </button>
         </div>
         <div class="player-toggles" role="group" aria-label="Controles de metrônomo, rolagem, loop, cor, nomes nas notas, dedilhado e números de compasso">
-          <button type="button" class="player-toggle-btn" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerMetronomeToggle" aria-pressed="false" aria-label="Metrônomo" title="Metrônomo">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="metronome"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerAutoScrollToggle" aria-pressed="false" aria-label="Auto-scroll" title="Auto-scroll">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerAutoScrollToggle" aria-pressed="false" aria-label="Auto-scroll" title="Auto-scroll">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="scroll-text"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerLoopToggle" aria-pressed="false" aria-label="Repetir partitura" title="Repetir partitura">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerLoopToggle" aria-pressed="false" aria-label="Repetir partitura" title="Repetir partitura">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="repeat"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerColorToggle" aria-pressed="false" aria-label="Cores nas notas" title="Ativar ou desativar cores nas notas (por altura)">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerColorToggle" aria-pressed="false" aria-label="Cores nas notas" title="Ativar ou desativar cores nas notas (por altura)">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="palette"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerNoteNamesToggle" aria-pressed="false" aria-label="Legenda dos nomes das notas" title="Mostrar ou ocultar nomes das notas na partitura (Dó, Ré…)">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerNoteNamesToggle" aria-pressed="false" aria-label="Legenda dos nomes das notas" title="Mostrar ou ocultar nomes das notas na partitura (Dó, Ré…)">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="captions"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerFingeringToggle" aria-pressed="false" aria-label="Dedilhado" title="Dedilhado">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerFingeringToggle" aria-pressed="false" aria-label="Dedilhado" title="Dedilhado">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="list-ordered"></i></span>
           </button>
-          <button type="button" class="player-toggle-btn" id="playerMeasureNumbersToggle" aria-pressed="true" aria-label="Números de compasso" title="Mostrar ou ocultar números de compasso">
+          <button type="button" class="player-toggle-btn du-btn du-btn-outline du-btn-sm" id="playerMeasureNumbersToggle" aria-pressed="true" aria-label="Números de compasso" title="Mostrar ou ocultar números de compasso">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="hash"></i></span>
           </button>
         </div>
@@ -354,7 +383,7 @@
           <input type="range" id="playerSeek" class="player-seek" min="0" max="1000" step="1" value="0" aria-label="Progresso do player" disabled />
           <span class="player-time" id="playerTimeLabel">00:00 / 00:00</span>
         </div>
-        <div class="player-speed-popover hidden" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Tempo de reprodução do player">
+        <div class="player-speed-popover hidden du-card border border-base-300 bg-base-100 shadow-xl" id="playerSpeedPopover" role="dialog" aria-modal="false" aria-label="Tempo de reprodução do player">
           <p class="player-speed-title">Tempo <span class="player-speed-sub">(andamento da partitura)</span></p>
           <div class="player-speed-row">
             <label class="player-speed-input-wrap" for="playerSpeedInput">
@@ -371,7 +400,7 @@
     </div>
 
     <div class="metronome-modal hidden" id="hinosNewStudentModal" role="dialog" aria-modal="true" aria-labelledby="hinosNewStudentTitle">
-      <div class="metronome-card hinos-new-student-card">
+      <div class="metronome-card hinos-new-student-card du-card border border-base-300 bg-base-100 shadow-xl">
         <button type="button" class="metronome-close" id="hinosNewStudentClose" aria-label="Fechar"><i data-lucide="x"></i></button>
         <h2 class="hinos-new-student-title" id="hinosNewStudentTitle">Novo aluno</h2>
         <p class="hinos-new-student-hint">Nome e voz principal na matrícula.</p>
@@ -391,22 +420,22 @@
           </div>
         </div>
         <div class="hinos-backup-row">
-          <button type="button" class="btn btn-secondary" id="hinosExportBackup">
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="hinosExportBackup">
             <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="download"></i></span>
             <span>Exportar backup</span>
           </button>
-          <button type="button" class="btn btn-secondary" id="hinosImportBackup">
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="hinosImportBackup">
             <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="upload"></i></span>
             <span>Importar backup</span>
           </button>
           <input type="file" id="hinosImportBackupFile" class="hidden" accept=".json,application/json" aria-hidden="true" tabindex="-1" />
         </div>
         <div class="hinos-new-student-actions">
-          <button type="button" class="btn btn-secondary" id="hinosNewStudentCancel">
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="hinosNewStudentCancel">
             <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="x"></i></span>
             <span>Cancelar</span>
           </button>
-          <button type="button" class="btn btn-primary" id="hinosAddStudent">
+          <button type="button" class="du-btn du-btn-primary du-btn-sm" id="hinosAddStudent">
             <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="user-plus"></i></span>
             <span>Adicionar</span>
           </button>
@@ -415,7 +444,7 @@
     </div>
 
     <div class="metronome-modal hidden" id="hinosEditorModal" role="dialog" aria-modal="true" aria-labelledby="hinosDetailLabel">
-      <div class="metronome-card hinos-editor-card">
+      <div class="metronome-card hinos-editor-card du-card border border-base-300 bg-base-100 shadow-xl">
         <button type="button" class="metronome-close" id="hinosEditorClose" aria-label="Fechar editor de hino"><i data-lucide="x"></i></button>
         <p class="hinos-detail-label" id="hinosDetailLabel">Hino 1</p>
         <div class="hinos-hino-row">
@@ -432,48 +461,48 @@
           <button type="button" class="hinos-voz-btn hinos-study-btn" data-hinos-study="E">E <small>Estudar</small></button>
         </div>
         <div style="text-align:center">
-          <button type="button" class="btn btn-secondary" id="hinosClearHino">Limpar este hino (todas as vozes)</button>
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="hinosClearHino">Limpar este hino (todas as vozes)</button>
         </div>
         <p class="hinos-summary" id="hinosSummary"></p>
       </div>
     </div>
 
-    <div class="mode-tabs nav-hidden" id="modeTabs" role="tablist">
-      <button type="button" class="mode-btn active" data-mode="player" role="tab">
+    <div class="mode-tabs nav-hidden rounded-2xl border border-base-300 bg-base-100/90 shadow-xl backdrop-blur-md" id="modeTabs" role="tablist">
+      <button type="button" class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2 active" data-mode="player" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="play"></i></span>
         <span class="mode-btn-label">Player</span>
       </button>
-      <button type="button" class="mode-btn" data-mode="learn" role="tab">
+      <button type="button" class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2" data-mode="learn" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-2"></i></span>
         <span class="mode-btn-label">Aprender</span>
       </button>
-      <button type="button" class="mode-btn" data-mode="challenge" role="tab">
+      <button type="button" class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2" data-mode="challenge" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="target"></i></span>
         <span class="mode-btn-label">Desafio</span>
       </button>
-      <button type="button" class="mode-btn" data-mode="staff" role="tab">
+      <button type="button" class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2" data-mode="staff" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-4"></i></span>
         <span class="mode-btn-label">Penta</span>
       </button>
       <div class="mode-more-wrap">
-        <button type="button" class="mode-btn" id="btnMoreMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMoreMenu">
+        <button type="button" class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2" id="btnMoreMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMoreMenu">
           <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="ellipsis"></i></span>
           <span class="mode-btn-label">Mais</span>
         </button>
-        <div class="mode-more-menu hidden" id="modeMoreMenu" role="menu">
-          <button type="button" class="mode-more-item" id="btnMoreTuner" role="menuitem">
+        <div class="mode-more-menu hidden rounded-box bg-base-100 border border-base-300 shadow-xl p-1 w-52" id="modeMoreMenu" role="menu">
+          <button type="button" class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case" id="btnMoreTuner" role="menuitem">
             <i data-lucide="gauge" aria-hidden="true"></i>
             <span>Afinador</span>
           </button>
-          <button type="button" class="mode-more-item" id="btnMoreMetronome" role="menuitem">
+          <button type="button" class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case" id="btnMoreMetronome" role="menuitem">
             <i data-lucide="metronome" aria-hidden="true"></i>
             <span>Metrônomo</span>
           </button>
-          <button type="button" class="mode-more-item" id="btnMoreHinos" role="menuitem">
+          <button type="button" class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case" id="btnMoreHinos" role="menuitem">
             <i data-lucide="book-open" aria-hidden="true"></i>
             <span>Controle</span>
           </button>
-          <button type="button" class="mode-more-item" id="btnMoreSettings" role="menuitem">
+          <button type="button" class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case" id="btnMoreSettings" role="menuitem">
             <i data-lucide="settings" aria-hidden="true"></i>
             <span>Ajustes</span>
           </button>
@@ -483,7 +512,7 @@
 
     <!-- Metrônomo (aba/seção) -->
     <div class="staff-section hidden" id="metroSection">
-      <div class="metronome-card">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl">
 
         <div class="metro-top">
           <div class="metro-bpm-badge">BPM</div>
@@ -492,14 +521,14 @@
         </div>
 
         <div class="metro-slider">
-          <button type="button" class="metro-round" id="btnMetroMinus" aria-label="Diminuir BPM">−</button>
+          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroMinus" aria-label="Diminuir BPM">−</button>
           <input type="range" id="metroBpmSlider" min="30" max="220" step="1" value="60" aria-label="Slider de BPM">
-          <button type="button" class="metro-round" id="btnMetroPlus" aria-label="Aumentar BPM">+</button>
+          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroPlus" aria-label="Aumentar BPM">+</button>
         </div>
 
         <div class="metro-controls">
-          <button type="button" class="metro-btn metro-pause" id="btnMetroStop" aria-label="Parar metrônomo"><i data-lucide="square"></i></button>
-          <button type="button" class="metro-btn metro-start" id="btnMetroStart" aria-label="Iniciar metrônomo"><i data-lucide="play"></i></button>
+          <button type="button" class="metro-btn metro-pause du-btn du-btn-outline du-btn-sm" id="btnMetroStop" aria-label="Parar metrônomo"><i data-lucide="square"></i></button>
+          <button type="button" class="metro-btn metro-start du-btn du-btn-success du-btn-sm" id="btnMetroStart" aria-label="Iniciar metrônomo"><i data-lucide="play"></i></button>
         </div>
 
         <div class="metro-beat-title">BATIDAS</div>
@@ -519,9 +548,9 @@
           <div class="metro-section-row">
             <div class="metro-section-label">Batidas</div>
             <div class="metro-stepper">
-              <button type="button" class="metro-round small" id="btnMetroBeatsMinus" aria-label="Diminuir batidas">−</button>
+              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsMinus" aria-label="Diminuir batidas">−</button>
               <div class="metro-stepper-value" id="metroBeatsValue">4</div>
-              <button type="button" class="metro-round small" id="btnMetroBeatsPlus" aria-label="Aumentar batidas">+</button>
+              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsPlus" aria-label="Aumentar batidas">+</button>
             </div>
           </div>
 
@@ -553,7 +582,7 @@
 
     <!-- Sobre (modal) -->
     <div class="metronome-modal hidden" id="aboutModal" role="dialog" aria-modal="true" aria-label="Sobre">
-      <div class="metronome-card">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl">
         <button type="button" class="metronome-close" id="btnAboutClose" aria-label="Fechar"><i data-lucide="x"></i></button>
         <div style="text-align:center; padding-top: 0.2rem;">
           
@@ -610,10 +639,10 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.2.2</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.2.6</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
-            <button type="button" class="btn btn-primary" id="btnAboutOk">OK</button>
+            <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
           </div>
         </div>
       </div>
@@ -621,12 +650,12 @@
 
     <!-- Afinador: ajuda quando o microfone está bloqueado -->
     <div class="metronome-modal hidden" id="tunerMicHelpModal" role="dialog" aria-modal="true" aria-labelledby="tunerMicHelpTitle">
-      <div class="metronome-card settings-modal-card tuner-mic-help-card">
+      <div class="metronome-card settings-modal-card tuner-mic-help-card du-card border border-base-300 bg-base-100 shadow-xl">
         <button type="button" class="metronome-close" id="tunerMicHelpCloseX" aria-label="Fechar"><i data-lucide="x"></i></button>
         <h3 id="tunerMicHelpTitle" class="tuner-mic-help-heading">Permitir o microfone</h3>
         <div class="tuner-mic-help-content" id="tunerMicHelpContent"></div>
         <div class="tuner-mic-help-footer">
-          <button type="button" class="btn btn-primary" id="tunerMicHelpOk">Entendi</button>
+          <button type="button" class="du-btn du-btn-primary du-btn-sm" id="tunerMicHelpOk">Entendi</button>
         </div>
       </div>
     </div>

@@ -1,11 +1,16 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.5';
+      const APP_VERSION = '1.2.6';
       const APP_VERSION_LABEL = 'Beta';
+      const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
       const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
       const PLAYER_CATALOG_URL = './xml/catalog.json';
+
+      var themePrefMq = null;
+      var themePrefMqHandler = null;
+      var themePrefMqBound = false;
 
       // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
       const NOTAS = [
@@ -812,7 +817,7 @@
 
         phases.forEach(function (ph, idx) {
           var det = document.createElement('details');
-          det.className = 'hinos-fase-details';
+          det.className = 'hinos-fase-details du-card border border-base-300 bg-base-100 shadow-sm';
           det.open = idx === 0;
           var sum = document.createElement('summary');
           var sp = document.createElement('span');
@@ -877,7 +882,7 @@
 
           var btnClr = document.createElement('button');
           btnClr.type = 'button';
-          btnClr.className = 'hinos-filter-clear';
+          btnClr.className = 'hinos-filter-clear du-btn du-btn-outline du-btn-sm du-btn-square';
           btnClr.setAttribute('aria-label', 'Limpar filtros');
           btnClr.title = 'Limpar tonalidade e busca';
           btnClr.innerHTML = '<i data-lucide="circle-x" aria-hidden="true"></i>';
@@ -912,7 +917,7 @@
             if (hinoCountInGr > 0) {
               var bulkBtn = document.createElement('button');
               bulkBtn.type = 'button';
-              bulkBtn.className = 'hinos-grupo-bulk';
+              bulkBtn.className = 'hinos-grupo-bulk du-btn du-btn-outline du-btn-sm du-btn-square';
               bulkBtn.setAttribute('aria-label', 'Marcar voz principal em todos os hinos deste grupo');
               bulkBtn.title =
                 'Marca a voz principal do aluno em todos os hinos deste grupo. Coros não são alterados.';
@@ -2434,6 +2439,96 @@
         return window.UiCoreModule.toggleFullscreen();
       }
 
+      function readStoredThemeMode() {
+        try {
+          var raw = localStorage.getItem(THEME_STORAGE_KEY);
+          if (raw === 'light' || raw === 'dark' || raw === 'system') return raw;
+        } catch (e) {}
+        return 'light';
+      }
+
+      function writeStoredThemeMode(mode) {
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, mode);
+        } catch (e) {}
+      }
+
+      function effectiveThemeIsDark(mode) {
+        if (mode === 'dark') return true;
+        if (mode === 'light') return false;
+        try {
+          return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        } catch (e2) {
+          return false;
+        }
+      }
+
+      function applyThemeToDom(mode) {
+        var root = document.documentElement;
+        var dark = effectiveThemeIsDark(mode);
+        root.classList.remove('theme-light', 'theme-dark');
+        root.classList.add(dark ? 'theme-dark' : 'theme-light');
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        root.setAttribute('data-theme-mode', mode);
+        if (document.body) {
+          document.body.classList.remove('theme-light', 'theme-dark');
+          document.body.classList.add(dark ? 'theme-dark' : 'theme-light');
+        }
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', dark ? '#0e0e10' : '#7d9d7a');
+      }
+
+      function themeModeButtonLabel(mode) {
+        if (mode === 'light') return 'Tema: claro';
+        if (mode === 'dark') return 'Tema: escuro';
+        return 'Tema: seguir sistema';
+      }
+
+      function syncThemeCycleButton() {
+        var btn = document.getElementById('btnThemeCycle');
+        if (!btn) return;
+        var mode = readStoredThemeMode();
+        var dark = effectiveThemeIsDark(mode);
+        btn.textContent = themeModeButtonLabel(mode);
+        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        btn.title = 'Alternar tema (claro, escuro ou seguir o sistema). Atual: ' + themeModeButtonLabel(mode) + '.';
+      }
+
+      function bindThemePreferenceListener() {
+        if (themePrefMqBound) return;
+        if (!window.matchMedia) return;
+        try {
+          themePrefMq = window.matchMedia('(prefers-color-scheme: dark)');
+        } catch (e) {
+          return;
+        }
+        themePrefMqHandler = function () {
+          if (readStoredThemeMode() !== 'system') return;
+          applyThemeToDom('system');
+          syncThemeCycleButton();
+        };
+        if (typeof themePrefMq.addEventListener === 'function') {
+          themePrefMq.addEventListener('change', themePrefMqHandler);
+        } else if (typeof themePrefMq.addListener === 'function') {
+          themePrefMq.addListener(themePrefMqHandler);
+        }
+        themePrefMqBound = true;
+      }
+
+      function cycleThemeMode() {
+        var cur = readStoredThemeMode();
+        var next = cur === 'system' ? 'light' : (cur === 'light' ? 'dark' : 'system');
+        writeStoredThemeMode(next);
+        applyThemeToDom(next);
+        syncThemeCycleButton();
+      }
+
+      function initTheme() {
+        applyThemeToDom(readStoredThemeMode());
+        bindThemePreferenceListener();
+        syncThemeCycleButton();
+      }
+
       // ========== UI: MENSAGEM E MASCOTE ==========
       function setMessage(text) {
         return window.UiCoreModule.setMessage(text);
@@ -2700,7 +2795,7 @@
         INSTRUMENTOS.forEach(function (inst) {
           var btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'instrument-btn' + (inst.id === currentInstrument.id ? ' active' : '');
+          btn.className = 'instrument-btn du-btn du-btn-outline du-btn-sm' + (inst.id === currentInstrument.id ? ' active' : '');
           btn.dataset.instrumentId = inst.id;
           btn.setAttribute('aria-pressed', inst.id === currentInstrument.id ? 'true' : 'false');
           btn.textContent = inst.emoji + ' ' + inst.nome;
@@ -2902,7 +2997,7 @@
           var hz = window.TunerUtils.noteFrequency(noteName, tunerNoteToMidi, midiToFreq);
           if (hz === null) return;
           var chip = document.createElement('span');
-          chip.className = 'tuner-preset-dynamic-item';
+          chip.className = 'tuner-preset-dynamic-item du-badge du-badge-outline';
           var hzText = window.TunerUtils.formatHz(hz, 1);
           chip.textContent = noteName + ' \u00b7 ' + hzText;
           listEl.appendChild(chip);
@@ -5274,6 +5369,8 @@
 
         var btnAbout = document.getElementById('btnAbout');
         if (btnAbout) btnAbout.addEventListener('click', openAboutModal);
+        var btnThemeCycle = document.getElementById('btnThemeCycle');
+        if (btnThemeCycle) btnThemeCycle.addEventListener('click', cycleThemeMode);
         var btnAboutClose = document.getElementById('btnAboutClose');
         if (btnAboutClose) btnAboutClose.addEventListener('click', closeAboutModal);
         var btnAboutOk = document.getElementById('btnAboutOk');
@@ -5864,7 +5961,7 @@
         CLAVES.forEach(function (clef) {
           var btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'clef-btn' + (clef.id === currentClef ? ' active' : '');
+          btn.className = 'clef-btn du-btn du-btn-outline du-btn-sm' + (clef.id === currentClef ? ' active' : '');
           btn.dataset.clefId = clef.id;
           btn.setAttribute('aria-pressed', clef.id === currentClef ? 'true' : 'false');
           btn.textContent = clef.simbolo + ' ' + clef.nome;
@@ -6960,7 +7057,7 @@
         TONALIDADES.forEach(function (k) {
           var btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'key-btn' + (k.id === currentKey.id ? ' active' : '');
+          btn.className = 'key-btn du-btn du-btn-outline du-btn-sm' + (k.id === currentKey.id ? ' active' : '');
           btn.dataset.keyId = k.id;
           btn.setAttribute('aria-pressed', k.id === currentKey.id ? 'true' : 'false');
           btn.textContent = k.nome;
@@ -6975,7 +7072,7 @@
         NOTAS.forEach(function (nota) {
           var btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'note-option-btn';
+          btn.className = 'note-option-btn du-btn du-btn-outline du-btn-sm';
           btn.dataset.noteId = nota.id;
           btn.textContent = nota.nome;
           btn.addEventListener('click', function () {
@@ -7125,6 +7222,7 @@
         if (aboutVersionNumber) aboutVersionNumber.textContent = APP_VERSION;
         if (aboutVersionLabel) aboutVersionLabel.textContent = APP_VERSION_LABEL;
         if (splashVersion) splashVersion.textContent = 'v' + APP_VERSION;
+        initTheme();
         bootstrapScreenWakeLock();
         createInstrumentButtons();
         createKeyButtons();

@@ -34,6 +34,7 @@ Funciona no navegador e pode ser **instalado** como aplicativo, com **cache** pa
 ## Stack (resumo)
 
 - HTML, CSS e JavaScript no cliente.
+- **Tailwind CSS** + **DaisyUI** (ficheiro `assets/css/tw-daisy.css`): utilitários e componentes para evolução da UI. Os componentes Daisy usam o prefixo **`du-`** (por exemplo `du-btn`, `du-card`) para não colidir com as classes `.btn` / `.btn-primary` já definidas em `app.css`. Requer [Node.js](https://nodejs.org/) na máquina de desenvolvimento; na raiz execute `npm install` e `npm run build:css` (ou `npm run watch:css`). O **preflight** do Tailwind está desativado para não sobrescrever o layout existente.
 - **OpenSheetMusicDisplay** para renderização de MusicXML no Player.
 - **soundfont-player** para sons de instrumento GM.
 - Catálogo e partituras servidos como arquivos estáticos (por exemplo `xml/catalog.json` e coleções MusicXML).

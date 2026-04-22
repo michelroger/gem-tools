@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DaisyUI define fundo em :root/[data-theme]; manter o degradê do body */
+html[data-theme] {
+  background-color: transparent !important;
+}
