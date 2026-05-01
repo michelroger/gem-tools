@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.6';
+      const APP_VERSION = '1.2.7';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -326,8 +326,8 @@
       let totalChallenges = 0;
       let soundEnabled = true;
       let calmMode = false;
-      /** Volume base das notas do instrumento (soundfont + síntese). Suba com moderação (ex.: 1.2–1.5) para evitar distorção. */
-      var INSTRUMENT_OUTPUT_GAIN = 2;
+      /** Volume base das notas do instrumento (soundfont + síntese). */
+      var INSTRUMENT_OUTPUT_GAIN = 1.25;
       let narrationEnabled = false;
       let ambientEnabled = false;
       let ambientOsc = null;
@@ -337,6 +337,10 @@
       var instrumentLoadPromises = {};
       var currentSustainedNoteStop = null;
       var activePointerNotes = {};
+      var audioOutputBus = null;
+      var audioOutputBusCtx = null;
+      var audioReverbImpulse = null;
+      var audioReverbImpulseCtx = null;
       let staffModeTarget = null;
       let staffAnswerLocked = false;
       let staffNoteEllipse = null;
@@ -380,6 +384,8 @@
       var playerLiveListenLastFreq = 0;
       var playerLiveListenLastCents = 0;
       var playerLiveListenHasSignal = false;
+      /** Frequência esperada da nota atual (partitura): orienta normalização contra harmônicos espúrios. */
+      var playerLiveListenHintExpectedFreq = 0;
       var playerLiveCurrentAnchorEl = null;
       var playerLiveFeedbackEventIndex = -1;
       var playerLiveFeedbackStatus = '';
@@ -1876,6 +1882,118 @@
         return audioCtx;
       }
 
+      function createReverbImpulse(ctx, seconds, decay) {
+        if (!ctx) return null;
+        var len = Math.max(1, Math.floor(ctx.sampleRate * Math.max(0.4, seconds || 1.8)));
+        var impulse = ctx.createBuffer(2, len, ctx.sampleRate);
+        var ch;
+        for (ch = 0; ch < 2; ch++) {
+          var data = impulse.getChannelData(ch);
+          var i;
+          for (i = 0; i < len; i++) {
+            var t = i / len;
+            var env = Math.pow(1 - t, Math.max(1.2, decay || 2.2));
+            data[i] = (Math.random() * 2 - 1) * env;
+          }
+        }
+        return impulse;
+      }
+
+      function getReverbImpulse(ctx) {
+        if (!ctx) return null;
+        if (audioReverbImpulse && audioReverbImpulseCtx === ctx) return audioReverbImpulse;
+        try {
+          audioReverbImpulse = createReverbImpulse(ctx, calmMode ? 1.5 : 1.9, calmMode ? 2.0 : 2.35);
+          audioReverbImpulseCtx = ctx;
+          return audioReverbImpulse;
+        } catch (e) {
+          audioReverbImpulse = null;
+          audioReverbImpulseCtx = null;
+          return null;
+        }
+      }
+
+      /**
+       * Barramento de saída com tratamento leve para timbre mais natural.
+       * Mantém fallback para destination caso qualquer nó não possa ser criado.
+       */
+      function ensureAudioOutputBus(ctx) {
+        if (!ctx) return null;
+        if (audioOutputBus && audioOutputBusCtx === ctx) return audioOutputBus;
+        try {
+          var input = ctx.createGain();
+          var lowShelf = ctx.createBiquadFilter();
+          lowShelf.type = 'lowshelf';
+          lowShelf.frequency.value = 180;
+          lowShelf.gain.value = 1.8;
+
+          var highShelf = ctx.createBiquadFilter();
+          highShelf.type = 'highshelf';
+          highShelf.frequency.value = 4200;
+          highShelf.gain.value = -1.6;
+
+          var compressor = ctx.createDynamicsCompressor();
+          compressor.threshold.value = -18;
+          compressor.knee.value = 18;
+          compressor.ratio.value = 2.4;
+          compressor.attack.value = 0.01;
+          compressor.release.value = 0.22;
+
+          var limiter = ctx.createGain();
+          limiter.gain.value = calmMode ? 0.92 : 0.98;
+          var dryGain = ctx.createGain();
+          dryGain.gain.value = calmMode ? 0.88 : 0.84;
+          var wetGain = ctx.createGain();
+          wetGain.gain.value = calmMode ? 0.1 : 0.16;
+          var convolver = ctx.createConvolver();
+          convolver.normalize = true;
+          convolver.buffer = getReverbImpulse(ctx);
+
+          input.connect(lowShelf);
+          lowShelf.connect(highShelf);
+          highShelf.connect(compressor);
+          compressor.connect(dryGain);
+          compressor.connect(convolver);
+          convolver.connect(wetGain);
+          dryGain.connect(limiter);
+          wetGain.connect(limiter);
+          limiter.connect(ctx.destination);
+
+          audioOutputBus = input;
+          audioOutputBusCtx = ctx;
+          return audioOutputBus;
+        } catch (e) {
+          audioOutputBus = null;
+          audioOutputBusCtx = null;
+          return null;
+        }
+      }
+
+      function connectNodeToOutput(node, ctx) {
+        if (!node || !ctx) return;
+        var bus = ensureAudioOutputBus(ctx);
+        if (bus) {
+          node.connect(bus);
+          return;
+        }
+        node.connect(ctx.destination);
+      }
+
+      function getCurrentInstrumentTimbreProfile() {
+        var inst = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
+        if (inst === 'violino') return { attack: 0.016, release: 0.42, gainMul: 0.96 };
+        if (inst === 'viola') return { attack: 0.018, release: 0.44, gainMul: 0.97 };
+        if (inst === 'violoncelo') return { attack: 0.02, release: 0.48, gainMul: 1.0 };
+        if (inst === 'flauta' || inst === 'clarinete' || inst === 'oboe' || inst === 'fagote') {
+          return { attack: 0.014, release: 0.36, gainMul: 0.95 };
+        }
+        if (inst === 'trompete' || inst === 'trompa' || inst === 'trombone') {
+          return { attack: 0.012, release: 0.33, gainMul: 0.92 };
+        }
+        if (inst === 'voz') return { attack: 0.022, release: 0.5, gainMul: 0.8 };
+        return { attack: 0.012, release: 0.34, gainMul: 0.95 };
+      }
+
       /** Converte frequência (Hz) em nome da nota MIDI (ex.: 440 -> 'A4'). */
       function freqToMidiNoteName(freq) {
         var midi = Math.round(69 + 12 * Math.log2(freq / 440));
@@ -2062,7 +2180,7 @@
 
         formantSum.connect(body);
         body.connect(master);
-        master.connect(ctx.destination);
+        connectNodeToOutput(master, ctx);
 
         var vibStart = startAtCtx + Math.min(atk * 0.55, 0.1);
         var lfo = ctx.createOscillator();
@@ -2120,15 +2238,23 @@
 
       /** Opções de reprodução para deixar o timbre menos "seco". */
       function buildSoundfontPlayOptions(durationSec, gainValue) {
+        var profile = getCurrentInstrumentTimbreProfile();
         var g =
           (typeof gainValue === 'number' && isFinite(gainValue) ? gainValue : 0.5) *
-          INSTRUMENT_OUTPUT_GAIN;
-        if (g > 0.95) g = 0.95;
+          INSTRUMENT_OUTPUT_GAIN *
+          (profile.gainMul || 1);
+        if (g > 0.82) g = 0.82;
+        var attack = profile.attack || 0.01;
+        var release = profile.release || 0.34;
+        if (durationSec < 0.2) {
+          attack = Math.min(attack, 0.008);
+          release = Math.min(release, 0.2);
+        }
         return {
           duration: durationSec,
           gain: g,
-          attack: 0.004,
-          release: 0.22
+          attack: attack,
+          release: release
         };
       }
 
@@ -2158,7 +2284,8 @@
         }
 
         instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
-          from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/'
+          from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/',
+          destination: ensureAudioOutputBus(ctx) || ctx.destination
         }).then(function (loadedInst) {
           return loadedInst;
         }).catch(function () {
@@ -2182,7 +2309,7 @@
         g.gain.linearRampToValueAtTime(vol, now + 0.05);
         g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
         osc.connect(g);
-        g.connect(ctx.destination);
+        connectNodeToOutput(g, ctx);
         osc.start(now);
         osc.stop(now + 0.75);
       }
@@ -2203,7 +2330,7 @@
           g.gain.exponentialRampToValueAtTime(baseVol, now + startOffset + 0.01);
           g.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
           osc.connect(g);
-          g.connect(ctx.destination);
+          connectNodeToOutput(g, ctx);
           osc.start(now + startOffset);
           osc.stop(now + startOffset + duration + 0.01);
         }
@@ -2272,7 +2399,7 @@
             g.gain.setValueAtTime(0, now);
             g.gain.linearRampToValueAtTime(vol, now + 0.05);
             osc.connect(g);
-            g.connect(ctx.destination);
+            connectNodeToOutput(g, ctx);
             osc.start(now);
             currentSustainedNoteStop = function () {
               var t = ctx.currentTime;
@@ -2291,7 +2418,7 @@
           g.gain.setValueAtTime(0, now);
           g.gain.linearRampToValueAtTime(vol, now + 0.05);
           osc.connect(g);
-          g.connect(ctx.destination);
+          connectNodeToOutput(g, ctx);
           osc.start(now);
           currentSustainedNoteStop = function () {
             var t = ctx.currentTime;
@@ -2341,7 +2468,7 @@
             g.gain.setValueAtTime(0, now);
             g.gain.linearRampToValueAtTime(vol, now + 0.05);
             osc.connect(g);
-            g.connect(ctx.destination);
+            connectNodeToOutput(g, ctx);
             osc.start(now);
             setStop(function () {
               var t = ctx.currentTime;
@@ -2361,7 +2488,7 @@
           g.gain.setValueAtTime(0, now);
           g.gain.linearRampToValueAtTime(vol, now + 0.05);
           osc.connect(g);
-          g.connect(ctx.destination);
+          connectNodeToOutput(g, ctx);
           osc.start(now);
           setStop(function () {
             var t = ctx.currentTime;
@@ -2435,7 +2562,7 @@
         gain.gain.setValueAtTime(0, ctx.currentTime);
         gain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 1);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        connectNodeToOutput(gain, ctx);
         osc.start(ctx.currentTime);
         ambientOsc = osc;
         ambientGain = gain;
@@ -3062,6 +3189,11 @@
 
       function getTunerSmoothingConfig() {
         return window.TunerUtils.getSmoothingConfig();
+      }
+
+      /** Suavização mais forte que o afinador isolado: leitura ao vivo prioriza estabilidade em ruído. */
+      function getPlayerLiveSmoothingConfig() {
+        return { alpha: 0.4, medianWindow: 4 };
       }
 
       function tunerMedian(values) {
@@ -3922,6 +4054,7 @@
         playerLiveListenLastFreq = 0;
         playerLiveListenLastCents = 0;
         playerLiveListenHasSignal = false;
+        playerLiveListenHintExpectedFreq = 0;
         if (playerLiveCurrentEventIndex >= 0) {
           finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
           playerLiveCurrentEventIndex = -1;
@@ -3931,14 +4064,18 @@
       }
 
       function playerLiveListenNormalizeFrequency(freq) {
-        return window.TunerUtils.normalizeFrequency(freq, [], {
+        var deps = {
           freqToMidi: tunerFreqToMidi,
           midiToFreq: midiToFreq,
           noteToMidi: tunerNoteToMidi,
           presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
             return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
           }
-        });
+        };
+        if (isFinite(playerLiveListenHintExpectedFreq) && playerLiveListenHintExpectedFreq > 0) {
+          deps.hintExpectedFreq = playerLiveListenHintExpectedFreq;
+        }
+        return window.TunerUtils.normalizeFrequency(freq, [], deps);
       }
 
       function playerLiveListenLoop() {
@@ -3947,9 +4084,9 @@
         var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate);
         if (raw > 0) {
           playerLiveListenNoSignalFrames = 0;
-          var cfg = getTunerSmoothingConfig();
+          var cfg = getPlayerLiveSmoothingConfig();
           var normalizedRaw = playerLiveListenNormalizeFrequency(raw);
-          window.TunerUtils.pushWithLimit(playerLiveListenRawHistory, normalizedRaw, 6);
+          window.TunerUtils.pushWithLimit(playerLiveListenRawHistory, normalizedRaw, 10);
           var win = Math.min(cfg.medianWindow, playerLiveListenRawHistory.length);
           var filtered = tunerMedian(playerLiveListenRawHistory.slice(-win));
           playerLiveListenSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(
@@ -4385,7 +4522,8 @@
           timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
         }
         var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
-        var passedLive = liveMetric.attackHit && timingRatio >= 0.55 && pitchRatio >= 0.6;
+        var passThLive = getPlayerLivePassThresholds(liveMetric.expectedDurationSec || 0.06);
+        var passedLive = liveMetric.attackHit && timingRatio >= passThLive.minTiming && pitchRatio >= passThLive.minPitch;
 
         var aggTotal = total + 1;
         var aggPassed = passed + (passedLive ? 1 : 0);
@@ -4462,7 +4600,7 @@
         var best = detectedFreq;
         var bestDelta = Math.abs(Math.log(detectedFreq / expectedFreq));
         var range = getPlayerInstrumentFreqRange();
-        var multipliers = [0.25, 0.5, 1, 2, 4];
+        var multipliers = [0.25, 1 / 3, 0.5, 1, 2, 3, 4];
         multipliers.forEach(function (mul) {
           var cand = detectedFreq * mul;
           if (!isFinite(cand) || cand <= 0) return;
@@ -4484,17 +4622,39 @@
       }
 
       function getPlayerLiveCentsTolerance(ev, nowSec) {
-        var baseTolerance = 35;
+        // Margem maior que o tuner “seco”: leitura ao vivo depende de microfone, sala e ruído.
+        var baseTolerance = 60;
         if (!ev) return baseTolerance;
         var start = Number(ev.startSec) || 0;
         var duration = Math.max(0.04, Number(ev.durationSec) || 0.06);
         // Ataque da nota: deixa uma margem maior no começo para o instrumento "assentar".
         var settleSec = Math.min(0.3, Math.max(0.14, duration * 0.35));
-        var attackTolerance = 62;
+        var attackTolerance = 100;
         var elapsed = Math.max(0, nowSec - start);
         if (elapsed >= settleSec) return baseTolerance;
         var t = elapsed / settleSec;
         return attackTolerance + ((baseTolerance - attackTolerance) * t);
+      }
+
+      /** Frames seguidos dentro da tolerância antes de mostrar “afinado” (evita piscar). */
+      var PLAYER_LIVE_TUNED_OK_FRAMES = 3;
+
+      /**
+       * Notas curtas: exige menos pitchRatio no “passa” e um pouco mais de timing (menos frames no tempo).
+       * durationSec = duração nominal do evento na partitura.
+       */
+      function getPlayerLivePassThresholds(durationSec) {
+        var d = Math.max(0.04, Number(durationSec) || 0.06);
+        var minPitch = 0.6;
+        var minTiming = 0.55;
+        if (d < 0.22) {
+          var t = (d - 0.06) / (0.22 - 0.06);
+          if (!isFinite(t)) t = 0;
+          t = Math.max(0, Math.min(1, t));
+          minPitch = 0.32 + (0.6 - 0.32) * t;
+          minTiming = 0.48 + (0.55 - 0.48) * t;
+        }
+        return { minPitch: minPitch, minTiming: minTiming };
       }
 
       function ensurePlayerLiveMetric(eventIndex) {
@@ -4505,12 +4665,15 @@
             totalFrames: 0,
             signalFrames: 0,
             tunedFrames: 0,
+            consecutiveTunedFrames: 0,
             attackHit: false,
             firstSignalSec: null,
             firstTunedSec: null,
             expectedStartSec: null
           };
           playerLiveEventMetrics[key] = metric;
+        } else if (typeof metric.consecutiveTunedFrames !== 'number') {
+          metric.consecutiveTunedFrames = 0;
         }
         return metric;
       }
@@ -4532,7 +4695,8 @@
           timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
         }
         var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
-        var passed = metric.attackHit && timingRatio >= 0.55 && pitchRatio >= 0.6;
+        var passTh = getPlayerLivePassThresholds(metric.expectedDurationSec || 0.06);
+        var passed = metric.attackHit && timingRatio >= passTh.minTiming && pitchRatio >= passTh.minPitch;
         playerLiveScoreTotals.notesTotal += 1;
         if (passed) playerLiveScoreTotals.notesPassed += 1;
         playerLiveScoreTotals.pitchSum += pitchRatio;
@@ -4572,6 +4736,7 @@
 
       function updatePlayerLiveFeedbackNow(nowSec) {
         if (!playerLiveListenEnabled || !playerLiveListenRunning || !playerPlayback.isPlaying) {
+          playerLiveListenHintExpectedFreq = 0;
           playerLiveListenHasSignal = false;
           playerLiveListenLastCents = 0;
           if (playerLiveCurrentEventIndex >= 0) {
@@ -4584,6 +4749,7 @@
         }
         var eventIndex = findPlayerActivePlayableEventIndex(nowSec);
         if (eventIndex < 0) {
+          playerLiveListenHintExpectedFreq = 0;
           playerLiveListenLastCents = 0;
           if (playerLiveCurrentEventIndex >= 0) {
             finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
@@ -4600,6 +4766,7 @@
         var ev = playerScoreData.events[eventIndex];
         var expectedFreqEarly = (!ev || !isFinite(ev.freq) || ev.freq <= 0) ? NaN : getPlayerLiveExpectedFreq(ev);
         if (!ev || !isFinite(ev.freq) || ev.freq <= 0) {
+          playerLiveListenHintExpectedFreq = 0;
           playerLiveListenHasSignal = false;
           playerLiveListenLastCents = 0;
           applyPlayerLiveFeedback(eventIndex, 'bad', false);
@@ -4615,6 +4782,7 @@
         }
 
         var expectedFreq = getPlayerLiveExpectedFreq(ev);
+        playerLiveListenHintExpectedFreq = expectedFreq;
         var metric = ensurePlayerLiveMetric(eventIndex);
         metric.totalFrames += 1;
         metric.expectedStartSec = ev.startSec || 0;
@@ -4624,6 +4792,7 @@
         if (!isFinite(detected) || detected <= 0) {
           playerLiveListenHasSignal = false;
           playerLiveListenLastCents = 0;
+          metric.consecutiveTunedFrames = 0;
           applyPlayerLiveFeedback(eventIndex, 'bad', false);
           applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
           renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreq, NaN);
@@ -4637,6 +4806,12 @@
         var absCents = Math.abs(cents);
         var centsTolerance = getPlayerLiveCentsTolerance(ev, nowSec);
         var tuned = absCents <= centsTolerance;
+        if (tuned) {
+          metric.consecutiveTunedFrames += 1;
+        } else {
+          metric.consecutiveTunedFrames = 0;
+        }
+        var stableTuned = metric.consecutiveTunedFrames >= PLAYER_LIVE_TUNED_OK_FRAMES;
         playerLiveListenHasSignal = true;
         playerLiveListenLastCents = cents;
         if (tuned) metric.tunedFrames += 1;
@@ -4648,10 +4823,10 @@
           metric.attackHit = true;
         }
 
-        var liveStatus = tuned ? 'ok' : 'bad';
+        var liveStatus = stableTuned ? 'ok' : 'bad';
         applyPlayerLiveFeedback(eventIndex, liveStatus, false);
         applyPlayerLiveCurrentAnchorStatus(liveStatus, eventIndex);
-        renderPlayerLiveInlineBadge(eventIndex, cents, tuned, true, null, alignedDetected, expectedFreq, detected);
+        renderPlayerLiveInlineBadge(eventIndex, cents, stableTuned, true, null, alignedDetected, expectedFreq, detected);
         syncPlayerLiveScoreUi();
       }
 
@@ -5220,7 +5395,7 @@
         gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.004);
         gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.055);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        connectNodeToOutput(gain, ctx);
         osc.start(startAtCtx);
         osc.stop(startAtCtx + 0.07);
       }
@@ -5238,7 +5413,7 @@
         gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.002);
         gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.045);
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        connectNodeToOutput(gain, ctx);
         osc.start(startAtCtx);
         osc.stop(startAtCtx + 0.06);
       }
@@ -5304,7 +5479,7 @@
         gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.015);
         gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + Math.max(0.03, dur));
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        connectNodeToOutput(gain, ctx);
         osc.start(startAtCtx);
         osc.stop(startAtCtx + Math.max(0.05, dur) + 0.02);
         playerPlayback.activeStops.push(function () {
@@ -5328,7 +5503,9 @@
           var isVoiceInstrument = currentInstrument && currentInstrument.id === 'voz';
           var gain = calmMode ? 0.36 : 0.56;
           if (isVoiceInstrument) gain = calmMode ? 0.02 : 0.035;
-          var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, gain));
+          // Pequena variação de dinâmica para reduzir efeito "machine gun".
+          var humanGain = gain * (0.96 + (Math.random() * 0.08));
+          var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, humanGain));
           if (isVoiceInstrument) {
             var ctxSf = getAudioContext();
             if (ctxSf) schedulePlayerSungSolfejo(ctxSf, startAtCtx, event.freq, dur, playerPlayToken);

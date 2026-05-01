@@ -209,6 +209,22 @@
   function normalizeFrequency(freq, notes, deps) {
     if (!isFinite(freq) || freq <= 0) return -1;
     var d = deps || {};
+    // Leitura ao vivo: escolhe harmônico do sinal bruto mais próximo da nota esperada na partitura.
+    var hint = d.hintExpectedFreq;
+    if (isFinite(hint) && hint > 0) {
+      var liveCand = [freq, freq / 2, freq / 3, freq / 4, freq / 5, freq * 2, freq * 3, freq * 4];
+      var bestH = freq;
+      var bestS = Infinity;
+      liveCand.forEach(function (cand) {
+        if (!isFinite(cand) || cand < 35 || cand > 1200) return;
+        var s = Math.abs(Math.log(cand / hint));
+        if (s < bestS) {
+          bestS = s;
+          bestH = cand;
+        }
+      });
+      freq = bestH;
+    }
     var freqToMidiFn = typeof d.freqToMidi === 'function' ? d.freqToMidi : freqToMidi;
     var midiToFreqFn = typeof d.midiToFreq === 'function'
       ? d.midiToFreq
