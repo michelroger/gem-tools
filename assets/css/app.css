@@ -996,6 +996,7 @@
     }
 
     .player-score-host {
+      position: relative;
       min-height: 140px;
       border-radius: var(--radius-sm);
       border: 1px dashed rgba(15, 23, 42, 0.22);
@@ -1004,6 +1005,44 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       text-align: center;
+    }
+
+    .player-prep-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      border-radius: inherit;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(2px);
+    }
+
+    .player-prep-count {
+      font-family: var(--font);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 18vw, 7.5rem);
+      line-height: 1;
+      color: var(--accent);
+      text-shadow: 0 2px 24px rgba(79, 124, 255, 0.35);
+      animation: player-prep-count-pop 0.38s var(--ease-out);
+    }
+
+    @keyframes player-prep-count-pop {
+      0% {
+        transform: scale(0.72);
+        opacity: 0.35;
+      }
+      70% {
+        transform: scale(1.04);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .player-osmd-inner {
@@ -3837,6 +3876,15 @@
       background: var(--card);
       border-color: rgba(255, 255, 255, 0.14);
       box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+    }
+
+    html.theme-dark .player-prep-overlay {
+      background: rgba(13, 20, 34, 0.85);
+    }
+
+    html.theme-dark .player-prep-count {
+      color: #9bb6ff;
+      text-shadow: 0 2px 28px rgba(79, 124, 255, 0.5);
     }
 
     html.theme-dark .player-ctl-btn {

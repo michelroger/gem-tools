@@ -21,7 +21,23 @@
   }
 
   /**
-   * Extrai eventos de nota, cursores e batidas a partir do MusicXML bruto (para playback/cursor).
+   * Remove marcas de repetição e voltas (MusicXML) só para o **playback** (ordem linear até o Final).
+   * A partitura desenhada pode usar o XML original para manter os símbolos visíveis.
+   */
+  function stripPlaybackRepeatMarks(xmlText) {
+    var s = String(xmlText || '');
+    if (!s) return s;
+    s = s.replace(/<repeat\b[^>]*\/>/gi, '');
+    s = s.replace(/<repeat\b[^>]*>[\s\S]*?<\/repeat>/gi, '');
+    s = s.replace(/<ending\b[^>]*\/>/gi, '');
+    s = s.replace(/<ending\b[^>]*>[\s\S]*?<\/ending>/gi, '');
+    return s;
+  }
+
+  /**
+   * Extrai eventos de nota, cursores e batidas a partir do MusicXML (para playback/cursor).
+   * Retornelas e «Final» no desenho (OSMD) mantêm-se no XML de exibição; o áudio segue **uma vez**
+   * do primeiro ao último compasso, sem saltos de repetição.
    * Depende de `StaffMathUtils.midiToFreq` e `MetronomeUtils.fromMusicXmlElement` (carregados no head).
    */
   function parseMusicXml(xmlText) {
@@ -38,6 +54,7 @@
     /** Andamento “da partitura” para o controlo de velocidade (ex.: ♩=78 → 78, unidade semínima). */
     var scoreBaselineMarkingBpm = null;
     var scoreBaselineMarkingBeatUnit = 'quarter';
+
     parts.forEach(function (part, partIndex) {
       var timelineSec = 0;
       var tempo = 60;
@@ -235,14 +252,15 @@
       cursorStarts = mergedCursorStarts;
     }
 
+    var beatEvents = beatEventsFromFirstPart && beatEventsFromFirstPart.length
+      ? beatEventsFromFirstPart
+      : [{ sec: 0, accent: true }];
+    var repeatMap = [];
     var totalDuration = 0;
-    var totalDurationAll = 0;
     events.forEach(function (ev) {
       var endAt = ev.startSec + ev.durationSec;
-      totalDurationAll = Math.max(totalDurationAll, endAt);
-      if (!ev.isRest) totalDuration = Math.max(totalDuration, endAt);
+      totalDuration = Math.max(totalDuration, endAt);
     });
-    if (totalDuration <= 0) totalDuration = totalDurationAll;
     events.sort(function (a, b) {
       if (a.startSec !== b.startSec) return a.startSec - b.startSec;
       if (!!a.isRest !== !!b.isRest) return a.isRest ? 1 : -1;
@@ -250,7 +268,6 @@
     });
 
     if (!events.length || totalDuration <= 0) return null;
-    var beatEvents = beatEventsFromFirstPart && beatEventsFromFirstPart.length ? beatEventsFromFirstPart : [{ sec: 0, accent: true }];
     if (!isFinite(scoreBaselineMarkingBpm) || scoreBaselineMarkingBpm <= 0) {
       scoreBaselineMarkingBpm = 60;
       scoreBaselineMarkingBeatUnit = 'quarter';
@@ -260,6 +277,8 @@
       cursorStarts: cursorStarts,
       beatEvents: beatEvents,
       totalDurationSec: totalDuration,
+      repeatMap: repeatMap,
+      voltaPlaybackMap: null,
       baselineMarkingBpm: scoreBaselineMarkingBpm,
       baselineMarkingBeatUnit: scoreBaselineMarkingBeatUnit
     };
@@ -267,5 +286,6 @@
 
   window.PlayerMusicXmlUtils = window.PlayerMusicXmlUtils || {};
   window.PlayerMusicXmlUtils.buildDisplayMusicXml = buildDisplayMusicXml;
+  window.PlayerMusicXmlUtils.stripPlaybackRepeatMarks = stripPlaybackRepeatMarks;
   window.PlayerMusicXmlUtils.parseMusicXml = parseMusicXml;
 })();

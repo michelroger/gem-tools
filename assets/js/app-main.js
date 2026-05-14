@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.7';
+      const APP_VERSION = '1.2.8';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -425,7 +425,9 @@
         nextBeatIndex: 0,
         liveEventIndex: -1,
         rafId: null,
-        activeStops: []
+        activeStops: [],
+        /** Evita `cursor.next()` em loop quando o OSMD tem menos passos que `cursorStarts` (voltas na partitura). */
+        lastCursorOsmdResyncTs: 0
       };
 
       /** Ponte para `player-load-bindings.js` (IIFE nao expoe `let`/`const` ao `window`). */
@@ -5126,14 +5128,18 @@
       function seekPlayerToTime(targetSec, resumeIfPlaying) {
         if (!playerScoreData || !playerScoreData.totalDurationSec) return;
         var clamped = Math.max(0, Math.min(playerScoreData.totalDurationSec, targetSec || 0));
+        var displayClamped = mapPlayerPlaybackSecToDisplaySec(
+          clamped,
+          playerScoreData ? playerScoreData.repeatMap : null
+        );
         var wasPlaying = !!resumeIfPlaying && playerPlayback.isPlaying;
         if (playerPlayback.isPlaying) stopPlayerPlayback(true);
         playerPlayback.positionSec = clamped;
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayClamped));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
         playerAutoScrollNeedsInitial = false;
-        resetPlayerCursorToCurrentPosition();
+        resetPlayerCursorToCurrentPosition(clamped);
         updatePlayerUiNow(clamped);
         if (wasPlaying) startPlayerPlayback();
       }
@@ -5364,22 +5370,92 @@
         }
       }
 
+      function hidePlayerPrepOverlay() {
+        var overlay = document.getElementById('playerPrepOverlay');
+        if (!overlay) return;
+        overlay.classList.add('hidden');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+
+      function showPlayerPrepCount(remaining) {
+        var overlay = document.getElementById('playerPrepOverlay');
+        var span = document.getElementById('playerPrepCount');
+        if (!overlay || !span) return;
+        var n = Number(remaining);
+        if (!isFinite(n) || n <= 0) {
+          hidePlayerPrepOverlay();
+          return;
+        }
+        span.textContent = String(Math.floor(n));
+        overlay.classList.remove('hidden');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+
       function clearPlayerPreparation() {
         while (playerPrepTimeouts.length) {
           var tm = playerPrepTimeouts.pop();
           try { clearTimeout(tm); } catch (e) {}
         }
         playerPrepToken = 0;
+        hidePlayerPrepOverlay();
       }
 
-      function resetPlayerCursorToCurrentPosition() {
+      function resetPlayerCursorToCurrentPosition(playbackSecOpt) {
         if (!playerOsmd || !playerOsmd.cursor) return;
         try {
           playerOsmd.cursor.show();
           playerOsmd.cursor.reset();
-          var steps = findPlayerCursorIndexByTime(playerPlayback.positionSec);
+          var sec = typeof playbackSecOpt === 'number' && isFinite(playbackSecOpt)
+            ? playbackSecOpt
+            : playerPlayback.positionSec;
+          var displayPos3 = mapPlayerPlaybackSecToDisplaySec(
+            sec,
+            playerScoreData ? playerScoreData.repeatMap : null
+          );
+          var steps = findPlayerCursorIndexByTime(displayPos3);
           for (var i = 0; i < steps; i++) playerOsmd.cursor.next();
         } catch (e) {}
+      }
+
+      /**
+       * O playback pode expandir retornelas (duplicando eventos no tempo).
+       * O cursor do OSMD segue a partitura renderizada (tempo "visual" sem expansão).
+       * Aqui mapeamos o tempo do playback → tempo de exibição para manter o cursor alinhado.
+       */
+      function mapPlayerPlaybackSecToDisplaySec(playbackSec, repeatMap) {
+        var t = typeof playbackSec === 'number' && isFinite(playbackSec) ? playbackSec : 0;
+        // Monotonic mapping: durante as passagens extras do trecho repetido, o cursor
+        // fica "clampado" no fim da 1a passagem. Quando termina o bloco expandido,
+        // removemos a duração extra para continuar com o tempo de exibição.
+        var map = Array.isArray(repeatMap) ? repeatMap : [];
+        if (!map.length) return t;
+
+        for (var i = 0; i < map.length; i++) {
+          var r = map[i];
+          if (!r) continue;
+          var segStart = Number(r.segStart);
+          var segEnd = Number(r.segEnd);
+          var extraDur = Number(r.extraDur);
+          if (!isFinite(segStart) || !isFinite(segEnd) || !isFinite(extraDur) || extraDur <= 0) continue;
+
+          // Antes do bloco: não mexe.
+          if (t < segStart) continue;
+
+          // Dentro da 1a passagem: alinhado.
+          if (t < segEnd) continue;
+
+          // Dentro das passagens extras: clampa no fim da 1a passagem.
+          if (t < segEnd + extraDur) {
+            t = segEnd;
+            continue;
+          }
+
+          // Depois do bloco expandido: remove a duração extra.
+          t = t - extraDur;
+          if (t < 0) t = 0;
+        }
+
+        return t < 0 ? 0 : t;
       }
 
       function schedulePlayerMetronomeClick(startAtCtx, isAccent) {
@@ -5418,21 +5494,20 @@
         osc.stop(startAtCtx + 0.06);
       }
 
+      /** Um segundo por batida na contagem 3–2–1; não segue o BPM da partitura nem o slider de tempo. */
       function getPlayerPreparationBeatSec() {
-        if (playerScoreData && playerScoreData.beatEvents && playerScoreData.beatEvents.length > 1) {
-          var i;
-          for (i = 1; i < playerScoreData.beatEvents.length; i++) {
-            var d = (playerScoreData.beatEvents[i].sec || 0) - (playerScoreData.beatEvents[i - 1].sec || 0);
-            if (isFinite(d) && d > 0.2 && d < 2.0) return d;
-          }
-        }
-        return 0.6;
+        return 1;
       }
 
       function beginPlayerPlaybackNow(ctx, instrument, fallbackMessage) {
         playerPlayback.isPlaying = true;
+        playerPlayback.lastCursorOsmdResyncTs = 0;
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+        var displayPos2 = mapPlayerPlaybackSecToDisplaySec(
+          playerPlayback.positionSec,
+          playerScoreData ? playerScoreData.repeatMap : null
+        );
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayPos2));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
         playerPlayback.liveEventIndex = -1;
         playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
@@ -5539,6 +5614,7 @@
           } catch (e) {}
         }
         playerPlayback.isPlaying = false;
+        playerPlayback.lastCursorOsmdResyncTs = 0;
         stopAllPlayerNotes();
         if (!keepPosition) playerPlayback.positionSec = 0;
         playerAutoScrollLastTs = 0;
@@ -5554,7 +5630,11 @@
           playerNoteAnchors = playerNoteAnchors || [];
         }
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+        var displayPos = mapPlayerPlaybackSecToDisplaySec(
+          playerPlayback.positionSec,
+          playerScoreData ? playerScoreData.repeatMap : null
+        );
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayPos));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
         playerPlayback.liveEventIndex = -1;
         if (playerLiveCurrentEventIndex >= 0) {
@@ -5574,6 +5654,10 @@
         }
         var rate = Math.max(0.4, playerPlaybackRate || 1);
         var elapsed = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
+        var displayElapsed = mapPlayerPlaybackSecToDisplaySec(
+          elapsed,
+          playerScoreData ? playerScoreData.repeatMap : null
+        );
         var total = playerScoreData.totalDurationSec || 0;
         var lookAhead = 0.22 * rate;
 
@@ -5594,10 +5678,16 @@
           if (!ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0 && ev.startSec <= elapsed + 0.005) {
             playerPlayback.liveEventIndex = playerPlayback.nextEventIndex;
           }
-          if (ev.startSec >= elapsed - 0.03) {
-            var when = playerPlayback.startedAtCtx + (ev.startSec / rate);
-            schedulePlayerNote(ev, when, instrument);
-          }
+          /* Não exigir startSec >= elapsed: com retornelas expandidas ou abas em segundo plano
+           * o RAF pode saltar vários centésimos e silenciar todo o resto da partitura.
+           * «Final» em <rehearsal> não é fim de playback; o áudio deve seguir até o último evento. */
+          var idealWhen = playerPlayback.startedAtCtx + (ev.startSec / rate);
+          var when = idealWhen;
+          try {
+            var nowCtx = ctx.currentTime;
+            if (idealWhen < nowCtx - 0.02) when = nowCtx + 0.002;
+          } catch (eLate) {}
+          schedulePlayerNote(ev, when, instrument);
           playerPlayback.nextEventIndex += 1;
         }
 
@@ -5616,15 +5706,36 @@
 
         if (playerOsmd && playerOsmd.cursor && playerScoreData.cursorStarts) {
           while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
-                 playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= elapsed + 0.005) {
-            try { playerOsmd.cursor.next(); } catch (e) { break; }
-            playerPlayback.nextCursorIndex += 1;
+                 playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= displayElapsed + 0.005) {
+            var cursorStepOk = false;
+            try {
+              playerOsmd.cursor.next();
+              cursorStepOk = true;
+            } catch (eCur) {
+              /* O iterador do OSMD pode falhar antes do fim do áudio (marcas de retornela/volta na partitura).
+               * Sem avançar `nextCursorIndex` o cursor verde ficava preso (ex.: junto a «Final»). */
+              var rts = Date.now();
+              if (!playerPlayback.lastCursorOsmdResyncTs ||
+                  rts - playerPlayback.lastCursorOsmdResyncTs > 160) {
+                playerPlayback.lastCursorOsmdResyncTs = rts;
+                try {
+                  playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayElapsed));
+                  resetPlayerCursorToCurrentPosition(elapsed);
+                } catch (eRs) {
+                  playerPlayback.nextCursorIndex += 1;
+                }
+              } else {
+                playerPlayback.nextCursorIndex += 1;
+              }
+              break;
+            }
+            if (cursorStepOk) playerPlayback.nextCursorIndex += 1;
           }
         }
 
         playerPlayback.positionSec = elapsed;
         updatePlayerUiNow(elapsed);
-        autoScrollPlayerFollowingCursor(elapsed);
+        autoScrollPlayerFollowingCursor(displayElapsed);
         playerPlayback.rafId = requestAnimationFrame(function () {
           playerTickPlaybackLoop(instrument);
         });
@@ -5659,6 +5770,7 @@
                 var prepCtx = getAudioContext();
                 if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
                 setMessage('Preparação: ' + remaining + '...');
+                showPlayerPrepCount(remaining);
               }, Math.round(idx * prepBeatSec * 1000));
               playerPrepTimeouts.push(tm);
             })(i);
@@ -5684,6 +5796,7 @@
                 var prepCtx = getAudioContext();
                 if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
                 setMessage('Preparação: ' + remaining + '...');
+                showPlayerPrepCount(remaining);
               }, Math.round(idx * prepBeatSec * 1000));
               playerPrepTimeouts.push(tm);
             })(i);
@@ -6634,6 +6747,12 @@
             if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
               playerHinoSuggestions.classList.remove('hidden');
             }
+            var self = this;
+            setTimeout(function () {
+              try {
+                self.select();
+              } catch (eSel) {}
+            }, 0);
           });
           playerSelectHino.addEventListener('click', function () {
             this.dataset.openAll = '1';

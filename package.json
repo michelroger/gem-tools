@@ -1,7 +1,7 @@
 {
   "name": "gem-tools",
   "private": true,
-  "version": "1.2.6",
+  "version": "1.2.8",
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/tailwind.source.css -o ./assets/css/tw-daisy.css --minify",
     "watch:css": "tailwindcss -i ./assets/css/tailwind.source.css -o ./assets/css/tw-daisy.css --watch"
