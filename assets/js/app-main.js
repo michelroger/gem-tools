@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.8';
+      const APP_VERSION = '1.2.9';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -427,7 +427,12 @@
         rafId: null,
         activeStops: [],
         /** Evita `cursor.next()` em loop quando o OSMD tem menos passos que `cursorStarts` (voltas na partitura). */
-        lastCursorOsmdResyncTs: 0
+        lastCursorOsmdResyncTs: 0,
+        lastPlaybackElapsed: null,
+        lastDisplayElapsed: null,
+        /** Passos do cursor OSMD ja aplicados (sincronia por tempo visual da partitura). */
+        osmdSyncedSteps: null,
+        lastPlaybackRepeatSegment: null
       };
 
       /** Ponte para `player-load-bindings.js` (IIFE nao expoe `let`/`const` ao `window`). */
@@ -445,7 +450,11 @@
           } catch (eOsmdOpt) {}
           try {
             var er = osmd.EngravingRules || osmd.rules;
-            if (er) er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
+            if (er) {
+              er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
+              /* Com retornela o cursor segue o tempo visual (nossa ordem), nao as voltas do OSMD. */
+              er.CursorIgnoreRepetitions = true;
+            }
           } catch (eR) {}
         },
         setPlayerScoreData: function (v) {
@@ -3963,6 +3972,56 @@
         );
       }
 
+      function findPlayerDisplayCursorIndexByTime(seconds) {
+        return window.PlayerTimelineUtils.findCursorDisplayIndexByTime(
+          playerScoreData ? (playerScoreData.visualCursorStarts || playerScoreData.cursorStarts) : [],
+          seconds
+        );
+      }
+
+      /**
+       * Quantos cursor.next() apos reset() para a nota no indice displayIndex.
+       * Com CursorIgnoreRepetitions o reset().update() ja aponta para a 1a nota; idx 0 = 0 next.
+       */
+      function osmdStepsForDisplayCursorIndex(displayIndex) {
+        var idx = typeof displayIndex === 'number' && isFinite(displayIndex) ? Math.max(0, Math.floor(displayIndex)) : 0;
+        return idx;
+      }
+
+      function playerScoreHasExpandedRepeats() {
+        return !!(playerScoreData && playerScoreData.repeatMap && playerScoreData.repeatMap.length);
+      }
+
+      /**
+       * Sincroniza o cursor nativo do OSMD com o tempo visual da partitura (uma passagem linear no desenho).
+       * Em retornelas: reset completo em saltos (volta ao inicio, casa 3, Final); avanco de 1 passo quando continuo.
+       */
+      function syncPlayerOsmdCursorToDisplay(displaySec, forceFullReset) {
+        if (!playerOsmd || !playerOsmd.cursor || !playerScoreData) return;
+        var displayIdx = findPlayerDisplayCursorIndexByTime(Math.max(0, displaySec));
+        var targetOsmdSteps = osmdStepsForDisplayCursorIndex(displayIdx);
+        var prevOsmdSteps = playerPlayback.osmdSyncedSteps;
+        if (prevOsmdSteps == null || !isFinite(prevOsmdSteps)) prevOsmdSteps = -1;
+        var stepDelta = targetOsmdSteps - prevOsmdSteps;
+        var needReset = !!forceFullReset || stepDelta < 0 || stepDelta > 1;
+        try {
+          playerOsmd.cursor.show();
+          if (needReset) {
+            playerOsmd.cursor.reset();
+            var ri;
+            for (ri = 0; ri < targetOsmdSteps; ri++) playerOsmd.cursor.next();
+            playerPlayback.osmdSyncedSteps = targetOsmdSteps;
+            return;
+          }
+          if (stepDelta === 1) {
+            playerOsmd.cursor.next();
+            playerPlayback.osmdSyncedSteps = targetOsmdSteps;
+          }
+        } catch (eSync) {
+          playerPlayback.osmdSyncedSteps = null;
+        }
+      }
+
       function findPlayerBeatIndexByTime(seconds) {
         return window.PlayerTimelineUtils.findBeatIndexByTime(
           playerScoreData ? playerScoreData.beatEvents : [],
@@ -5128,16 +5187,16 @@
       function seekPlayerToTime(targetSec, resumeIfPlaying) {
         if (!playerScoreData || !playerScoreData.totalDurationSec) return;
         var clamped = Math.max(0, Math.min(playerScoreData.totalDurationSec, targetSec || 0));
-        var displayClamped = mapPlayerPlaybackSecToDisplaySec(
-          clamped,
-          playerScoreData ? playerScoreData.repeatMap : null
-        );
         var wasPlaying = !!resumeIfPlaying && playerPlayback.isPlaying;
         if (playerPlayback.isPlaying) stopPlayerPlayback(true);
         playerPlayback.positionSec = clamped;
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayClamped));
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
+        playerPlayback.lastPlaybackElapsed = null;
+        playerPlayback.lastDisplayElapsed = null;
+        playerPlayback.osmdSyncedSteps = null;
+        playerPlayback.lastPlaybackRepeatSegment = null;
         playerAutoScrollNeedsInitial = false;
         resetPlayerCursorToCurrentPosition(clamped);
         updatePlayerUiNow(clamped);
@@ -5402,19 +5461,37 @@
 
       function resetPlayerCursorToCurrentPosition(playbackSecOpt) {
         if (!playerOsmd || !playerOsmd.cursor) return;
+        var sec = typeof playbackSecOpt === 'number' && isFinite(playbackSecOpt)
+          ? playbackSecOpt
+          : playerPlayback.positionSec;
+        var displayPos = mapPlayerPlaybackSecToDisplaySec(
+          sec,
+          playerScoreData ? playerScoreData.repeatMap : null
+        );
+        if (playerScoreHasExpandedRepeats()) {
+          playerPlayback.osmdSyncedSteps = null;
+          syncPlayerOsmdCursorToDisplay(displayPos, true);
+          return;
+        }
         try {
           playerOsmd.cursor.show();
           playerOsmd.cursor.reset();
-          var sec = typeof playbackSecOpt === 'number' && isFinite(playbackSecOpt)
-            ? playbackSecOpt
-            : playerPlayback.positionSec;
-          var displayPos3 = mapPlayerPlaybackSecToDisplaySec(
-            sec,
-            playerScoreData ? playerScoreData.repeatMap : null
-          );
-          var steps = findPlayerCursorIndexByTime(displayPos3);
+          var steps = osmdStepsForDisplayCursorIndex(findPlayerDisplayCursorIndexByTime(displayPos));
           for (var i = 0; i < steps; i++) playerOsmd.cursor.next();
         } catch (e) {}
+      }
+
+      function findPlaybackRepeatSegmentAt(playbackSec) {
+        var map = playerScoreData && Array.isArray(playerScoreData.repeatMap) ? playerScoreData.repeatMap : [];
+        var t = typeof playbackSec === 'number' && isFinite(playbackSec) ? playbackSec : 0;
+        for (var i = 0; i < map.length; i++) {
+          var r = map[i];
+          if (!r) continue;
+          var start = Number(r.playbackStart);
+          var end = Number(r.playbackEnd);
+          if (isFinite(start) && isFinite(end) && t >= start - 0.0005 && t <= end + 0.0005) return r;
+        }
+        return null;
       }
 
       /**
@@ -5424,35 +5501,19 @@
        */
       function mapPlayerPlaybackSecToDisplaySec(playbackSec, repeatMap) {
         var t = typeof playbackSec === 'number' && isFinite(playbackSec) ? playbackSec : 0;
-        // Monotonic mapping: durante as passagens extras do trecho repetido, o cursor
-        // fica "clampado" no fim da 1a passagem. Quando termina o bloco expandido,
-        // removemos a duração extra para continuar com o tempo de exibição.
         var map = Array.isArray(repeatMap) ? repeatMap : [];
         if (!map.length) return t;
 
         for (var i = 0; i < map.length; i++) {
           var r = map[i];
           if (!r) continue;
-          var segStart = Number(r.segStart);
-          var segEnd = Number(r.segEnd);
-          var extraDur = Number(r.extraDur);
-          if (!isFinite(segStart) || !isFinite(segEnd) || !isFinite(extraDur) || extraDur <= 0) continue;
-
-          // Antes do bloco: não mexe.
-          if (t < segStart) continue;
-
-          // Dentro da 1a passagem: alinhado.
-          if (t < segEnd) continue;
-
-          // Dentro das passagens extras: clampa no fim da 1a passagem.
-          if (t < segEnd + extraDur) {
-            t = segEnd;
-            continue;
+          var playbackStart = Number(r.playbackStart);
+          var playbackEnd = Number(r.playbackEnd);
+          var displayStart = Number(r.displayStart);
+          if (!isFinite(playbackStart) || !isFinite(playbackEnd) || !isFinite(displayStart)) continue;
+          if (t >= playbackStart - 0.0005 && t <= playbackEnd + 0.0005) {
+            return Math.max(0, displayStart + Math.max(0, t - playbackStart));
           }
-
-          // Depois do bloco expandido: remove a duração extra.
-          t = t - extraDur;
-          if (t < 0) t = 0;
         }
 
         return t < 0 ? 0 : t;
@@ -5494,7 +5555,7 @@
         osc.stop(startAtCtx + 0.06);
       }
 
-      /** Um segundo por batida na contagem 3–2–1; não segue o BPM da partitura nem o slider de tempo. */
+      /** Um segundo por batida na contagem 4–3–2–1; não segue o BPM da partitura nem o slider de tempo. */
       function getPlayerPreparationBeatSec() {
         return 1;
       }
@@ -5502,12 +5563,12 @@
       function beginPlayerPlaybackNow(ctx, instrument, fallbackMessage) {
         playerPlayback.isPlaying = true;
         playerPlayback.lastCursorOsmdResyncTs = 0;
+        playerPlayback.lastPlaybackElapsed = null;
+        playerPlayback.lastDisplayElapsed = null;
+        playerPlayback.osmdSyncedSteps = null;
+        playerPlayback.lastPlaybackRepeatSegment = null;
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        var displayPos2 = mapPlayerPlaybackSecToDisplaySec(
-          playerPlayback.positionSec,
-          playerScoreData ? playerScoreData.repeatMap : null
-        );
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayPos2));
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
         playerPlayback.liveEventIndex = -1;
         playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
@@ -5615,6 +5676,10 @@
         }
         playerPlayback.isPlaying = false;
         playerPlayback.lastCursorOsmdResyncTs = 0;
+        playerPlayback.lastPlaybackElapsed = null;
+        playerPlayback.lastDisplayElapsed = null;
+        playerPlayback.osmdSyncedSteps = null;
+        playerPlayback.lastPlaybackRepeatSegment = null;
         stopAllPlayerNotes();
         if (!keepPosition) playerPlayback.positionSec = 0;
         playerAutoScrollLastTs = 0;
@@ -5630,11 +5695,7 @@
           playerNoteAnchors = playerNoteAnchors || [];
         }
         playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        var displayPos = mapPlayerPlaybackSecToDisplaySec(
-          playerPlayback.positionSec,
-          playerScoreData ? playerScoreData.repeatMap : null
-        );
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayPos));
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
         playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
         playerPlayback.liveEventIndex = -1;
         if (playerLiveCurrentEventIndex >= 0) {
@@ -5660,6 +5721,33 @@
         );
         var total = playerScoreData.totalDurationSec || 0;
         var lookAhead = 0.22 * rate;
+        var playbackRepeatSeg = playerScoreHasExpandedRepeats()
+          ? findPlaybackRepeatSegmentAt(elapsed)
+          : null;
+        var cursorDisplayDiscontinuity = false;
+        if (playerPlayback.lastPlaybackElapsed != null && playerPlayback.lastDisplayElapsed != null) {
+          var playbackDelta = elapsed - playerPlayback.lastPlaybackElapsed;
+          var displayDelta = displayElapsed - playerPlayback.lastDisplayElapsed;
+          cursorDisplayDiscontinuity = Math.abs(displayDelta - playbackDelta) > 0.18;
+        }
+        var forceCursorReset = cursorDisplayDiscontinuity;
+        if (playbackRepeatSeg && playerPlayback.lastPlaybackRepeatSegment) {
+          var pSeg = playerPlayback.lastPlaybackRepeatSegment;
+          var cSeg = playbackRepeatSeg;
+          if (Number(cSeg.passNumber) !== Number(pSeg.passNumber)) {
+            forceCursorReset = true;
+          } else if (isFinite(Number(cSeg.xmlMeasureNum)) && isFinite(Number(pSeg.xmlMeasureNum)) &&
+              Number(cSeg.xmlMeasureNum) > Number(pSeg.xmlMeasureNum) + 1) {
+            forceCursorReset = true;
+          }
+        }
+        if (playerPlayback.osmdSyncedSteps != null) {
+          var targetOsmdNow = osmdStepsForDisplayCursorIndex(
+            findPlayerDisplayCursorIndexByTime(displayElapsed)
+          );
+          if (targetOsmdNow < playerPlayback.osmdSyncedSteps) forceCursorReset = true;
+        }
+        playerPlayback.lastPlaybackRepeatSegment = playbackRepeatSeg;
 
         if (elapsed >= total + 0.03) {
           stopPlayerPlayback(false);
@@ -5704,36 +5792,41 @@
           }
         }
 
-        if (playerOsmd && playerOsmd.cursor && playerScoreData.cursorStarts) {
-          while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
-                 playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= displayElapsed + 0.005) {
-            var cursorStepOk = false;
-            try {
-              playerOsmd.cursor.next();
-              cursorStepOk = true;
-            } catch (eCur) {
-              /* O iterador do OSMD pode falhar antes do fim do áudio (marcas de retornela/volta na partitura).
-               * Sem avançar `nextCursorIndex` o cursor verde ficava preso (ex.: junto a «Final»). */
-              var rts = Date.now();
-              if (!playerPlayback.lastCursorOsmdResyncTs ||
-                  rts - playerPlayback.lastCursorOsmdResyncTs > 160) {
-                playerPlayback.lastCursorOsmdResyncTs = rts;
-                try {
-                  playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(displayElapsed));
-                  resetPlayerCursorToCurrentPosition(elapsed);
-                } catch (eRs) {
+        if (playerOsmd && playerOsmd.cursor) {
+          if (playerScoreHasExpandedRepeats()) {
+            syncPlayerOsmdCursorToDisplay(displayElapsed, forceCursorReset);
+            playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(elapsed));
+          } else if (playerScoreData.cursorStarts) {
+            while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
+                   playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= elapsed + 0.005) {
+              var cursorStepOk = false;
+              try {
+                playerOsmd.cursor.next();
+                cursorStepOk = true;
+              } catch (eCur) {
+                var rts = Date.now();
+                if (!playerPlayback.lastCursorOsmdResyncTs ||
+                    rts - playerPlayback.lastCursorOsmdResyncTs > 160) {
+                  playerPlayback.lastCursorOsmdResyncTs = rts;
+                  try {
+                    playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(elapsed));
+                    resetPlayerCursorToCurrentPosition(elapsed);
+                  } catch (eRs) {
+                    playerPlayback.nextCursorIndex += 1;
+                  }
+                } else {
                   playerPlayback.nextCursorIndex += 1;
                 }
-              } else {
-                playerPlayback.nextCursorIndex += 1;
+                break;
               }
-              break;
+              if (cursorStepOk) playerPlayback.nextCursorIndex += 1;
             }
-            if (cursorStepOk) playerPlayback.nextCursorIndex += 1;
           }
         }
 
         playerPlayback.positionSec = elapsed;
+        playerPlayback.lastPlaybackElapsed = elapsed;
+        playerPlayback.lastDisplayElapsed = displayElapsed;
         updatePlayerUiNow(elapsed);
         autoScrollPlayerFollowingCursor(displayElapsed);
         playerPlayback.rafId = requestAnimationFrame(function () {
@@ -5760,7 +5853,7 @@
           clearPlayerPreparation();
           playerPrepToken = token;
           var prepBeatSec = getPlayerPreparationBeatSec();
-          var prepTotal = 3;
+          var prepTotal = 4;
           var i;
           for (i = 0; i < prepTotal; i++) {
             (function (idx) {
@@ -5786,7 +5879,7 @@
           clearPlayerPreparation();
           playerPrepToken = token;
           var prepBeatSec = getPlayerPreparationBeatSec();
-          var prepTotal = 3;
+          var prepTotal = 4;
           var i;
           for (i = 0; i < prepTotal; i++) {
             (function (idx) {

@@ -21,6 +21,19 @@
     return findFirstIndexAtOrAfter(cursorStarts, seconds, null);
   }
 
+  /** Indice da nota/entrada em que o cursor deve estar (ultima com inicio <= tempo). */
+  function findCursorDisplayIndexByTime(cursorStarts, seconds) {
+    if (!Array.isArray(cursorStarts) || !cursorStarts.length) return 0;
+    var t = typeof seconds === 'number' && isFinite(seconds) ? seconds : 0;
+    var best = 0;
+    var i;
+    for (i = 0; i < cursorStarts.length; i++) {
+      if (cursorStarts[i] <= t + 0.0005) best = i;
+      else break;
+    }
+    return best;
+  }
+
   function findBeatIndexByTime(beatEvents, seconds) {
     return findFirstIndexAtOrAfter(beatEvents, seconds, function (ev) {
       return ev && typeof ev.sec === 'number' ? ev.sec : Number.MAX_VALUE;
@@ -30,5 +43,6 @@
   window.PlayerTimelineUtils = window.PlayerTimelineUtils || {};
   window.PlayerTimelineUtils.findEventIndexByTime = findEventIndexByTime;
   window.PlayerTimelineUtils.findCursorIndexByTime = findCursorIndexByTime;
+  window.PlayerTimelineUtils.findCursorDisplayIndexByTime = findCursorDisplayIndexByTime;
   window.PlayerTimelineUtils.findBeatIndexByTime = findBeatIndexByTime;
 })();
