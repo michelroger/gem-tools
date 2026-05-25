@@ -270,6 +270,13 @@
           var durationDiv = durationNode ? parseFloat(durationNode.textContent || '0') : 0;
           if (!isFinite(durationDiv) || durationDiv <= 0) durationDiv = 0;
           var durSec = Math.max(0.06, (durationDiv / divisions) * (60 / tempo));
+
+          // Se a nota possui uma fermata, prolonga sua duração em 2.0x (dobra)
+          var hasFermata = !!noteNode.querySelector('notations fermata');
+          if (hasFermata) {
+            durSec = durSec * 2.0;
+          }
+
           var isChord = !!noteNode.querySelector('chord');
           var isRest = !!noteNode.querySelector('rest');
           var startSec = isChord ? lastStartSec : timelineSec;
