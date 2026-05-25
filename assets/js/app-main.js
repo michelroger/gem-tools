@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.23';
+      const APP_VERSION = '1.2.24';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -458,6 +458,13 @@
               er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
               /* Com retornela o cursor segue o tempo visual (nossa ordem), nao as voltas do OSMD. */
               er.CursorIgnoreRepetitions = true;
+
+              // Estica o pentagrama de acordo com o tempo das notas
+              er.VoiceSpacingMultiplierVexflow = 2.0;
+              er.VoiceSpacingMultiplier = 2.0;
+              er.VoiceSpacingAddendVexflow = 6.0;
+              er.VoiceSpacingAddend = 6.0;
+              er.MinNoteDistance = 4.0;
             }
           } catch (eR) {}
         },
