@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.10';
+      const APP_VERSION = '1.2.22';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -392,6 +392,7 @@
       var playerLiveCurrentAnchorEl = null;
       var playerLiveFeedbackEventIndex = -1;
       var playerLiveFeedbackStatus = '';
+      var playerLiveBarsMap = {};
       var playerLiveEventMetrics = {};
       var playerLiveCurrentEventIndex = -1;
       var playerLiveScoreTotals = {
@@ -3263,13 +3264,14 @@
       }
 
       /** Detector com autocorrelacao normalizada, priorizando a fundamental real. */
-      function tunerDetectPitch(buf, sampleRate) {
+      function tunerDetectPitch(buf, sampleRate, minRmsOverride) {
         var size = buf.length;
         if (!size) return -1;
         var rms = 0;
         for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
         rms = Math.sqrt(rms / size);
-        if (rms < 0.0018) return -1;
+        var rmsLimit = typeof minRmsOverride === 'number' ? minRmsOverride : 0.0018;
+        if (rms < rmsLimit) return -1;
 
         var minFreq = 35;
         var maxFreq = 1200;
@@ -3878,13 +3880,66 @@
 
       function playerClientToSvgPoint(svg, clientX, clientY) {
         try {
-          if (!svg || typeof svg.createSVGPoint !== 'function') return null;
-          var pt = svg.createSVGPoint();
-          pt.x = clientX;
-          pt.y = clientY;
-          var m = svg.getScreenCTM();
-          if (!m || typeof m.inverse !== 'function') return null;
-          return pt.matrixTransform(m.inverse());
+          if (!svg || !svg.getBoundingClientRect) return null;
+          var svgRect = svg.getBoundingClientRect();
+          var scaleX = 1;
+          var scaleY = 1;
+          
+          // Tenta ler o viewBox como atributo de forma ultra-robusta
+          var viewBoxAttr = svg.getAttribute('viewBox');
+          if (viewBoxAttr) {
+            var parts = viewBoxAttr.split(/[ ,]+/).map(parseFloat);
+            if (parts.length === 4 && !parts.some(isNaN)) {
+              var vbX = parts[0];
+              var vbY = parts[1];
+              var vbW = parts[2];
+              var vbH = parts[3];
+              if (vbW > 0 && vbH > 0) {
+                scaleX = vbW / svgRect.width;
+                scaleY = vbH / svgRect.height;
+                return {
+                  x: (clientX - svgRect.left) * scaleX + vbX,
+                  y: (clientY - svgRect.top) * scaleY + vbY,
+                  debugMethod: 'viewBoxAttr'
+                };
+              }
+            }
+          }
+          
+          // Fallback 1: viewBox via DOM baseVal (se disponível)
+          var viewBox = svg.viewBox && svg.viewBox.baseVal;
+          if (viewBox && viewBox.width > 0 && viewBox.height > 0) {
+            scaleX = viewBox.width / svgRect.width;
+            scaleY = viewBox.height / svgRect.height;
+            return {
+              x: (clientX - svgRect.left) * scaleX + viewBox.x,
+              y: (clientY - svgRect.top) * scaleY + viewBox.y,
+              debugMethod: 'viewBoxDOM'
+            };
+          }
+          
+          // Fallback 2: getScreenCTM nativo do navegador
+          if (typeof svg.createSVGPoint === 'function') {
+            var pt = svg.createSVGPoint();
+            pt.x = clientX;
+            pt.y = clientY;
+            var m = svg.getScreenCTM();
+            if (m && typeof m.inverse === 'function') {
+              var resPt = pt.matrixTransform(m.inverse());
+              return {
+                x: resPt.x,
+                y: resPt.y,
+                debugMethod: 'getScreenCTM'
+              };
+            }
+          }
+          
+          // Último recurso: relativa em pixels físicos
+          return {
+            x: clientX - svgRect.left,
+            y: clientY - svgRect.top,
+            debugMethod: 'relativePhysical'
+          };
         } catch (ePt) {
           return null;
         }
@@ -4102,6 +4157,338 @@
         }
       }
 
+      function collectPlayerChronologicalSvgNotes(svg) {
+        var placements = [];
+        if (!playerOsmd) return placements;
+        var sheet = playerOsmd.graphic || playerOsmd.GraphicSheet;
+        if (!sheet) return placements;
+        var measureList = sheet.measureList || sheet.MeasureList;
+        if (!measureList || !measureList.length) return placements;
+
+        var i;
+        for (i = 0; i < measureList.length; i++) {
+          var measures = measureList[i];
+          if (!measures) continue;
+          if (!Array.isArray(measures)) measures = [measures];
+          var j;
+          for (j = 0; j < measures.length; j++) {
+            var measure = measures[j];
+            if (!measure || !measure.staffEntries) continue;
+            var k;
+            for (k = 0; k < measure.staffEntries.length; k++) {
+              var se = measure.staffEntries[k];
+              if (!se || !se.graphicalVoiceEntries) continue;
+              var l;
+              for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+                var gve = se.graphicalVoiceEntries[l];
+                if (!gve || !gve.notes) continue;
+                var mn;
+                for (mn = 0; mn < gve.notes.length; mn++) {
+                  var gn = gve.notes[mn];
+                  var sn = gn && gn.sourceNote;
+                  if (!sn) continue;
+                  if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+                  if (sn.IsGraceNote || sn.isGraceNote) continue;
+                  var activeVoice = getPlayerLiveActiveVoiceChar();
+                  var staffIdx = 0;
+                  if (se && se.parentStaff) {
+                    staffIdx = se.parentStaff.idInMusicSheet != null 
+                      ? se.parentStaff.idInMusicSheet 
+                      : (se.parentStaff.StaffNumber != null ? se.parentStaff.StaffNumber - 1 : 0);
+                  }
+                  var voiceId = "1";
+                  if (sn.parentVoiceEntry && sn.parentVoiceEntry.parentVoice && sn.parentVoiceEntry.parentVoice.VoiceId != null) {
+                    voiceId = String(sn.parentVoiceEntry.parentVoice.VoiceId).trim();
+                  }
+
+                  // Mapeia para a voz (s, c, t, b) com base na pauta e na voz lida do MusicXML
+                  var noteVoice = 's';
+                  if (staffIdx === 0) {
+                    noteVoice = (voiceId === '2') ? 'c' : 's';
+                  } else {
+                    noteVoice = (voiceId === '1' || voiceId === '3') ? 't' : 'b';
+                  }
+
+                  if (noteVoice !== activeVoice) continue;
+
+                  try {
+                    if (sn.PrintObject === false) continue;
+                  } catch (ePo) {}
+
+                  var pitch = sn.TransposedPitch || sn.Pitch;
+                  if (!pitch) continue;
+                  var midi = null;
+                  var shortStr = null;
+                  if (pitch && isFinite(pitch.frequency) && pitch.frequency > 0) {
+                    midi = tunerFreqToMidi(pitch.frequency);
+                    try {
+                      if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                    } catch (eTs) {}
+                  } else {
+                    try {
+                      if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                    } catch (eTs) {}
+                    if (shortStr) midi = playerOsmdPitchStringToMidi(shortStr);
+                  }
+                  if (midi == null) continue;
+
+                  var el = null;
+                  if (typeof gn.getSVGGElement === 'function') {
+                    try {
+                      el = gn.getSVGGElement();
+                    } catch (eSvg) {}
+                  }
+                  if (!el || !el.getBoundingClientRect) continue;
+
+                  // Tenta localizar especificamente a elipse da cabeça da nota (notehead)
+                  var headEl = el.querySelector('.vf-notehead, path.vf-notehead, [class*="notehead"]');
+                  var targetEl = el; // fallback padrão é o grupo completo
+                  if (headEl) {
+                    var hr = headEl.getBoundingClientRect();
+                    if (hr && hr.width >= 3 && hr.height >= 3) {
+                      targetEl = headEl;
+                    }
+                  }
+
+                  var r = targetEl.getBoundingClientRect();
+                  if (!r || r.width < 2 || r.height < 2) continue;
+
+                  var cx = r.left + r.width * 0.5;
+                  var cy = r.top + r.height * 0.5;
+
+                  // Calcula o ponto local do SVG no exato instante da coleta (DOM imutável)
+                  var svgPt = null;
+                  if (svg) {
+                    svgPt = playerClientToSvgPoint(svg, cx, cy);
+                  }
+
+                  placements.push({
+                    el: el,
+                    cx: cx,
+                    cy: cy,
+                    svgX: svgPt ? svgPt.x : null,
+                    svgY: svgPt ? svgPt.y : null,
+                    midi: midi,
+                    originalPitch: pitch,
+                    shortStr: shortStr
+                  });
+                }
+              }
+            }
+          }
+        }
+        return placements;
+      }
+
+      function getPlayerActiveSvgElement(host) {
+        if (!host) return null;
+        var svgs = host.querySelectorAll('svg');
+        if (!svgs || !svgs.length) return null;
+        for (var idx = 0; idx < svgs.length; idx++) {
+          var s = svgs[idx];
+          var r = s.getBoundingClientRect();
+          if (r && r.width > 50 && r.height > 50) {
+            return s;
+          }
+        }
+        return svgs[svgs.length - 1];
+      }
+
+      function initPlayerLiveBars() {
+        var debugLogEl = document.getElementById('playerLiveDebugLog');
+        if (debugLogEl) {
+          debugLogEl.style.display = 'none';
+          debugLogEl.innerHTML = '';
+        }
+        var host = document.getElementById('playerOsmdContainer');
+        if (host) {
+          var prev = host.querySelector('#gem-player-live-bars');
+          if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        }
+        playerLiveBarsMap = {};
+        if (!playerLiveListenEnabled) return;
+
+        if (debugLogEl) {
+          debugLogEl.style.display = 'block';
+          debugLogEl.innerHTML += '• Leitura ao vivo ligada. Iniciando mapeamento...<br>';
+        }
+
+        if (!host || !playerScoreData || !playerScoreData.events) {
+          if (debugLogEl) {
+            debugLogEl.innerHTML += '• Falha: host=' + !!host + ', scoreData=' + !!playerScoreData + '<br>';
+          }
+          return;
+        }
+        var svg = getPlayerActiveSvgElement(host);
+        if (!svg) {
+          if (debugLogEl) {
+            debugLogEl.innerHTML += '• Falha: Elemento SVG não encontrado no contêiner.<br>';
+          }
+          return;
+        }
+
+        try {
+          var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          layer.setAttribute('id', 'gem-player-live-bars');
+          layer.setAttribute('pointer-events', 'none');
+          
+          // Desenha as barras DE BAIXO da cabeça da nota (inserindo no início do SVG, antes das notas/linhas)
+          if (svg.firstChild) {
+            svg.insertBefore(layer, svg.firstChild);
+          } else {
+            svg.appendChild(layer);
+          }
+
+          var ns = 'http://www.w3.org/2000/svg';
+          var events = playerScoreData.events;
+          var activeVoice = getPlayerLiveActiveVoiceChar();
+
+          // Filtra os eventos jogáveis de notas reais pertencentes apenas à voz ativa do instrumento do aluno
+          var playableEvents = [];
+          for (var i = 0; i < events.length; i++) {
+            var ev = events[i];
+            if (ev && !ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0) {
+              if (getPlayerEventVoiceChar(ev) === activeVoice) {
+                playableEvents.push({ ev: ev, origIndex: i });
+              }
+            }
+          }
+
+          var svgNotes = collectPlayerChronologicalSvgNotes(svg);
+          if (debugLogEl) {
+            debugLogEl.innerHTML += '• Notas coletadas no SVG = ' + svgNotes.length + '<br>';
+            debugLogEl.innerHTML += '• Eventos da voz ativa (' + activeVoice.toUpperCase() + ') = ' + playableEvents.length + '<br>';
+            
+            var firstEventsDebug = [];
+            var firstSvgNotesDebug = [];
+            for (var i = 0; i < Math.min(3, playableEvents.length); i++) {
+              var ev = playableEvents[i].ev;
+              firstEventsDebug.push('Ev' + playableEvents[i].origIndex + ': midi=' + playerEventMidi(ev) + ' (freq=' + ev.freq + ')');
+            }
+            for (var k = 0; k < Math.min(3, svgNotes.length); k++) {
+              var n = svgNotes[k];
+              firstSvgNotesDebug.push('Svg' + k + ': midi=' + n.midi + ' (cx=' + Math.round(n.cx) + ')');
+            }
+            debugLogEl.innerHTML += '• Primeiros eventos jogáveis: ' + (firstEventsDebug.join(', ') || 'Nenhum') + '<br>';
+            debugLogEl.innerHTML += '• Primeiras notas SVG coletadas: ' + (firstSvgNotesDebug.join(', ') || 'Nenhuma') + '<br>';
+          }
+
+          var mappedNotes = [];
+          var lastCx = -1;
+          var lastCy = -1;
+
+          // Mapeia os eventos filtrados da voz ativa
+          for (var pi = 0; pi < playableEvents.length; pi++) {
+            var item = playableEvents[pi];
+            var ev = item.ev;
+            var origIdx = item.origIndex;
+            var targetMidi = playerEventMidi(ev);
+
+            var bestIdx = -1;
+            var bestScore = Infinity;
+
+            for (var k = 0; k < svgNotes.length; k++) {
+              var n = svgNotes[k];
+              if (!n || n.mapped) continue;
+
+              var midiDiff = Math.abs(n.midi - targetMidi);
+              if (midiDiff > 1) continue;
+
+              var isBackwards = (Math.abs(n.cy - lastCy) < 30 && n.cx < lastCx);
+              var score = midiDiff * 10 + k;
+              if (isBackwards) score += 1000;
+
+              if (score < bestScore) {
+                bestScore = score;
+                bestIdx = k;
+              }
+            }
+
+            if (bestIdx >= 0) {
+              svgNotes[bestIdx].mapped = true;
+              var chosen = svgNotes[bestIdx];
+              lastCx = chosen.cx;
+              lastCy = chosen.cy;
+              mappedNotes[origIdx] = chosen;
+            }
+          }
+
+          // Cria as barras apenas para as notas mapeadas da voz ativa
+          for (var pi = 0; pi < playableEvents.length; pi++) {
+            var item = playableEvents[pi];
+            var origIdx = item.origIndex;
+            var ev = item.ev;
+            var chosen = mappedNotes[origIdx];
+            if (!chosen) continue;
+
+            var ptX = chosen.svgX;
+            var ptY = chosen.svgY;
+            if (ptX == null || ptY == null || !isFinite(ptX) || !isFinite(ptY)) continue;
+
+            var largura = Math.max(25, (ev.durationSec || 0.2) * 60);
+            
+            // Acha a próxima nota mapeada na voz ativa para calcular a largura contígua
+            var nextPlayableIndex = pi + 1;
+            var nextChosen = null;
+            while (nextPlayableIndex < playableEvents.length) {
+              var nextOrigIdx = playableEvents[nextPlayableIndex].origIndex;
+              if (mappedNotes[nextOrigIdx]) {
+                nextChosen = mappedNotes[nextOrigIdx];
+                break;
+              }
+              nextPlayableIndex++;
+            }
+
+            if (nextChosen && nextChosen.svgX != null && isFinite(nextChosen.svgX)) {
+              if (nextChosen.svgX > ptX && Math.abs(nextChosen.svgY - ptY) < 15) {
+                largura = nextChosen.svgX - ptX;
+              }
+            }
+
+            var alt = 11;
+            var yPos = ptY - alt * 0.5;
+
+            var rectBg = document.createElementNS(ns, 'rect');
+            rectBg.setAttribute('x', String(ptX));
+            rectBg.setAttribute('y', String(yPos));
+            rectBg.setAttribute('width', String(largura));
+            rectBg.setAttribute('height', String(alt));
+            rectBg.setAttribute('rx', String(alt * 0.5));
+            rectBg.setAttribute('ry', String(alt * 0.5));
+            rectBg.setAttribute('fill', 'rgba(215, 222, 235, 0.45)');
+            layer.appendChild(rectBg);
+
+            var rectFg = document.createElementNS(ns, 'rect');
+            rectFg.setAttribute('x', String(ptX));
+            rectFg.setAttribute('y', String(yPos));
+            rectFg.setAttribute('width', '0');
+            rectFg.setAttribute('height', String(alt));
+            rectFg.setAttribute('rx', String(alt * 0.5));
+            rectFg.setAttribute('ry', String(alt * 0.5));
+            rectFg.setAttribute('fill', 'transparent');
+            layer.appendChild(rectFg);
+
+            playerLiveBarsMap[String(origIdx)] = {
+              el: rectFg,
+              maxWidth: largura
+            };
+          }
+          var count = Object.keys(playerLiveBarsMap).length;
+          if (debugLogEl) {
+            debugLogEl.innerHTML += '• Mapeados com sucesso = ' + count + ' de ' + playableEvents.length + ' eventos da voz ativa.<br>';
+            if (count > 0) {
+              debugLogEl.style.background = 'rgba(34, 197, 94, 0.08)';
+              debugLogEl.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+              debugLogEl.style.color = '#15803d';
+            }
+          }
+        } catch (err) {
+          if (debugLogEl) {
+            debugLogEl.innerHTML += '• Erro em initPlayerLiveBars: ' + err.message + '<br>';
+          }
+        }
+      }
+
       /** Rótulos Dó/Ré/Sol dentro das cabeças (SVG). */
       function syncPlayerNoteNameLabelOverlays() {
         var host = document.getElementById('playerOsmdContainer');
@@ -4110,7 +4497,7 @@
           if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
         }
         if (!playerNoteNameLabels || !host) return;
-        var svg = host.querySelector('svg');
+        var svg = getPlayerActiveSvgElement(host);
         if (!svg) return;
 
         var placements = collectPlayerOsmdNoteLabelPlacements(playerOsmd);
@@ -4335,6 +4722,7 @@
           playerLiveCurrentEventIndex = -1;
         }
         clearPlayerLiveFeedbackVisualOnly();
+        initPlayerLiveBars();
         syncPlayerLiveScoreUi();
       }
 
@@ -4356,7 +4744,7 @@
       function playerLiveListenLoop() {
         if (!playerLiveListenRunning || !playerLiveListenAnalyzer || !playerLiveListenData) return;
         playerLiveListenAnalyzer.getFloatTimeDomainData(playerLiveListenData);
-        var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate);
+        var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate, 0.0035);
         if (raw > 0) {
           playerLiveListenNoSignalFrames = 0;
           var cfg = getPlayerLiveSmoothingConfig();
@@ -4413,6 +4801,7 @@
           playerLiveListenRunning = true;
           resetPlayerLiveScoreTotals();
           clearPlayerLiveFeedback();
+          initPlayerLiveBars();
           syncPlayerLiveScoreUi();
           setMessage('Leitura ao vivo ativa: microfone captando frequência.');
           playerLiveListenLoop();
@@ -4429,6 +4818,25 @@
         if (isFinite(ev.midi)) return Number(ev.midi);
         if (isFinite(ev.freq) && ev.freq > 0) return tunerFreqToMidi(ev.freq);
         return null;
+      }
+
+      function getPlayerLiveActiveVoiceChar() {
+        var st = getActiveHinosStudent();
+        if (st) {
+          var vp = hinosGetStudentVozPrincipal(st);
+          if (vp) return vp.toLowerCase();
+        }
+        var instId = currentInstrument ? currentInstrument.id : 'violino';
+        if (instId === 'viola' || instId === 'trompa') return 'c';
+        if (instId === 'trombone' || instId === 'fagote') return 't';
+        if (instId === 'violoncelo' || instId === 'contrabaixo') return 'b';
+        return 's'; // default Soprano para violino, flauta, clarinete, oboe, trompete, voz
+      }
+
+      function getPlayerEventVoiceChar(ev) {
+        if (!ev || ev.partIndex == null || !playerSelectedVoices) return 's';
+        var char = playerSelectedVoices[ev.partIndex];
+        return char ? char.toLowerCase() : 's';
       }
 
       function collectPlayerOsmdGraphicalNotes() {
@@ -4644,6 +5052,13 @@
         });
         clearPlayerLiveCurrentAnchorVisual();
         hidePlayerLiveInlineBadge();
+        for (var k in playerLiveBarsMap) {
+          var b = playerLiveBarsMap[k];
+          if (b && b.el) {
+            b.el.setAttribute('width', '0');
+            b.el.setAttribute('fill', 'transparent');
+          }
+        }
       }
 
       function clearPlayerLiveFeedbackVisualOnly(preserveInlineBadge) {
@@ -4798,7 +5213,7 @@
         }
         var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
         var passThLive = getPlayerLivePassThresholds(liveMetric.expectedDurationSec || 0.06);
-        var passedLive = liveMetric.attackHit && timingRatio >= passThLive.minTiming && pitchRatio >= passThLive.minPitch;
+        var passedLive = timingRatio >= passThLive.minTiming && pitchRatio >= passThLive.minPitch;
 
         var aggTotal = total + 1;
         var aggPassed = passed + (passedLive ? 1 : 0);
@@ -4898,13 +5313,13 @@
 
       function getPlayerLiveCentsTolerance(ev, nowSec) {
         // Margem maior que o tuner “seco”: leitura ao vivo depende de microfone, sala e ruído.
-        var baseTolerance = 60;
+        var baseTolerance = 85;
         if (!ev) return baseTolerance;
         var start = Number(ev.startSec) || 0;
         var duration = Math.max(0.04, Number(ev.durationSec) || 0.06);
         // Ataque da nota: deixa uma margem maior no começo para o instrumento "assentar".
         var settleSec = Math.min(0.3, Math.max(0.14, duration * 0.35));
-        var attackTolerance = 100;
+        var attackTolerance = 110;
         var elapsed = Math.max(0, nowSec - start);
         if (elapsed >= settleSec) return baseTolerance;
         var t = elapsed / settleSec;
@@ -4912,7 +5327,7 @@
       }
 
       /** Frames seguidos dentro da tolerância antes de mostrar “afinado” (evita piscar). */
-      var PLAYER_LIVE_TUNED_OK_FRAMES = 3;
+      var PLAYER_LIVE_TUNED_OK_FRAMES = 2;
 
       /**
        * Notas curtas: exige menos pitchRatio no “passa” e um pouco mais de timing (menos frames no tempo).
@@ -4920,14 +5335,14 @@
        */
       function getPlayerLivePassThresholds(durationSec) {
         var d = Math.max(0.04, Number(durationSec) || 0.06);
-        var minPitch = 0.6;
-        var minTiming = 0.55;
+        var minPitch = 0.55;
+        var minTiming = 0.5;
         if (d < 0.22) {
           var t = (d - 0.06) / (0.22 - 0.06);
           if (!isFinite(t)) t = 0;
           t = Math.max(0, Math.min(1, t));
-          minPitch = 0.32 + (0.6 - 0.32) * t;
-          minTiming = 0.48 + (0.55 - 0.48) * t;
+          minPitch = 0.28 + (0.55 - 0.28) * t;
+          minTiming = 0.45 + (0.5 - 0.45) * t;
         }
         return { minPitch: minPitch, minTiming: minTiming };
       }
@@ -4941,14 +5356,24 @@
             signalFrames: 0,
             tunedFrames: 0,
             consecutiveTunedFrames: 0,
+            consecutiveBadFrames: 0,
+            lastStableTuned: false,
             attackHit: false,
             firstSignalSec: null,
             firstTunedSec: null,
             expectedStartSec: null
           };
           playerLiveEventMetrics[key] = metric;
-        } else if (typeof metric.consecutiveTunedFrames !== 'number') {
-          metric.consecutiveTunedFrames = 0;
+        } else {
+          if (typeof metric.consecutiveTunedFrames !== 'number') {
+            metric.consecutiveTunedFrames = 0;
+          }
+          if (typeof metric.consecutiveBadFrames !== 'number') {
+            metric.consecutiveBadFrames = 0;
+          }
+          if (typeof metric.lastStableTuned !== 'boolean') {
+            metric.lastStableTuned = false;
+          }
         }
         return metric;
       }
@@ -4971,12 +5396,17 @@
         }
         var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
         var passTh = getPlayerLivePassThresholds(metric.expectedDurationSec || 0.06);
-        var passed = metric.attackHit && timingRatio >= passTh.minTiming && pitchRatio >= passTh.minPitch;
+        var passed = timingRatio >= passTh.minTiming && pitchRatio >= passTh.minPitch;
         playerLiveScoreTotals.notesTotal += 1;
         if (passed) playerLiveScoreTotals.notesPassed += 1;
         playerLiveScoreTotals.pitchSum += pitchRatio;
         playerLiveScoreTotals.timingSum += timingRatio;
         metric.finalized = true;
+        var barObj = playerLiveBarsMap[String(eventIndex)];
+        if (barObj && barObj.el) {
+          barObj.el.setAttribute('width', String(barObj.maxWidth));
+          barObj.el.setAttribute('fill', passed ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
+        }
         syncPlayerLiveScoreUi();
         applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', false);
       }
@@ -4984,13 +5414,16 @@
       function findPlayerActivePlayableEventIndex(nowSec) {
         if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return -1;
         var events = playerScoreData.events;
+        var activeVoice = getPlayerLiveActiveVoiceChar();
         var liveIdx = Number(playerPlayback && playerPlayback.liveEventIndex);
         if (isFinite(liveIdx) && liveIdx >= 0 && liveIdx < events.length) {
           var liveEv = events[liveIdx];
           if (liveEv && !liveEv.isRest && !liveEv.isChord && isFinite(liveEv.freq) && liveEv.freq > 0) {
-            var liveStart = liveEv.startSec || 0;
-            var liveEnd = liveStart + Math.max(0.04, liveEv.durationSec || 0.06);
-            if (nowSec >= liveStart && nowSec <= (liveEnd + 0.025)) return liveIdx;
+            if (getPlayerEventVoiceChar(liveEv) === activeVoice) {
+              var liveStart = liveEv.startSec || 0;
+              var liveEnd = liveStart + Math.max(0.04, liveEv.durationSec || 0.06);
+              if (nowSec >= liveStart && nowSec <= (liveEnd + 0.025)) return liveIdx;
+            }
           }
         }
         var idx = findPlayerEventIndexByTime(nowSec);
@@ -5002,6 +5435,7 @@
           if (k < 0 || k >= events.length) continue;
           var ev = events[k];
           if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
+          if (getPlayerEventVoiceChar(ev) !== activeVoice) continue;
           var start = ev.startSec || 0;
           var end = start + Math.max(0.04, ev.durationSec || 0.06);
           if (nowSec >= start && nowSec <= (end + tailPadAfter)) return k;
@@ -5067,10 +5501,21 @@
         if (!isFinite(detected) || detected <= 0) {
           playerLiveListenHasSignal = false;
           playerLiveListenLastCents = 0;
-          metric.consecutiveTunedFrames = 0;
-          applyPlayerLiveFeedback(eventIndex, 'bad', false);
-          applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
-          renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreq, NaN);
+          metric.consecutiveBadFrames += 1;
+          if (metric.consecutiveBadFrames >= 3) {
+            metric.consecutiveTunedFrames = 0;
+            metric.lastStableTuned = false;
+          }
+          var liveStatusNull = !!metric.lastStableTuned ? 'ok' : 'bad';
+          var barObj = playerLiveBarsMap[String(eventIndex)];
+          if (barObj && barObj.el) {
+            var pct = Math.max(0, Math.min(1, (nowSec - ev.startSec) / (ev.durationSec || 0.2)));
+            barObj.el.setAttribute('width', String(barObj.maxWidth * pct));
+            barObj.el.setAttribute('fill', !!metric.lastStableTuned ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
+          }
+          applyPlayerLiveFeedback(eventIndex, liveStatusNull, false);
+          applyPlayerLiveCurrentAnchorStatus(liveStatusNull, eventIndex);
+          renderPlayerLiveInlineBadge(eventIndex, 0, !!metric.lastStableTuned, false, null, NaN, expectedFreq, NaN);
           syncPlayerLiveScoreUi();
           return;
         }
@@ -5081,12 +5526,23 @@
         var absCents = Math.abs(cents);
         var centsTolerance = getPlayerLiveCentsTolerance(ev, nowSec);
         var tuned = absCents <= centsTolerance;
+        
+        var stableTuned = false;
         if (tuned) {
           metric.consecutiveTunedFrames += 1;
+          metric.consecutiveBadFrames = 0;
+          if (metric.consecutiveTunedFrames >= PLAYER_LIVE_TUNED_OK_FRAMES) {
+            metric.lastStableTuned = true;
+          }
         } else {
-          metric.consecutiveTunedFrames = 0;
+          metric.consecutiveBadFrames += 1;
+          if (metric.consecutiveBadFrames >= 3) {
+            metric.consecutiveTunedFrames = 0;
+            metric.lastStableTuned = false;
+          }
         }
-        var stableTuned = metric.consecutiveTunedFrames >= PLAYER_LIVE_TUNED_OK_FRAMES;
+        stableTuned = !!metric.lastStableTuned;
+        
         playerLiveListenHasSignal = true;
         playerLiveListenLastCents = cents;
         if (tuned) metric.tunedFrames += 1;
@@ -5099,6 +5555,12 @@
         }
 
         var liveStatus = stableTuned ? 'ok' : 'bad';
+        var barObj = playerLiveBarsMap[String(eventIndex)];
+        if (barObj && barObj.el) {
+          var pct = Math.max(0, Math.min(1, (nowSec - ev.startSec) / (ev.durationSec || 0.2)));
+          barObj.el.setAttribute('width', String(barObj.maxWidth * pct));
+          barObj.el.setAttribute('fill', stableTuned ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
+        }
         applyPlayerLiveFeedback(eventIndex, liveStatus, false);
         applyPlayerLiveCurrentAnchorStatus(liveStatus, eventIndex);
         renderPlayerLiveInlineBadge(eventIndex, cents, stableTuned, true, null, alignedDetected, expectedFreq, detected);
@@ -5422,6 +5884,7 @@
         playerNoteAnchors = [];
         clearPlayerLiveFeedback();
         syncPlayerNoteNameLabelOverlays();
+        initPlayerLiveBars();
       }
 
       function seekPlayerFromClick(clientX, clientY) {

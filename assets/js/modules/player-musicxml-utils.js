@@ -334,7 +334,8 @@
               isRest: isRest,
               isChord: isChord,
               midi: midi,
-              freq: freq
+              freq: freq,
+              partIndex: partIndex
             };
             partEvents.push(evObj);
             measureEvents.push(evObj);
