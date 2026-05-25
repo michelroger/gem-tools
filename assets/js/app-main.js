@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.9';
+      const APP_VERSION = '1.2.10';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -341,6 +341,9 @@
       var audioOutputBusCtx = null;
       var audioReverbImpulse = null;
       var audioReverbImpulseCtx = null;
+      /** Cadeias de EQ/saturação por instrumento ligadas ao barramento mestre. */
+      var instrumentShapingChains = {};
+      var instrumentShapingChainsCtx = null;
       let staffModeTarget = null;
       let staffAnswerLocked = false;
       let staffNoteEllipse = null;
@@ -1990,18 +1993,229 @@
         node.connect(ctx.destination);
       }
 
+      /**
+       * Perfis de EQ + saturação leve por instrumento.
+       * Os valores estão calibrados para tirar a aspereza típica de soundfont GM,
+       * dar corpo nas cordas, ar nos sopros e brilho nos metais, sem ficar artificial.
+       */
+      var INSTRUMENT_SHAPING_PROFILES = {
+        violino: {
+          filters: [
+            { type: 'highpass',  frequency:  140, Q: 0.7 },
+            { type: 'peaking',   frequency:  260, gain:  1.6, Q: 0.9 },
+            { type: 'peaking',   frequency: 1100, gain: -2.0, Q: 1.2 },
+            { type: 'peaking',   frequency: 3400, gain:  2.0, Q: 0.9 },
+            { type: 'highshelf', frequency: 9000, gain: -2.0 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        viola: {
+          filters: [
+            { type: 'highpass',  frequency:  110, Q: 0.7 },
+            { type: 'peaking',   frequency:  220, gain:  1.8, Q: 0.9 },
+            { type: 'peaking',   frequency:  950, gain: -1.8, Q: 1.2 },
+            { type: 'peaking',   frequency: 2800, gain:  1.6, Q: 0.9 },
+            { type: 'highshelf', frequency: 8500, gain: -2.4 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        violoncelo: {
+          filters: [
+            { type: 'highpass',  frequency:   55, Q: 0.7 },
+            { type: 'peaking',   frequency:  160, gain:  0.8, Q: 0.9 },
+            { type: 'peaking',   frequency:  900, gain:  0.6, Q: 1.0 },
+            { type: 'peaking',   frequency: 2200, gain:  0.8, Q: 0.9 },
+            { type: 'highshelf', frequency: 8500, gain: -1.4 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        contrabaixo: {
+          filters: [
+            { type: 'highpass',  frequency:   32, Q: 0.7 },
+            { type: 'peaking',   frequency:   90, gain:  1.0, Q: 0.9 },
+            { type: 'peaking',   frequency:  700, gain:  0.5, Q: 1.0 },
+            { type: 'peaking',   frequency: 1700, gain:  0.6, Q: 0.9 },
+            { type: 'highshelf', frequency: 7500, gain: -1.8 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        flauta: {
+          filters: [
+            { type: 'highpass',  frequency:  180, Q: 0.7 },
+            { type: 'peaking',   frequency:  600, gain: -1.4, Q: 1.0 },
+            { type: 'peaking',   frequency: 3000, gain:  1.4, Q: 0.9 },
+            { type: 'highshelf', frequency: 6500, gain:  1.8 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        clarinete: {
+          filters: [
+            { type: 'highpass',  frequency:  120, Q: 0.7 },
+            { type: 'peaking',   frequency:  380, gain:  1.6, Q: 0.9 },
+            { type: 'peaking',   frequency: 1500, gain: -1.6, Q: 1.1 },
+            { type: 'peaking',   frequency: 3200, gain:  1.4, Q: 0.9 },
+            { type: 'highshelf', frequency: 8500, gain: -1.4 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        oboe: {
+          filters: [
+            { type: 'highpass',  frequency:  140, Q: 0.7 },
+            { type: 'peaking',   frequency:  420, gain:  1.4, Q: 0.9 },
+            { type: 'peaking',   frequency: 1700, gain: -1.4, Q: 1.0 },
+            { type: 'peaking',   frequency: 3000, gain:  1.8, Q: 0.9 },
+            { type: 'highshelf', frequency: 9000, gain: -1.4 }
+          ],
+          saturation: 0,
+          outGain: 0.98
+        },
+        fagote: {
+          filters: [
+            { type: 'highpass',  frequency:   55, Q: 0.7 },
+            { type: 'peaking',   frequency:  140, gain:  1.4, Q: 0.8 },
+            { type: 'peaking',   frequency:  900, gain: -0.8, Q: 1.0 },
+            { type: 'peaking',   frequency: 2200, gain:  1.0, Q: 0.9 },
+            { type: 'highshelf', frequency: 7500, gain: -1.8 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        trompete: {
+          filters: [
+            { type: 'highpass',  frequency:  150, Q: 0.7 },
+            { type: 'peaking',   frequency:  280, gain: -1.6, Q: 1.0 },
+            { type: 'peaking',   frequency: 1800, gain:  2.2, Q: 0.9 },
+            { type: 'peaking',   frequency: 5000, gain:  1.6, Q: 0.9 },
+            { type: 'highshelf', frequency: 9000, gain: -1.8 }
+          ],
+          saturation: 0.18,
+          outGain: 0.92
+        },
+        trompa: {
+          filters: [
+            { type: 'highpass',  frequency:   90, Q: 0.7 },
+            { type: 'peaking',   frequency:  200, gain:  1.4, Q: 0.9 },
+            { type: 'peaking',   frequency:  900, gain: -1.2, Q: 1.0 },
+            { type: 'peaking',   frequency: 2600, gain:  1.6, Q: 0.9 },
+            { type: 'highshelf', frequency: 8000, gain: -2.4 }
+          ],
+          saturation: 0.10,
+          outGain: 0.96
+        },
+        trombone: {
+          filters: [
+            { type: 'highpass',  frequency:   70, Q: 0.7 },
+            { type: 'peaking',   frequency:  160, gain:  1.6, Q: 0.9 },
+            { type: 'peaking',   frequency:  700, gain: -1.4, Q: 1.0 },
+            { type: 'peaking',   frequency: 2200, gain:  1.8, Q: 0.9 },
+            { type: 'highshelf', frequency: 8500, gain: -2.0 }
+          ],
+          saturation: 0.14,
+          outGain: 0.94
+        },
+        voz: {
+          filters: [
+            { type: 'highpass',  frequency:  110, Q: 0.7 },
+            { type: 'peaking',   frequency:  280, gain:  1.2, Q: 0.9 },
+            { type: 'peaking',   frequency: 2800, gain:  1.6, Q: 0.9 },
+            { type: 'highshelf', frequency: 9500, gain: -1.0 }
+          ],
+          saturation: 0,
+          outGain: 1.0
+        },
+        _default: { filters: [], saturation: 0, outGain: 1.0 }
+      };
+
+      function makeSoftSaturationCurve(amount) {
+        var n = 1024;
+        var curve = new Float32Array(n);
+        var k = Math.max(0, amount) * 4;
+        var denom = Math.tanh(1 + k);
+        for (var i = 0; i < n; i++) {
+          var x = (i * 2 / n) - 1;
+          curve[i] = denom > 0 ? Math.tanh(x * (1 + k)) / denom : x;
+        }
+        return curve;
+      }
+
+      function buildInstrumentShapingChain(ctx, instrumentId) {
+        if (!ctx) return null;
+        var profile = INSTRUMENT_SHAPING_PROFILES[instrumentId] || INSTRUMENT_SHAPING_PROFILES._default;
+        try {
+          var input = ctx.createGain();
+          input.gain.value = 1.0;
+          var output = ctx.createGain();
+          output.gain.value = profile.outGain != null ? profile.outGain : 1.0;
+
+          var head = input;
+          (profile.filters || []).forEach(function (f) {
+            var node = ctx.createBiquadFilter();
+            node.type = f.type;
+            node.frequency.value = f.frequency;
+            if (typeof f.gain === 'number') node.gain.value = f.gain;
+            if (typeof f.Q === 'number') node.Q.value = f.Q;
+            head.connect(node);
+            head = node;
+          });
+
+          if (profile.saturation && profile.saturation > 0) {
+            var shaper = ctx.createWaveShaper();
+            shaper.curve = makeSoftSaturationCurve(profile.saturation);
+            shaper.oversample = '2x';
+            head.connect(shaper);
+            head = shaper;
+          }
+
+          head.connect(output);
+          return { input: input, output: output };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      /**
+       * Devolve o nó de entrada da cadeia de modelagem do instrumento já conectado ao barramento.
+       * Em caso de falha (instrumento desconhecido, contexto fechando), volta direto ao barramento.
+       */
+      function getInstrumentShapingDestination(ctx, instrumentId) {
+        if (!ctx) return null;
+        var bus = ensureAudioOutputBus(ctx);
+        if (instrumentShapingChainsCtx !== ctx) {
+          instrumentShapingChains = {};
+          instrumentShapingChainsCtx = ctx;
+        }
+        var chain = instrumentShapingChains[instrumentId];
+        if (!chain) {
+          chain = buildInstrumentShapingChain(ctx, instrumentId);
+          if (chain && bus) {
+            try { chain.output.connect(bus); }
+            catch (e) { chain = null; }
+          }
+          if (chain) instrumentShapingChains[instrumentId] = chain;
+        }
+        return chain ? chain.input : (bus || ctx.destination);
+      }
+
       function getCurrentInstrumentTimbreProfile() {
         var inst = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
-        if (inst === 'violino') return { attack: 0.016, release: 0.42, gainMul: 0.96 };
-        if (inst === 'viola') return { attack: 0.018, release: 0.44, gainMul: 0.97 };
-        if (inst === 'violoncelo') return { attack: 0.02, release: 0.48, gainMul: 1.0 };
-        if (inst === 'flauta' || inst === 'clarinete' || inst === 'oboe' || inst === 'fagote') {
-          return { attack: 0.014, release: 0.36, gainMul: 0.95 };
-        }
-        if (inst === 'trompete' || inst === 'trompa' || inst === 'trombone') {
-          return { attack: 0.012, release: 0.33, gainMul: 0.92 };
-        }
-        if (inst === 'voz') return { attack: 0.022, release: 0.5, gainMul: 0.8 };
+        if (inst === 'violino')    return { attack: 0.022, release: 0.46, gainMul: 0.96 };
+        if (inst === 'viola')      return { attack: 0.024, release: 0.48, gainMul: 0.97 };
+        if (inst === 'violoncelo') return { attack: 0.018, release: 0.50, gainMul: 1.00 };
+        if (inst === 'contrabaixo')return { attack: 0.020, release: 0.52, gainMul: 1.00 };
+        if (inst === 'flauta')     return { attack: 0.013, release: 0.32, gainMul: 0.95 };
+        if (inst === 'clarinete')  return { attack: 0.016, release: 0.38, gainMul: 0.96 };
+        if (inst === 'oboe')       return { attack: 0.014, release: 0.36, gainMul: 0.93 };
+        if (inst === 'fagote')     return { attack: 0.017, release: 0.40, gainMul: 0.97 };
+        if (inst === 'trompete')   return { attack: 0.011, release: 0.30, gainMul: 0.90 };
+        if (inst === 'trompa')     return { attack: 0.015, release: 0.38, gainMul: 0.94 };
+        if (inst === 'trombone')   return { attack: 0.013, release: 0.34, gainMul: 0.92 };
+        if (inst === 'voz')        return { attack: 0.024, release: 0.55, gainMul: 0.82 };
         return { attack: 0.012, release: 0.34, gainMul: 0.95 };
       }
 
@@ -2296,7 +2510,7 @@
 
         instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
           from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/',
-          destination: ensureAudioOutputBus(ctx) || ctx.destination
+          destination: getInstrumentShapingDestination(ctx, instrumentId) || ensureAudioOutputBus(ctx) || ctx.destination
         }).then(function (loadedInst) {
           return loadedInst;
         }).catch(function () {

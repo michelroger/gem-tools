@@ -7,7 +7,7 @@
   <identification>
     <encoding>
       <software>Flat</software>
-      <encoding-date>2026-04-15</encoding-date>
+      <encoding-date>2026-05-25</encoding-date>
     </encoding>
     <source>https://flat.io/score/69cbeaf1be72bc862966b5dd-454-cidadao-dos-ceus</source>
   </identification>
@@ -40,8 +40,8 @@
   </credit>
   <part-list>
     <score-part id="P1">
-      <part-name>Violino</part-name>
-      <part-abbreviation>Vln.</part-abbreviation>
+      <part-name>Sop</part-name>
+      <part-abbreviation>S</part-abbreviation>
       <score-instrument id="P1-I1">
         <instrument-name>Violino</instrument-name>
       </score-instrument>
@@ -125,6 +125,7 @@
         <staff>1</staff>
         <notations>
           <technical>
+            <up-bow/>
             <fingering>3</fingering>
           </technical>
         </notations>
