@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.22';
+      const APP_VERSION = '1.2.23';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -4295,11 +4295,6 @@
       }
 
       function initPlayerLiveBars() {
-        var debugLogEl = document.getElementById('playerLiveDebugLog');
-        if (debugLogEl) {
-          debugLogEl.style.display = 'none';
-          debugLogEl.innerHTML = '';
-        }
         var host = document.getElementById('playerOsmdContainer');
         if (host) {
           var prev = host.querySelector('#gem-player-live-bars');
@@ -4308,24 +4303,9 @@
         playerLiveBarsMap = {};
         if (!playerLiveListenEnabled) return;
 
-        if (debugLogEl) {
-          debugLogEl.style.display = 'block';
-          debugLogEl.innerHTML += '• Leitura ao vivo ligada. Iniciando mapeamento...<br>';
-        }
-
-        if (!host || !playerScoreData || !playerScoreData.events) {
-          if (debugLogEl) {
-            debugLogEl.innerHTML += '• Falha: host=' + !!host + ', scoreData=' + !!playerScoreData + '<br>';
-          }
-          return;
-        }
+        if (!host || !playerScoreData || !playerScoreData.events) return;
         var svg = getPlayerActiveSvgElement(host);
-        if (!svg) {
-          if (debugLogEl) {
-            debugLogEl.innerHTML += '• Falha: Elemento SVG não encontrado no contêiner.<br>';
-          }
-          return;
-        }
+        if (!svg) return;
 
         try {
           var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -4355,23 +4335,6 @@
           }
 
           var svgNotes = collectPlayerChronologicalSvgNotes(svg);
-          if (debugLogEl) {
-            debugLogEl.innerHTML += '• Notas coletadas no SVG = ' + svgNotes.length + '<br>';
-            debugLogEl.innerHTML += '• Eventos da voz ativa (' + activeVoice.toUpperCase() + ') = ' + playableEvents.length + '<br>';
-            
-            var firstEventsDebug = [];
-            var firstSvgNotesDebug = [];
-            for (var i = 0; i < Math.min(3, playableEvents.length); i++) {
-              var ev = playableEvents[i].ev;
-              firstEventsDebug.push('Ev' + playableEvents[i].origIndex + ': midi=' + playerEventMidi(ev) + ' (freq=' + ev.freq + ')');
-            }
-            for (var k = 0; k < Math.min(3, svgNotes.length); k++) {
-              var n = svgNotes[k];
-              firstSvgNotesDebug.push('Svg' + k + ': midi=' + n.midi + ' (cx=' + Math.round(n.cx) + ')');
-            }
-            debugLogEl.innerHTML += '• Primeiros eventos jogáveis: ' + (firstEventsDebug.join(', ') || 'Nenhum') + '<br>';
-            debugLogEl.innerHTML += '• Primeiras notas SVG coletadas: ' + (firstSvgNotesDebug.join(', ') || 'Nenhuma') + '<br>';
-          }
 
           var mappedNotes = [];
           var lastCx = -1;
@@ -4473,20 +4436,7 @@
               maxWidth: largura
             };
           }
-          var count = Object.keys(playerLiveBarsMap).length;
-          if (debugLogEl) {
-            debugLogEl.innerHTML += '• Mapeados com sucesso = ' + count + ' de ' + playableEvents.length + ' eventos da voz ativa.<br>';
-            if (count > 0) {
-              debugLogEl.style.background = 'rgba(34, 197, 94, 0.08)';
-              debugLogEl.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-              debugLogEl.style.color = '#15803d';
-            }
-          }
-        } catch (err) {
-          if (debugLogEl) {
-            debugLogEl.innerHTML += '• Erro em initPlayerLiveBars: ' + err.message + '<br>';
-          }
-        }
+        } catch (err) {}
       }
 
       /** Rótulos Dó/Ré/Sol dentro das cabeças (SVG). */
