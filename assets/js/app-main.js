@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.27';
+      const APP_VERSION = '1.2.28';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -315,6 +315,37 @@
       let audioCtx = null;
       let currentMode = 'player';
       var msaActiveFase = 1;
+      var currentMsaVideoBlobUrl = null;
+      var currentMsaAudioBlobUrl = null;
+      var msaVideoAbortController = null;
+      var msaAudioAbortController = null;
+
+      function revokeMsaMedia() {
+        if (msaVideoAbortController) {
+          try {
+            msaVideoAbortController.abort();
+          } catch (e) {}
+          msaVideoAbortController = null;
+        }
+        if (msaAudioAbortController) {
+          try {
+            msaAudioAbortController.abort();
+          } catch (e) {}
+          msaAudioAbortController = null;
+        }
+        if (currentMsaVideoBlobUrl) {
+          try {
+            URL.revokeObjectURL(currentMsaVideoBlobUrl);
+          } catch (e) {}
+          currentMsaVideoBlobUrl = null;
+        }
+        if (currentMsaAudioBlobUrl) {
+          try {
+            URL.revokeObjectURL(currentMsaAudioBlobUrl);
+          } catch (e) {}
+          currentMsaAudioBlobUrl = null;
+        }
+      }
       let challengeTarget = null;
       let challengeTimeout = null;
       let challengeRound = 0;
@@ -6568,7 +6599,14 @@
         if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
         if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
         if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
-        if (currentMode === 'msa' && mode !== 'msa') pauseMsaMediaIfPlaying();
+        if (currentMode === 'msa' && mode !== 'msa') {
+          pauseMsaMediaIfPlaying();
+          revokeMsaMedia();
+          var videoWrap = document.getElementById('msaVideoWrapper');
+          var audioWrap = document.getElementById('msaAudioWrapper');
+          if (videoWrap) videoWrap.innerHTML = '';
+          if (audioWrap) audioWrap.innerHTML = '';
+        }
         currentMode = mode;
         setMoreMenuOpen(false);
         setPlayerSpeedPopoverOpen(false);
@@ -8245,66 +8283,98 @@
           return;
         }
         
+        revokeMsaMedia();
+        msaVideoAbortController = new AbortController();
+        msaAudioAbortController = new AbortController();
+        
         // Vídeo
         if (fData.videoUrl) {
-          var video = document.createElement('video');
-          video.className = 'msa-video-player';
-          video.controls = true;
-          video.src = fData.videoUrl;
+          videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando vídeo...</p></div>';
+          if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           
-          video.addEventListener('play', function () {
-            var audioEl = audioWrap.querySelector('audio');
-            if (audioEl && !audioEl.paused) {
-              audioEl.pause();
-            }
-            if (playerPlayback.isPlaying) {
-              stopPlayerPlayback(true);
-              setMessage('Playback pausado.');
-            }
-          });
-
-          video.addEventListener('error', function () {
-            videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
-              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
-              '<p><strong>Vídeo não encontrado localmente</strong></p>' +
-              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o vídeo em:</p>' +
-              '<span class="msa-placeholder-path">' + fData.videoUrl.replace('./', '') + '</span>' +
-              '</div>';
-            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
-          });
-          videoWrap.appendChild(video);
+          fetch(fData.videoUrl, { signal: msaVideoAbortController.signal })
+            .then(function (res) {
+              if (!res.ok) throw new Error('Falha ao carregar arquivo de vídeo');
+              return res.blob();
+            })
+            .then(function (blob) {
+              videoWrap.innerHTML = '';
+              currentMsaVideoBlobUrl = URL.createObjectURL(blob);
+              
+              var video = document.createElement('video');
+              video.className = 'msa-video-player';
+              video.controls = true;
+              video.src = currentMsaVideoBlobUrl;
+              
+              video.addEventListener('play', function () {
+                var audioEl = audioWrap.querySelector('audio');
+                if (audioEl && !audioEl.paused) {
+                  audioEl.pause();
+                }
+                if (playerPlayback.isPlaying) {
+                  stopPlayerPlayback(true);
+                  setMessage('Playback pausado.');
+                }
+              });
+              
+              videoWrap.appendChild(video);
+            })
+            .catch(function (err) {
+              if (err.name === 'AbortError') return;
+              videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
+                '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+                '<p><strong>Vídeo não encontrado localmente</strong></p>' +
+                '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o vídeo em:</p>' +
+                '<span class="msa-placeholder-path">' + fData.videoUrl.replace('./', '') + '</span>' +
+                '</div>';
+              if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+            });
         } else {
           videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p>Nenhum vídeo disponível.</p></div>';
         }
         
         // Áudio
         if (fData.audioUrl) {
-          var audio = document.createElement('audio');
-          audio.className = 'msa-audio-player';
-          audio.controls = true;
-          audio.src = fData.audioUrl;
+          audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando áudio...</p></div>';
+          if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           
-          audio.addEventListener('play', function () {
-            var videoEl = videoWrap.querySelector('video');
-            if (videoEl && !videoEl.paused) {
-              videoEl.pause();
-            }
-            if (playerPlayback.isPlaying) {
-              stopPlayerPlayback(true);
-              setMessage('Playback pausado.');
-            }
-          });
-
-          audio.addEventListener('error', function () {
-            audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
-              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
-              '<p><strong>Áudio não encontrado localmente</strong></p>' +
-              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o áudio em:</p>' +
-              '<span class="msa-placeholder-path">' + fData.audioUrl.replace('./', '') + '</span>' +
-              '</div>';
-            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
-          });
-          audioWrap.appendChild(audio);
+          fetch(fData.audioUrl, { signal: msaAudioAbortController.signal })
+            .then(function (res) {
+              if (!res.ok) throw new Error('Falha ao carregar arquivo de áudio');
+              return res.blob();
+            })
+            .then(function (blob) {
+              audioWrap.innerHTML = '';
+              currentMsaAudioBlobUrl = URL.createObjectURL(blob);
+              
+              var audio = document.createElement('audio');
+              audio.className = 'msa-audio-player';
+              audio.controls = true;
+              audio.src = currentMsaAudioBlobUrl;
+              
+              audio.addEventListener('play', function () {
+                var videoEl = videoWrap.querySelector('video');
+                if (videoEl && !videoEl.paused) {
+                  videoEl.pause();
+                }
+                if (playerPlayback.isPlaying) {
+                  stopPlayerPlayback(true);
+                  setMessage('Playback pausado.');
+                }
+              });
+              
+              audioWrap.appendChild(audio);
+            })
+            .catch(function (err) {
+              if (err.name === 'AbortError') return;
+              audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
+                '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+                '<p><strong>Áudio não encontrado localmente</strong></p>' +
+                '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o áudio em:</p>' +
+                '<span class="msa-placeholder-path">' + fData.audioUrl.replace('./', '') + '</span>' +
+                '</div>';
+              if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+            });
         } else {
           audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Nenhum áudio disponível.</p></div>';
         }
