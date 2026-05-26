@@ -22,7 +22,7 @@
     2: {
       titulo: "Fase 2 - Pentagrama e Claves",
       descricao: "Pauta ou pentagrama, linhas e espaços, conceito de claves e estudo aprofundado da Clave de Sol. Abrange os Exercícios 12 a 20.",
-      videoUrl: "./assets/video/msa_fase2.mp4",
+      videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
       audioUrl: "./assets/audio/msa_fase2.mp3"
     },
     3: {
