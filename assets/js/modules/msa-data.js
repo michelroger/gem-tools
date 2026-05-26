@@ -16,7 +16,7 @@
     1: {
       titulo: "Fase 1 - Ritmo e Som",
       descricao: "Pulsação e tempo, som e silêncio, figuras musicais de som (semibreve, mínima e semínima) e suas respectivas pausas. Abrange os Exercícios 1 a 11.",
-      videoUrl: "./assets/video/msa_fase1.mp4",
+      videoUrl: "https://colegioatomo-my.sharepoint.com/:v:/g/personal/informatica_colatomo_com_br/IQD3neeygg1CRpMUTTqVkguiAX9yEk0rUeThpt20MrwXxrI?download=1",
       audioUrl: "./assets/audio/msa_fase1.mp3"
     },
     2: {
