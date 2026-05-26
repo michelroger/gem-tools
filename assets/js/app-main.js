@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.37';
+      const APP_VERSION = '1.2.38';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8394,7 +8394,11 @@
         // Áudio
         if (fData.audioUrl) {
           var isExternalAudio = fData.audioUrl.indexOf('http') === 0;
-          var localAudioUrl = './assets/audio/msa_fase' + faseNum + '.mp3';
+          var audioExt = '.mp3';
+          if (fData.audioUrl && (fData.audioUrl.indexOf('.m4a') !== -1 || fData.audioUrl.toLowerCase().endsWith('.m4a'))) {
+            audioExt = '.m4a';
+          }
+          var localAudioUrl = './assets/audio/msa_fase' + faseNum + audioExt;
           var isGoogleDriveAudio = isExternalAudio && (fData.audioUrl.indexOf('drive.google.com') !== -1 || fData.audioUrl.indexOf('docs.google.com') !== -1);
           
           function renderAudioPlayer(url) {

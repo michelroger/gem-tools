@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v1.2.37';
+const CACHE_VERSION = 'v1.2.38';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
@@ -54,6 +54,8 @@ self.addEventListener('fetch', function (event) {
   if (req.headers.has('range') ||
       url.pathname.endsWith('.mp4') ||
       url.pathname.endsWith('.mp3') ||
+      url.pathname.endsWith('.m4a') ||
+      url.pathname.endsWith('.aac') ||
       url.pathname.endsWith('.webm') ||
       url.pathname.endsWith('.wav')) {
     return;
