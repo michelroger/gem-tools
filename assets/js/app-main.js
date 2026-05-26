@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.33';
+      const APP_VERSION = '1.2.34';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8262,7 +8262,7 @@
         });
         
         var fases = window.MsaData.getFases();
-        var fData = fases[faseNum];
+        var fData = fases[fNum = faseNum];
         
         var titleEl = document.getElementById('msaFaseTitle');
         var descEl = document.getElementById('msaFaseDesc');
@@ -8287,13 +8287,41 @@
         msaVideoAbortController = new AbortController();
         msaAudioAbortController = new AbortController();
         
+        function getGoogleDriveFileId(url) {
+          if (!url) return null;
+          var dMatch = url.match(/\/d\/([a-zA-Z0-9_-]{25,100})/);
+          if (dMatch) return dMatch[1];
+          var idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]{25,100})/);
+          if (idMatch) return idMatch[1];
+          return null;
+        }
+        
         // Vídeo
         if (fData.videoUrl) {
           var isExternalVideo = fData.videoUrl.indexOf('http') === 0;
           var localVideoUrl = './assets/video/msa_fase' + faseNum + '.mp4';
+          var isGoogleDriveVideo = isExternalVideo && (fData.videoUrl.indexOf('drive.google.com') !== -1 || fData.videoUrl.indexOf('docs.google.com') !== -1);
           
           function renderVideoPlayer(url) {
             videoWrap.innerHTML = '';
+            
+            if (isGoogleDriveVideo) {
+              var fileId = getGoogleDriveFileId(url);
+              if (fileId) {
+                var iframe = document.createElement('iframe');
+                iframe.className = 'msa-video-player';
+                iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+                iframe.setAttribute('allow', 'autoplay');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.style.border = 'none';
+                iframe.style.width = '100%';
+                iframe.style.height = '280px';
+                iframe.style.borderRadius = '8px';
+                videoWrap.appendChild(iframe);
+                return;
+              }
+            }
+            
             var video = document.createElement('video');
             video.className = 'msa-video-player';
             video.controls = true;
@@ -8363,9 +8391,27 @@
         if (fData.audioUrl) {
           var isExternalAudio = fData.audioUrl.indexOf('http') === 0;
           var localAudioUrl = './assets/audio/msa_fase' + faseNum + '.mp3';
+          var isGoogleDriveAudio = isExternalAudio && (fData.audioUrl.indexOf('drive.google.com') !== -1 || fData.audioUrl.indexOf('docs.google.com') !== -1);
           
           function renderAudioPlayer(url) {
             audioWrap.innerHTML = '';
+            
+            if (isGoogleDriveAudio) {
+              var fileId = getGoogleDriveFileId(url);
+              if (fileId) {
+                var iframe = document.createElement('iframe');
+                iframe.className = 'msa-audio-player-iframe';
+                iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+                iframe.setAttribute('allow', 'autoplay');
+                iframe.style.border = 'none';
+                iframe.style.width = '100%';
+                iframe.style.height = '120px';
+                iframe.style.borderRadius = '8px';
+                audioWrap.appendChild(iframe);
+                return;
+              }
+            }
+            
             var audio = document.createElement('audio');
             audio.className = 'msa-audio-player';
             audio.controls = true;

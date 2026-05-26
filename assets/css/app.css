@@ -4300,6 +4300,14 @@
   width: 100%;
 }
 
+.msa-audio-player-iframe {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--bg-accent);
+}
+
 .msa-placeholder-card {
   display: flex;
   flex-direction: column;
