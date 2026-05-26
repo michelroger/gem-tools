@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.35';
+      const APP_VERSION = '1.2.36';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6604,8 +6604,10 @@
           revokeMsaMedia();
           var videoWrap = document.getElementById('msaVideoWrapper');
           var audioWrap = document.getElementById('msaAudioWrapper');
+          var pdfWrap = document.getElementById('msaPdfWrapper');
           if (videoWrap) videoWrap.innerHTML = '';
           if (audioWrap) audioWrap.innerHTML = '';
+          if (pdfWrap) pdfWrap.innerHTML = '';
         }
         currentMode = mode;
         setMoreMenuOpen(false);
@@ -8475,6 +8477,21 @@
           }
         } else {
           audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Nenhum áudio disponível.</p></div>';
+        }
+        
+        // PDF da Fase
+        var pdfWrap = document.getElementById('msaPdfWrapper');
+        if (pdfWrap) {
+          pdfWrap.innerHTML = '';
+          var pdfUrl = './assets/msa_pdf/MSA-' + faseNum + '.pdf';
+          
+          var iframe = document.createElement('iframe');
+          iframe.src = pdfUrl;
+          iframe.style.width = '100%';
+          iframe.style.height = '600px';
+          iframe.style.border = 'none';
+          iframe.style.borderRadius = '8px';
+          pdfWrap.appendChild(iframe);
         }
         
         if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();

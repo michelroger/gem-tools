@@ -14,72 +14,72 @@
 
   var msaFases = {
     1: {
-      titulo: "Fase 1 - Ritmo e Som",
-      descricao: "Pulsação e tempo, som e silêncio, figuras musicais de som (semibreve, mínima e semínima) e suas respectivas pausas. Abrange os Exercícios 1 a 11.",
+      titulo: "Fase 1 - Música e Som",
+      descricao: "Música e som, elementos da música (melodia, harmonia e ritmo) e propriedades do som (timbre, duração, altura e intensidade).",
       videoUrl: "https://docs.google.com/uc?export=download&id=1cGUTseN2gKMKb3p2GshbeHwt_8QF7L72",
       audioUrl: "https://docs.google.com/uc?export=download&id=1XHx8sehbQVY867g1cf80t2xjqmRNvOSQ"
     },
     2: {
-      titulo: "Fase 2 - Pentagrama e Claves",
-      descricao: "Pauta ou pentagrama, linhas e espaços, conceito de claves e estudo aprofundado da Clave de Sol. Abrange os Exercícios 12 a 20.",
+      titulo: "Fase 2 - Figuras Musicais",
+      descricao: "Figuras musicais de som (notas) e de silêncio (pausas), números de equivalência e a proporção de duração entre as figuras.",
       videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
       audioUrl: "https://docs.google.com/uc?export=download&id=1BdKqyTa-ThnuwNLLc84ccx2PHWd1Cv0j"
     },
     3: {
-      titulo: "Fase 3 - Clave de Fá e Leitura",
-      descricao: "A Clave de Fá na quarta linha, a Clave de Dó, localização e leitura das notas na pauta. Abrange os Exercícios 21 a 28."
+      titulo: "Fase 3 - Endecagrama, Leitura e Solfejo",
+      descricao: "Estudo sobre o endecagrama (claves e alturas), leitura rítmica, leitura métrica, solfejo e os movimentos de condução da pulsação."
     },
     4: {
-      titulo: "Fase 4 - Compassos Simples",
-      descricao: "Fórmulas de compasso binário, ternário e quaternário simples, uso da barra de compasso e a acentuação métrica (tempo forte e fraco). Abrange os Exercícios 29 a 37."
+      titulo: "Fase 4 - Ligadura, Ponto de Aumento e Intervalos",
+      descricao: "Tipos de ligadura (valor e portamento), ponto de aumento (simples e duplo) e conceitos de intervalos (simples, compostos, melódicos e harmônicos)."
     },
     5: {
-      titulo: "Fase 5 - Solfejo e Marcação",
-      descricao: "Estudo sobre a marcação de tempo por meio de gestos de solfejo (padrões de regência) e leitura rítmica. Abrange os Exercícios 38 a 44."
+      titulo: "Fase 5 - Tercinas",
+      descricao: "Conceito de tercinas, grupos de três figuras no lugar de duas, e exercícios de solfejo com tercinas baseadas no hinário."
     },
     6: {
-      titulo: "Fase 6 - Ligadura de Valor",
-      descricao: "Conceito e aplicação da ligadura de valor (prolongamento de som de notas de mesma altura), ligadura de portamento e de fraseado. Abrange os Exercícios 45 a 52."
+      titulo: "Fase 6 - Tom, Semitom e Acidentes",
+      descricao: "Estudo dos intervalos de tom e semitom (diatônico e cromático) e os acidentes musicais (sustenido, bemol e bequadro)."
     },
     7: {
-      titulo: "Fase 7 - Ponto de Aumento",
-      descricao: "A nota pontuada e a pausa pontuada, aplicação do ponto de aumento e duplo ponto. Abrange os Exercícios 53 a 59."
+      titulo: "Fase 7 - Armadura de Clave",
+      descricao: "Estudo da armadura de clave com sustenidos e bemóis, acidentes fixos e identificação rápida do nome das escalas maiores."
     },
     8: {
-      titulo: "Fase 8 - Síncope e Contratempo",
-      descricao: "O ritmo sincopado (deslocamento do acento forte) e a execução em contratempo (notas nos tempos fracos e pausas nos fortes). Abrange os Exercícios 60 a 68."
+      titulo: "Fase 8 - Tonalidade",
+      descricao: "Conceito de tonalidade (maior e menor), organização em relação à tônica da escala (grau I) e identificação nos hinos."
     },
     9: {
-      titulo: "Fase 9 - Compassos Compostos",
-      descricao: "Fórmulas de compasso composto, subdivisão ternária do tempo, unidade de tempo (UT) e unidade de compasso (UC). Abrange os Exercícios 69 a 77."
+      titulo: "Fase 9 - Repetição (Ritornello)",
+      descricao: "Estudo das barras de compasso de repetição (ritornello), casas de ritornello (1, 2 e 3) e execução de hinos com seção 'Final'."
     },
     10: {
-      titulo: "Fase 10 - Quiálteras",
-      descricao: "Conceito de quiálteras, com foco prático nas tercinas (divisão ternária de um tempo em compassos simples). Abrange os Exercícios 78 a 84."
+      titulo: "Fase 10 - Dinâmica",
+      descricao: "Variação de intensidade do som de maneira gradual (crescendo e decrescendo), termos italianos e dinâmica natural nos hinos."
     },
     11: {
-      titulo: "Fase 11 - Escalas Maiores",
-      descricao: "Formação de escalas diatônicas maiores, semitom diatônico, semitom cromático, tom e a escala de Dó Maior. Abrange os Exercícios 85 a 91."
+      titulo: "Fase 11 - Acento Métrico e Compasso Simples",
+      descricao: "Acentuação forte e fraca dos tempos do compasso (acento métrico) e estudo detalhado do compasso simples."
     },
     12: {
-      titulo: "Fase 12 - Armadura de Clave",
-      descricao: "O uso da armadura de clave para definir tonalidades, ordem dos acidentes (sustenidos e bemóis) e acidentes ocorrentes. Abrange os Exercícios 92 a 95."
+      titulo: "Fase 12 - Síncopa e Contratempo",
+      descricao: "Conceito e execução de síncopa (regular e irregular) e contratempo (regular e irregular) no estilo sacro."
     },
     13: {
-      titulo: "Fase 13 - Intervalos",
-      descricao: "Estudo sobre intervalos (distâncias entre notas), classificação dos intervalos em tons, semitons e uníssono. Abrange os Exercícios 96 a 98."
+      titulo: "Fase 13 - Ritmos Iniciais",
+      descricao: "Classificação dos ritmos iniciais na partitura: tético (início no tempo forte), anacrúsico e acéfalo."
     },
     14: {
-      titulo: "Fase 14 - Dinâmica e Articulação",
-      descricao: "Sinais de intensidade (pianíssimo, piano, meio-forte, forte, fortíssimo), dinâmica gradual (crescendo e decrescendo) e acentuações. Abrange os Exercícios 99 a 105."
+      titulo: "Fase 14 - Subdivisão de Notas Pontuadas",
+      descricao: "Proporção e subdivisão correta de colcheia pontuada seguida de semicolcheia de acordo com a velocidade de execução."
     },
     15: {
-      titulo: "Fase 15 - Andamento e Modificações",
-      descricao: "Estudo sobre o andamento e uso do metrônomo, modificação de andamento (poco rallentando) e andamento indevido. Abrange os Exercícios 106 a 107."
+      titulo: "Fase 15 - Andamento e poco rallentando",
+      descricao: "Indicação de velocidade (andamento), limites mínimos e máximos nos hinos e a modificação gradativa com o poco rallentando."
     },
     16: {
-      titulo: "Fase 16 - Fraseologia e Interpretação",
-      descricao: "Conceito de frases, semifrases e motivos, interpretação musical e indicações interpretativas finais do método. Abrange os Exercícios 108 a 113."
+      titulo: "Fase 16 - Interpretação e Indicações Interpretativas",
+      descricao: "Compreensão e transmissão dos sentimentos da poesia (expressão musical) e as indicações: Solene, Majestoso, Com júbilo, Com veneração, Com submissão e Com humildade."
     }
   };
 
