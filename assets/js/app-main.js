@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.28';
+      const APP_VERSION = '1.2.29';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8292,42 +8292,65 @@
           videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando vídeo...</p></div>';
           if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           
+          var localVideoUrl = './assets/video/msa_fase' + faseNum + '.mp4';
+          
+          function renderVideo(blob) {
+            videoWrap.innerHTML = '';
+            currentMsaVideoBlobUrl = URL.createObjectURL(blob);
+            var video = document.createElement('video');
+            video.className = 'msa-video-player';
+            video.controls = true;
+            video.src = currentMsaVideoBlobUrl;
+            video.addEventListener('play', function () {
+              var audioEl = audioWrap.querySelector('audio');
+              if (audioEl && !audioEl.paused) {
+                audioEl.pause();
+              }
+              if (playerPlayback.isPlaying) {
+                stopPlayerPlayback(true);
+                setMessage('Playback pausado.');
+              }
+            });
+            videoWrap.appendChild(video);
+          }
+          
+          function showVideoError() {
+            videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
+              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+              '<p><strong>Vídeo não carregado</strong></p>' +
+              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Verifique sua internet ou salve o arquivo em:</p>' +
+              '<span class="msa-placeholder-path">' + localVideoUrl.replace('./', '') + '</span>' +
+              '</div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+          }
+
           fetch(fData.videoUrl, { signal: msaVideoAbortController.signal })
             .then(function (res) {
-              if (!res.ok) throw new Error('Falha ao carregar arquivo de vídeo');
+              if (!res.ok) throw new Error('Falha ao obter mídia da nuvem');
               return res.blob();
             })
             .then(function (blob) {
-              videoWrap.innerHTML = '';
-              currentMsaVideoBlobUrl = URL.createObjectURL(blob);
-              
-              var video = document.createElement('video');
-              video.className = 'msa-video-player';
-              video.controls = true;
-              video.src = currentMsaVideoBlobUrl;
-              
-              video.addEventListener('play', function () {
-                var audioEl = audioWrap.querySelector('audio');
-                if (audioEl && !audioEl.paused) {
-                  audioEl.pause();
-                }
-                if (playerPlayback.isPlaying) {
-                  stopPlayerPlayback(true);
-                  setMessage('Playback pausado.');
-                }
-              });
-              
-              videoWrap.appendChild(video);
+              renderVideo(blob);
             })
             .catch(function (err) {
               if (err.name === 'AbortError') return;
-              videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
-                '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
-                '<p><strong>Vídeo não encontrado localmente</strong></p>' +
-                '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o vídeo em:</p>' +
-                '<span class="msa-placeholder-path">' + fData.videoUrl.replace('./', '') + '</span>' +
-                '</div>';
-              if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+              
+              if (fData.videoUrl !== localVideoUrl) {
+                fetch(localVideoUrl, { signal: msaVideoAbortController.signal })
+                  .then(function (resLocal) {
+                    if (!resLocal.ok) throw new Error('Falha no fallback local');
+                    return resLocal.blob();
+                  })
+                  .then(function (blob) {
+                    renderVideo(blob);
+                  })
+                  .catch(function (errLocal) {
+                    if (errLocal.name === 'AbortError') return;
+                    showVideoError();
+                  });
+              } else {
+                showVideoError();
+              }
             });
         } else {
           videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p>Nenhum vídeo disponível.</p></div>';
@@ -8338,42 +8361,65 @@
           audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando áudio...</p></div>';
           if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           
+          var localAudioUrl = './assets/audio/msa_fase' + faseNum + '.mp3';
+          
+          function renderAudio(blob) {
+            audioWrap.innerHTML = '';
+            currentMsaAudioBlobUrl = URL.createObjectURL(blob);
+            var audio = document.createElement('audio');
+            audio.className = 'msa-audio-player';
+            audio.controls = true;
+            audio.src = currentMsaAudioBlobUrl;
+            audio.addEventListener('play', function () {
+              var videoEl = videoWrap.querySelector('video');
+              if (videoEl && !videoEl.paused) {
+                videoEl.pause();
+              }
+              if (playerPlayback.isPlaying) {
+                stopPlayerPlayback(true);
+                setMessage('Playback pausado.');
+              }
+            });
+            audioWrap.appendChild(audio);
+          }
+          
+          function showAudioError() {
+            audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
+              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+              '<p><strong>Áudio não carregado</strong></p>' +
+              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Verifique sua internet ou salve o arquivo em:</p>' +
+              '<span class="msa-placeholder-path">' + localAudioUrl.replace('./', '') + '</span>' +
+              '</div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+          }
+
           fetch(fData.audioUrl, { signal: msaAudioAbortController.signal })
             .then(function (res) {
-              if (!res.ok) throw new Error('Falha ao carregar arquivo de áudio');
+              if (!res.ok) throw new Error('Falha ao obter mídia da nuvem');
               return res.blob();
             })
             .then(function (blob) {
-              audioWrap.innerHTML = '';
-              currentMsaAudioBlobUrl = URL.createObjectURL(blob);
-              
-              var audio = document.createElement('audio');
-              audio.className = 'msa-audio-player';
-              audio.controls = true;
-              audio.src = currentMsaAudioBlobUrl;
-              
-              audio.addEventListener('play', function () {
-                var videoEl = videoWrap.querySelector('video');
-                if (videoEl && !videoEl.paused) {
-                  videoEl.pause();
-                }
-                if (playerPlayback.isPlaying) {
-                  stopPlayerPlayback(true);
-                  setMessage('Playback pausado.');
-                }
-              });
-              
-              audioWrap.appendChild(audio);
+              renderAudio(blob);
             })
             .catch(function (err) {
               if (err.name === 'AbortError') return;
-              audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
-                '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
-                '<p><strong>Áudio não encontrado localmente</strong></p>' +
-                '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o áudio em:</p>' +
-                '<span class="msa-placeholder-path">' + fData.audioUrl.replace('./', '') + '</span>' +
-                '</div>';
-              if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+              
+              if (fData.audioUrl !== localAudioUrl) {
+                fetch(localAudioUrl, { signal: msaAudioAbortController.signal })
+                  .then(function (resLocal) {
+                    if (!resLocal.ok) throw new Error('Falha no fallback local');
+                    return resLocal.blob();
+                  })
+                  .then(function (blob) {
+                    renderAudio(blob);
+                  })
+                  .catch(function (errLocal) {
+                    if (errLocal.name === 'AbortError') return;
+                    showAudioError();
+                  });
+              } else {
+                showAudioError();
+              }
             });
         } else {
           audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Nenhum áudio disponível.</p></div>';
