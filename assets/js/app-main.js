@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.6';
+  const APP_VERSION = '1.3.7';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8275,23 +8275,14 @@
       if (iframe) {
         var containerWidth = videoWrap.getBoundingClientRect().width;
         if (containerWidth > 0) {
-          if (containerWidth < 560) {
-            var scale = containerWidth / 560;
-            iframe.style.width = '560px';
-            iframe.style.height = '315px';
-            iframe.style.transform = 'scale(' + scale + ')';
-            iframe.style.transformOrigin = 'top left';
-            videoWrap.style.height = (315 * scale) + 'px';
-            videoWrap.style.overflow = 'hidden';
-            videoWrap.style.position = 'relative';
-          } else {
-            iframe.style.width = '100%';
-            iframe.style.height = '315px';
-            iframe.style.transform = '';
-            iframe.style.transformOrigin = '';
-            videoWrap.style.height = 'auto';
-            videoWrap.style.overflow = '';
-          }
+          var targetHeight = Math.round(containerWidth * 9 / 16);
+          iframe.style.width = '100%';
+          iframe.style.height = targetHeight + 'px';
+          iframe.style.aspectRatio = '16 / 9';
+          iframe.style.transform = '';
+          iframe.style.transformOrigin = '';
+          videoWrap.style.height = 'auto';
+          videoWrap.style.overflow = '';
         }
       }
     }
@@ -8301,26 +8292,12 @@
     if (audioWrap) {
       var iframe = audioWrap.querySelector('iframe');
       if (iframe) {
-        var containerWidth = audioWrap.getBoundingClientRect().width;
-        if (containerWidth > 0) {
-          if (containerWidth < 560) {
-            var scale = containerWidth / 560;
-            iframe.style.width = '560px';
-            iframe.style.height = '120px';
-            iframe.style.transform = 'scale(' + scale + ')';
-            iframe.style.transformOrigin = 'top left';
-            audioWrap.style.height = (120 * scale) + 'px';
-            audioWrap.style.overflow = 'hidden';
-            audioWrap.style.position = 'relative';
-          } else {
-            iframe.style.width = '100%';
-            iframe.style.height = '120px';
-            iframe.style.transform = '';
-            iframe.style.transformOrigin = '';
-            audioWrap.style.height = 'auto';
-            audioWrap.style.overflow = '';
-          }
-        }
+        iframe.style.width = '100%';
+        iframe.style.height = '120px';
+        iframe.style.transform = '';
+        iframe.style.transformOrigin = '';
+        audioWrap.style.height = 'auto';
+        audioWrap.style.overflow = '';
       }
     }
   }
