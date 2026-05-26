@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.7';
+  const APP_VERSION = '1.3.8';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8411,6 +8411,25 @@
       return url;
     }
 
+    function getDropboxDirectLink(url) {
+      if (!url) return url;
+      if (url.indexOf('dropbox.com') !== -1) {
+        // Se já tiver raw=1, retorna ela mesma
+        if (url.indexOf('raw=1') !== -1) return url;
+        // Substitui dl=0 por raw=1
+        if (url.indexOf('dl=0') !== -1) {
+          return url.replace('dl=0', 'raw=1');
+        }
+        // Se tiver query params, adiciona &raw=1, senão ?raw=1
+        if (url.indexOf('?') !== -1) {
+          return url + '&raw=1';
+        } else {
+          return url + '?raw=1';
+        }
+      }
+      return url;
+    }
+
     // Vídeo
     if (hasVideo) {
       msaVideoAbortController = new AbortController();
@@ -8504,7 +8523,8 @@
       }
 
       if (isExternalVideo) {
-        renderVideoPlayer(fData.videoUrl);
+        var videoUrlToPlay = getDropboxDirectLink(fData.videoUrl);
+        renderVideoPlayer(videoUrlToPlay);
       } else {
         fetchLocalVideoBlob();
       }
@@ -8603,7 +8623,8 @@
       }
 
       if (isExternalAudio) {
-        renderAudioPlayer(fData.audioUrl);
+        var audioUrlToPlay = getDropboxDirectLink(fData.audioUrl);
+        renderAudioPlayer(audioUrlToPlay);
       } else {
         fetchLocalAudioBlob();
       }
