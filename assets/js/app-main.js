@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.36';
+      const APP_VERSION = '1.2.37';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6605,9 +6605,11 @@
           var videoWrap = document.getElementById('msaVideoWrapper');
           var audioWrap = document.getElementById('msaAudioWrapper');
           var pdfWrap = document.getElementById('msaPdfWrapper');
+          var quizWrap = document.getElementById('msaQuizWrapper');
           if (videoWrap) videoWrap.innerHTML = '';
           if (audioWrap) audioWrap.innerHTML = '';
           if (pdfWrap) pdfWrap.innerHTML = '';
+          if (quizWrap) quizWrap.innerHTML = '';
         }
         currentMode = mode;
         setMoreMenuOpen(false);
@@ -8492,6 +8494,35 @@
           iframe.style.border = 'none';
           iframe.style.borderRadius = '8px';
           pdfWrap.appendChild(iframe);
+        }
+        
+        // Quiz da Fase
+        var quizWrap = document.getElementById('msaQuizWrapper');
+        var quizCard = document.getElementById('msaQuizCard');
+        if (quizWrap && quizCard) {
+          quizWrap.innerHTML = '';
+          if (fData && fData.quizUrl) {
+            quizCard.style.display = '';
+            
+            var link = document.createElement('a');
+            link.className = 'msa-quiz-btn';
+            link.href = fData.quizUrl;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.innerHTML = '<i data-lucide="external-link" style="width: 18px; height: 18px;"></i> Responder Quiz (NotebookLM)';
+            
+            var desc = document.createElement('p');
+            desc.style.fontSize = '0.85rem';
+            desc.style.color = 'var(--text-soft)';
+            desc.style.marginTop = '0.5rem';
+            desc.style.textAlign = 'center';
+            desc.textContent = 'O NotebookLM não permite ser exibido dentro de outros sites. Clique no botão acima para abrir e responder ao quiz em uma nova aba de forma segura!';
+            
+            quizWrap.appendChild(link);
+            quizWrap.appendChild(desc);
+          } else {
+            quizCard.style.display = 'none';
+          }
         }
         
         if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
