@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.2';
+  const APP_VERSION = '1.3.3';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8363,38 +8363,39 @@
       return null;
     }
 
+    function getGoogleDriveDirectLink(url) {
+      var fileId = getGoogleDriveFileId(url);
+      if (fileId) {
+        return 'https://docs.google.com/uc?export=download&id=' + fileId;
+      }
+      return url;
+    }
+
     // Vídeo
     if (hasVideo) {
       msaVideoAbortController = new AbortController();
       var isExternalVideo = fData.videoUrl.indexOf('http') === 0;
       var localVideoUrl = './assets/video/msa_fase' + faseNum + '.mp4';
-      var isGoogleDriveVideo = isExternalVideo && (fData.videoUrl.indexOf('drive.google.com') !== -1 || fData.videoUrl.indexOf('docs.google.com') !== -1);
 
       function renderVideoPlayer(url) {
         videoWrap.innerHTML = '';
 
-        if (isGoogleDriveVideo) {
-          var fileId = getGoogleDriveFileId(url);
-          if (fileId) {
-            var iframe = document.createElement('iframe');
-            iframe.className = 'msa-video-player';
-            iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
-            iframe.setAttribute('allow', 'autoplay');
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.style.border = 'none';
-            iframe.style.width = '100%';
-            iframe.style.height = 'auto';
-            iframe.style.aspectRatio = '16 / 9';
-            iframe.style.borderRadius = '8px';
-            videoWrap.appendChild(iframe);
-            return;
-          }
+        var finalUrl = url;
+        if (url.indexOf('drive.google.com') !== -1 || url.indexOf('docs.google.com') !== -1) {
+          finalUrl = getGoogleDriveDirectLink(url);
         }
 
         var video = document.createElement('video');
         video.className = 'msa-video-player';
         video.controls = true;
-        video.src = url;
+        video.src = finalUrl;
+        video.style.width = '100%';
+        video.style.height = 'auto';
+        video.style.aspectRatio = '16 / 9';
+        video.style.borderRadius = '8px';
+        video.style.background = '#000000';
+        video.setAttribute('playsinline', 'true');
+        
         video.addEventListener('play', function () {
           var audioEl = audioWrap.querySelector('audio');
           if (audioEl && !audioEl.paused) {
@@ -8465,31 +8466,22 @@
         audioExt = '.m4a';
       }
       var localAudioUrl = './assets/audio/msa_fase' + faseNum + audioExt;
-      var isGoogleDriveAudio = isExternalAudio && (fData.audioUrl.indexOf('drive.google.com') !== -1 || fData.audioUrl.indexOf('docs.google.com') !== -1);
 
       function renderAudioPlayer(url) {
         audioWrap.innerHTML = '';
 
-        if (isGoogleDriveAudio) {
-          var fileId = getGoogleDriveFileId(url);
-          if (fileId) {
-            var iframe = document.createElement('iframe');
-            iframe.className = 'msa-audio-player-iframe';
-            iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
-            iframe.setAttribute('allow', 'autoplay');
-            iframe.style.border = 'none';
-            iframe.style.width = '100%';
-            iframe.style.height = '120px';
-            iframe.style.borderRadius = '8px';
-            audioWrap.appendChild(iframe);
-            return;
-          }
+        var finalUrl = url;
+        if (url.indexOf('drive.google.com') !== -1 || url.indexOf('docs.google.com') !== -1) {
+          finalUrl = getGoogleDriveDirectLink(url);
         }
 
         var audio = document.createElement('audio');
         audio.className = 'msa-audio-player';
         audio.controls = true;
-        audio.src = url;
+        audio.src = finalUrl;
+        audio.style.width = '100%';
+        audio.style.borderRadius = '8px';
+        
         audio.addEventListener('play', function () {
           var videoEl = videoWrap.querySelector('video');
           if (videoEl && !videoEl.paused) {
