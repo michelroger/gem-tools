@@ -16,8 +16,8 @@
     1: {
       titulo: "Fase 1 - Música e Som",
       descricao: "Música e som, elementos da música (melodia, harmonia e ritmo) e propriedades do som (timbre, duração, altura e intensidade).",
-      videoUrl: "https://docs.google.com/uc?export=download&id=1cGUTseN2gKMKb3p2GshbeHwt_8QF7L72",
-      audioUrl: "https://docs.google.com/uc?export=download&id=1XHx8sehbQVY867g1cf80t2xjqmRNvOSQ",
+      videoUrl: "https://docs.google.com/uc?export=download&id=1zca3tCC0t-dYkiZFiH-_cQFq5fdJPPj9",
+      audioUrl: "https://docs.google.com/uc?export=download&id=1xAm10Coim9J5BZvV7fAHa2sZnNyAI3Uo",
       quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/af27b210-b90e-433b-b449-c0e4c9ee3597?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
     },
     2: {

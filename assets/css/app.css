@@ -4375,3 +4375,92 @@
   filter: brightness(1.05);
 }
 
+/* Abas (Tabs) do MSA */
+.msa-tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--card-border);
+  padding-bottom: 0.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.msa-tabs-nav::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+
+.msa-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  background: var(--bg-accent);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-soft);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--ease);
+}
+
+.msa-tab-btn:hover {
+  background: var(--bg-glow-1);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.msa-tab-btn.active {
+  background: var(--accent);
+  color: #ffffff !important;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(79, 124, 255, 0.3);
+}
+
+.msa-tab-btn[data-tab="quiz"].active {
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.35);
+}
+
+.msa-tab-content {
+  display: none;
+  width: 100%;
+}
+
+.msa-tab-content.active {
+  display: block;
+  animation: msaTabFadeIn 0.22s ease-out forwards;
+}
+
+@keyframes msaTabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ajustes Responsivos para Telas Estreitas */
+@media (max-width: 480px) {
+  .msa-tabs-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .msa-tab-btn {
+    justify-content: center;
+    padding: 0.55rem;
+    font-size: 0.85rem;
+  }
+}
+

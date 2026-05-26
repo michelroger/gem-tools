@@ -333,29 +333,53 @@
         <h4 class="msa-fase-title" id="msaFaseTitle">Fase 1</h4>
         <p class="msa-fase-desc" id="msaFaseDesc" style="margin-top: 0.35rem; color: var(--text-soft); font-size: 0.95rem;"></p>
         
-        <div class="msa-media-container" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1.25rem; width: 100%;">
-          <!-- Card de Vídeo -->
-          <div class="msa-media-card" id="msaVideoCard">
-            <h5 class="msa-media-title"><i data-lucide="video" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Resumo em Vídeo</h5>
-            <div class="msa-media-body" id="msaVideoWrapper"></div>
+        <!-- Barra de abas (Tabs Navigation) -->
+        <div class="msa-tabs-nav" role="tablist" style="margin-top: 1.25rem;">
+          <button class="msa-tab-btn active" data-tab="video" role="tab" aria-selected="true">
+            <i data-lucide="video" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Vídeo</span>
+          </button>
+          <button class="msa-tab-btn" data-tab="audio" role="tab" aria-selected="false">
+            <i data-lucide="headphones" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Áudio</span>
+          </button>
+          <button class="msa-tab-btn" data-tab="pdf" role="tab" aria-selected="false">
+            <i data-lucide="file-text" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>PDF</span>
+          </button>
+          <button class="msa-tab-btn" data-tab="quiz" role="tab" aria-selected="false">
+            <i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Quiz</span>
+          </button>
+        </div>
+
+        <div class="msa-media-container" style="margin-top: 1rem; display: flex; flex-direction: column; width: 100%;">
+          <!-- Conteúdo da Aba de Vídeo -->
+          <div class="msa-tab-content active" id="msaTabVideoContent">
+            <div class="msa-media-card" id="msaVideoCard" style="margin-top: 0px;">
+              <h5 class="msa-media-title"><i data-lucide="video" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Resumo em Vídeo</h5>
+              <div class="msa-media-body" id="msaVideoWrapper"></div>
+            </div>
           </div>
           
-          <!-- Card de Áudio -->
-          <div class="msa-media-card" id="msaAudioCard">
-            <h5 class="msa-media-title"><i data-lucide="headphones" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Podcast Explicativo (Áudio)</h5>
-            <div class="msa-media-body" id="msaAudioWrapper"></div>
+          <!-- Conteúdo da Aba de Áudio -->
+          <div class="msa-tab-content" id="msaTabAudioContent">
+            <div class="msa-media-card" id="msaAudioCard" style="margin-top: 0px;">
+              <h5 class="msa-media-title"><i data-lucide="headphones" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Podcast Explicativo (Áudio)</h5>
+              <div class="msa-media-body" id="msaAudioWrapper"></div>
+            </div>
           </div>
           
-          <!-- Card de PDF -->
-          <div class="msa-media-card" id="msaPdfCard">
-            <h5 class="msa-media-title"><i data-lucide="file-text" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> PDF do Método Oficial</h5>
-            <div class="msa-media-body" id="msaPdfWrapper"></div>
+          <!-- Conteúdo da Aba de PDF -->
+          <div class="msa-tab-content" id="msaTabPdfContent">
+            <div class="msa-media-card" id="msaPdfCard" style="margin-top: 0px;">
+              <h5 class="msa-media-title"><i data-lucide="file-text" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> PDF do Método Oficial</h5>
+              <div class="msa-media-body" id="msaPdfWrapper"></div>
+            </div>
           </div>
           
-          <!-- Card de Quiz -->
-          <div class="msa-media-card" id="msaQuizCard">
-            <h5 class="msa-media-title"><i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Quiz de Fixação (NotebookLM)</h5>
-            <div class="msa-media-body" id="msaQuizWrapper"></div>
+          <!-- Conteúdo da Aba de Quiz -->
+          <div class="msa-tab-content" id="msaTabQuizContent">
+            <div class="msa-media-card" id="msaQuizCard" style="margin-top: 0px;">
+              <h5 class="msa-media-title"><i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Quiz de Fixação (NotebookLM)</h5>
+              <div class="msa-media-body" id="msaQuizWrapper"></div>
+            </div>
           </div>
         </div>
       </div>
