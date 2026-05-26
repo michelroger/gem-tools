@@ -17,13 +17,13 @@
       titulo: "Fase 1 - Ritmo e Som",
       descricao: "Pulsação e tempo, som e silêncio, figuras musicais de som (semibreve, mínima e semínima) e suas respectivas pausas. Abrange os Exercícios 1 a 11.",
       videoUrl: "https://docs.google.com/uc?export=download&id=1cGUTseN2gKMKb3p2GshbeHwt_8QF7L72",
-      audioUrl: "./assets/audio/msa_fase1.mp3"
+      audioUrl: "https://docs.google.com/uc?export=download&id=1XHx8sehbQVY867g1cf80t2xjqmRNvOSQ"
     },
     2: {
       titulo: "Fase 2 - Pentagrama e Claves",
       descricao: "Pauta ou pentagrama, linhas e espaços, conceito de claves e estudo aprofundado da Clave de Sol. Abrange os Exercícios 12 a 20.",
       videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
-      audioUrl: "./assets/audio/msa_fase2.mp3"
+      audioUrl: "https://docs.google.com/uc?export=download&id=1BdKqyTa-ThnuwNLLc84ccx2PHWd1Cv0j"
     },
     3: {
       titulo: "Fase 3 - Clave de Fá e Leitura",
