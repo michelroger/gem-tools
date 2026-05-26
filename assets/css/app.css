@@ -4291,7 +4291,9 @@
 
 .msa-video-player {
   width: 100%;
-  max-height: 280px;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 480px;
   border-radius: var(--radius-sm);
   background: #000000;
 }

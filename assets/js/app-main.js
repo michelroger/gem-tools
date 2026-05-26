@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.1';
+  const APP_VERSION = '1.3.2';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8383,7 +8383,8 @@
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.style.border = 'none';
             iframe.style.width = '100%';
-            iframe.style.height = '280px';
+            iframe.style.height = 'auto';
+            iframe.style.aspectRatio = '16 / 9';
             iframe.style.borderRadius = '8px';
             videoWrap.appendChild(iframe);
             return;
