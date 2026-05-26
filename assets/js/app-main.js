@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.34';
+      const APP_VERSION = '1.2.35';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8262,7 +8262,7 @@
         });
         
         var fases = window.MsaData.getFases();
-        var fData = fases[fNum = faseNum];
+        var fData = fases[faseNum];
         
         var titleEl = document.getElementById('msaFaseTitle');
         var descEl = document.getElementById('msaFaseDesc');
