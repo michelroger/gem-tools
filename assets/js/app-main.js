@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.31';
+      const APP_VERSION = '1.2.32';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8289,18 +8289,15 @@
         
         // Vídeo
         if (fData.videoUrl) {
-          videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando vídeo...</p></div>';
-          if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
-          
+          var isExternalVideo = fData.videoUrl.indexOf('http') === 0;
           var localVideoUrl = './assets/video/msa_fase' + faseNum + '.mp4';
           
-          function renderVideo(blob) {
+          function renderVideoPlayer(url) {
             videoWrap.innerHTML = '';
-            currentMsaVideoBlobUrl = URL.createObjectURL(blob);
             var video = document.createElement('video');
             video.className = 'msa-video-player';
             video.controls = true;
-            video.src = currentMsaVideoBlobUrl;
+            video.src = url;
             video.addEventListener('play', function () {
               var audioEl = audioWrap.querySelector('audio');
               if (audioEl && !audioEl.paused) {
@@ -8311,7 +8308,36 @@
                 setMessage('Playback pausado.');
               }
             });
+            
+            video.addEventListener('error', function () {
+              // Se falhar a URL da nuvem, tenta o fallback local
+              if (url !== localVideoUrl) {
+                videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Nuvem offline. Carregando vídeo local...</p></div>';
+                if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+                fetchLocalVideoBlob();
+              } else {
+                showVideoError();
+              }
+            });
+            
             videoWrap.appendChild(video);
+          }
+          
+          function fetchLocalVideoBlob() {
+            fetch(localVideoUrl, { signal: msaVideoAbortController.signal })
+              .then(function (resLocal) {
+                if (!resLocal.ok) throw new Error('Falha no fallback local');
+                return resLocal.blob();
+              })
+              .then(function (blob) {
+                videoWrap.innerHTML = '';
+                currentMsaVideoBlobUrl = URL.createObjectURL(blob);
+                renderVideoPlayer(currentMsaVideoBlobUrl);
+              })
+              .catch(function (errLocal) {
+                if (errLocal.name === 'AbortError') return;
+                showVideoError();
+              });
           }
           
           function showVideoError() {
@@ -8323,53 +8349,27 @@
               '</div>';
             if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           }
-
-          fetch(fData.videoUrl, { signal: msaVideoAbortController.signal })
-            .then(function (res) {
-              if (!res.ok) throw new Error('Falha ao obter mídia da nuvem');
-              return res.blob();
-            })
-            .then(function (blob) {
-              renderVideo(blob);
-            })
-            .catch(function (err) {
-              if (err.name === 'AbortError') return;
-              
-              if (fData.videoUrl !== localVideoUrl) {
-                fetch(localVideoUrl, { signal: msaVideoAbortController.signal })
-                  .then(function (resLocal) {
-                    if (!resLocal.ok) throw new Error('Falha no fallback local');
-                    return resLocal.blob();
-                  })
-                  .then(function (blob) {
-                    renderVideo(blob);
-                  })
-                  .catch(function (errLocal) {
-                    if (errLocal.name === 'AbortError') return;
-                    showVideoError();
-                  });
-              } else {
-                showVideoError();
-              }
-            });
+          
+          if (isExternalVideo) {
+            renderVideoPlayer(fData.videoUrl);
+          } else {
+            fetchLocalVideoBlob();
+          }
         } else {
           videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p>Nenhum vídeo disponível.</p></div>';
         }
         
         // Áudio
         if (fData.audioUrl) {
-          audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Carregando áudio...</p></div>';
-          if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
-          
+          var isExternalAudio = fData.audioUrl.indexOf('http') === 0;
           var localAudioUrl = './assets/audio/msa_fase' + faseNum + '.mp3';
           
-          function renderAudio(blob) {
+          function renderAudioPlayer(url) {
             audioWrap.innerHTML = '';
-            currentMsaAudioBlobUrl = URL.createObjectURL(blob);
             var audio = document.createElement('audio');
             audio.className = 'msa-audio-player';
             audio.controls = true;
-            audio.src = currentMsaAudioBlobUrl;
+            audio.src = url;
             audio.addEventListener('play', function () {
               var videoEl = videoWrap.querySelector('video');
               if (videoEl && !videoEl.paused) {
@@ -8380,7 +8380,36 @@
                 setMessage('Playback pausado.');
               }
             });
+            
+            audio.addEventListener('error', function () {
+              // Se falhar a URL da nuvem, tenta o fallback local
+              if (url !== localAudioUrl) {
+                audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Nuvem offline. Carregando áudio local...</p></div>';
+                if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+                fetchLocalAudioBlob();
+              } else {
+                showAudioError();
+              }
+            });
+            
             audioWrap.appendChild(audio);
+          }
+          
+          function fetchLocalAudioBlob() {
+            fetch(localAudioUrl, { signal: msaAudioAbortController.signal })
+              .then(function (resLocal) {
+                if (!resLocal.ok) throw new Error('Falha no fallback local');
+                return resLocal.blob();
+              })
+              .then(function (blob) {
+                audioWrap.innerHTML = '';
+                currentMsaAudioBlobUrl = URL.createObjectURL(blob);
+                renderAudioPlayer(currentMsaAudioBlobUrl);
+              })
+              .catch(function (errLocal) {
+                if (errLocal.name === 'AbortError') return;
+                showAudioError();
+              });
           }
           
           function showAudioError() {
@@ -8392,35 +8421,12 @@
               '</div>';
             if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
           }
-
-          fetch(fData.audioUrl, { signal: msaAudioAbortController.signal })
-            .then(function (res) {
-              if (!res.ok) throw new Error('Falha ao obter mídia da nuvem');
-              return res.blob();
-            })
-            .then(function (blob) {
-              renderAudio(blob);
-            })
-            .catch(function (err) {
-              if (err.name === 'AbortError') return;
-              
-              if (fData.audioUrl !== localAudioUrl) {
-                fetch(localAudioUrl, { signal: msaAudioAbortController.signal })
-                  .then(function (resLocal) {
-                    if (!resLocal.ok) throw new Error('Falha no fallback local');
-                    return resLocal.blob();
-                  })
-                  .then(function (blob) {
-                    renderAudio(blob);
-                  })
-                  .catch(function (errLocal) {
-                    if (errLocal.name === 'AbortError') return;
-                    showAudioError();
-                  });
-              } else {
-                showAudioError();
-              }
-            });
+          
+          if (isExternalAudio) {
+            renderAudioPlayer(fData.audioUrl);
+          } else {
+            fetchLocalAudioBlob();
+          }
         } else {
           audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Nenhum áudio disponível.</p></div>';
         }
