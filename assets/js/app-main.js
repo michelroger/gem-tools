@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.25';
+      const APP_VERSION = '1.2.26';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -314,6 +314,7 @@
       // ========== ESTADO GLOBAL ==========
       let audioCtx = null;
       let currentMode = 'player';
+      var msaActiveFase = 1;
       let challengeTarget = null;
       let challengeTimeout = null;
       let challengeRound = 0;
@@ -6574,14 +6575,16 @@
           btn.classList.toggle('active', btn.dataset.mode === mode);
         });
         var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos');
+        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa');
         var btnMoreTuner = document.getElementById('btnMoreTuner');
         var btnMoreMetronome = document.getElementById('btnMoreMetronome');
         var btnMoreHinos = document.getElementById('btnMoreHinos');
+        var btnMoreMsa = document.getElementById('btnMoreMsa');
         var btnMoreSettings = document.getElementById('btnMoreSettings');
         if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
         if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
         if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
+        if (btnMoreMsa) btnMoreMsa.classList.toggle('active', mode === 'msa');
         if (btnMoreSettings) btnMoreSettings.classList.remove('active');
         clearViolinHighlight();
         document.getElementById('currentNoteDisplay').textContent = '\u00A0';
@@ -6592,16 +6595,29 @@
         var tunerSectionEl = document.getElementById('tunerSection');
         var metroSectionEl = document.getElementById('metroSection');
         var playerSectionEl = document.getElementById('playerSection');
+        var msaSectionEl = document.getElementById('msaSection');
         var playerSourceRowEl = document.getElementById('playerSourceRow');
         var messageBoxEl = document.getElementById('messageBox');
-        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl) {
+        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl && msaSectionEl) {
           if (mode === 'hinos') {
             violinSection.classList.add('hidden');
             staffSectionEl.classList.add('hidden');
             tunerSectionEl.classList.add('hidden');
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             hinosSectionEl.classList.remove('hidden');
+            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+          } else if (mode === 'msa') {
+            violinSection.classList.add('hidden');
+            staffSectionEl.classList.add('hidden');
+            tunerSectionEl.classList.add('hidden');
+            metroSectionEl.classList.add('hidden');
+            playerSectionEl.classList.add('hidden');
+            hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.remove('hidden');
+            closeHinosEditorModal();
+            closeHinosNewStudentModal();
             if (messageBoxEl) messageBoxEl.classList.remove('hidden');
           } else if (mode === 'staff') {
             violinSection.classList.add('hidden');
@@ -6610,6 +6626,7 @@
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
             if (messageBoxEl) messageBoxEl.classList.remove('hidden');
@@ -6620,6 +6637,7 @@
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
             if (messageBoxEl) messageBoxEl.classList.remove('hidden');
@@ -6630,6 +6648,7 @@
             metroSectionEl.classList.remove('hidden');
             playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
             if (messageBoxEl) messageBoxEl.classList.remove('hidden');
@@ -6640,6 +6659,7 @@
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.remove('hidden');
             hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
             if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
@@ -6651,6 +6671,7 @@
             metroSectionEl.classList.add('hidden');
             playerSectionEl.classList.add('hidden');
             hinosSectionEl.classList.add('hidden');
+            msaSectionEl.classList.add('hidden');
             closeHinosEditorModal();
             closeHinosNewStudentModal();
             if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
@@ -6659,7 +6680,7 @@
         }
         var progressSectionEl = document.getElementById('progressSection');
         if (progressSectionEl) {
-          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player');
+          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa');
         }
 
         if (mode === 'learn') {
@@ -6699,6 +6720,12 @@
           renderHinosStudentSelect();
           refreshHinosVoiceButtons();
           setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
+        } else if (mode === 'msa') {
+          updateChallengeStats();
+          updateProgress();
+          renderMsaFasesGrid();
+          selectMsaFase(msaActiveFase);
+          setMessage('Resumos do MSA: selecione uma das 16 fases abaixo para visualizar.');
         } else if (mode === 'player') {
           updateChallengeStats();
           updateProgress();
@@ -7342,6 +7369,12 @@
         if (btnMoreHinos) {
           btnMoreHinos.addEventListener('click', function () {
             setMode('hinos');
+          });
+        }
+        var btnMoreMsa = document.getElementById('btnMoreMsa');
+        if (btnMoreMsa) {
+          btnMoreMsa.addEventListener('click', function () {
+            setMode('msa');
           });
         }
         var btnPlayerPlay = document.getElementById('btnPlayerPlay');
@@ -8140,6 +8173,106 @@
 
       function openMetronomeModal() {
         setMode('metronome');
+      }
+
+      function renderMsaFasesGrid() {
+        var container = document.getElementById('msaFasesGrid');
+        if (!container) return;
+        container.innerHTML = '';
+        var fases = window.MsaData.getFases();
+        
+        for (var fNum = 1; fNum <= 16; fNum++) {
+          var fData = fases[fNum];
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'msa-fase-btn';
+          if (fNum === msaActiveFase) btn.classList.add('active');
+          if (fData && (fData.videoUrl || fData.audioUrl)) btn.classList.add('has-content');
+          btn.setAttribute('data-fase', String(fNum));
+          btn.textContent = String(fNum);
+          
+          btn.addEventListener('click', function () {
+            var num = parseInt(this.getAttribute('data-fase'), 10);
+            if (!isNaN(num)) {
+              selectMsaFase(num);
+            }
+          });
+          container.appendChild(btn);
+        }
+      }
+
+      function selectMsaFase(faseNum) {
+        msaActiveFase = faseNum;
+        document.querySelectorAll('.msa-fase-btn').forEach(function (btn) {
+          var btnNum = parseInt(btn.getAttribute('data-fase'), 10);
+          btn.classList.toggle('active', btnNum === faseNum);
+        });
+        
+        var fases = window.MsaData.getFases();
+        var fData = fases[faseNum];
+        
+        var titleEl = document.getElementById('msaFaseTitle');
+        var descEl = document.getElementById('msaFaseDesc');
+        var videoWrap = document.getElementById('msaVideoWrapper');
+        var audioWrap = document.getElementById('msaAudioWrapper');
+        
+        if (titleEl) titleEl.textContent = fData ? fData.titulo : 'Fase ' + faseNum;
+        if (descEl) descEl.textContent = fData ? fData.descricao : 'Resumos em desenvolvimento para esta fase.';
+        
+        if (!videoWrap || !audioWrap) return;
+        videoWrap.innerHTML = '';
+        audioWrap.innerHTML = '';
+        
+        if (!fData || (!fData.videoUrl && !fData.audioUrl)) {
+          videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p style="margin-top:0.25rem;">Vídeo em desenvolvimento para esta fase.</p></div>';
+          audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p style="margin-top:0.25rem;">Podcast em desenvolvimento para esta fase.</p></div>';
+          if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+          return;
+        }
+        
+        // Vídeo
+        if (fData.videoUrl) {
+          var video = document.createElement('video');
+          video.className = 'msa-video-player';
+          video.controls = true;
+          video.src = fData.videoUrl;
+          
+          video.addEventListener('error', function () {
+            videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
+              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+              '<p><strong>Vídeo não encontrado localmente</strong></p>' +
+              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o vídeo em:</p>' +
+              '<span class="msa-placeholder-path">' + fData.videoUrl.replace('./', '') + '</span>' +
+              '</div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+          });
+          videoWrap.appendChild(video);
+        } else {
+          videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p>Nenhum vídeo disponível.</p></div>';
+        }
+        
+        // Áudio
+        if (fData.audioUrl) {
+          var audio = document.createElement('audio');
+          audio.className = 'msa-audio-player';
+          audio.controls = true;
+          audio.src = fData.audioUrl;
+          
+          audio.addEventListener('error', function () {
+            audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
+              '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+              '<p><strong>Áudio não encontrado localmente</strong></p>' +
+              '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Para carregar este resumo, salve o áudio em:</p>' +
+              '<span class="msa-placeholder-path">' + fData.audioUrl.replace('./', '') + '</span>' +
+              '</div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+          });
+          audioWrap.appendChild(audio);
+        } else {
+          audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Nenhum áudio disponível.</p></div>';
+        }
+        
+        if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
       }
 
       function closeMetronomeModal() {
