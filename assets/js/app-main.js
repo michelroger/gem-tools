@@ -1,7 +1,7 @@
     (function () {
       'use strict';
 
-      const APP_VERSION = '1.2.26';
+      const APP_VERSION = '1.2.27';
       const APP_VERSION_LABEL = 'Beta';
       const THEME_STORAGE_KEY = 'orquestra-theme';
       /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6470,6 +6470,7 @@
       }
 
       function startPlayerPlayback() {
+        pauseMsaMediaIfPlaying();
         if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) {
           setMessage('Player: sem notas válidas no MusicXML.');
           updatePlayerUiNow(0);
@@ -6567,6 +6568,7 @@
         if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
         if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
         if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
+        if (currentMode === 'msa' && mode !== 'msa') pauseMsaMediaIfPlaying();
         currentMode = mode;
         setMoreMenuOpen(false);
         setPlayerSpeedPopoverOpen(false);
@@ -8175,6 +8177,19 @@
         setMode('metronome');
       }
 
+      function pauseMsaMediaIfPlaying() {
+        var videoWrap = document.getElementById('msaVideoWrapper');
+        var audioWrap = document.getElementById('msaAudioWrapper');
+        if (videoWrap) {
+          var video = videoWrap.querySelector('video');
+          if (video && !video.paused) video.pause();
+        }
+        if (audioWrap) {
+          var audio = audioWrap.querySelector('audio');
+          if (audio && !audio.paused) audio.pause();
+        }
+      }
+
       function renderMsaFasesGrid() {
         var container = document.getElementById('msaFasesGrid');
         if (!container) return;
@@ -8237,6 +8252,17 @@
           video.controls = true;
           video.src = fData.videoUrl;
           
+          video.addEventListener('play', function () {
+            var audioEl = audioWrap.querySelector('audio');
+            if (audioEl && !audioEl.paused) {
+              audioEl.pause();
+            }
+            if (playerPlayback.isPlaying) {
+              stopPlayerPlayback(true);
+              setMessage('Playback pausado.');
+            }
+          });
+
           video.addEventListener('error', function () {
             videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
               '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
@@ -8258,6 +8284,17 @@
           audio.controls = true;
           audio.src = fData.audioUrl;
           
+          audio.addEventListener('play', function () {
+            var videoEl = videoWrap.querySelector('video');
+            if (videoEl && !videoEl.paused) {
+              videoEl.pause();
+            }
+            if (playerPlayback.isPlaying) {
+              stopPlayerPlayback(true);
+              setMessage('Playback pausado.');
+            }
+          });
+
           audio.addEventListener('error', function () {
             audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
               '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
