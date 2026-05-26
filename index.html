@@ -374,7 +374,7 @@
           <i data-lucide="info"
             style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: var(--warn);"></i>
           <span><strong>Nota sobre IA:</strong> Todo o conteúdo explicativo (resumos, áudios e vídeos) foi gerado por
-            Inteligência Artificial (NotebookLM). Não garantimos que o conteúdo esteja totalmente isento de erros de
+            Inteligência Artificial. Não garantimos que o conteúdo esteja totalmente isento de erros de
             interpretação ou de imagens em relação ao método oficial do MSA.</span>
         </div>
 
@@ -391,16 +391,20 @@
         <!-- Barra de abas (Tabs Navigation) -->
         <div class="msa-tabs-nav" role="tablist" style="margin-top: 1.25rem;">
           <button class="msa-tab-btn active" data-tab="video" role="tab" aria-selected="true">
-            <i data-lucide="video" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Vídeo</span>
+            <i data-lucide="video"
+              style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Vídeo</span>
           </button>
           <button class="msa-tab-btn" data-tab="audio" role="tab" aria-selected="false">
-            <i data-lucide="headphones" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Áudio</span>
+            <i data-lucide="headphones"
+              style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Áudio</span>
           </button>
           <button class="msa-tab-btn" data-tab="pdf" role="tab" aria-selected="false">
-            <i data-lucide="file-text" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>PDF</span>
+            <i data-lucide="file-text"
+              style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>PDF</span>
           </button>
           <button class="msa-tab-btn" data-tab="quiz" role="tab" aria-selected="false">
-            <i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Quiz</span>
+            <i data-lucide="help-circle"
+              style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i><span>Quiz</span>
           </button>
         </div>
 
@@ -408,31 +412,37 @@
           <!-- Conteúdo da Aba de Vídeo -->
           <div class="msa-tab-content active" id="msaTabVideoContent">
             <div class="msa-media-card" id="msaVideoCard" style="margin-top: 0px;">
-              <h5 class="msa-media-title"><i data-lucide="video" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Resumo em Vídeo</h5>
+              <h5 class="msa-media-title"><i data-lucide="video"
+                  style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Resumo em Vídeo</h5>
               <div class="msa-media-body" id="msaVideoWrapper"></div>
             </div>
           </div>
-          
+
           <!-- Conteúdo da Aba de Áudio -->
           <div class="msa-tab-content" id="msaTabAudioContent">
             <div class="msa-media-card" id="msaAudioCard" style="margin-top: 0px;">
-              <h5 class="msa-media-title"><i data-lucide="headphones" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Podcast Explicativo (Áudio)</h5>
+              <h5 class="msa-media-title"><i data-lucide="headphones"
+                  style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Resumo explicativo
+                (Áudio)</h5>
               <div class="msa-media-body" id="msaAudioWrapper"></div>
             </div>
           </div>
-          
+
           <!-- Conteúdo da Aba de PDF -->
           <div class="msa-tab-content" id="msaTabPdfContent">
             <div class="msa-media-card" id="msaPdfCard" style="margin-top: 0px;">
-              <h5 class="msa-media-title"><i data-lucide="file-text" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> PDF do Método Oficial</h5>
+              <h5 class="msa-media-title"><i data-lucide="file-text"
+                  style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> PDF do Método Oficial
+              </h5>
               <div class="msa-media-body" id="msaPdfWrapper"></div>
             </div>
           </div>
-          
+
           <!-- Conteúdo da Aba de Quiz -->
           <div class="msa-tab-content" id="msaTabQuizContent">
             <div class="msa-media-card" id="msaQuizCard" style="margin-top: 0px;">
-              <h5 class="msa-media-title"><i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Quiz de Fixação</h5>
+              <h5 class="msa-media-title"><i data-lucide="help-circle"
+                  style="display:inline-block; vertical-align:middle; margin-right: 0.25rem;"></i> Quiz de Fixação</h5>
               <div class="msa-media-body" id="msaQuizWrapper"></div>
             </div>
           </div>
@@ -721,7 +731,7 @@
             class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
             id="btnMoreMsa" role="menuitem">
             <i data-lucide="book-open-text" aria-hidden="true"></i>
-            <span>Resumos MSA</span>
+            <span>MSA com IA</span>
           </button>
           <button type="button"
             class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
@@ -874,7 +884,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.2.22</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.3.1</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>

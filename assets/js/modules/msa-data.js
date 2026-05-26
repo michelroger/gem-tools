@@ -23,23 +23,23 @@
     2: {
       titulo: "Fase 2 - Figuras Musicais",
       descricao: "Figuras musicais de som (notas) e de silêncio (pausas), números de equivalência e a proporção de duração entre as figuras.",
-      videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
-      audioUrl: "https://docs.google.com/uc?export=download&id=1BdKqyTa-ThnuwNLLc84ccx2PHWd1Cv0j",
+      videoUrl: "https://docs.google.com/uc?export=download&id=1iFEi-LpVMOoP70ZLzUmLinX2TkdcZfKd",
+      audioUrl: "https://docs.google.com/uc?export=download&id=1AJJonIOQfZY69rh_5TNLf-Mpu5yZeJKg",
       quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/c75ed3e0-3338-45df-8673-e531fadce57a?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
     },
     3: {
       titulo: "Fase 3 - Endecagrama, Leitura e Solfejo",
       descricao: "Estudo sobre o endecagrama (claves e alturas), leitura rítmica, leitura métrica, solfejo e os movimentos de condução da pulsação.",
-      videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
-      audioUrl: "https://docs.google.com/uc?export=download&id=1BdKqyTa-ThnuwNLLc84ccx2PHWd1Cv0j",
-      quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/93a7e51b-f67b-43e3-8552-4048d1036d7f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
+      videoUrl: "https://docs.google.com/uc?export=download&id=195sp0v80pPIKpZTcN3RUx6UNzFoa_wnJ",
+      audioUrl: "https://docs.google.com/uc?export=download&id=1e1HwQb--hb96sMUqvxvJCxx5t94vn2Xf",
+      quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/d7550b7d-be74-4e99-888e-a13812da7c16?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
     },
     4: {
       titulo: "Fase 4 - Ligadura, Ponto de Aumento e Intervalos",
       descricao: "Tipos de ligadura (valor e portamento), ponto de aumento (simples e duplo) e conceitos de intervalos (simples, compostos, melódicos e harmônicos).",
       videoUrl: "https://docs.google.com/uc?export=download&id=1vj3BPCt6u6MWTI3LZtS8R_f1ir7ts52x",
       audioUrl: "https://docs.google.com/uc?export=download&id=1BdKqyTa-ThnuwNLLc84ccx2PHWd1Cv0j",
-      quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/93a7e51b-f67b-43e3-8552-4048d1036d7f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
+      quizUrl: "https://notebooklm.google.com/notebook/9d1e54ce-2221-4909-a1fc-b8422c2dc6fe/artifact/4920864b-7eac-4054-a5dd-d44cf632b8c3?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_2&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_2_"
     },
     5: {
       titulo: "Fase 5 - Tercinas",
