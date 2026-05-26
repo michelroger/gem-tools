@@ -1,6 +1,17 @@
 (function () {
   'use strict';
 
+  /*
+   * INSTRUÇÕES PARA LINKS DE MÍDIA DA NUVEM:
+   * Para que o player do navegador toque as mídias da nuvem, use links de DOWNLOAD DIRETO:
+   * 
+   * - DROPBOX: Gere o link de compartilhamento e mude o final de "?dl=0" para "?raw=1"
+   *   Exemplo: "https://www.dropbox.com/.../video.mp4?raw=1"
+   * 
+   * - GOOGLE DRIVE: Obtenha o ID do arquivo público e monte a URL neste formato:
+   *   Exemplo: "https://docs.google.com/uc?export=download&id=ID_DO_ARQUIVO"
+   */
+
   var msaFases = {
     1: {
       titulo: "Fase 1 - Ritmo e Som",
