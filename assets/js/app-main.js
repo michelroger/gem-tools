@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.3';
+  const APP_VERSION = '1.3.4';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8267,6 +8267,64 @@
     }
   }
 
+  function adjustMsaMediaIframeScale() {
+    // Ajuste do vídeo
+    var videoWrap = document.getElementById('msaVideoWrapper');
+    if (videoWrap) {
+      var iframe = videoWrap.querySelector('iframe');
+      if (iframe) {
+        var containerWidth = videoWrap.getBoundingClientRect().width;
+        if (containerWidth > 0) {
+          if (containerWidth < 560) {
+            var scale = containerWidth / 560;
+            iframe.style.width = '560px';
+            iframe.style.height = '315px';
+            iframe.style.transform = 'scale(' + scale + ')';
+            iframe.style.transformOrigin = 'top left';
+            videoWrap.style.height = (315 * scale) + 'px';
+            videoWrap.style.overflow = 'hidden';
+            videoWrap.style.position = 'relative';
+          } else {
+            iframe.style.width = '100%';
+            iframe.style.height = '315px';
+            iframe.style.transform = '';
+            iframe.style.transformOrigin = '';
+            videoWrap.style.height = 'auto';
+            videoWrap.style.overflow = '';
+          }
+        }
+      }
+    }
+
+    // Ajuste do áudio
+    var audioWrap = document.getElementById('msaAudioWrapper');
+    if (audioWrap) {
+      var iframe = audioWrap.querySelector('iframe');
+      if (iframe) {
+        var containerWidth = audioWrap.getBoundingClientRect().width;
+        if (containerWidth > 0) {
+          if (containerWidth < 560) {
+            var scale = containerWidth / 560;
+            iframe.style.width = '560px';
+            iframe.style.height = '120px';
+            iframe.style.transform = 'scale(' + scale + ')';
+            iframe.style.transformOrigin = 'top left';
+            audioWrap.style.height = (120 * scale) + 'px';
+            audioWrap.style.overflow = 'hidden';
+            audioWrap.style.position = 'relative';
+          } else {
+            iframe.style.width = '100%';
+            iframe.style.height = '120px';
+            iframe.style.transform = '';
+            iframe.style.transformOrigin = '';
+            audioWrap.style.height = 'auto';
+            audioWrap.style.overflow = '';
+          }
+        }
+      }
+    }
+  }
+
   function switchMsaTab(tabName) {
     activeMsaTab = tabName;
 
@@ -8290,6 +8348,11 @@
     if (audioCont) audioCont.classList.toggle('active', tabName === 'audio');
     if (pdfCont) pdfCont.classList.toggle('active', tabName === 'pdf');
     if (quizCont) quizCont.classList.toggle('active', tabName === 'quiz');
+
+    // Executa a escala dos iframes do Drive caso fiquem visíveis agora
+    if (tabName === 'video' || tabName === 'audio') {
+      setTimeout(adjustMsaMediaIframeScale, 50);
+    }
   }
 
   function selectMsaFase(faseNum) {
@@ -9585,6 +9648,7 @@
       resizePlayerOsmdIfActive();
       buildPlayerNoteAnchorsFromDom();
       playerAutoScrollNeedsInitial = true;
+      adjustMsaMediaIframeScale();
     });
     window.addEventListener('orientationchange', function onOrientationChangePlayer() {
       resizePlayerOsmdIfActive();
