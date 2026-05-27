@@ -83,6 +83,14 @@
       padding-bottom: calc(var(--bottom-nav-safe-space) + env(safe-area-inset-bottom, 0px));
     }
 
+    body.static-bottom-nav {
+      padding-bottom: 0px !important;
+    }
+
+    body.static-bottom-nav .container {
+      padding-bottom: 0px !important;
+    }
+
     /* ========== LAYOUT PRINCIPAL ========== */
     .container {
       max-width: var(--content-max);
@@ -490,7 +498,7 @@
       padding: 1.25rem;
       border-radius: var(--radius);
       border: 1px solid var(--card-border);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       box-shadow: var(--shadow);
       width: 100%;
       max-width: var(--content-max);
@@ -2532,6 +2540,20 @@
       transform: translateX(-50%) translateY(20px);
     }
 
+    .mode-tabs-static-flow {
+      position: relative !important;
+      left: auto !important;
+      bottom: auto !important;
+      transform: none !important;
+      width: 100% !important;
+      max-width: var(--content-max) !important;
+      margin-top: auto !important;
+      margin-bottom: 0 !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      border-radius: var(--radius-lg) !important;
+    }
+
     .mode-btn {
       flex: 1 1 0;
       min-width: 0;
@@ -3542,6 +3564,10 @@
         padding-bottom: calc(var(--bottom-nav-safe-space) + env(safe-area-inset-bottom, 0px));
       }
 
+      body.static-bottom-nav .container {
+        padding-bottom: 0px !important;
+      }
+
       #modeTabs.mode-tabs {
         left: 0;
         right: 0;
@@ -3561,6 +3587,21 @@
 
       #modeTabs.mode-tabs.nav-hidden {
         transform: translateY(28px);
+      }
+
+      #modeTabs.mode-tabs.mode-tabs-static-flow {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        padding: 0.42rem !important;
+        border-radius: 16px !important;
+        margin-top: auto !important;
+        margin-bottom: 0 !important;
+        box-shadow: var(--shadow) !important;
+        border: 1px solid rgba(15, 23, 42, 0.09) !important;
       }
 
       .mode-btn {

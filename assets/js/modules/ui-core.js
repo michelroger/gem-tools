@@ -25,9 +25,30 @@
     }
   }
 
+  // =========================================================================
+  // CONFIGURAÇÃO DE TESTE DO MENU:
+  // - Defina como true para testar a barra de navegação inferior FIXA (sempre visível).
+  // - Defina como false para VOLTAR ao comportamento antigo (esconder/mostrar ao rolar).
+  // =========================================================================
+  var STATIC_BOTTOM_NAV = true;
+
   function updateBottomNavVisibility(forceVisible) {
     var nav = document.getElementById('modeTabs');
     if (!nav) return;
+
+    var sentinel = document.getElementById('bottomNavSentinel');
+    if (STATIC_BOTTOM_NAV) {
+      nav.classList.add('mode-tabs-static-flow');
+      nav.classList.remove('nav-hidden');
+      document.body.classList.remove('show-bottom-nav');
+      document.body.classList.add('static-bottom-nav');
+      if (sentinel) sentinel.style.display = 'none';
+      return;
+    } else {
+      nav.classList.remove('mode-tabs-static-flow');
+      document.body.classList.remove('static-bottom-nav');
+      if (sentinel) sentinel.style.display = '';
+    }
 
     if (typeof forceVisible === 'boolean') {
       nav.classList.toggle('nav-hidden', !forceVisible);
