@@ -3595,13 +3595,19 @@
         right: auto !important;
         bottom: auto !important;
         transform: none !important;
-        width: 100% !important;
-        padding: 0.42rem !important;
-        border-radius: 16px !important;
+        width: calc(100% + 2 * var(--space-md)) !important;
+        margin-left: calc(-1 * var(--space-md)) !important;
+        margin-right: calc(-1 * var(--space-md)) !important;
+        padding: 0.42rem 0.42rem calc(0.42rem + env(safe-area-inset-bottom, 0px)) !important;
+        border-radius: 16px 16px 0 0 !important;
         margin-top: auto !important;
         margin-bottom: 0 !important;
-        box-shadow: var(--shadow) !important;
-        border: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08) !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-bottom: 0 !important;
+        border-top: 1px solid rgba(15, 23, 42, 0.09) !important;
+        box-sizing: border-box !important;
       }
 
       .mode-btn {
