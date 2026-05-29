@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=1.3.10">
+  <link rel="stylesheet" href="./assets/css/app.css?v=1.3.11">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -81,7 +81,7 @@
   <!-- Utilitarios de notas/tonalidade -->
   <script src="./assets/js/modules/note-utils.js"></script>
   <!-- Curriculo/dados do MSA -->
-  <script src="./assets/js/modules/msa-data.js?v=1.3.10"></script>
+  <script src="./assets/js/modules/msa-data.js?v=1.3.11"></script>
   <!-- UI central da aplicacao -->
   <script src="./assets/js/modules/ui-core.js"></script>
   <!-- Utilitarios do afinador -->
@@ -186,6 +186,107 @@
             title="Informações do app">Sobre</button>
           <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnRestart"
             title="Reiniciar">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nova aba inicial (Home) -->
+    <div class="home-section" id="homeSection">
+      <!-- Card de Boas Vindas com o Aluno Ativo -->
+      <div class="home-welcome-card du-card">
+        <div class="home-welcome-header">
+          <div class="home-avatar" id="homeAvatar">👤</div>
+          <div class="home-welcome-text">
+            <h3 class="home-title" id="homeWelcomeTitle">Olá, Estudante!</h3>
+            <p class="home-subtitle" id="homeWelcomeSubtitle">Bem-vindo ao GEM Tools. Pronto para praticar hoje?</p>
+          </div>
+          <button type="button" class="home-student-toggle du-btn du-btn-outline du-btn-sm" id="btnHomeSelectStudent" title="Mudar Aluno">
+            <i data-lucide="users" aria-hidden="true"></i> Mudar
+          </button>
+        </div>
+        <!-- Bloco de progresso do Aluno (visível apenas se houver aluno ativo) -->
+        <div class="home-student-progress hidden" id="homeStudentProgress">
+          <div class="home-progress-info">
+            <span class="home-progress-label-text">Seu Progresso no Hinário 5</span>
+            <span class="home-progress-value-text" id="homeProgressPercent">0%</span>
+          </div>
+          <div class="home-progress-bar-container">
+            <div class="home-progress-bar-fill" id="homeProgressFill" style="width: 0%"></div>
+          </div>
+          <div class="home-progress-stats">
+            <span id="homeProgressVozes">Hinos aprovados: 0 / 480</span>
+            <span id="homeProgressAfinacao">Ficha: Hinário 5 (Dó)</span>
+          </div>
+        </div>
+        <!-- Bloco se não houver Aluno ativo -->
+        <div class="home-no-student" id="homeNoStudent">
+          <p>Para acompanhar o seu progresso no hinário e salvar seus estudos, crie ou selecione um perfil de aluno.</p>
+          <button type="button" class="du-btn du-btn-primary du-btn-sm home-create-student-btn" id="btnHomeCreateStudent">
+            <i data-lucide="user-plus" aria-hidden="true"></i> Criar Perfil de Aluno
+          </button>
+        </div>
+      </div>
+
+      <!-- Sugestão de Estudo / Hino Sugerido -->
+      <div class="home-suggested-card du-card hidden" id="homeSuggestedCard">
+        <div class="home-suggested-inner">
+          <div class="suggested-icon">
+            <i data-lucide="sparkles" aria-hidden="true"></i>
+          </div>
+          <div class="home-suggested-content">
+            <span class="suggested-tag">Sugestão de Estudo</span>
+            <h4 class="suggested-title" id="homeSuggestedTitle">Hino 1 · Cristo meu tudo</h4>
+            <p class="suggested-desc" id="homeSuggestedDesc">Este hino é o próximo da sua ficha que ainda não foi marcado como aprovado.</p>
+          </div>
+          <button type="button" class="du-btn du-btn-primary du-btn-sm suggested-action-btn" id="btnHomeGoSuggested">
+            Estudar <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cards de Atalhos Rápidos -->
+      <h4 class="home-section-title">Acesso Rápido</h4>
+      <div class="home-shortcuts-grid">
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="player" style="--gradient: linear-gradient(135deg, #4f7cff, #3f6df6)">
+          <span class="shortcut-icon"><i data-lucide="play-circle" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Player</span>
+          <span class="shortcut-desc">Praticar Partituras</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="learn" style="--gradient: linear-gradient(135deg, #10b981, #059669)">
+          <span class="shortcut-icon"><i data-lucide="music-2" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Aprender</span>
+          <span class="shortcut-desc">Espelho de Notas</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="tuner" style="--gradient: linear-gradient(135deg, #8b5cf6, #7c3aed)">
+          <span class="shortcut-icon"><i data-lucide="gauge" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Afinador</span>
+          <span class="shortcut-desc">Afinar Instrumento</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="metronome" style="--gradient: linear-gradient(135deg, #f59e0b, #d97706)">
+          <span class="shortcut-icon"><i data-lucide="metronome" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Metrônomo</span>
+          <span class="shortcut-desc">Treinar Ritmo</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="msa" style="--gradient: linear-gradient(135deg, #ec4899, #db2777)">
+          <span class="shortcut-icon"><i data-lucide="book-open-text" aria-hidden="true"></i></span>
+          <span class="shortcut-title">MSA com IA</span>
+          <span class="shortcut-desc">Resumos do Livro</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="challenge" style="--gradient: linear-gradient(135deg, #3b82f6, #1d4ed8)">
+          <span class="shortcut-icon"><i data-lucide="target" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Desafio</span>
+          <span class="shortcut-desc">Jogar e Aprender</span>
+        </button>
+      </div>
+
+      <!-- Dica do Dia -->
+      <div class="home-tip-card du-card">
+        <div class="home-tip-inner">
+          <div class="home-tip-icon-wrap"><i data-lucide="lightbulb" aria-hidden="true"></i></div>
+          <div class="home-tip-text-wrap">
+            <h5 class="home-tip-title">Dica de Estudo</h5>
+            <p class="home-tip-desc" id="homeTipText">A prática diária de 15 minutos é muito melhor e mais eficiente do que praticar 2 horas apenas no final de semana. Mantenha a constância!</p>
+          </div>
         </div>
       </div>
     </div>
@@ -449,7 +550,7 @@
       </div>
     </div>
 
-    <div class="player-section" id="playerSection" aria-labelledby="playerSectionTitle">
+    <div class="player-section hidden" id="playerSection" aria-labelledby="playerSectionTitle">
       <p class="violin-title" id="playerSectionTitle"></p>
       <div class="player-source-row" id="playerSourceRow">
         <div class="hinos-field">
@@ -597,6 +698,82 @@
       </div>
     </div>
 
+    <!-- Metrônomo (aba/seção) -->
+    <div class="staff-section hidden" id="metroSection">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl">
+
+        <div class="metro-top">
+          <div class="metro-bpm-badge">BPM</div>
+          <div class="metro-bpm-value" id="metroBpmValue">60</div>
+          <div class="metro-bpm-label" id="metroBpmLabel">Médio</div>
+        </div>
+
+        <div class="metro-slider">
+          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroMinus"
+            aria-label="Diminuir BPM">−</button>
+          <input type="range" id="metroBpmSlider" min="30" max="220" step="1" value="60" aria-label="Slider de BPM">
+          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroPlus"
+            aria-label="Aumentar BPM">+</button>
+        </div>
+
+        <div class="metro-controls">
+          <button type="button" class="metro-btn metro-pause du-btn du-btn-outline du-btn-sm" id="btnMetroStop"
+            aria-label="Parar metrônomo"><span class="metro-icon-stop" aria-hidden="true"></span></button>
+          <button type="button" class="metro-btn metro-start du-btn du-btn-success du-btn-sm" id="btnMetroStart"
+            aria-label="Iniciar metrônomo"><span class="metro-icon-play" aria-hidden="true"></span></button>
+        </div>
+
+        <div class="metro-beat-title">BATIDAS</div>
+        <div class="metro-dots" id="metroDots" aria-hidden="true"></div>
+        <div class="metro-visual-flash" id="metroVisualFlash" aria-hidden="true">
+          <span class="metro-visual-flash-fill"></span>
+        </div>
+
+        <div class="metro-solfejo-wrap hidden" id="metroSolfejoWrap" aria-hidden="true">
+          <div class="metro-solfejo-stage" id="metroSolfejoStage" aria-hidden="true">
+            <img id="metroSolfejoBaseImg" class="metro-solfejo-img" alt="Movimento de solfejo" />
+            <img id="metroSolfejoHandImg" class="metro-solfejo-hand-img" alt="" />
+          </div>
+        </div>
+
+        <div class="metro-section">
+          <div class="metro-section-row">
+            <div class="metro-section-label">Batidas</div>
+            <div class="metro-stepper">
+              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsMinus"
+                aria-label="Diminuir batidas">−</button>
+              <div class="metro-stepper-value" id="metroBeatsValue">4</div>
+              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsPlus"
+                aria-label="Aumentar batidas">+</button>
+            </div>
+          </div>
+
+          <label class="metro-check">
+            <span class="metro-check-label">Estresse primeira batida</span>
+            <input type="checkbox" id="chkMetroAccent" />
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <label class="metro-check" title="Ativa a animação com movimento de solfejo sincronizada ao metrônomo">
+            <span class="metro-check-label">Solfejo animado</span>
+            <input type="checkbox" id="chkMetroSolfejoMode" />
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <label class="metro-check" title="Usa o movimento de solfejo para canhotos (mão esquerda)">
+            <span class="metro-check-label">Mão esquerda</span>
+            <input type="checkbox" id="chkMetroSolfejoLeftHand" />
+          </label>
+        </div>
+
+        <div class="metro-section">
+          <!-- Subdivisões removidas: metrônomo fica em tempo inteiro -->
+        </div>
+      </div>
+    </div>
+
     <div class="metronome-modal hidden" id="hinosNewStudentModal" role="dialog" aria-modal="true"
       aria-labelledby="hinosNewStudentTitle">
       <div class="metronome-card hinos-new-student-card du-card border border-base-300 bg-base-100 shadow-xl">
@@ -677,6 +854,12 @@
       id="modeTabs" role="tablist">
       <button type="button"
         class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2 active"
+        data-mode="home" role="tab">
+        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="home"></i></span>
+        <span class="mode-btn-label">Início</span>
+      </button>
+      <button type="button"
+        class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2"
         data-mode="player" role="tab">
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="play"></i></span>
         <span class="mode-btn-label">Player</span>
@@ -693,12 +876,6 @@
         <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="target"></i></span>
         <span class="mode-btn-label">Desafio</span>
       </button>
-      <button type="button"
-        class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2"
-        data-mode="staff" role="tab">
-        <span class="mode-btn-icon" aria-hidden="true"><i data-lucide="music-4"></i></span>
-        <span class="mode-btn-label">Penta</span>
-      </button>
       <div class="mode-more-wrap">
         <button type="button"
           class="mode-btn du-btn du-btn-ghost h-auto flex-1 flex-col gap-1 border-0 bg-transparent px-1 py-2"
@@ -708,6 +885,12 @@
         </button>
         <div class="mode-more-menu hidden rounded-box bg-base-100 border border-base-300 shadow-xl p-1 w-52"
           id="modeMoreMenu" role="menu">
+          <button type="button"
+            class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
+            id="btnMoreStaff" role="menuitem">
+            <i data-lucide="music-4" aria-hidden="true"></i>
+            <span>Pentagrama</span>
+          </button>
           <button type="button"
             class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
             id="btnMoreTuner" role="menuitem">
@@ -742,81 +925,7 @@
       </div>
     </div>
 
-    <!-- Metrônomo (aba/seção) -->
-    <div class="staff-section hidden" id="metroSection">
-      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl">
 
-        <div class="metro-top">
-          <div class="metro-bpm-badge">BPM</div>
-          <div class="metro-bpm-value" id="metroBpmValue">60</div>
-          <div class="metro-bpm-label" id="metroBpmLabel">Médio</div>
-        </div>
-
-        <div class="metro-slider">
-          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroMinus"
-            aria-label="Diminuir BPM">−</button>
-          <input type="range" id="metroBpmSlider" min="30" max="220" step="1" value="60" aria-label="Slider de BPM">
-          <button type="button" class="metro-round du-btn du-btn-outline du-btn-sm" id="btnMetroPlus"
-            aria-label="Aumentar BPM">+</button>
-        </div>
-
-        <div class="metro-controls">
-          <button type="button" class="metro-btn metro-pause du-btn du-btn-outline du-btn-sm" id="btnMetroStop"
-            aria-label="Parar metrônomo"><span class="metro-icon-stop" aria-hidden="true"></span></button>
-          <button type="button" class="metro-btn metro-start du-btn du-btn-success du-btn-sm" id="btnMetroStart"
-            aria-label="Iniciar metrônomo"><span class="metro-icon-play" aria-hidden="true"></span></button>
-        </div>
-
-        <div class="metro-beat-title">BATIDAS</div>
-        <div class="metro-dots" id="metroDots" aria-hidden="true"></div>
-        <div class="metro-visual-flash" id="metroVisualFlash" aria-hidden="true">
-          <span class="metro-visual-flash-fill"></span>
-        </div>
-
-        <div class="metro-solfejo-wrap hidden" id="metroSolfejoWrap" aria-hidden="true">
-          <div class="metro-solfejo-stage" id="metroSolfejoStage" aria-hidden="true">
-            <img id="metroSolfejoBaseImg" class="metro-solfejo-img" alt="Movimento de solfejo" />
-            <img id="metroSolfejoHandImg" class="metro-solfejo-hand-img" alt="" />
-          </div>
-        </div>
-
-        <div class="metro-section">
-          <div class="metro-section-row">
-            <div class="metro-section-label">Batidas</div>
-            <div class="metro-stepper">
-              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsMinus"
-                aria-label="Diminuir batidas">−</button>
-              <div class="metro-stepper-value" id="metroBeatsValue">4</div>
-              <button type="button" class="metro-round small du-btn du-btn-outline du-btn-sm" id="btnMetroBeatsPlus"
-                aria-label="Aumentar batidas">+</button>
-            </div>
-          </div>
-
-          <label class="metro-check">
-            <span class="metro-check-label">Estresse primeira batida</span>
-            <input type="checkbox" id="chkMetroAccent" />
-          </label>
-        </div>
-
-        <div class="metro-section">
-          <label class="metro-check" title="Ativa a animação com movimento de solfejo sincronizada ao metrônomo">
-            <span class="metro-check-label">Solfejo animado</span>
-            <input type="checkbox" id="chkMetroSolfejoMode" />
-          </label>
-        </div>
-
-        <div class="metro-section">
-          <label class="metro-check" title="Usa o movimento de solfejo para canhotos (mão esquerda)">
-            <span class="metro-check-label">Mão esquerda</span>
-            <input type="checkbox" id="chkMetroSolfejoLeftHand" />
-          </label>
-        </div>
-
-        <div class="metro-section">
-          <!-- Subdivisões removidas: metrônomo fica em tempo inteiro -->
-        </div>
-      </div>
-    </div>
 
     <!-- Sobre (modal) -->
     <div class="metronome-modal hidden" id="aboutModal" role="dialog" aria-modal="true" aria-label="Sobre">
@@ -883,7 +992,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.3.10</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">1.3.11</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -927,7 +1036,7 @@
       } catch (e) { }
     })();
   </script>
-  <script src="./assets/js/app-main.js?v=1.3.10"></script>
+  <script src="./assets/js/app-main.js?v=1.3.11"></script>
 
 </body>
 

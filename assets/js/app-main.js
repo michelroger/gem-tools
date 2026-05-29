@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.10';
+  const APP_VERSION = '1.3.11';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -313,7 +313,7 @@
 
   // ========== ESTADO GLOBAL ==========
   let audioCtx = null;
-  let currentMode = 'player';
+  let currentMode = 'home';
   var msaActiveFase = 1;
   var activeMsaTab = 'video';
   var currentMsaVideoBlobUrl = null;
@@ -6620,20 +6620,22 @@
       btn.classList.toggle('active', btn.dataset.mode === mode);
     });
     var btnMoreMenu = document.getElementById('btnMoreMenu');
-    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa');
+    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'staff');
     var btnMoreTuner = document.getElementById('btnMoreTuner');
     var btnMoreMetronome = document.getElementById('btnMoreMetronome');
     var btnMoreHinos = document.getElementById('btnMoreHinos');
     var btnMoreMsa = document.getElementById('btnMoreMsa');
+    var btnMoreStaff = document.getElementById('btnMoreStaff');
     var btnMoreSettings = document.getElementById('btnMoreSettings');
     if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
     if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
     if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
     if (btnMoreMsa) btnMoreMsa.classList.toggle('active', mode === 'msa');
+    if (btnMoreStaff) btnMoreStaff.classList.toggle('active', mode === 'staff');
     if (btnMoreSettings) btnMoreSettings.classList.remove('active');
     clearViolinHighlight();
     document.getElementById('currentNoteDisplay').textContent = '\u00A0';
-
+ 
     var violinSection = document.getElementById('violinSection');
     var staffSectionEl = document.getElementById('staffSection');
     var hinosSectionEl = document.getElementById('hinosSection');
@@ -6641,9 +6643,12 @@
     var metroSectionEl = document.getElementById('metroSection');
     var playerSectionEl = document.getElementById('playerSection');
     var msaSectionEl = document.getElementById('msaSection');
+    var homeSectionEl = document.getElementById('homeSection');
     var playerSourceRowEl = document.getElementById('playerSourceRow');
     var messageBoxEl = document.getElementById('messageBox');
     if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl && msaSectionEl) {
+      if (homeSectionEl) homeSectionEl.classList.add('hidden');
+      
       if (mode === 'hinos') {
         violinSection.classList.add('hidden');
         staffSectionEl.classList.add('hidden');
@@ -6709,6 +6714,19 @@
         closeHinosNewStudentModal();
         if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
         if (messageBoxEl) messageBoxEl.classList.add('hidden');
+      } else if (mode === 'home') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        if (homeSectionEl) homeSectionEl.classList.remove('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (playerSourceRowEl) playerSourceRowEl.classList.add('hidden');
+        if (messageBoxEl) messageBoxEl.classList.add('hidden');
       } else {
         violinSection.classList.remove('hidden');
         staffSectionEl.classList.add('hidden');
@@ -6725,7 +6743,7 @@
     }
     var progressSectionEl = document.getElementById('progressSection');
     if (progressSectionEl) {
-      progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa');
+      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa');
     }
 
     if (mode === 'learn') {
@@ -6781,6 +6799,10 @@
       }).catch(function () {
         loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', false);
       });
+    } else if (mode === 'home') {
+      updateChallengeStats();
+      updateProgress();
+      updateHomeUI();
     }
     syncPlayerLiveScoreUi();
     setTimeout(updateBottomNavVisibility, 0);
@@ -7259,6 +7281,117 @@
     }
   }
 
+  // ========== TELA INICIAL (HOME) ==========
+  function updateHomeUI() {
+    var st = getActiveHinosStudent();
+    var homeWelcomeTitle = document.getElementById('homeWelcomeTitle');
+    var homeWelcomeSubtitle = document.getElementById('homeWelcomeSubtitle');
+    var homeStudentProgress = document.getElementById('homeStudentProgress');
+    var homeNoStudent = document.getElementById('homeNoStudent');
+    var homeAvatar = document.getElementById('homeAvatar');
+
+    // Dicas de estudo dinâmicas
+    var DICAS = [
+      'A prática diária de 15 minutos é muito melhor e mais eficiente do que praticar 2 horas apenas no final de semana.',
+      'Solfear a lição ou hino antes de tocar ajuda a fixar o ritmo e a melodia na sua mente.',
+      'Mantenha a postura correta: braço relaxado, coluna reta e instrumento na altura certa para evitar tensões.',
+      'O metrônomo é seu melhor amigo para desenvolver a precisão rítmica. Comece lento e aumente aos poucos.',
+      'A afinação correta depende de uma boa escuta. Treine com o afinador e ajuste a posição dos dedos com atenção.',
+      'O dedilhado correto ajuda na agilidade e na fluidez. Siga as orientações da partitura e do método.',
+      'Selecione a voz que deseja estudar no Player (Soprano, Contralto, Tenor, Baixo) para focar na sua parte.'
+    ];
+    var homeTipText = document.getElementById('homeTipText');
+    if (homeTipText) {
+      var randomIdx = Math.floor(Math.random() * DICAS.length);
+      homeTipText.textContent = DICAS[randomIdx];
+    }
+
+    if (st) {
+      if (homeWelcomeTitle) homeWelcomeTitle.textContent = 'Olá, ' + (st.name || 'Estudante') + '!';
+      
+      var vozName = 'Soprano';
+      var vP = hinosGetStudentVozPrincipal(st);
+      if (vP === 'S') vozName = 'Soprano';
+      else if (vP === 'C') vozName = 'Contralto';
+      else if (vP === 'T') vozName = 'Tenor';
+      else if (vP === 'B') vozName = 'Baixo';
+      
+      if (homeWelcomeSubtitle) {
+        homeWelcomeSubtitle.textContent = 'Estudando Hinário 5 (' + hinosActiveAfinação.toUpperCase() + ') · Voz: ' + vozName;
+      }
+      if (homeAvatar) {
+        var initials = (st.name || 'E').charAt(0).toUpperCase();
+        homeAvatar.textContent = initials;
+      }
+
+      if (homeStudentProgress) homeStudentProgress.classList.remove('hidden');
+      if (homeNoStudent) homeNoStudent.classList.add('hidden');
+
+      var o = countHinosOverview(st, hinosActiveAfinação);
+      var pct = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
+      var progressTextVozes = document.getElementById('homeProgressVozes');
+      var progressPercent = document.getElementById('homeProgressPercent');
+      var progressFill = document.getElementById('homeProgressFill');
+      var progressAfinacao = document.getElementById('homeProgressAfinacao');
+
+      if (progressTextVozes) progressTextVozes.textContent = 'Hinos aprovados: ' + o.hinosWithPrimary + ' / ' + HINOS_TOTAL;
+      if (progressPercent) progressPercent.textContent = pct + '%';
+      if (progressFill) progressFill.style.width = pct + '%';
+      if (progressAfinacao) {
+        var afinLabel = 'Dó';
+        if (hinosActiveAfinação === 'mib') afinLabel = 'Mib';
+        else if (hinosActiveAfinação === 'sib') afinLabel = 'Sib';
+        progressAfinacao.textContent = 'Ficha: Hinário 5 (' + afinLabel + ')';
+      }
+
+      // Sugestão de estudo inteligente (próximo hino não aprovado)
+      var suggestedKey = null;
+      var suggestedNum = 1;
+      
+      for (var i = 1; i <= HINOS_TOTAL; i++) {
+        var key = String(i);
+        var entry = st.hinos[hinosActiveAfinação][key];
+        var approved = entry && entry[vP];
+        if (!approved) {
+          suggestedKey = key;
+          suggestedNum = i;
+          break;
+        }
+      }
+
+      var homeSuggestedCard = document.getElementById('homeSuggestedCard');
+      var homeSuggestedTitle = document.getElementById('homeSuggestedTitle');
+      var homeSuggestedDesc = document.getElementById('homeSuggestedDesc');
+
+      if (homeSuggestedCard) {
+        if (suggestedKey) {
+          homeSuggestedCard.classList.remove('hidden');
+          if (homeSuggestedTitle) homeSuggestedTitle.textContent = 'Hino ' + suggestedNum;
+          if (homeSuggestedDesc) {
+            homeSuggestedDesc.textContent = 'Este é o próximo hino da sua ficha que ainda não foi marcado como aprovado na voz de ' + vozName + '.';
+          }
+          homeSuggestedCard.dataset.suggestedHino = String(suggestedNum);
+        } else {
+          homeSuggestedCard.classList.remove('hidden');
+          if (homeSuggestedTitle) homeSuggestedTitle.textContent = 'Parabéns! 🎉';
+          if (homeSuggestedDesc) {
+            homeSuggestedDesc.textContent = 'Você concluiu e aprovou todos os 480 hinos na sua voz principal!';
+          }
+          homeSuggestedCard.dataset.suggestedHino = '1';
+        }
+      }
+    } else {
+      if (homeWelcomeTitle) homeWelcomeTitle.textContent = 'Olá, Estudante!';
+      if (homeWelcomeSubtitle) homeWelcomeSubtitle.textContent = 'Bem-vindo ao GEM Tools. Pronto para praticar hoje?';
+      if (homeAvatar) homeAvatar.textContent = '👤';
+      if (homeStudentProgress) homeStudentProgress.classList.add('hidden');
+      if (homeNoStudent) homeNoStudent.classList.remove('hidden');
+      
+      var homeSuggestedCard = document.getElementById('homeSuggestedCard');
+      if (homeSuggestedCard) homeSuggestedCard.classList.add('hidden');
+    }
+  }
+
   // ========== EVENTOS ==========
   function bindEvents() {
     var btnSettingsClose = document.getElementById('btnSettingsClose');
@@ -7420,6 +7553,71 @@
     if (btnMoreMsa) {
       btnMoreMsa.addEventListener('click', function () {
         setMode('msa');
+      });
+    }
+    var btnMoreStaff = document.getElementById('btnMoreStaff');
+    if (btnMoreStaff) {
+      btnMoreStaff.addEventListener('click', function () {
+        setMode('staff');
+      });
+    }
+
+    // Ouvintes de eventos da Home (Página Inicial)
+    document.querySelectorAll('.home-shortcut-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var shortcutMode = this.dataset.shortcutMode;
+        if (shortcutMode) {
+          setMode(shortcutMode);
+        }
+      });
+    });
+
+    var btnHomeSelectStudent = document.getElementById('btnHomeSelectStudent');
+    if (btnHomeSelectStudent) {
+      btnHomeSelectStudent.addEventListener('click', function () {
+        setMode('hinos');
+      });
+    }
+
+    var btnHomeCreateStudent = document.getElementById('btnHomeCreateStudent');
+    if (btnHomeCreateStudent) {
+      btnHomeCreateStudent.addEventListener('click', function () {
+        setMode('hinos');
+        setTimeout(function() {
+          var openModalBtn = document.getElementById('hinosOpenNewStudentModal');
+          if (openModalBtn) openModalBtn.click();
+        }, 150);
+      });
+    }
+
+    var btnHomeGoSuggested = document.getElementById('btnHomeGoSuggested');
+    if (btnHomeGoSuggested) {
+      btnHomeGoSuggested.addEventListener('click', function () {
+        var card = document.getElementById('homeSuggestedCard');
+        if (card && card.dataset.suggestedHino) {
+          var hinoNum = parseInt(card.dataset.suggestedHino, 10);
+          var item = getPlayerCatalogItemByNumero(hinoNum);
+          if (item) {
+            playerSelectedItemId = String(item.id || '');
+            playerSelectedHinoNumero = Number(item.numero || 0);
+            var playerSelectHinoInput = document.getElementById('playerSelectHino');
+            if (playerSelectHinoInput) {
+              playerSelectHinoInput.value = String(item.numero) + ' · ' + (item.titulo || 'Sem título');
+              playerSelectHinoInput.dataset.openAll = '0';
+            }
+          } else {
+            playerSelectedItemId = null;
+            playerSelectedHinoNumero = hinoNum;
+            var playerSelectHinoInput = document.getElementById('playerSelectHino');
+            if (playerSelectHinoInput) {
+              playerSelectHinoInput.value = String(hinoNum);
+              playerSelectHinoInput.dataset.openAll = '0';
+            }
+          }
+          setMode('player');
+          renderPlayerCatalogControls();
+          loadPlayerFromCatalogSelection(true);
+        }
       });
     }
     document.querySelectorAll('.msa-tab-btn').forEach(function (btn) {
