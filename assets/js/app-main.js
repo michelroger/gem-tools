@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.11';
+  const APP_VERSION = '1.3.12';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -5698,7 +5698,7 @@
     };
   }
 
-  function renderPlayerCatalogControls() {
+  function renderPlayerCatalogControls(skipInputValueSync) {
     var selCollection = document.getElementById('playerSelectCollection');
     var selAfin = document.getElementById('playerSelectAfinacao');
     var selHino = document.getElementById('playerSelectHino');
@@ -5773,7 +5773,7 @@
     }
     /* Igualdade exata do rótulo pode falhar (apóstrofo, hífen, Unicode) e ainda zerar o filtro ao
        fechar a lista. Formato "NNN · título" com o mesmo número do item selecionado = modo exibição. */
-    if (searchTerm && !forceShowAll) {
+    if (searchTerm && !forceShowAll && !skipInputValueSync) {
       var trimmedForLead = String(rawHinoInput || '').trim();
       var leadNumero = parsePlayerNumeroFromInputValue(trimmedForLead);
       if (
@@ -5809,8 +5809,10 @@
     if (selectedItem && !searchTerm) {
       playerSelectedItemId = String(selectedItem.id || '');
       playerSelectedHinoNumero = Number(selectedItem.numero || 0);
-      var selectedLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(selectedItem);
-      window.UiCoreModule.setInputValue(selHino, selectedLabel);
+      if (!skipInputValueSync) {
+        var selectedLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(selectedItem);
+        window.UiCoreModule.setInputValue(selHino, selectedLabel);
+      }
     }
 
     var currentItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
@@ -7747,14 +7749,14 @@
         this.dataset.openAll = '0';
         var parsedNumero = parsePlayerNumeroFromInputValue(this.value);
         if (isFinite(parsedNumero) && parsedNumero > 0) playerSelectedHinoNumero = parsedNumero;
-        renderPlayerCatalogControls();
+        renderPlayerCatalogControls(true);
         if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
           playerHinoSuggestions.classList.remove('hidden');
         }
       });
       playerSelectHino.addEventListener('focus', function () {
         this.dataset.openAll = '1';
-        renderPlayerCatalogControls();
+        renderPlayerCatalogControls(true);
         if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
           playerHinoSuggestions.classList.remove('hidden');
         }
@@ -7767,7 +7769,7 @@
       });
       playerSelectHino.addEventListener('click', function () {
         this.dataset.openAll = '1';
-        renderPlayerCatalogControls();
+        renderPlayerCatalogControls(true);
         if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
           playerHinoSuggestions.classList.remove('hidden');
         }
