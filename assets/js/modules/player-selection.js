@@ -13,12 +13,19 @@
     if (byInstrument && instrumentId && byInstrument[instrumentId] && hasAtLeastOneScore(byInstrument[instrumentId])) {
       return byInstrument[instrumentId];
     }
+    // Se o clarinete foi selecionado, nao fazemos fallback para outros instrumentos (evita ler partitura de violino/do)
+    if (instrumentId === 'clarinete') {
+      return null;
+    }
+    // Para outros instrumentos, fazemos fallback mas ignoramos o clarinete (afinacao diferente)
     if (byInstrument && typeof byInstrument === 'object') {
       var keys = Object.keys(byInstrument);
       for (var i = 0; i < keys.length; i++) {
-        if (hasAtLeastOneScore(byInstrument[keys[i]])) return byInstrument[keys[i]];
+        var key = keys[i];
+        if (key === 'clarinete') continue;
+        if (hasAtLeastOneScore(byInstrument[key])) return byInstrument[key];
       }
-      if (keys.length && byInstrument[keys[0]]) return byInstrument[keys[0]];
+      if (keys.length && keys[0] !== 'clarinete' && byInstrument[keys[0]]) return byInstrument[keys[0]];
     }
     if (item.arquivos && typeof item.arquivos === 'object') return item.arquivos;
     return null;

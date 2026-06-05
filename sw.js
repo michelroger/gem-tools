@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v1.2.6';
+const CACHE_VERSION = 'v1.3.13';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
@@ -9,6 +9,9 @@ const PRECACHE_URLS = [
   './manifest.webmanifest',
   './hinario5-curriculum.json',
   './xml/catalog.json',
+  './assets/css/app.css',
+  './assets/js/app-main.js',
+  './assets/js/modules/msa-data.js',
   './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml',
   './icon-192.png',
   './icon-512.png'
@@ -48,6 +51,17 @@ self.addEventListener('fetch', function (event) {
 
   const req = event.request;
   const url = new URL(req.url);
+
+  // Ignora requisições de vídeo e áudio ou com cabeçalho Range (essencial para seek/busca de mídia)
+  if (req.headers.has('range') ||
+      url.pathname.endsWith('.mp4') ||
+      url.pathname.endsWith('.mp3') ||
+      url.pathname.endsWith('.m4a') ||
+      url.pathname.endsWith('.aac') ||
+      url.pathname.endsWith('.webm') ||
+      url.pathname.endsWith('.wav')) {
+    return;
+  }
 
   // Não cacheia requisições cross-origin (ex.: soundfonts/CDN).
   if (url.origin !== self.location.origin) return;

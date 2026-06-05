@@ -1,2303 +1,2654 @@
-    (function () {
-      'use strict';
+(function () {
+  'use strict';
 
-      const APP_VERSION = '1.2.7';
-      const APP_VERSION_LABEL = 'Beta';
-      const THEME_STORAGE_KEY = 'orquestra-theme';
-      /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
-      const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
-      const PLAYER_CATALOG_URL = './xml/catalog.json';
+  const APP_VERSION = '1.3.13';
+  const APP_VERSION_LABEL = 'Beta';
+  const THEME_STORAGE_KEY = 'orquestra-theme';
+  /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
+  const PLAYER_SCORE_URL = './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml';
+  const PLAYER_CATALOG_URL = './xml/catalog.json';
 
-      var themePrefMq = null;
-      var themePrefMqHandler = null;
-      var themePrefMqBound = false;
+  var themePrefMq = null;
+  var themePrefMqHandler = null;
+  var themePrefMqBound = false;
 
-      // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
-      const NOTAS = [
-        { id: 'do', nome: 'Dó', solfa: 'Dó', cor: 'do', freq: 261.63 },
-        { id: 're', nome: 'Ré', solfa: 'Ré', cor: 're', freq: 293.66 },
-        { id: 'mi', nome: 'Mi', solfa: 'Mi', cor: 'mi', freq: 329.63 },
-        { id: 'fa', nome: 'Fá', solfa: 'Fá', cor: 'fa', freq: 349.23 },
-        { id: 'sol', nome: 'Sol', solfa: 'Sol', cor: 'sol', freq: 392.00 },
-        { id: 'la', nome: 'Lá', solfa: 'Lá', cor: 'la', freq: 440.00 },
-        { id: 'si', nome: 'Si', solfa: 'Si', cor: 'si', freq: 493.88 }
-      ];
+  // ========== CONFIGURAÇÃO DAS NOTAS (Dó a Si) ==========
+  const NOTAS = [
+    { id: 'do', nome: 'Dó', solfa: 'Dó', cor: 'do', freq: 261.63 },
+    { id: 're', nome: 'Ré', solfa: 'Ré', cor: 're', freq: 293.66 },
+    { id: 'mi', nome: 'Mi', solfa: 'Mi', cor: 'mi', freq: 329.63 },
+    { id: 'fa', nome: 'Fá', solfa: 'Fá', cor: 'fa', freq: 349.23 },
+    { id: 'sol', nome: 'Sol', solfa: 'Sol', cor: 'sol', freq: 392.00 },
+    { id: 'la', nome: 'Lá', solfa: 'Lá', cor: 'la', freq: 440.00 },
+    { id: 'si', nome: 'Si', solfa: 'Si', cor: 'si', freq: 493.88 }
+  ];
 
-      // ========== INSTRUMENTOS DA ORQUESTRA CCB ==========
-      const INSTRUMENTOS = [
-        // CORDAS
-        {
-          id: 'violino',
-          nome: 'Violino',
-          emoji: '🎻',
-          tipo: 'corda',
-          soundfont: 'violin',
-          descricao: '4 cordas: Sol, Ré, Lá, Mi — primeira posição',
-          cordas: ['sol', 're', 'la', 'mi'],
-          cordaClasses: { sol: 'string-sol', re: 'string-re', la: 'string-la', mi: 'string-mi' },
-          fingerboard: [
-            ['sol', 're', 'la', 'mi'],   // pos 0 — cordas soltas
-            ['la', 'mi', 'si', 'fa'],    // pos 1
-            ['si', 'fa', 'do', 'sol'],   // pos 2
-            ['do', 'sol', 're', 'la'],   // pos 3
-            ['re', 'la', 'mi', 'si']     // pos 4
-          ],
-          freqBoard: [
-            [196.00, 293.66, 440.00, 659.25],   // pos 0: G3, D4, A4, E5
-            [220.00, 329.63, 493.88, 698.46],   // pos 1: A3, E4, B4, F5
-            [246.94, 349.23, 523.25, 783.99],   // pos 2: B3, F4, C5, G5
-            [261.63, 392.00, 587.33, 880.00],   // pos 3: C4, G4, D5, A5
-            [293.66, 440.00, 659.25, 987.77]    // pos 4: D4, A4, E5, B5
-          ]
-        },
-        {
-          id: 'viola',
-          nome: 'Viola',
-          emoji: '🎻',
-          tipo: 'corda',
-          soundfont: 'viola',
-          descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
-          cordas: ['do', 'sol', 're', 'la'],
-          cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
-          fingerboard: [
-            ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
-            ['re', 'la', 'mi', 'si'],     // pos 1
-            ['mi', 'si', 'fa', 'do'],     // pos 2
-            ['fa', 'do', 'sol', 're'],    // pos 3
-            ['sol', 're', 'la', 'mi']     // pos 4
-          ],
-          freqBoard: [
-            [130.81, 196.00, 293.66, 440.00],   // pos 0: C3, G3, D4, A4
-            [146.83, 220.00, 329.63, 493.88],   // pos 1: D3, A3, E4, B4
-            [164.81, 246.94, 349.23, 523.25],   // pos 2: E3, B3, F4, C5
-            [174.61, 261.63, 392.00, 587.33],   // pos 3: F3, C4, G4, D5
-            [196.00, 293.66, 440.00, 659.25]    // pos 4: G3, D4, A4, E5
-          ]
-        },
-        {
-          id: 'violoncelo',
-          nome: 'Violoncelo',
-          emoji: '🎻',
-          tipo: 'corda',
-          soundfont: 'cello',
-          descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
-          cordas: ['do', 'sol', 're', 'la'],
-          cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
-          fingerboard: [
-            ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
-            ['re', 'la', 'mi', 'si'],     // pos 1
-            ['mi', 'si', 'fa', 'do'],     // pos 2
-            ['fa', 'do', 'sol', 're'],    // pos 3
-            ['sol', 're', 'la', 'mi']     // pos 4
-          ],
-          freqBoard: [
-            [65.41, 98.00, 146.83, 220.00],   // pos 0: C2, G2, D3, A3
-            [73.42, 110.00, 164.81, 246.94],   // pos 1: D2, A2, E3, B3
-            [82.41, 123.47, 174.61, 261.63],   // pos 2: E2, B2, F3, C4
-            [87.31, 130.81, 196.00, 293.66],   // pos 3: F2, C3, G3, D4
-            [98.00, 146.83, 220.00, 329.63]    // pos 4: G2, D3, A3, E4
-          ]
-        },
-        // SOPROS - MADEIRAS
-        {
-          id: 'flauta',
-          nome: 'Flauta',
-          emoji: '🎵',
-          tipo: 'sopro',
-          soundfont: 'flute',
-          descricao: 'Dedilhado de flauta doce/barroca — Dó a Si',
-          dedilhado: 'teclas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'E: 123 + p | D: 123',
-            re: 'E: 123 + p | D: 12',
-            mi: 'E: 123 + p | D: 1',
-            fa: 'E: 123 + p | D: -',
-            sol: 'E: 123 | D: -',
-            la: 'E: 12 | D: -',
-            si: 'E: 1 | D: -'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        },
-        {
-          id: 'clarinete',
-          nome: 'Clarinete',
-          emoji: '🎵',
-          tipo: 'sopro',
-          soundfont: 'clarinet',
-          descricao: 'Dedilhado de clarinete (registro base) — Dó a Si',
-          dedilhado: 'teclas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'polegar + E123 D123',
-            re: 'polegar + E123 D12',
-            mi: 'polegar + E123 D1',
-            fa: 'polegar + E123',
-            sol: 'polegar + E12',
-            la: 'polegar + E1',
-            si: 'polegar + chave A'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        },
-        {
-          id: 'oboe',
-          nome: 'Oboé',
-          emoji: '🎵',
-          tipo: 'sopro',
-          soundfont: 'oboe',
-          descricao: 'Dedilhado de oboe (simplificado) — Dó a Si',
-          dedilhado: 'teclas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'E123 | D123 + C grave',
-            re: 'E123 | D123',
-            mi: 'E123 | D12',
-            fa: 'E123 | D1',
-            sol: 'E123',
-            la: 'E12',
-            si: 'E1'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        },
-        {
-          id: 'fagote',
-          nome: 'Fagote',
-          emoji: '🎵',
-          tipo: 'sopro',
-          soundfont: 'bassoon',
-          descricao: 'Dedilhado de fagote (simplificado) — Dó a Si',
-          dedilhado: 'teclas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'E123 | D123 + polegar',
-            re: 'E123 | D123',
-            mi: 'E123 | D12',
-            fa: 'E123 | D1',
-            sol: 'E123',
-            la: 'E12',
-            si: 'E1'
-          },
-          freqBoard: [
-            [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
-          ]
-        },
-        // METais
-        {
-          id: 'trompete',
-          nome: 'Trompete',
-          emoji: '🎺',
-          tipo: 'metal',
-          soundfont: 'trumpet',
-          descricao: 'Válvulas de trompete — Dó a Si',
-          dedilhado: 'valvulas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'valvulas: 0',
-            re: 'valvulas: 1+3',
-            mi: 'valvulas: 1+2',
-            fa: 'valvulas: 1',
-            sol: 'valvulas: 0',
-            la: 'valvulas: 1+2',
-            si: 'valvulas: 2'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        },
-        {
-          id: 'trompa',
-          nome: 'Trompa',
-          emoji: '🎺',
-          tipo: 'metal',
-          soundfont: 'french-horn',
-          descricao: 'Válvulas de trompa (F) — Dó a Si',
-          dedilhado: 'valvulas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'valvulas: 0',
-            re: 'valvulas: 1',
-            mi: 'valvulas: 1+2',
-            fa: 'valvulas: 0',
-            sol: 'valvulas: 2',
-            la: 'valvulas: 1',
-            si: 'valvulas: 2'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        },
-        {
-          id: 'trombone',
-          nome: 'Trombone',
-          emoji: '🎺',
-          tipo: 'metal',
-          soundfont: 'trombone',
-          descricao: 'Posições da vara (tenor) — Dó a Si',
-          dedilhado: 'posicoes',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'vara: 6a pos.',
-            re: 'vara: 4a pos.',
-            mi: 'vara: 2a pos.',
-            fa: 'vara: 1a pos.',
-            sol: 'vara: 4a pos.',
-            la: 'vara: 2a pos.',
-            si: 'vara: 1a pos.'
-          },
-          freqBoard: [
-            [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
-          ]
-        },
-        // VOZ (som GM + nome em solfejo na reprodução do player)
-        {
-          id: 'voz',
-          nome: 'Voz',
-          emoji: '🎤',
-          tipo: 'voz',
-          soundfont: 'voice_oohs',
-          descricao: 'Coro (GM) + solfejo cantado (timbre mais agudo / feminino, sintético)',
-          dedilhado: 'teclas',
-          notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
-          fingeringMap: {
-            do: 'player: vogal cantada (som)',
-            re: 'player: vogal cantada (som)',
-            mi: 'player: vogal cantada (som)',
-            fa: 'player: vogal cantada (som)',
-            sol: 'player: vogal cantada (som)',
-            la: 'player: vogal cantada (som)',
-            si: 'player: vogal cantada (som)'
-          },
-          freqBoard: [
-            [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
-          ]
-        }
-      ];
+  // ========== INSTRUMENTOS DA ORQUESTRA CCB ==========
+  const INSTRUMENTOS = [
+    // CORDAS
+    {
+      id: 'violino',
+      nome: 'Violino',
+      emoji: '🎻',
+      tipo: 'corda',
+      soundfont: 'violin',
+      descricao: '4 cordas: Sol, Ré, Lá, Mi — primeira posição',
+      cordas: ['sol', 're', 'la', 'mi'],
+      cordaClasses: { sol: 'string-sol', re: 'string-re', la: 'string-la', mi: 'string-mi' },
+      fingerboard: [
+        ['sol', 're', 'la', 'mi'],   // pos 0 — cordas soltas
+        ['la', 'mi', 'si', 'fa'],    // pos 1
+        ['si', 'fa', 'do', 'sol'],   // pos 2
+        ['do', 'sol', 're', 'la'],   // pos 3
+        ['re', 'la', 'mi', 'si']     // pos 4
+      ],
+      freqBoard: [
+        [196.00, 293.66, 440.00, 659.25],   // pos 0: G3, D4, A4, E5
+        [220.00, 329.63, 493.88, 698.46],   // pos 1: A3, E4, B4, F5
+        [246.94, 349.23, 523.25, 783.99],   // pos 2: B3, F4, C5, G5
+        [261.63, 392.00, 587.33, 880.00],   // pos 3: C4, G4, D5, A5
+        [293.66, 440.00, 659.25, 987.77]    // pos 4: D4, A4, E5, B5
+      ]
+    },
+    {
+      id: 'viola',
+      nome: 'Viola',
+      emoji: '🎻',
+      tipo: 'corda',
+      soundfont: 'viola',
+      descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
+      cordas: ['do', 'sol', 're', 'la'],
+      cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
+      fingerboard: [
+        ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
+        ['re', 'la', 'mi', 'si'],     // pos 1
+        ['mi', 'si', 'fa', 'do'],     // pos 2
+        ['fa', 'do', 'sol', 're'],    // pos 3
+        ['sol', 're', 'la', 'mi']     // pos 4
+      ],
+      freqBoard: [
+        [130.81, 196.00, 293.66, 440.00],   // pos 0: C3, G3, D4, A4
+        [146.83, 220.00, 329.63, 493.88],   // pos 1: D3, A3, E4, B4
+        [164.81, 246.94, 349.23, 523.25],   // pos 2: E3, B3, F4, C5
+        [174.61, 261.63, 392.00, 587.33],   // pos 3: F3, C4, G4, D5
+        [196.00, 293.66, 440.00, 659.25]    // pos 4: G3, D4, A4, E5
+      ]
+    },
+    {
+      id: 'violoncelo',
+      nome: 'Violoncelo',
+      emoji: '🎻',
+      tipo: 'corda',
+      soundfont: 'cello',
+      descricao: '4 cordas: Dó, Sol, Ré, Lá — primeira posição',
+      cordas: ['do', 'sol', 're', 'la'],
+      cordaClasses: { do: 'string-do', sol: 'string-sol', re: 'string-re', la: 'string-la' },
+      fingerboard: [
+        ['do', 'sol', 're', 'la'],   // pos 0 — cordas soltas
+        ['re', 'la', 'mi', 'si'],     // pos 1
+        ['mi', 'si', 'fa', 'do'],     // pos 2
+        ['fa', 'do', 'sol', 're'],    // pos 3
+        ['sol', 're', 'la', 'mi']     // pos 4
+      ],
+      freqBoard: [
+        [65.41, 98.00, 146.83, 220.00],   // pos 0: C2, G2, D3, A3
+        [73.42, 110.00, 164.81, 246.94],   // pos 1: D2, A2, E3, B3
+        [82.41, 123.47, 174.61, 261.63],   // pos 2: E2, B2, F3, C4
+        [87.31, 130.81, 196.00, 293.66],   // pos 3: F2, C3, G3, D4
+        [98.00, 146.83, 220.00, 329.63]    // pos 4: G2, D3, A3, E4
+      ]
+    },
+    // SOPROS - MADEIRAS
+    {
+      id: 'flauta',
+      nome: 'Flauta',
+      emoji: '🎵',
+      tipo: 'sopro',
+      soundfont: 'flute',
+      descricao: 'Dedilhado de flauta doce/barroca — Dó a Si',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'E: 123 + p | D: 123',
+        re: 'E: 123 + p | D: 12',
+        mi: 'E: 123 + p | D: 1',
+        fa: 'E: 123 + p | D: -',
+        sol: 'E: 123 | D: -',
+        la: 'E: 12 | D: -',
+        si: 'E: 1 | D: -'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'clarinete',
+      nome: 'Clarinete',
+      emoji: '🎵',
+      tipo: 'sopro',
+      soundfont: 'clarinet',
+      descricao: 'Dedilhado de clarinete (registro base) — Dó a Si',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'polegar + E123 D123',
+        re: 'polegar + E123 D12',
+        mi: 'polegar + E123 D1',
+        fa: 'polegar + E123',
+        sol: 'polegar + E12',
+        la: 'polegar + E1',
+        si: 'polegar + chave A'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'oboe',
+      nome: 'Oboé',
+      emoji: '🎵',
+      tipo: 'sopro',
+      soundfont: 'oboe',
+      descricao: 'Dedilhado de oboe (simplificado) — Dó a Si',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'E123 | D123 + C grave',
+        re: 'E123 | D123',
+        mi: 'E123 | D12',
+        fa: 'E123 | D1',
+        sol: 'E123',
+        la: 'E12',
+        si: 'E1'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'fagote',
+      nome: 'Fagote',
+      emoji: '🎵',
+      tipo: 'sopro',
+      soundfont: 'bassoon',
+      descricao: 'Dedilhado de fagote (simplificado) — Dó a Si',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'E123 | D123 + polegar',
+        re: 'E123 | D123',
+        mi: 'E123 | D12',
+        fa: 'E123 | D1',
+        sol: 'E123',
+        la: 'E12',
+        si: 'E1'
+      },
+      freqBoard: [
+        [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+      ]
+    },
+    // METais
+    {
+      id: 'trompete',
+      nome: 'Trompete',
+      emoji: '🎺',
+      tipo: 'metal',
+      soundfont: 'trumpet',
+      descricao: 'Válvulas de trompete — Dó a Si',
+      dedilhado: 'valvulas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'valvulas: 0',
+        re: 'valvulas: 1+3',
+        mi: 'valvulas: 1+2',
+        fa: 'valvulas: 1',
+        sol: 'valvulas: 0',
+        la: 'valvulas: 1+2',
+        si: 'valvulas: 2'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'trompa',
+      nome: 'Trompa',
+      emoji: '🎺',
+      tipo: 'metal',
+      soundfont: 'french-horn',
+      descricao: 'Válvulas de trompa (F) — Dó a Si',
+      dedilhado: 'valvulas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'valvulas: 0',
+        re: 'valvulas: 1',
+        mi: 'valvulas: 1+2',
+        fa: 'valvulas: 0',
+        sol: 'valvulas: 2',
+        la: 'valvulas: 1',
+        si: 'valvulas: 2'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'trombone',
+      nome: 'Trombone',
+      emoji: '🎺',
+      tipo: 'metal',
+      soundfont: 'trombone',
+      descricao: 'Posições da vara (tenor) — Dó a Si',
+      dedilhado: 'posicoes',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'vara: 6a pos.',
+        re: 'vara: 4a pos.',
+        mi: 'vara: 2a pos.',
+        fa: 'vara: 1a pos.',
+        sol: 'vara: 4a pos.',
+        la: 'vara: 2a pos.',
+        si: 'vara: 1a pos.'
+      },
+      freqBoard: [
+        [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+      ]
+    },
+    // VOZ (som GM + nome em solfejo na reprodução do player)
+    {
+      id: 'voz',
+      nome: 'Voz',
+      emoji: '🎤',
+      tipo: 'voz',
+      soundfont: 'voice_oohs',
+      descricao: 'Coro (GM) + solfejo cantado (timbre mais agudo / feminino, sintético)',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'player: vogal cantada (som)',
+        re: 'player: vogal cantada (som)',
+        mi: 'player: vogal cantada (som)',
+        fa: 'player: vogal cantada (som)',
+        sol: 'player: vogal cantada (som)',
+        la: 'player: vogal cantada (som)',
+        si: 'player: vogal cantada (som)'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    }
+  ];
 
-      // Variáveis globais para instrumento atual
-      var currentInstrument = INSTRUMENTOS[0];
-      var CORDAS = currentInstrument.cordas || [];
-      var CORDA_CLASS = currentInstrument.cordaClasses || {};
-      var FINGERBOARD = currentInstrument.fingerboard || [];
-      var FREQ_BOARD = currentInstrument.freqBoard || [];
+  // Variáveis globais para instrumento atual
+  var currentInstrument = INSTRUMENTOS[0];
+  var CORDAS = currentInstrument.cordas || [];
+  var CORDA_CLASS = currentInstrument.cordaClasses || {};
+  var FINGERBOARD = currentInstrument.fingerboard || [];
+  var FREQ_BOARD = currentInstrument.freqBoard || [];
 
-      const MENSAGENS_POSITIVAS = [
-        'Muito bem!',
-        'Você conseguiu!',
-        'Isso aí!',
-        'Parabéns!',
-        'Excelente!',
-        'Ótimo!',
-        'Vamos tentar de novo?',
-        'Quase lá!'
-      ];
+  const MENSAGENS_POSITIVAS = [
+    'Muito bem!',
+    'Você conseguiu!',
+    'Isso aí!',
+    'Parabéns!',
+    'Excelente!',
+    'Ótimo!',
+    'Vamos tentar de novo?',
+    'Quase lá!'
+  ];
 
-      // Tonalidades: acidentes por escala (sustenidos = #, bemóis = ♭)
-      const TONALIDADES = [
-        { id: 'do', nome: 'Dó M', sustenidos: [], bemolis: [] },
-        { id: 'sol', nome: 'Sol M', sustenidos: ['fa'], bemolis: [] },
-        { id: 're', nome: 'Ré M', sustenidos: ['fa', 'do'], bemolis: [] },
-        { id: 'la', nome: 'Lá M', sustenidos: ['fa', 'do', 'sol'], bemolis: [] },
-        { id: 'mi', nome: 'Mi M', sustenidos: ['fa', 'do', 'sol', 're'], bemolis: [] },
-        { id: 'si', nome: 'Si M', sustenidos: ['fa', 'do', 'sol', 're', 'la'], bemolis: [] },
-        { id: 'fa', nome: 'Fá M', sustenidos: [], bemolis: ['si'] },
-        { id: 'sib', nome: 'Sib M', sustenidos: [], bemolis: ['si', 'mi'] },
-        { id: 'mib', nome: 'Mib M', sustenidos: [], bemolis: ['si', 'mi', 'la'] }
-      ];
-      var currentKey = TONALIDADES[0];
+  // Tonalidades: acidentes por escala (sustenidos = #, bemóis = ♭)
+  const TONALIDADES = [
+    { id: 'do', nome: 'Dó M', sustenidos: [], bemolis: [] },
+    { id: 'sol', nome: 'Sol M', sustenidos: ['fa'], bemolis: [] },
+    { id: 're', nome: 'Ré M', sustenidos: ['fa', 'do'], bemolis: [] },
+    { id: 'la', nome: 'Lá M', sustenidos: ['fa', 'do', 'sol'], bemolis: [] },
+    { id: 'mi', nome: 'Mi M', sustenidos: ['fa', 'do', 'sol', 're'], bemolis: [] },
+    { id: 'si', nome: 'Si M', sustenidos: ['fa', 'do', 'sol', 're', 'la'], bemolis: [] },
+    { id: 'fa', nome: 'Fá M', sustenidos: [], bemolis: ['si'] },
+    { id: 'sib', nome: 'Sib M', sustenidos: [], bemolis: ['si', 'mi'] },
+    { id: 'mib', nome: 'Mib M', sustenidos: [], bemolis: ['si', 'mi', 'la'] }
+  ];
+  var currentKey = TONALIDADES[0];
 
-      // ========== ESTADO GLOBAL ==========
-      let audioCtx = null;
-      let currentMode = 'player';
-      let challengeTarget = null;
-      let challengeTimeout = null;
-      let challengeRound = 0;
-      let challengeErrors = 0;
-      let challengeStartTs = 0;
-      let challengeTimerInterval = null;
-      let confettiAnimationId = null;
-      let challengeDiscardedAttempts = {};
-      let score = 0;
-      let totalChallenges = 0;
-      let soundEnabled = true;
-      let calmMode = false;
-      /** Volume base das notas do instrumento (soundfont + síntese). */
-      var INSTRUMENT_OUTPUT_GAIN = 1.25;
-      let narrationEnabled = false;
-      let ambientEnabled = false;
-      let ambientOsc = null;
-      let ambientGain = null;
-      let speechSynth = null;
-      var currentInstrumentSound = null;
-      var instrumentLoadPromises = {};
-      var currentSustainedNoteStop = null;
-      var activePointerNotes = {};
-      var audioOutputBus = null;
-      var audioOutputBusCtx = null;
-      var audioReverbImpulse = null;
-      var audioReverbImpulseCtx = null;
-      let staffModeTarget = null;
-      let staffAnswerLocked = false;
-      let staffNoteEllipse = null;
-      let staffClefElement = null;
-      let currentClef = 'sol';
+  // ========== ESTADO GLOBAL ==========
+  let audioCtx = null;
+  let currentMode = 'home';
+  var msaActiveFase = 1;
+  var activeMsaTab = 'video';
+  var currentMsaVideoBlobUrl = null;
+  var currentMsaAudioBlobUrl = null;
+  var msaVideoAbortController = null;
+  var msaAudioAbortController = null;
 
-      // ========== PLAYER (MusicXML / OpenSheetMusicDisplay) ==========
-      var playerOsmd = null;
-      var playerOsmdLoading = false;
-      var playerScoreData = null;
-      var playerCatalog = null;
-      var playerCatalogPromise = null;
-      var playerSelectedCollectionId = 'hinario5-ccb';
-      var playerSelectedAfinacao = 'do';
-      var playerSelectedItemId = null;
-      var playerSelectedHinoNumero = null;
-      var playerSelectedVoices = ['s'];
-      var playerCurrentScorePath = '';
-      var playerPlayToken = 0;
-      var playerPrepToken = 0;
-      var playerPrepTimeouts = [];
-      var playerPlaybackRate = 1;
-      var playerMetronomeEnabled = false;
-      var playerAutoScrollEnabled = false;
-      var playerLoopEnabled = false;
-      var playerColorizedNotes = false;
-      var playerNoteNameLabels = false;
-      var playerShowFingering = false;
-      var playerLiveListenEnabled = false;
-      var playerMutePlaybackEnabled = false;
-      var playerShowMeasureNumbers = true;
-      var playerLiveListenRunning = false;
-      var playerLiveListenStream = null;
-      var playerLiveListenSource = null;
-      var playerLiveListenAnalyzer = null;
-      var playerLiveListenData = null;
-      var playerLiveListenFrameId = 0;
-      var playerLiveListenSmoothedFreq = 0;
-      var playerLiveListenRawHistory = [];
-      var playerLiveListenNoSignalFrames = 0;
-      var playerLiveListenLastFreq = 0;
-      var playerLiveListenLastCents = 0;
-      var playerLiveListenHasSignal = false;
-      /** Frequência esperada da nota atual (partitura): orienta normalização contra harmônicos espúrios. */
-      var playerLiveListenHintExpectedFreq = 0;
-      var playerLiveCurrentAnchorEl = null;
-      var playerLiveFeedbackEventIndex = -1;
-      var playerLiveFeedbackStatus = '';
-      var playerLiveEventMetrics = {};
-      var playerLiveCurrentEventIndex = -1;
-      var playerLiveScoreTotals = {
-        notesTotal: 0,
-        notesPassed: 0,
-        pitchSum: 0,
-        timingSum: 0
-      };
-      /**
-       * Ajuste OSMD para marcas de ensaio («Coro», «Final»): em VexFlow, y maior = mais para baixo.
-       * OSMD usa yOffset = -RehearsalMarkYOffsetDefault - RehearsalMarkYOffset (default -15 → base 15).
-       * Valores POSITIVOS aqui DIMINUEM esse yOffset e sobem o texto, afastando do pentagrama.
-       */
-      var PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET = 24;
-      var playerAutoScrollLastTs = 0;
-      var playerAutoScrollLastSystemTop = null;
-      var playerAutoScrollLastCursorLeftInHost = null;
-      var playerAutoScrollLastCursorTopDoc = null;
-      var playerAutoScrollUserPausedUntil = 0;
-      var playerAutoScrollProgrammaticUntil = 0;
-      var playerAutoScrollNeedsInitial = false;
-      var playerAutoScrollSystemChanges = 0;
-      var playerAutoScrollReachedEnd = false;
-      var playerNoteAnchors = [];
-      var playerSpeedAdjusting = false;
-      var playerSpeedResumeAfterAdjust = false;
-      var playerSpeedFrozenSec = 0;
-      var playerPlayback = {
-        isPlaying: false,
-        startedAtCtx: 0,
-        positionSec: 0,
-        nextEventIndex: 0,
-        nextCursorIndex: 0,
-        nextBeatIndex: 0,
-        liveEventIndex: -1,
-        rafId: null,
-        activeStops: []
-      };
+  function revokeMsaMedia() {
+    if (msaVideoAbortController) {
+      try {
+        msaVideoAbortController.abort();
+      } catch (e) { }
+      msaVideoAbortController = null;
+    }
+    if (msaAudioAbortController) {
+      try {
+        msaAudioAbortController.abort();
+      } catch (e) { }
+      msaAudioAbortController = null;
+    }
+    if (currentMsaVideoBlobUrl) {
+      try {
+        URL.revokeObjectURL(currentMsaVideoBlobUrl);
+      } catch (e) { }
+      currentMsaVideoBlobUrl = null;
+    }
+    if (currentMsaAudioBlobUrl) {
+      try {
+        URL.revokeObjectURL(currentMsaAudioBlobUrl);
+      } catch (e) { }
+      currentMsaAudioBlobUrl = null;
+    }
+  }
+  let challengeTarget = null;
+  let challengeTimeout = null;
+  let challengeRound = 0;
+  let challengeErrors = 0;
+  let challengeStartTs = 0;
+  let challengeTimerInterval = null;
+  let confettiAnimationId = null;
+  let challengeDiscardedAttempts = {};
+  let score = 0;
+  let totalChallenges = 0;
+  let soundEnabled = true;
+  let calmMode = false;
+  /** Volume base das notas do instrumento (soundfont + síntese). */
+  var INSTRUMENT_OUTPUT_GAIN = 1.25;
+  let narrationEnabled = false;
+  let ambientEnabled = false;
+  let ambientOsc = null;
+  let ambientGain = null;
+  let speechSynth = null;
+  var currentInstrumentSound = null;
+  var instrumentLoadPromises = {};
+  var currentSustainedNoteStop = null;
+  var activePointerNotes = {};
+  var audioOutputBus = null;
+  var audioOutputBusCtx = null;
+  var audioReverbImpulse = null;
+  var audioReverbImpulseCtx = null;
+  /** Cadeias de EQ/saturação por instrumento ligadas ao barramento mestre. */
+  var instrumentShapingChains = {};
+  var instrumentShapingChainsCtx = null;
+  let staffModeTarget = null;
+  let staffAnswerLocked = false;
+  let staffNoteEllipse = null;
+  let staffClefElement = null;
+  let currentClef = 'sol';
 
-      /** Ponte para `player-load-bindings.js` (IIFE nao expoe `let`/`const` ao `window`). */
-      window.PlayerLoadBindingAccess = {
-        readPlayerOsmdLoading: function () { return playerOsmdLoading; },
-        setPlayerOsmdLoading: function (v) { playerOsmdLoading = v; },
-        setPlayerOsmd: function (v) { playerOsmd = v; },
-        applyPlayerOsmdDisplayOptions: function (osmd) {
-          if (!osmd || typeof osmd.setOptions !== 'function') return;
-          try {
-            osmd.setOptions({
-              drawMeasureNumbers: !!playerShowMeasureNumbers,
-              drawFingerings: !!playerShowFingering
-            });
-          } catch (eOsmdOpt) {}
-          try {
-            var er = osmd.EngravingRules || osmd.rules;
-            if (er) er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
-          } catch (eR) {}
-        },
-        setPlayerScoreData: function (v) {
-          playerScoreData = v;
-          if (v) playerPlaybackRate = 1;
-          syncPlayerSpeedUi();
-        },
-        setPlayerNoteAnchors: function (v) { playerNoteAnchors = v; },
-        isPlayerMode: function () { return currentMode === 'player'; },
-        setMessage: function (t) { setMessage(t); },
-        updatePlayerUiNow: function (s) { updatePlayerUiNow(s); },
-        stopPlayerPlayback: function (x) { stopPlayerPlayback(x); },
-        resetPlayerCursorToCurrentPosition: function () { resetPlayerCursorToCurrentPosition(); },
-        resizePlayerOsmdIfActive: function () { resizePlayerOsmdIfActive(); },
-        buildPlayerNoteAnchorsFromDom: function () { buildPlayerNoteAnchorsFromDom(); },
-        getPlayerPlayback: function () { return playerPlayback; },
-        getAppVersion: function () { return APP_VERSION; },
-        buildPlayerDisplayMusicXml: function (xml) { return buildPlayerDisplayMusicXml(xml); },
-        trySkipScore: function (scoreKey, forceReload) {
-          if (!forceReload && playerOsmd && playerCurrentScorePath === scoreKey) {
-            resizePlayerOsmdIfActive();
-            return true;
-          }
-          return false;
-        },
-        clearPreviousOsmd: function () {
-          if (playerOsmd) {
-            try { if (typeof playerOsmd.clear === 'function') playerOsmd.clear(); } catch (ePrev) {}
-            playerOsmd = null;
-          }
-        },
-        beginLoadState: function (host, scoreKey) {
-          playerOsmdLoading = true;
-          host.innerHTML = '';
-          playerScoreData = null;
-          stopPlayerPlayback(false);
-          playerCurrentScorePath = scoreKey;
-          setMessage('Carregando MusicXML…');
-          syncPlayerSpeedUi();
-        },
-        onOsmdConstructorFailed: function () {
-          playerOsmdLoading = false;
-          setMessage('Player: erro ao criar o visualizador.');
-        },
-        getHost: function () { return document.getElementById('playerOsmdContainer'); }
-      };
+  // ========== PLAYER (MusicXML / OpenSheetMusicDisplay) ==========
+  var playerOsmd = null;
+  var playerOsmdLoading = false;
+  var playerScoreData = null;
+  var playerCatalog = null;
+  var playerCatalogPromise = null;
+  var playerSelectedCollectionId = 'hinario5-ccb';
+  var playerSelectedAfinacao = 'do';
+  var playerSelectedItemId = null;
+  var playerSelectedHinoNumero = null;
+  var playerSelectedVoices = ['s'];
+  var playerCurrentScorePath = '';
+  var playerPlayToken = 0;
+  var playerPrepToken = 0;
+  var playerPrepTimeouts = [];
+  var playerPlaybackRate = 1;
+  var playerMetronomeEnabled = false;
+  var playerAutoScrollEnabled = false;
+  var playerLoopEnabled = false;
+  var playerColorizedNotes = false;
+  var playerNoteNameLabels = false;
+  var playerShowFingering = false;
+  var playerLiveListenEnabled = false;
+  var playerMutePlaybackEnabled = false;
+  var playerShowMeasureNumbers = true;
+  var playerLiveListenRunning = false;
+  var playerLiveListenStream = null;
+  var playerLiveListenSource = null;
+  var playerLiveListenAnalyzer = null;
+  var playerLiveListenData = null;
+  var playerLiveListenFrameId = 0;
+  var playerLiveListenSmoothedFreq = 0;
+  var playerLiveListenRawHistory = [];
+  var playerLiveListenNoSignalFrames = 0;
+  var playerLiveListenLastFreq = 0;
+  var playerLiveListenLastCents = 0;
+  var playerLiveListenHasSignal = false;
+  /** Frequência esperada da nota atual (partitura): orienta normalização contra harmônicos espúrios. */
+  var playerLiveListenHintExpectedFreq = 0;
+  var playerLiveCurrentAnchorEl = null;
+  var playerLiveFeedbackEventIndex = -1;
+  var playerLiveFeedbackStatus = '';
+  var playerLiveBarsMap = {};
+  var playerLiveEventMetrics = {};
+  var playerLiveCurrentEventIndex = -1;
+  var playerLiveScoreTotals = {
+    notesTotal: 0,
+    notesPassed: 0,
+    pitchSum: 0,
+    timingSum: 0
+  };
+  /**
+   * Ajuste OSMD para marcas de ensaio («Coro», «Final»): em VexFlow, y maior = mais para baixo.
+   * OSMD usa yOffset = -RehearsalMarkYOffsetDefault - RehearsalMarkYOffset (default -15 → base 15).
+   * Valores POSITIVOS aqui DIMINUEM esse yOffset e sobem o texto, afastando do pentagrama.
+   */
+  var PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET = 24;
+  var playerAutoScrollLastTs = 0;
+  var playerAutoScrollLastSystemTop = null;
+  var playerAutoScrollLastCursorLeftInHost = null;
+  var playerAutoScrollLastCursorTopDoc = null;
+  var playerAutoScrollUserPausedUntil = 0;
+  var playerAutoScrollProgrammaticUntil = 0;
+  var playerAutoScrollNeedsInitial = false;
+  var playerAutoScrollSystemChanges = 0;
+  var playerAutoScrollReachedEnd = false;
+  var playerNoteAnchors = [];
+  var playerSpeedAdjusting = false;
+  var playerSpeedResumeAfterAdjust = false;
+  var playerSpeedFrozenSec = 0;
+  var playerPlayback = {
+    isPlaying: false,
+    startedAtCtx: 0,
+    positionSec: 0,
+    nextEventIndex: 0,
+    nextCursorIndex: 0,
+    nextBeatIndex: 0,
+    liveEventIndex: -1,
+    rafId: null,
+    activeStops: [],
+    /** Evita `cursor.next()` em loop quando o OSMD tem menos passos que `cursorStarts` (voltas na partitura). */
+    lastCursorOsmdResyncTs: 0,
+    lastPlaybackElapsed: null,
+    lastDisplayElapsed: null,
+    /** Passos do cursor OSMD ja aplicados (sincronia por tempo visual da partitura). */
+    osmdSyncedSteps: null,
+    lastPlaybackRepeatSegment: null
+  };
 
-      // ========== METRÔNOMO ==========
-      var metroDom = {
-        modalEl: null,
-        dotsEl: null,
-        visualFlashEl: null,
-        bpmValueEl: null,
-        bpmLabelEl: null,
-        bpmSliderEl: null,
-        accentCheckboxEl: null,
-        beatsValueEl: null,
-        subdivRowEl: null,
-        solfejoWrapEl: null,
-        solfejoBaseImgEl: null,
-        solfejoHandImgEl: null,
-        solfejoModeCheckboxEl: null,
-        solfejoLeftHandCheckboxEl: null,
-        visualPulseTimer: null
-      };
-      window.MetroUiRefs = metroDom;
-
-      let metroAudioCtx = null;
-      let metroSchedulerId = null;
-      let metroNextClickTime = 0;
-      let metroClickIndexInBar = 0;
-      let metroIsRunning = false;
-
-      let metroBpm = 60;
-      let metroBeatsPerBar = 4;
-      let metroSubdivision = 1; // cliques por batida
-      let metroAccentFirst = false;
-      let metroSolfejoMode = false;
-      let metroSolfejoLeftHand = false;
-
-      // Cache das posições (x,y) detectadas nos frames do movimento.
-      // frames: index 0 = preparacao; index 1..N = posicoes.
-      let metroSolfejoFramesCache = {};
-      let metroSolfejoFramesPromises = {};
-      let metroSolfejoCurrentFrame = 0;
-
-      let metroSolfejoHandTipCache = {};
-      let metroSolfejoHandTipPromises = {};
-
-      // Tween (deslize) entre posições do solfejo
-      let metroSolfejoTweenRafId = null;
-      let metroSolfejoTweenFromPos = null;
-      let metroSolfejoTweenToPos = null;
-      let metroSolfejoTweenStartPerf = 0;
-      let metroSolfejoTweenDurationMs = 0;
-      let metroSolfejoTweenFromFrame = 0;
-      let metroSolfejoTweenToFrame = 0;
-      let metroNoiseBuffer = null;
-
-      // ========== AFINADOR ==========
-      var TUNER_NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-      var TUNER_PRESETS = {
-        violino: ['G3', 'D4', 'A4', 'E5'],
-        viola: ['C3', 'G3', 'D4', 'A4'],
-        violoncelo: ['C2', 'G2', 'D3', 'A3'],
-        contrabaixo: ['E1', 'A1', 'D2', 'G2'],
-        flauta: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
-        clarinete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
-        oboe: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
-        fagote: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
-        trompete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
-        trompa: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
-        trombone: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
-        chromatic: []
-      };
-      var tunerStream = null;
-      var tunerAnalyzer = null;
-      var tunerSource = null;
-      var tunerData = null;
-      var tunerFreqData = null;
-      var tunerFrameId = 0;
-      var tunerRunning = false;
-      var tunerHistory = [];
-      var tunerLastCents = 0;
-      var tunerLastStatus = 'idle';
-      var tunerLastNote = '--';
-      var tunerLastTargetFreq = 0;
-      var tunerLastFreq = 0;
-      var tunerSmoothedFreq = 0;
-      var tunerRawHistory = [];
-      var tunerNoSignalFrames = 0;
-      var wakeLockSentinel = null;
-      var wakeLockBootstrapped = false;
-      const STAFF_BOTTOM_LINE_Y = 118;
-      const STAFF_STEP_PX = 6;
-      const STAFF_MIN_DIFF = -5;
-      const STAFF_MAX_DIFF = 11;
-      const CHALLENGE_ROUNDS_LIMIT = 20;
-      const CHALLENGE_ERRORS_LIMIT = 3;
-
-      const HINOS_STORAGE_KEY = 'gem-tools-hinos-v1';
-      const HINOS_TOTAL = 480;
-      const HINOS_VOZES = ['S', 'C', 'T', 'B'];
-      /** Hino/coro conta como “completo” quando tiver ao menos esta quantidade de vozes marcadas. */
-      const HINOS_FULL_VOICES_REQUIRED = 2;
-      const HINARIO_PDF_BY_AFIN = {
-        do: 'Ficha Hinário 5 - Afinação em DÓ.pdf',
-        mib: 'Ficha Hinário 5 - Afinação em MIb.pdf',
-        sib: 'Ficha Hinário 5 - Afinação em SIb.pdf'
-      };
-
-      var hinosState = { version: 1, students: [], activeStudentId: null };
-      var hinosActiveAfinação = 'do';
-      /** Quando o instrumento muda, volta a sugerir a ficha; no mesmo instrumento, mantém a aba que o aluno escolheu. */
-      var hinosLastSyncInstrumentId = null;
-      var hinosCurriculum = null;
-      /** Chave atual no editor: número do hino ("158") ou "coro-5". */
-      var hinosSelectedKey = '1';
-      var hinosFaseBuiltForAfin = null;
-      /** Incrementar ao mudar a estrutura do grid (ex.: células com linha de vozes). */
-      var HINOS_FASE_PANEL_VER = 8;
-
-      function buildFallbackHinosCurriculum() {
-        return window.HinosCurriculumUtils.buildFallbackCurriculum(HINOS_TOTAL);
-      }
-
-      function getHinosPhasesForAfin(afin) {
-        if (!hinosCurriculum) return null;
-        var p = hinosCurriculum[afin];
-        return Array.isArray(p) && p.length ? p : null;
-      }
-
-      function hinosIsCoroKey(key) {
-        return window.HinosCurriculumUtils.isCoroKey(key);
-      }
-
-      function hinosVoiceCountInEntry(ent) {
-        return window.HinosCurriculumUtils.voiceCountInEntry(ent, HINOS_VOZES);
-      }
-
-      function hinosEntryFull(ent) {
-        return window.HinosCurriculumUtils.entryFull(ent, HINOS_VOZES, HINOS_FULL_VOICES_REQUIRED);
-      }
-
-      function hinosGetStudentVozPrincipal(st) {
-        return window.HinosCurriculumUtils.getStudentVozPrincipal(st, HINOS_VOZES);
-      }
-
-      function hinosFormatVoicesShort(ent) {
-        return window.HinosCurriculumUtils.formatVoicesShort(ent, HINOS_VOZES);
-      }
-
-      function countHinosOverview(st, afin) {
-        return window.HinosCurriculumUtils.countOverview(st, afin, HINOS_TOTAL, HINOS_VOZES, HINOS_FULL_VOICES_REQUIRED);
-      }
-
-      function hinosPhaseItemKeys(phase) {
-        return window.HinosCurriculumUtils.phaseItemKeys(phase);
-      }
-
-      function countPhaseProgress(st, afin, phase) {
-        return window.HinosCurriculumUtils.countPhaseProgress(st, afin, phase, HINOS_VOZES);
-      }
-
-      /** Mesma regra de `hinosSynthGrupos` em ensureHinosFasePanels — lista de grupos/itens da fase. */
-      function hinosSynthGruposForPhase(ph) {
-        return window.HinosCurriculumUtils.synthGruposForPhase(ph);
-      }
-
-      /** Marca a voz principal em todos os hinos de um grupo tonal (coros do grupo não entram). */
-      function hinosBulkMarkPrincipalInGroup(phaseIndex, tonalidade) {
-        var st = getActiveHinosStudent();
-        if (!st) {
-          setMessage('Adicione e selecione um aluno primeiro.');
-          return;
-        }
-        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
-        if (!phases || phases[phaseIndex] === undefined) return;
-        var grupos = hinosSynthGruposForPhase(phases[phaseIndex]);
-        var ton = tonalidade || 'Geral';
-        var gr = grupos.find(function (g) {
-          return (g.tonalidade || 'Geral') === ton;
+  /** Ponte para `player-load-bindings.js` (IIFE nao expoe `let`/`const` ao `window`). */
+  window.PlayerLoadBindingAccess = {
+    readPlayerOsmdLoading: function () { return playerOsmdLoading; },
+    setPlayerOsmdLoading: function (v) { playerOsmdLoading = v; },
+    setPlayerOsmd: function (v) { playerOsmd = v; },
+    applyPlayerOsmdDisplayOptions: function (osmd) {
+      if (!osmd || typeof osmd.setOptions !== 'function') return;
+      try {
+        osmd.setOptions({
+          drawMeasureNumbers: !!playerShowMeasureNumbers,
+          drawFingerings: !!playerShowFingering
         });
-        if (!gr) return;
-        var nums = [];
-        (gr.itens || []).forEach(function (it) {
-          if (it.t === 'hino') nums.push(String(it.n));
-        });
-        if (!nums.length) {
-          setMessage('Este grupo não tem hinos (apenas coros ou vazio).');
-          return;
+      } catch (eOsmdOpt) { }
+      try {
+        var er = osmd.EngravingRules || osmd.rules;
+        if (er) {
+          er.RehearsalMarkYOffset = PLAYER_OSMD_REHEARSAL_MARK_Y_OFFSET;
+          /* Com retornela o cursor segue o tempo visual (nossa ordem), nao as voltas do OSMD. */
+          er.CursorIgnoreRepetitions = true;
+
+          // Estica o pentagrama de acordo com o tempo das notas
+          er.VoiceSpacingMultiplierVexflow = 2.0;
+          er.VoiceSpacingMultiplier = 2.0;
+          er.VoiceSpacingAddendVexflow = 6.0;
+          er.VoiceSpacingAddend = 6.0;
+          er.MinNoteDistance = 4.0;
         }
-        var vP = hinosGetStudentVozPrincipal(st);
-        var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
-        if (
-          !window.confirm(
-            'Marcar a voz principal (' +
-              vName +
-              ') em ' +
-              nums.length +
-              ' hino(s) do grupo "' +
-              ton +
-              '"?\n\n' +
-              'Os coros deste grupo não são alterados. Você pode continuar abrindo cada hino para marcar ou desmarcar vozes individualmente.'
-          )
-        ) {
-          return;
-        }
-        ensureStudentHinosShape(st);
-        nums.forEach(function (key) {
-          if (!st.hinos[hinosActiveAfinação][key]) {
-            st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
-          }
-          st.hinos[hinosActiveAfinação][key][vP] = true;
-        });
-        saveHinosState();
-        refreshHinosVoiceButtons();
-        setMessage('Voz principal marcada em ' + nums.length + ' hino(s) em "' + ton + '".');
-      }
-
-      function updateHinosOverviewBars() {
-        var st = getActiveHinosStudent();
-        var lblV = document.getElementById('hinosPctVoicesLbl');
-        var barV = document.getElementById('hinosPctVoicesBar');
-        var lblA = document.getElementById('hinosPctHinosAnyLbl');
-        var barA = document.getElementById('hinosPctHinosAnyBar');
-        var lblF = document.getElementById('hinosPctHinosFullLbl');
-        var barF = document.getElementById('hinosPctHinosFullBar');
-        var lblC = document.getElementById('hinosPctCorosLbl');
-        var barC = document.getElementById('hinosPctCorosBar');
-        if (!st) {
-          if (lblV) lblV.textContent = '—';
-          if (barV) barV.style.width = '0%';
-          if (lblA) lblA.textContent = '—';
-          if (barA) barA.style.width = '0%';
-          if (lblF) lblF.textContent = '—';
-          if (barF) barF.style.width = '0%';
-          if (lblC) lblC.textContent = '—';
-          if (barC) barC.style.width = '0%';
-          var phases0 = getHinosPhasesForAfin(hinosActiveAfinação);
-          if (phases0) {
-            phases0.forEach(function (ph, idx) {
-              var pctEl0 = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
-              if (!pctEl0) return;
-              var slots0 = hinosPhaseItemKeys(ph).length;
-              pctEl0.textContent = '0% · 0/' + slots0;
-              var bar0 = document.getElementById('hinosFasePctBar-' + hinosActiveAfinação + '-' + idx);
-              if (bar0) bar0.style.width = '0%';
-            });
-          }
-          return;
-        }
-        var o = countHinosOverview(st, hinosActiveAfinação);
-        var pa = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
-        var pcorosVp = Math.round((o.corosWithPrimary / 6) * 100);
-        var pf = Math.round((o.hinosFull / HINOS_TOTAL) * 100);
-        var pc = Math.round((o.corosFull / 6) * 100);
-        if (lblV) lblV.textContent = o.hinosWithPrimary + '/' + HINOS_TOTAL + ' · ' + pa + '%';
-        if (barV) barV.style.width = pa + '%';
-        if (lblA) lblA.textContent = o.corosWithPrimary + '/6 · ' + pcorosVp + '%';
-        if (barA) barA.style.width = pcorosVp + '%';
-        if (lblF) lblF.textContent = o.hinosFull + '/' + HINOS_TOTAL + ' · ' + pf + '%';
-        if (barF) barF.style.width = pf + '%';
-        if (lblC) lblC.textContent = o.corosFull + '/6 · ' + pc + '%';
-        if (barC) barC.style.width = pc + '%';
-
-        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
-        if (phases) {
-          phases.forEach(function (ph, idx) {
-            var pctEl = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
-            if (!pctEl) return;
-            var pr = countPhaseProgress(st, hinosActiveAfinação, ph);
-            pctEl.textContent = pr.pct + '% · ' + pr.done + '/' + pr.slots;
-            var bar = document.getElementById('hinosFasePctBar-' + hinosActiveAfinação + '-' + idx);
-            if (bar) bar.style.width = pr.pct + '%';
-          });
-        }
-      }
-
-      function syncHinosDetailControlsFromKey() {
-        var numIn = document.getElementById('hinosHinoNum');
-        var prev = document.getElementById('hinosPrev');
-        var next = document.getElementById('hinosNext');
-        var lbl = document.getElementById('hinosDetailLabel');
-        var ton = '';
-        var qk = hinosIsCoroKey(hinosSelectedKey) ? hinosSelectedKey : String(clampHinoNum(hinosSelectedKey));
-        var cel = document.querySelector('.hinos-cell[data-hinos-key="' + qk + '"]');
-        if (cel) ton = cel.getAttribute('data-hinos-ton') || '';
-        var suf = ton ? ' · ' + ton : '';
-        if (hinosIsCoroKey(hinosSelectedKey)) {
-          if (numIn) {
-            numIn.disabled = true;
-            numIn.value = '';
-          }
-          if (prev) prev.disabled = true;
-          if (next) next.disabled = true;
-          if (lbl) lbl.textContent = 'Coro ' + hinosSelectedKey.replace('coro-', '') + suf;
-        } else {
-          if (numIn) {
-            numIn.disabled = false;
-            numIn.value = String(clampHinoNum(hinosSelectedKey));
-          }
-          if (prev) prev.disabled = false;
-          if (next) next.disabled = false;
-          if (lbl) lbl.textContent = 'Hino ' + clampHinoNum(hinosSelectedKey) + suf;
-        }
-      }
-
-      function setHinosSelectedKey(key) {
-        if (hinosIsCoroKey(key)) {
-          hinosSelectedKey = key;
-        } else {
-          hinosSelectedKey = String(clampHinoNum(key));
-        }
-      }
-
-      function updateHinosFaseGridCellClasses() {
-        var st = getActiveHinosStudent();
-        var book = st && st.hinos && st.hinos[hinosActiveAfinação] ? st.hinos[hinosActiveAfinação] : {};
-        document.querySelectorAll('.hinos-cell').forEach(function (el) {
-          var k = el.getAttribute('data-hinos-key');
-          if (!k) return;
-          var ent = book[k];
-          var vc = hinosVoiceCountInEntry(ent);
-          el.classList.remove('empty', 'partial', 'full');
-          if (vc === 0) el.classList.add('empty');
-          else if (vc >= HINOS_FULL_VOICES_REQUIRED) el.classList.add('full');
-          else el.classList.add('partial');
-          var voEl = el.querySelector('.hinos-cell-voices');
-          if (voEl) voEl.textContent = hinosFormatVoicesShort(ent);
-          var studyEl = el.querySelector('.hinos-cell-study');
-          if (studyEl) {
-            var isStudy = !!(ent && ent.E);
-            studyEl.classList.toggle('on', isStudy);
-            studyEl.textContent = isStudy ? 'E' : '';
-          }
-        });
-      }
-
-      function ensureHinosFasePanels() {
-        var container = document.getElementById('hinosFaseContainer');
-        if (!container) return;
-        var phases = getHinosPhasesForAfin(hinosActiveAfinação);
-        if (!phases) return;
-        var faseBuiltKey = hinosActiveAfinação + ':' + HINOS_FASE_PANEL_VER;
-        if (hinosFaseBuiltForAfin === faseBuiltKey && container.children.length) {
-          return;
-        }
-        container.innerHTML = '';
-        hinosFaseBuiltForAfin = faseBuiltKey;
-
-        function hinosSynthGrupos(ph) {
-          if (ph.grupos && ph.grupos.length) return ph.grupos;
-          var itens = [];
-          (ph.hinos || []).slice().sort(function (a, b) { return a - b; }).forEach(function (n) {
-            itens.push({ t: 'hino', n: n });
-          });
-          (ph.coros || []).forEach(function (c) {
-            itens.push({ t: 'coro', id: c.id, label: c.label });
-          });
-          return [{ tonalidade: 'Geral', itens: itens }];
-        }
-
-        phases.forEach(function (ph, idx) {
-          var det = document.createElement('details');
-          det.className = 'hinos-fase-details du-card border border-base-300 bg-base-100 shadow-sm';
-          det.open = idx === 0;
-          var sum = document.createElement('summary');
-          var sp = document.createElement('span');
-          sp.textContent = ph.titulo || ('Fase ' + (idx + 1));
-          sum.appendChild(sp);
-          var pct = document.createElement('span');
-          pct.className = 'hinos-fase-pct';
-          pct.id = 'hinosFasePct-' + hinosActiveAfinação + '-' + idx;
-          pct.textContent = '0%';
-          sum.appendChild(pct);
-          var sumProg = document.createElement('div');
-          sumProg.className = 'hinos-fase-prog';
-          var sumProgFill = document.createElement('div');
-          sumProgFill.className = 'hinos-fase-prog-fill';
-          sumProgFill.id = 'hinosFasePctBar-' + hinosActiveAfinação + '-' + idx;
-          sumProg.appendChild(sumProgFill);
-          sum.appendChild(sumProg);
-          det.appendChild(sum);
-
-          var toolbar = document.createElement('div');
-          toolbar.className = 'hinos-fase-toolbar';
-
-          var labTon = document.createElement('label');
-          labTon.className = 'hinos-filter-ton-wrap';
-          var spTon = document.createElement('span');
-          spTon.className = 'hinos-filter-label';
-          spTon.textContent = 'Tonalidade';
-          labTon.appendChild(spTon);
-          var selTon = document.createElement('select');
-          selTon.className = 'hinos-filter-ton';
-          var optAll = document.createElement('option');
-          optAll.value = '';
-          optAll.textContent = 'Todas';
-          selTon.appendChild(optAll);
-          var tonSeen = {};
-          hinosSynthGrupos(ph).forEach(function (g) {
-            var t = g.tonalidade || 'Geral';
-            tonSeen[t] = true;
-          });
-          Object.keys(tonSeen).sort(function (a, b) {
-            return a.localeCompare(b, 'pt');
-          }).forEach(function (t) {
-            var o = document.createElement('option');
-            o.value = t;
-            o.textContent = t;
-            selTon.appendChild(o);
-          });
-          labTon.appendChild(selTon);
-
-          var labQ = document.createElement('label');
-          labQ.className = 'hinos-filter-q-wrap';
-          var spQ = document.createElement('span');
-          spQ.className = 'hinos-filter-label';
-          spQ.textContent = 'Buscar nº';
-          labQ.appendChild(spQ);
-          var inpQ = document.createElement('input');
-          inpQ.type = 'search';
-          inpQ.className = 'hinos-filter-q';
-          inpQ.placeholder = 'ex.: 158';
-          inpQ.setAttribute('inputmode', 'numeric');
-          labQ.appendChild(inpQ);
-
-          var btnClr = document.createElement('button');
-          btnClr.type = 'button';
-          btnClr.className = 'hinos-filter-clear du-btn du-btn-outline du-btn-sm du-btn-square';
-          btnClr.setAttribute('aria-label', 'Limpar filtros');
-          btnClr.title = 'Limpar tonalidade e busca';
-          btnClr.innerHTML = '<i data-lucide="circle-x" aria-hidden="true"></i>';
-
-          toolbar.appendChild(labTon);
-          toolbar.appendChild(labQ);
-          toolbar.appendChild(btnClr);
-          det.appendChild(toolbar);
-
-          var body = document.createElement('div');
-          body.className = 'hinos-fase-body';
-
-          var grupos = hinosSynthGrupos(ph);
-          var onlyGeral = grupos.length === 1 && (grupos[0].tonalidade || '').indexOf('Geral') === 0;
-
-          grupos.forEach(function (gr) {
-            var tonName = gr.tonalidade || 'Geral';
-            var wrap = document.createElement('div');
-            wrap.className = 'hinos-grupo';
-            wrap.setAttribute('data-ton-grupo', tonName);
-            if (onlyGeral) wrap.setAttribute('data-only-geral', '1');
-            var head = document.createElement('div');
-            head.className = 'hinos-grupo-head';
-            var gt = document.createElement('div');
-            gt.className = 'hinos-grupo-title';
-            gt.textContent = tonName;
-            head.appendChild(gt);
-            var hinoCountInGr = 0;
-            (gr.itens || []).forEach(function (it) {
-              if (it.t === 'hino') hinoCountInGr++;
-            });
-            if (hinoCountInGr > 0) {
-              var bulkBtn = document.createElement('button');
-              bulkBtn.type = 'button';
-              bulkBtn.className = 'hinos-grupo-bulk du-btn du-btn-outline du-btn-sm du-btn-square';
-              bulkBtn.setAttribute('aria-label', 'Marcar voz principal em todos os hinos deste grupo');
-              bulkBtn.title =
-                'Marca a voz principal do aluno em todos os hinos deste grupo. Coros não são alterados.';
-              bulkBtn.innerHTML = '<i data-lucide="list-checks" aria-hidden="true"></i>';
-              bulkBtn.setAttribute('data-hinos-bulk-phase', String(idx));
-              bulkBtn.setAttribute('data-hinos-bulk-ton', tonName);
-              head.appendChild(bulkBtn);
-            }
-            wrap.appendChild(head);
-            var grid = document.createElement('div');
-            grid.className = 'hinos-fase-grid';
-            (gr.itens || []).forEach(function (item) {
-              if (item.t === 'hino') {
-                var b = document.createElement('button');
-                b.type = 'button';
-                b.className = 'hinos-cell empty';
-                b.setAttribute('data-hinos-key', String(item.n));
-                b.setAttribute('data-hinos-ton', tonName);
-                var sn = document.createElement('span');
-                sn.className = 'hinos-cell-num';
-                sn.textContent = String(item.n);
-                var sv = document.createElement('span');
-                sv.className = 'hinos-cell-voices';
-                b.appendChild(sn);
-                b.appendChild(sv);
-                var se = document.createElement('span');
-                se.className = 'hinos-cell-study';
-                se.setAttribute('aria-hidden', 'true');
-                b.appendChild(se);
-                grid.appendChild(b);
-              } else if (item.t === 'coro') {
-                var b2 = document.createElement('button');
-                b2.type = 'button';
-                b2.className = 'hinos-cell coro empty';
-                b2.setAttribute('data-hinos-key', item.id);
-                b2.setAttribute('data-hinos-ton', tonName);
-                var sn2 = document.createElement('span');
-                sn2.className = 'hinos-cell-num';
-                sn2.textContent = item.label || item.id;
-                var sv2 = document.createElement('span');
-                sv2.className = 'hinos-cell-voices';
-                b2.appendChild(sn2);
-                b2.appendChild(sv2);
-                var se2 = document.createElement('span');
-                se2.className = 'hinos-cell-study';
-                se2.setAttribute('aria-hidden', 'true');
-                b2.appendChild(se2);
-                grid.appendChild(b2);
-              }
-            });
-            wrap.appendChild(grid);
-            body.appendChild(wrap);
-          });
-
-          det.appendChild(body);
-          container.appendChild(det);
-
-          function applyHinosFaseFilters() {
-            var ton = selTon.value || '';
-            var q = (inpQ.value || '').trim().toLowerCase();
-            body.querySelectorAll('.hinos-cell').forEach(function (cell) {
-              var tCell = cell.getAttribute('data-hinos-ton') || '';
-              var key = (cell.getAttribute('data-hinos-key') || '').toLowerCase();
-              // Evita que o indicador E entre na busca (a busca é principalmente por nº/voz).
-              var numEl = cell.querySelector('.hinos-cell-num');
-              var voicesEl = cell.querySelector('.hinos-cell-voices');
-              var lab = ((numEl ? numEl.textContent : '') + ' ' + (voicesEl ? voicesEl.textContent : '')).toLowerCase();
-              var showTon = !ton || tCell === ton;
-              var showQ = !q || key.indexOf(q) !== -1 || lab.indexOf(q) !== -1;
-              cell.style.display = showTon && showQ ? '' : 'none';
-            });
-            body.querySelectorAll('.hinos-grupo').forEach(function (gw) {
-              var anyVis = false;
-              gw.querySelectorAll('.hinos-cell').forEach(function (c) {
-                if (c.style.display !== 'none') anyVis = true;
-              });
-              gw.style.display = anyVis ? '' : 'none';
-            });
-          }
-
-          selTon.addEventListener('change', applyHinosFaseFilters);
-          inpQ.addEventListener('input', applyHinosFaseFilters);
-          btnClr.addEventListener('click', function () {
-            selTon.value = '';
-            inpQ.value = '';
-            applyHinosFaseFilters();
-          });
-        });
-
-        if (typeof window.gemRefreshLucide === 'function') {
-          window.gemRefreshLucide();
-        }
-
-        if (!container._hinosFaseGridClickBound) {
-          container._hinosFaseGridClickBound = true;
-          container.addEventListener('click', function (e) {
-            var bulk = e.target.closest('.hinos-grupo-bulk');
-            if (bulk && container.contains(bulk)) {
-              e.preventDefault();
-              e.stopPropagation();
-              var phIdx = parseInt(bulk.getAttribute('data-hinos-bulk-phase'), 10);
-              var ton = bulk.getAttribute('data-hinos-bulk-ton') || 'Geral';
-              if (!isNaN(phIdx)) hinosBulkMarkPrincipalInGroup(phIdx, ton);
-              return;
-            }
-            var t = e.target.closest('.hinos-cell');
-            if (!t || !container.contains(t)) return;
-            var k = t.getAttribute('data-hinos-key');
-            if (k) {
-              setHinosSelectedKey(k);
-              refreshHinosVoiceButtonsCore();
-              openHinosEditorModal();
-            }
-          });
-        }
-      }
-
-      function closeHinosEditorModal() {
-        var m = document.getElementById('hinosEditorModal');
-        if (m) m.classList.add('hidden');
-      }
-
-      function closeHinosNewStudentModal() {
-        var m = document.getElementById('hinosNewStudentModal');
-        if (m) m.classList.add('hidden');
-      }
-
-      function openHinosNewStudentModal() {
-        var m = document.getElementById('hinosNewStudentModal');
-        if (!m || currentMode !== 'hinos') return;
-        closeHinosEditorModal();
-        var vozSel = document.getElementById('hinosNewStudentVoz');
-        if (vozSel) vozSel.value = 'S';
-        var inp = document.getElementById('hinosNewStudentName');
-        if (inp) inp.value = '';
-        m.classList.remove('hidden');
-        if (inp) inp.focus();
-      }
-
-      function openHinosEditorModal() {
-        var m = document.getElementById('hinosEditorModal');
-        if (!m || currentMode !== 'hinos') return;
-        closeHinosNewStudentModal();
-        m.classList.remove('hidden');
-        var btn = m.querySelector('.hinos-voz-btn');
-        if (btn) btn.focus();
-      }
-
-      function loadHinosCurriculum(done) {
-        if (hinosCurriculum) {
-          done();
-          return;
-        }
-        fetch('./hinario5-curriculum.json')
-          .then(function (r) {
-            if (!r.ok) throw new Error('no json');
-            return r.json();
-          })
-          .then(function (data) {
-            hinosCurriculum = data;
-            done();
-          })
-          .catch(function () {
-            hinosCurriculum = buildFallbackHinosCurriculum();
-            done();
-          });
-      }
-
-      function hinosGenerateId() {
-        return window.HinosCurriculumUtils.generateStudentId();
-      }
-
-      function loadHinosState() {
-        try {
-          var raw = localStorage.getItem(HINOS_STORAGE_KEY);
-          if (!raw) {
-            hinosState = { version: 1, students: [], activeStudentId: null };
-            return;
-          }
-          var parsed = JSON.parse(raw);
-          if (!parsed || !Array.isArray(parsed.students)) {
-            hinosState = { version: 1, students: [], activeStudentId: null };
-            return;
-          }
-          hinosState = {
-            version: parsed.version || 1,
-            students: parsed.students,
-            activeStudentId: parsed.activeStudentId || null
-          };
-          if (hinosState.students && hinosState.students.length) {
-            hinosState.students.forEach(ensureStudentHinosShape);
-            saveHinosState();
-          }
-        } catch (err) {
-          hinosState = { version: 1, students: [], activeStudentId: null };
-        }
-      }
-
-      function saveHinosState() {
-        try {
-          localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
-        } catch (err) {}
-      }
-
-      function parseHinosBackupJson(text) {
-        return window.HinosCurriculumUtils.parseBackupJson(text);
-      }
-
-      function cloneStudentForHinos(st) {
-        return window.HinosCurriculumUtils.cloneStudent(st, HINOS_VOZES);
-      }
-
-      function exportHinosBackup() {
-        var payload = {
-          version: hinosState.version || 1,
-          students: hinosState.students,
-          activeStudentId: hinosState.activeStudentId,
-          exportedAt: new Date().toISOString(),
-          app: 'gem-tools-hinos'
-        };
-        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        var d = new Date();
-        var pad = function (n) {
-          return n < 10 ? '0' + n : '' + n;
-        };
-        a.download = 'gem-tools-hinos-backup-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        setMessage('Backup exportado. Transfira o arquivo para o outro aparelho e use Importar backup.');
-      }
-
-      function applyHinosBackupImport(parsed, mode) {
-        var studentsIn = parsed.students.map(cloneStudentForHinos).filter(function (s) {
-          return s !== null;
-        });
-        if (mode === 'replace') {
-          hinosState = {
-            version: parsed.version || 1,
-            students: studentsIn,
-            activeStudentId: parsed.activeStudentId || null
-          };
-        } else {
-          studentsIn.forEach(function (incoming) {
-            var idx = hinosState.students.findIndex(function (s) {
-              return s.id === incoming.id;
-            });
-            if (idx >= 0) hinosState.students[idx] = incoming;
-            else hinosState.students.push(incoming);
-          });
-          if (
-            !hinosState.activeStudentId ||
-            !hinosState.students.some(function (s) {
-              return s.id === hinosState.activeStudentId;
-            })
-          ) {
-            var aid = parsed.activeStudentId;
-            hinosState.activeStudentId =
-              aid && hinosState.students.some(function (s) {
-                return s.id === aid;
-              })
-                ? aid
-                : hinosState.students.length
-                  ? hinosState.students[0].id
-                  : null;
-          }
-        }
-        if (
-          hinosState.activeStudentId &&
-          !hinosState.students.some(function (s) {
-            return s.id === hinosState.activeStudentId;
-          })
-        ) {
-          hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
-        }
-        saveHinosState();
-        renderHinosStudentSelect();
-        syncHinosActiveStudentVozUI();
-        refreshHinosVoiceButtons();
-      }
-
-      function ensureStudentHinosShape(st) {
-        window.HinosCurriculumUtils.ensureStudentShape(st, HINOS_VOZES);
-      }
-
-      function getActiveHinosStudent() {
-        if (!hinosState.activeStudentId) return null;
-        return hinosState.students.find(function (s) { return s.id === hinosState.activeStudentId; }) || null;
-      }
-
-      /** Afinação sugerida da ficha conforme instrumento (aluno pode trocar a aba). */
-      function getDefaultHinarioAfinação(inst) {
-        return window.HinosCurriculumUtils.defaultAfinaçãoForInstrument(inst);
-      }
-
-      function setHinosAfinaçãoTab(afin) {
-        if (afin !== 'do' && afin !== 'mib' && afin !== 'sib') afin = 'do';
-        hinosActiveAfinação = afin;
-        document.querySelectorAll('.hinos-afin-btn').forEach(function (btn) {
-          var id = btn.getAttribute('data-hinos-afin');
-          btn.classList.toggle('active', id === afin);
-          btn.setAttribute('aria-selected', id === afin ? 'true' : 'false');
-        });
-      }
-
-      function syncHinosAfinaçãoFromInstrument(inst) {
-        setHinosAfinaçãoTab(getDefaultHinarioAfinação(inst || currentInstrument));
-      }
-
-      function clampHinoNum(n) {
-        return window.HinosCurriculumUtils.clampHinoNumber(n, HINOS_TOTAL);
-      }
-
-      function syncHinosActiveStudentVozUI() {
-        var edit = document.getElementById('hinosActiveStudentVoz');
-        if (!edit) return;
-        var st = getActiveHinosStudent();
-        if (!st) {
-          edit.disabled = true;
-          edit.value = 'S';
-          return;
-        }
-        edit.disabled = false;
-        edit.value = hinosGetStudentVozPrincipal(st);
-      }
-
-      function renderHinosStudentSelect() {
-        var sel = document.getElementById('hinosStudentSelect');
-        if (!sel) return;
-        var prev = hinosState.activeStudentId;
-        sel.innerHTML = '';
-        hinosState.students.forEach(function (st) {
-          ensureStudentHinosShape(st);
-          var opt = document.createElement('option');
-          opt.value = st.id;
-          opt.textContent = st.name || 'Aluno';
-          sel.appendChild(opt);
-        });
-        if (!hinosState.students.length) {
-          hinosState.activeStudentId = null;
-          saveHinosState();
-          syncHinosActiveStudentVozUI();
-          return;
-        }
-        if (prev && hinosState.students.some(function (s) { return s.id === prev; })) {
-          sel.value = prev;
-        } else {
-          hinosState.activeStudentId = hinosState.students[0].id;
-          sel.value = hinosState.activeStudentId;
-          saveHinosState();
-        }
-        syncHinosActiveStudentVozUI();
-      }
-
-      function refreshHinosVoiceButtonsCore() {
-        var st = getActiveHinosStudent();
-        if (!hinosIsCoroKey(hinosSelectedKey)) {
-          hinosSelectedKey = String(clampHinoNum(hinosSelectedKey));
-        }
-        syncHinosDetailControlsFromKey();
-        var key = hinosSelectedKey;
-        document.querySelectorAll('.hinos-voz-btn').forEach(function (btn) {
-          var v = btn.getAttribute('data-hinos-voice');
-          var on = false;
-          if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
-            on = !!st.hinos[hinosActiveAfinação][key][v];
-          }
-          btn.classList.toggle('on', on);
-        });
-        document.querySelectorAll('.hinos-study-btn').forEach(function (btn) {
-          var flag = btn.getAttribute('data-hinos-study');
-          var on = false;
-          if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
-            on = !!st.hinos[hinosActiveAfinação][key][flag];
-          }
-          btn.classList.toggle('on', on);
-        });
-        var sumEl = document.getElementById('hinosSummary');
-        if (sumEl) {
-          if (!st) {
-            sumEl.textContent = 'Adicione um aluno para começar a marcar os hinos.';
-          } else {
-            var book = st.hinos[hinosActiveAfinação] || {};
-            var withAny = 0;
-            var voices = 0;
-            Object.keys(book).forEach(function (hk) {
-              var ent = book[hk];
-              var any = false;
-              HINOS_VOZES.forEach(function (vv) {
-                if (ent && ent[vv]) {
-                  any = true;
-                  voices++;
-                }
-              });
-              if (any) withAny++;
-            });
-            var afinLbl = hinosActiveAfinação === 'do' ? 'Dó' : hinosActiveAfinação === 'mib' ? 'Mib' : 'Sib';
-            var vP = hinosGetStudentVozPrincipal(st);
-            var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
-            sumEl.textContent = 'Nesta ficha (' + afinLbl + '), voz principal: ' + vName + ' — ' + withAny + ' itens com ao menos uma voz · ' + voices + ' marcações no total.';
-          }
-        }
-        updateHinosOverviewBars();
-        updateHinosFaseGridCellClasses();
-        document.querySelectorAll('.hinos-cell').forEach(function (el) {
-          el.classList.toggle('current', el.getAttribute('data-hinos-key') === hinosSelectedKey);
-        });
-      }
-
-      function refreshHinosVoiceButtons() {
-        loadHinosCurriculum(function () {
-          ensureHinosFasePanels();
-          refreshHinosVoiceButtonsCore();
-        });
-      }
-
-      function toggleHinosVoice(voice) {
-        var st = getActiveHinosStudent();
-        if (!st) {
-          setMessage('Adicione e selecione um aluno primeiro.');
-          return false;
-        }
-        ensureStudentHinosShape(st);
-        var key = hinosSelectedKey;
-        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
-        if (!st.hinos[hinosActiveAfinação][key]) {
-          st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false };
-        }
-        var cur = !!st.hinos[hinosActiveAfinação][key][voice];
-        st.hinos[hinosActiveAfinação][key][voice] = !cur;
-        saveHinosState();
-        refreshHinosVoiceButtons();
+      } catch (eR) { }
+    },
+    setPlayerScoreData: function (v) {
+      playerScoreData = v;
+      if (v) playerPlaybackRate = 1;
+      syncPlayerSpeedUi();
+    },
+    setPlayerNoteAnchors: function (v) { playerNoteAnchors = v; },
+    isPlayerMode: function () { return currentMode === 'player'; },
+    setMessage: function (t) { setMessage(t); },
+    updatePlayerUiNow: function (s) { updatePlayerUiNow(s); },
+    stopPlayerPlayback: function (x) { stopPlayerPlayback(x); },
+    resetPlayerCursorToCurrentPosition: function () { resetPlayerCursorToCurrentPosition(); },
+    resizePlayerOsmdIfActive: function () { resizePlayerOsmdIfActive(); },
+    buildPlayerNoteAnchorsFromDom: function () { buildPlayerNoteAnchorsFromDom(); },
+    getPlayerPlayback: function () { return playerPlayback; },
+    getAppVersion: function () { return APP_VERSION; },
+    buildPlayerDisplayMusicXml: function (xml) { return buildPlayerDisplayMusicXml(xml); },
+    trySkipScore: function (scoreKey, forceReload) {
+      if (!forceReload && playerOsmd && playerCurrentScorePath === scoreKey) {
+        resizePlayerOsmdIfActive();
         return true;
       }
+      return false;
+    },
+    clearPreviousOsmd: function () {
+      if (playerOsmd) {
+        try { if (typeof playerOsmd.clear === 'function') playerOsmd.clear(); } catch (ePrev) { }
+        playerOsmd = null;
+      }
+    },
+    beginLoadState: function (host, scoreKey) {
+      playerOsmdLoading = true;
+      host.innerHTML = '';
+      playerScoreData = null;
+      stopPlayerPlayback(false);
+      playerCurrentScorePath = scoreKey;
+      setMessage('Carregando MusicXML…');
+      syncPlayerSpeedUi();
+    },
+    onOsmdConstructorFailed: function () {
+      playerOsmdLoading = false;
+      setMessage('Player: erro ao criar o visualizador.');
+    },
+    getHost: function () { return document.getElementById('playerOsmdContainer'); }
+  };
 
-      function toggleHinosStudyFlag(flag) {
-        var st = getActiveHinosStudent();
-        if (!st) {
-          setMessage('Adicione e selecione um aluno primeiro.');
-          return;
+  // ========== METRÔNOMO ==========
+  var metroDom = {
+    modalEl: null,
+    dotsEl: null,
+    visualFlashEl: null,
+    bpmValueEl: null,
+    bpmLabelEl: null,
+    bpmSliderEl: null,
+    accentCheckboxEl: null,
+    beatsValueEl: null,
+    subdivRowEl: null,
+    solfejoWrapEl: null,
+    solfejoBaseImgEl: null,
+    solfejoHandImgEl: null,
+    solfejoModeCheckboxEl: null,
+    solfejoLeftHandCheckboxEl: null,
+    visualPulseTimer: null
+  };
+  window.MetroUiRefs = metroDom;
+
+  let metroAudioCtx = null;
+  let metroSchedulerId = null;
+  let metroNextClickTime = 0;
+  let metroClickIndexInBar = 0;
+  let metroIsRunning = false;
+
+  let metroBpm = 60;
+  let metroBeatsPerBar = 4;
+  let metroSubdivision = 1; // cliques por batida
+  let metroAccentFirst = false;
+  let metroSolfejoMode = false;
+  let metroSolfejoLeftHand = false;
+
+  // Cache das posições (x,y) detectadas nos frames do movimento.
+  // frames: index 0 = preparacao; index 1..N = posicoes.
+  let metroSolfejoFramesCache = {};
+  let metroSolfejoFramesPromises = {};
+  let metroSolfejoCurrentFrame = 0;
+
+  let metroSolfejoHandTipCache = {};
+  let metroSolfejoHandTipPromises = {};
+
+  // Tween (deslize) entre posições do solfejo
+  let metroSolfejoTweenRafId = null;
+  let metroSolfejoTweenFromPos = null;
+  let metroSolfejoTweenToPos = null;
+  let metroSolfejoTweenStartPerf = 0;
+  let metroSolfejoTweenDurationMs = 0;
+  let metroSolfejoTweenFromFrame = 0;
+  let metroSolfejoTweenToFrame = 0;
+  let metroNoiseBuffer = null;
+
+  // ========== AFINADOR ==========
+  var TUNER_NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  var TUNER_PRESETS = {
+    violino: ['G3', 'D4', 'A4', 'E5'],
+    viola: ['C3', 'G3', 'D4', 'A4'],
+    violoncelo: ['C2', 'G2', 'D3', 'A3'],
+    contrabaixo: ['E1', 'A1', 'D2', 'G2'],
+    flauta: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    clarinete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    oboe: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    fagote: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
+    trompete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    trompa: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    trombone: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
+    chromatic: []
+  };
+  var tunerStream = null;
+  var tunerAnalyzer = null;
+  var tunerSource = null;
+  var tunerData = null;
+  var tunerFreqData = null;
+  var tunerFrameId = 0;
+  var tunerRunning = false;
+  var tunerHistory = [];
+  var tunerLastCents = 0;
+  var tunerLastStatus = 'idle';
+  var tunerLastNote = '--';
+  var tunerLastTargetFreq = 0;
+  var tunerLastFreq = 0;
+  var tunerSmoothedFreq = 0;
+  var tunerRawHistory = [];
+  var tunerNoSignalFrames = 0;
+  var wakeLockSentinel = null;
+  var wakeLockBootstrapped = false;
+  const STAFF_BOTTOM_LINE_Y = 118;
+  const STAFF_STEP_PX = 6;
+  const STAFF_MIN_DIFF = -5;
+  const STAFF_MAX_DIFF = 11;
+  const CHALLENGE_ROUNDS_LIMIT = 20;
+  const CHALLENGE_ERRORS_LIMIT = 3;
+
+  const HINOS_STORAGE_KEY = 'gem-tools-hinos-v1';
+  const HINOS_TOTAL = 480;
+  const HINOS_VOZES = ['S', 'C', 'T', 'B'];
+  /** Hino/coro conta como “completo” quando tiver ao menos esta quantidade de vozes marcadas. */
+  const HINOS_FULL_VOICES_REQUIRED = 2;
+  const HINARIO_PDF_BY_AFIN = {
+    do: 'Ficha Hinário 5 - Afinação em DÓ.pdf',
+    mib: 'Ficha Hinário 5 - Afinação em MIb.pdf',
+    sib: 'Ficha Hinário 5 - Afinação em SIb.pdf'
+  };
+
+  var hinosState = { version: 1, students: [], activeStudentId: null };
+  var hinosActiveAfinação = 'do';
+  /** Quando o instrumento muda, volta a sugerir a ficha; no mesmo instrumento, mantém a aba que o aluno escolheu. */
+  var hinosLastSyncInstrumentId = null;
+  var hinosCurriculum = null;
+  /** Chave atual no editor: número do hino ("158") ou "coro-5". */
+  var hinosSelectedKey = '1';
+  var hinosFaseBuiltForAfin = null;
+  /** Incrementar ao mudar a estrutura do grid (ex.: células com linha de vozes). */
+  var HINOS_FASE_PANEL_VER = 8;
+
+  function buildFallbackHinosCurriculum() {
+    return window.HinosCurriculumUtils.buildFallbackCurriculum(HINOS_TOTAL);
+  }
+
+  function getHinosPhasesForAfin(afin) {
+    if (!hinosCurriculum) return null;
+    var p = hinosCurriculum[afin];
+    return Array.isArray(p) && p.length ? p : null;
+  }
+
+  function hinosIsCoroKey(key) {
+    return window.HinosCurriculumUtils.isCoroKey(key);
+  }
+
+  function hinosVoiceCountInEntry(ent) {
+    return window.HinosCurriculumUtils.voiceCountInEntry(ent, HINOS_VOZES);
+  }
+
+  function hinosEntryFull(ent) {
+    return window.HinosCurriculumUtils.entryFull(ent, HINOS_VOZES, HINOS_FULL_VOICES_REQUIRED);
+  }
+
+  function hinosGetStudentVozPrincipal(st) {
+    return window.HinosCurriculumUtils.getStudentVozPrincipal(st, HINOS_VOZES);
+  }
+
+  function hinosFormatVoicesShort(ent) {
+    return window.HinosCurriculumUtils.formatVoicesShort(ent, HINOS_VOZES);
+  }
+
+  function countHinosOverview(st, afin) {
+    return window.HinosCurriculumUtils.countOverview(st, afin, HINOS_TOTAL, HINOS_VOZES, HINOS_FULL_VOICES_REQUIRED);
+  }
+
+  function hinosPhaseItemKeys(phase) {
+    return window.HinosCurriculumUtils.phaseItemKeys(phase);
+  }
+
+  function countPhaseProgress(st, afin, phase) {
+    return window.HinosCurriculumUtils.countPhaseProgress(st, afin, phase, HINOS_VOZES);
+  }
+
+  /** Mesma regra de `hinosSynthGrupos` em ensureHinosFasePanels — lista de grupos/itens da fase. */
+  function hinosSynthGruposForPhase(ph) {
+    return window.HinosCurriculumUtils.synthGruposForPhase(ph);
+  }
+
+  /** Marca a voz principal em todos os hinos de um grupo tonal (coros do grupo não entram). */
+  function hinosBulkMarkPrincipalInGroup(phaseIndex, tonalidade) {
+    var st = getActiveHinosStudent();
+    if (!st) {
+      setMessage('Adicione e selecione um aluno primeiro.');
+      return;
+    }
+    var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+    if (!phases || phases[phaseIndex] === undefined) return;
+    var grupos = hinosSynthGruposForPhase(phases[phaseIndex]);
+    var ton = tonalidade || 'Geral';
+    var gr = grupos.find(function (g) {
+      return (g.tonalidade || 'Geral') === ton;
+    });
+    if (!gr) return;
+    var nums = [];
+    (gr.itens || []).forEach(function (it) {
+      if (it.t === 'hino') nums.push(String(it.n));
+    });
+    if (!nums.length) {
+      setMessage('Este grupo não tem hinos (apenas coros ou vazio).');
+      return;
+    }
+    var vP = hinosGetStudentVozPrincipal(st);
+    var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
+    if (
+      !window.confirm(
+        'Marcar a voz principal (' +
+        vName +
+        ') em ' +
+        nums.length +
+        ' hino(s) do grupo "' +
+        ton +
+        '"?\n\n' +
+        'Os coros deste grupo não são alterados. Você pode continuar abrindo cada hino para marcar ou desmarcar vozes individualmente.'
+      )
+    ) {
+      return;
+    }
+    ensureStudentHinosShape(st);
+    nums.forEach(function (key) {
+      if (!st.hinos[hinosActiveAfinação][key]) {
+        st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
+      }
+      st.hinos[hinosActiveAfinação][key][vP] = true;
+    });
+    saveHinosState();
+    refreshHinosVoiceButtons();
+    setMessage('Voz principal marcada em ' + nums.length + ' hino(s) em "' + ton + '".');
+  }
+
+  function updateHinosOverviewBars() {
+    var st = getActiveHinosStudent();
+    var lblV = document.getElementById('hinosPctVoicesLbl');
+    var barV = document.getElementById('hinosPctVoicesBar');
+    var lblA = document.getElementById('hinosPctHinosAnyLbl');
+    var barA = document.getElementById('hinosPctHinosAnyBar');
+    var lblF = document.getElementById('hinosPctHinosFullLbl');
+    var barF = document.getElementById('hinosPctHinosFullBar');
+    var lblC = document.getElementById('hinosPctCorosLbl');
+    var barC = document.getElementById('hinosPctCorosBar');
+    if (!st) {
+      if (lblV) lblV.textContent = '—';
+      if (barV) barV.style.width = '0%';
+      if (lblA) lblA.textContent = '—';
+      if (barA) barA.style.width = '0%';
+      if (lblF) lblF.textContent = '—';
+      if (barF) barF.style.width = '0%';
+      if (lblC) lblC.textContent = '—';
+      if (barC) barC.style.width = '0%';
+      var phases0 = getHinosPhasesForAfin(hinosActiveAfinação);
+      if (phases0) {
+        phases0.forEach(function (ph, idx) {
+          var pctEl0 = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
+          if (!pctEl0) return;
+          var slots0 = hinosPhaseItemKeys(ph).length;
+          pctEl0.textContent = '0% · 0/' + slots0;
+          var bar0 = document.getElementById('hinosFasePctBar-' + hinosActiveAfinação + '-' + idx);
+          if (bar0) bar0.style.width = '0%';
+        });
+      }
+      return;
+    }
+    var o = countHinosOverview(st, hinosActiveAfinação);
+    var pa = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
+    var pcorosVp = Math.round((o.corosWithPrimary / 6) * 100);
+    var pf = Math.round((o.hinosFull / HINOS_TOTAL) * 100);
+    var pc = Math.round((o.corosFull / 6) * 100);
+    if (lblV) lblV.textContent = o.hinosWithPrimary + '/' + HINOS_TOTAL + ' · ' + pa + '%';
+    if (barV) barV.style.width = pa + '%';
+    if (lblA) lblA.textContent = o.corosWithPrimary + '/6 · ' + pcorosVp + '%';
+    if (barA) barA.style.width = pcorosVp + '%';
+    if (lblF) lblF.textContent = o.hinosFull + '/' + HINOS_TOTAL + ' · ' + pf + '%';
+    if (barF) barF.style.width = pf + '%';
+    if (lblC) lblC.textContent = o.corosFull + '/6 · ' + pc + '%';
+    if (barC) barC.style.width = pc + '%';
+
+    var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+    if (phases) {
+      phases.forEach(function (ph, idx) {
+        var pctEl = document.getElementById('hinosFasePct-' + hinosActiveAfinação + '-' + idx);
+        if (!pctEl) return;
+        var pr = countPhaseProgress(st, hinosActiveAfinação, ph);
+        pctEl.textContent = pr.pct + '% · ' + pr.done + '/' + pr.slots;
+        var bar = document.getElementById('hinosFasePctBar-' + hinosActiveAfinação + '-' + idx);
+        if (bar) bar.style.width = pr.pct + '%';
+      });
+    }
+  }
+
+  function syncHinosDetailControlsFromKey() {
+    var numIn = document.getElementById('hinosHinoNum');
+    var prev = document.getElementById('hinosPrev');
+    var next = document.getElementById('hinosNext');
+    var lbl = document.getElementById('hinosDetailLabel');
+    var ton = '';
+    var qk = hinosIsCoroKey(hinosSelectedKey) ? hinosSelectedKey : String(clampHinoNum(hinosSelectedKey));
+    var cel = document.querySelector('.hinos-cell[data-hinos-key="' + qk + '"]');
+    if (cel) ton = cel.getAttribute('data-hinos-ton') || '';
+    var suf = ton ? ' · ' + ton : '';
+    if (hinosIsCoroKey(hinosSelectedKey)) {
+      if (numIn) {
+        numIn.disabled = true;
+        numIn.value = '';
+      }
+      if (prev) prev.disabled = true;
+      if (next) next.disabled = true;
+      if (lbl) lbl.textContent = 'Coro ' + hinosSelectedKey.replace('coro-', '') + suf;
+    } else {
+      if (numIn) {
+        numIn.disabled = false;
+        numIn.value = String(clampHinoNum(hinosSelectedKey));
+      }
+      if (prev) prev.disabled = false;
+      if (next) next.disabled = false;
+      if (lbl) lbl.textContent = 'Hino ' + clampHinoNum(hinosSelectedKey) + suf;
+    }
+  }
+
+  function setHinosSelectedKey(key) {
+    if (hinosIsCoroKey(key)) {
+      hinosSelectedKey = key;
+    } else {
+      hinosSelectedKey = String(clampHinoNum(key));
+    }
+  }
+
+  function updateHinosFaseGridCellClasses() {
+    var st = getActiveHinosStudent();
+    var book = st && st.hinos && st.hinos[hinosActiveAfinação] ? st.hinos[hinosActiveAfinação] : {};
+    document.querySelectorAll('.hinos-cell').forEach(function (el) {
+      var k = el.getAttribute('data-hinos-key');
+      if (!k) return;
+      var ent = book[k];
+      var vc = hinosVoiceCountInEntry(ent);
+      el.classList.remove('empty', 'partial', 'full');
+      if (vc === 0) el.classList.add('empty');
+      else if (vc >= HINOS_FULL_VOICES_REQUIRED) el.classList.add('full');
+      else el.classList.add('partial');
+      var voEl = el.querySelector('.hinos-cell-voices');
+      if (voEl) voEl.textContent = hinosFormatVoicesShort(ent);
+      var studyEl = el.querySelector('.hinos-cell-study');
+      if (studyEl) {
+        var isStudy = !!(ent && ent.E);
+        studyEl.classList.toggle('on', isStudy);
+        studyEl.textContent = isStudy ? 'E' : '';
+      }
+    });
+  }
+
+  function ensureHinosFasePanels() {
+    var container = document.getElementById('hinosFaseContainer');
+    if (!container) return;
+    var phases = getHinosPhasesForAfin(hinosActiveAfinação);
+    if (!phases) return;
+    var faseBuiltKey = hinosActiveAfinação + ':' + HINOS_FASE_PANEL_VER;
+    if (hinosFaseBuiltForAfin === faseBuiltKey && container.children.length) {
+      return;
+    }
+    container.innerHTML = '';
+    hinosFaseBuiltForAfin = faseBuiltKey;
+
+    function hinosSynthGrupos(ph) {
+      if (ph.grupos && ph.grupos.length) return ph.grupos;
+      var itens = [];
+      (ph.hinos || []).slice().sort(function (a, b) { return a - b; }).forEach(function (n) {
+        itens.push({ t: 'hino', n: n });
+      });
+      (ph.coros || []).forEach(function (c) {
+        itens.push({ t: 'coro', id: c.id, label: c.label });
+      });
+      return [{ tonalidade: 'Geral', itens: itens }];
+    }
+
+    phases.forEach(function (ph, idx) {
+      var det = document.createElement('details');
+      det.className = 'hinos-fase-details du-card border border-base-300 bg-base-100 shadow-sm';
+      det.open = idx === 0;
+      var sum = document.createElement('summary');
+      var sp = document.createElement('span');
+      sp.textContent = ph.titulo || ('Fase ' + (idx + 1));
+      sum.appendChild(sp);
+      var pct = document.createElement('span');
+      pct.className = 'hinos-fase-pct';
+      pct.id = 'hinosFasePct-' + hinosActiveAfinação + '-' + idx;
+      pct.textContent = '0%';
+      sum.appendChild(pct);
+      var sumProg = document.createElement('div');
+      sumProg.className = 'hinos-fase-prog';
+      var sumProgFill = document.createElement('div');
+      sumProgFill.className = 'hinos-fase-prog-fill';
+      sumProgFill.id = 'hinosFasePctBar-' + hinosActiveAfinação + '-' + idx;
+      sumProg.appendChild(sumProgFill);
+      sum.appendChild(sumProg);
+      det.appendChild(sum);
+
+      var toolbar = document.createElement('div');
+      toolbar.className = 'hinos-fase-toolbar';
+
+      var labTon = document.createElement('label');
+      labTon.className = 'hinos-filter-ton-wrap';
+      var spTon = document.createElement('span');
+      spTon.className = 'hinos-filter-label';
+      spTon.textContent = 'Tonalidade';
+      labTon.appendChild(spTon);
+      var selTon = document.createElement('select');
+      selTon.className = 'hinos-filter-ton';
+      var optAll = document.createElement('option');
+      optAll.value = '';
+      optAll.textContent = 'Todas';
+      selTon.appendChild(optAll);
+      var tonSeen = {};
+      hinosSynthGrupos(ph).forEach(function (g) {
+        var t = g.tonalidade || 'Geral';
+        tonSeen[t] = true;
+      });
+      Object.keys(tonSeen).sort(function (a, b) {
+        return a.localeCompare(b, 'pt');
+      }).forEach(function (t) {
+        var o = document.createElement('option');
+        o.value = t;
+        o.textContent = t;
+        selTon.appendChild(o);
+      });
+      labTon.appendChild(selTon);
+
+      var labQ = document.createElement('label');
+      labQ.className = 'hinos-filter-q-wrap';
+      var spQ = document.createElement('span');
+      spQ.className = 'hinos-filter-label';
+      spQ.textContent = 'Buscar nº';
+      labQ.appendChild(spQ);
+      var inpQ = document.createElement('input');
+      inpQ.type = 'search';
+      inpQ.className = 'hinos-filter-q';
+      inpQ.placeholder = 'ex.: 158';
+      inpQ.setAttribute('inputmode', 'numeric');
+      labQ.appendChild(inpQ);
+
+      var btnClr = document.createElement('button');
+      btnClr.type = 'button';
+      btnClr.className = 'hinos-filter-clear du-btn du-btn-outline du-btn-sm du-btn-square';
+      btnClr.setAttribute('aria-label', 'Limpar filtros');
+      btnClr.title = 'Limpar tonalidade e busca';
+      btnClr.innerHTML = '<i data-lucide="circle-x" aria-hidden="true"></i>';
+
+      toolbar.appendChild(labTon);
+      toolbar.appendChild(labQ);
+      toolbar.appendChild(btnClr);
+      det.appendChild(toolbar);
+
+      var body = document.createElement('div');
+      body.className = 'hinos-fase-body';
+
+      var grupos = hinosSynthGrupos(ph);
+      var onlyGeral = grupos.length === 1 && (grupos[0].tonalidade || '').indexOf('Geral') === 0;
+
+      grupos.forEach(function (gr) {
+        var tonName = gr.tonalidade || 'Geral';
+        var wrap = document.createElement('div');
+        wrap.className = 'hinos-grupo';
+        wrap.setAttribute('data-ton-grupo', tonName);
+        if (onlyGeral) wrap.setAttribute('data-only-geral', '1');
+        var head = document.createElement('div');
+        head.className = 'hinos-grupo-head';
+        var gt = document.createElement('div');
+        gt.className = 'hinos-grupo-title';
+        gt.textContent = tonName;
+        head.appendChild(gt);
+        var hinoCountInGr = 0;
+        (gr.itens || []).forEach(function (it) {
+          if (it.t === 'hino') hinoCountInGr++;
+        });
+        if (hinoCountInGr > 0) {
+          var bulkBtn = document.createElement('button');
+          bulkBtn.type = 'button';
+          bulkBtn.className = 'hinos-grupo-bulk du-btn du-btn-outline du-btn-sm du-btn-square';
+          bulkBtn.setAttribute('aria-label', 'Marcar voz principal em todos os hinos deste grupo');
+          bulkBtn.title =
+            'Marca a voz principal do aluno em todos os hinos deste grupo. Coros não são alterados.';
+          bulkBtn.innerHTML = '<i data-lucide="list-checks" aria-hidden="true"></i>';
+          bulkBtn.setAttribute('data-hinos-bulk-phase', String(idx));
+          bulkBtn.setAttribute('data-hinos-bulk-ton', tonName);
+          head.appendChild(bulkBtn);
         }
-        ensureStudentHinosShape(st);
-        var key = hinosSelectedKey;
-        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
-        if (!st.hinos[hinosActiveAfinação][key]) {
-          st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
-        }
-        var cur = !!st.hinos[hinosActiveAfinação][key][flag];
-        st.hinos[hinosActiveAfinação][key][flag] = !cur;
-        saveHinosState();
-        refreshHinosVoiceButtons();
-      }
-
-      function clearCurrentHinoVoices() {
-        var st = getActiveHinosStudent();
-        if (!st) return;
-        ensureStudentHinosShape(st);
-        var key = hinosSelectedKey;
-        if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
-        delete st.hinos[hinosActiveAfinação][key];
-        saveHinosState();
-        refreshHinosVoiceButtons();
-      }
-
-      function bindHinosEvents() {
-        window.HinosEvents.bindHinosEvents();
-      }
-
-      function initHinosUI() {
-        loadHinosState();
-        renderHinosStudentSelect();
-        syncHinosAfinaçãoFromInstrument(currentInstrument);
-        hinosLastSyncInstrumentId = currentInstrument.id;
-        refreshHinosVoiceButtons();
-      }
-
-      /** Ponte para `hinos-events.js` (handlers permanecem no escopo do app). */
-      window.HinosBindingAccess = {
-        onStudentSelectChange: function (id) {
-          hinosState.activeStudentId = id;
-          saveHinosState();
-          syncHinosActiveStudentVozUI();
-          refreshHinosVoiceButtons();
-        },
-        onActiveStudentVozChange: function (value) {
-          var st = getActiveHinosStudent();
-          if (!st) return;
-          var v = value;
-          if (HINOS_VOZES.indexOf(v) === -1) return;
-          st.vozPrincipal = v;
-          saveHinosState();
-          refreshHinosVoiceButtons();
-        },
-        tryAddStudentFromModal: function () {
-          var inp = document.getElementById('hinosNewStudentName');
-          var vozSel = document.getElementById('hinosNewStudentVoz');
-          var name = inp && inp.value ? inp.value.trim() : '';
-          if (!name) {
-            setMessage('Digite o nome do aluno.');
-            return;
+        wrap.appendChild(head);
+        var grid = document.createElement('div');
+        grid.className = 'hinos-fase-grid';
+        (gr.itens || []).forEach(function (item) {
+          if (item.t === 'hino') {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'hinos-cell empty';
+            b.setAttribute('data-hinos-key', String(item.n));
+            b.setAttribute('data-hinos-ton', tonName);
+            var sn = document.createElement('span');
+            sn.className = 'hinos-cell-num';
+            sn.textContent = String(item.n);
+            var sv = document.createElement('span');
+            sv.className = 'hinos-cell-voices';
+            b.appendChild(sn);
+            b.appendChild(sv);
+            var se = document.createElement('span');
+            se.className = 'hinos-cell-study';
+            se.setAttribute('aria-hidden', 'true');
+            b.appendChild(se);
+            grid.appendChild(b);
+          } else if (item.t === 'coro') {
+            var b2 = document.createElement('button');
+            b2.type = 'button';
+            b2.className = 'hinos-cell coro empty';
+            b2.setAttribute('data-hinos-key', item.id);
+            b2.setAttribute('data-hinos-ton', tonName);
+            var sn2 = document.createElement('span');
+            sn2.className = 'hinos-cell-num';
+            sn2.textContent = item.label || item.id;
+            var sv2 = document.createElement('span');
+            sv2.className = 'hinos-cell-voices';
+            b2.appendChild(sn2);
+            b2.appendChild(sv2);
+            var se2 = document.createElement('span');
+            se2.className = 'hinos-cell-study';
+            se2.setAttribute('aria-hidden', 'true');
+            b2.appendChild(se2);
+            grid.appendChild(b2);
           }
-          var voz = vozSel && vozSel.value ? vozSel.value : 'S';
-          if (HINOS_VOZES.indexOf(voz) === -1) voz = 'S';
-          var st = { id: hinosGenerateId(), name: name, vozPrincipal: voz, hinos: { do: {}, mib: {}, sib: {} } };
-          ensureStudentHinosShape(st);
-          hinosState.students.push(st);
-          hinosState.activeStudentId = st.id;
-          saveHinosState();
-          if (inp) inp.value = '';
-          closeHinosNewStudentModal();
-          renderHinosStudentSelect();
-          refreshHinosVoiceButtons();
-          setMessage('Aluno adicionado: ' + name + '.');
-        },
-        removeActiveStudentIfConfirmed: function () {
-          var st = getActiveHinosStudent();
-          if (!st) return;
-          if (!window.confirm('Remover o aluno "' + (st.name || '') + '" e todo o progresso de hinos dele neste aparelho?')) return;
-          hinosState.students = hinosState.students.filter(function (s) { return s.id !== st.id; });
-          hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
-          saveHinosState();
-          renderHinosStudentSelect();
-          refreshHinosVoiceButtons();
-        },
-        exportBackup: function () {
-          exportHinosBackup();
-        },
-        onImportBackupText: function (text) {
-          try {
-            var parsed = parseHinosBackupJson(text);
-            var merge = !window.confirm(
-              'Substituir todos os alunos e o progresso deste aparelho pelos dados do arquivo?\n\n' +
-                'OK = substituir tudo pelo backup.\n' +
-                'Cancelar = mesclar: mantém alunos que não estão no arquivo e atualiza quem tiver o mesmo ID.'
-            );
-            applyHinosBackupImport(parsed, merge ? 'merge' : 'replace');
-            setMessage(merge ? 'Backup mesclado com os dados locais.' : 'Backup importado: dados substituídos.');
-          } catch (e) {
-            setMessage('Não foi possível importar: ' + (e && e.message ? e.message : 'arquivo inválido.'));
-          }
-        },
-        onImportBackupReadError: function () {
-          setMessage('Não foi possível ler o arquivo.');
-        },
-        onAfinaçãoTabClick: function (afin) {
-          setHinosAfinaçãoTab(afin);
-          refreshHinosVoiceButtons();
-        },
-        onHinoPrev: function (numIn) {
-          if (hinosIsCoroKey(hinosSelectedKey)) return;
-          var n = clampHinoNum(parseInt(numIn.value, 10) - 1);
-          hinosSelectedKey = String(n);
-          numIn.value = String(n);
-          refreshHinosVoiceButtons();
-        },
-        onHinoNext: function (numIn) {
-          if (hinosIsCoroKey(hinosSelectedKey)) return;
-          var n = clampHinoNum(parseInt(numIn.value, 10) + 1);
-          hinosSelectedKey = String(n);
-          numIn.value = String(n);
-          refreshHinosVoiceButtons();
-        },
-        onHinoNumChange: function (numIn) {
-          var n = clampHinoNum(numIn.value);
-          hinosSelectedKey = String(n);
-          numIn.value = String(n);
-          refreshHinosVoiceButtons();
-        },
-        onVoiceButtonClick: function (v) {
-          if (!v) return;
-          if (toggleHinosVoice(v)) closeHinosEditorModal();
-        },
-        onStudyFlagClick: function (flag) {
-          toggleHinosStudyFlag(flag);
-        },
-        clearCurrentHinoVoices: function () {
-          clearCurrentHinoVoices();
-        },
-        closeEditorModal: function () {
-          closeHinosEditorModal();
-        },
-        closeNewStudentModal: function () {
-          closeHinosNewStudentModal();
-        },
-        openNewStudentModal: function () {
-          openHinosNewStudentModal();
-        },
-        onDocumentEscapeKey: function (e) {
-          var newM = document.getElementById('hinosNewStudentModal');
-          if (newM && !newM.classList.contains('hidden')) {
-            e.preventDefault();
-            closeHinosNewStudentModal();
-            return;
-          }
-          var m = document.getElementById('hinosEditorModal');
-          if (m && !m.classList.contains('hidden')) {
-            e.preventDefault();
-            closeHinosEditorModal();
-          }
-        }
-      };
-
-      // Coordenadas manuais do solfejo por imagem/mão.
-      // Formato: chave "N-lado" -> array com N ou mais pontos:
-      // [ponto1, ponto2, ...]
-      // Sem "preparacao". O loop é: 1 -> 2 -> ... -> N -> 1.
-      // Cada ponto usa coordenadas normalizadas (0..1) no tamanho natural da imagem.
-      // Exemplo: x=0.5 / y=0.5 = centro da imagem.
-      //
-      // Ajuste manualmente estes valores para alinhar a ponta do dedo exatamente nas bolinhas.
-      const SOLFEJO_MANUAL_POINTS = {
-        '2-direita': [
-          
-        { x: 0.48, y: 0.72 }, // ponto 1
-        { x: 0.70, y: 0.50 }, // ponto 1
-        { x: 0.65, y: 0.22 }, // ponto 1
-        { x: 0.48, y: 0.32 },  // ponto 2
-        { x: 0.40, y: 0.22 },  // ponto 2
-        { x: 0.42, y: 0.22 }  // ponto 2
-          
-        ],
-        '2-esquerda': [
-        { x: 0.50, y: 0.72}, //  ponto 1 
-        { x: 0.35, y: 0.50 }, // ponto 1
-        { x: 0.31, y: 0.22 }, // ponto 1
-
-        { x: 0.48, y: 0.32 },  // ponto 2
-        { x: 0.58, y: 0.24 },  // ponto 2
-        { x: 0.50, y: 0.22} //  ponto 2
-
-        ],
-        '3-direita': [
-          { x: 0.41, y: 0.71 }, //1
-          { x: 0.55, y: 0.51 }, //1
-          { x: 0.61, y: 0.48 }, //1
-                   
-          { x: 0.77, y: 0.54}, //2
-          { x: 0.67, y: 0.29}, //2
-          { x: 0.58, y: 0.25}, //2
-
-          { x: 0.46, y: 0.34}, //3
-          { x: 0.44, y: 0.20}, //3
-          { x: 0.44, y: 0.71}, //3
-           
-        ],
-        '3-esquerda': [
-          { x: 0.59, y: 0.74 }, //1
-          { x: 0.47, y: 0.55 }, //1
-          { x: 0.37, y: 0.48 }, //1
-                   
-          { x: 0.23, y: 0.57}, //2
-          { x: 0.28, y: 0.33}, //2
-          { x: 0.41, y: 0.26}, //2
-          
-
-          { x: 0.55, y: 0.37}, //3
-          { x: 0.58, y: 0.28}, //3
-          { x: 0.54, y: 0.20}, //3
-          
-          
-        ],
-        '4-direita': [
-          { x: 0.50, y: 0.73 }, //1
-          { x: 0.44, y: 0.55 }, //1
-          { x: 0.32, y: 0.52 }, //1
-                   
-          { x: 0.16, y: 0.58}, //2
-          { x: 0.41, y: 0.42}, //2
-          { x: 0.70, y: 0.42}, //2
-          
-
-          { x: 0.82, y: 0.49}, //3
-          { x: 0.72, y: 0.26}, //3
-          { x: 0.60, y: 0.25}, //3
-
-          { x: 0.52, y: 0.33}, //4
-          { x: 0.51, y: 0.28}, //4
-          { x: 0.54, y: 0.20}, //4
-        ],
-        '4-esquerda': [
-          { x: 0.46, y: 0.73 }, //1
-          { x: 0.57, y: 0.52 }, //1
-          { x: 0.70, y: 0.54 }, //1
-                   
-          { x: 0.80, y: 0.58}, //2
-          { x: 0.48, y: 0.40}, //2
-          { x: 0.32, y: 0.41}, //2
-          
-
-          { x: 0.16, y: 0.49}, //3
-          { x: 0.22, y: 0.33}, //3
-          { x: 0.33, y: 0.28}, //3
-
-          { x: 0.44, y: 0.33}, //4
-          { x: 0.45, y: 0.24}, //4
-          { x: 0.43, y: 0.20}, //4
-        ],
-        '6-direita': [
-
-          { x: 0.49, y: 0.74 }, //1
-          { x: 0.45, y: 0.64 }, //1
-          { x: 0.38, y: 0.63 }, //1
-                   
-          { x: 0.30, y: 0.68}, //2
-          { x: 0.25, y: 0.58}, //2
-          { x: 0.20, y: 0.54}, //2
-          
-          { x: 0.12, y: 0.60}, //3
-          { x: 0.35, y: 0.44}, //3
-          { x: 0.63, y: 0.45}, //3
-
-          { x: 0.74, y: 0.55}, //4
-          { x: 0.79, y: 0.46}, //4
-          { x: 0.83, y: 0.46}, //4
-
-          { x: 0.89, y: 0.51}, //5
-          { x: 0.78, y: 0.26}, //5
-          { x: 0.63, y: 0.28}, //5
-
-          { x: 0.57, y: 0.35}, //6
-          { x: 0.49, y: 0.20}, //6
-          { x: 0.50, y: 0.50}, //6
-        ],
-        '6-esquerda': [
-          { x: 0.49, y: 0.74 }, //1
-          { x: 0.54, y: 0.64 }, //1
-          { x: 0.64, y: 0.65 }, //1
-                   
-          { x: 0.69, y: 0.67}, //2
-          { x: 0.73, y: 0.58}, //2
-          { x: 0.78, y: 0.54}, //2
-          
-          { x: 0.87, y: 0.60}, //3
-          { x: 0.63, y: 0.44}, //3
-          { x: 0.40, y: 0.43}, //3
-
-          { x: 0.24, y: 0.54}, //4
-          { x: 0.20, y: 0.46}, //4
-          { x: 0.14, y: 0.47}, //4
-
-          { x: 0.08, y: 0.51}, //5
-          { x: 0.18, y: 0.27}, //5
-          { x: 0.35, y: 0.31}, //5
-
-          { x: 0.40, y: 0.34}, //6
-          { x: 0.49, y: 0.20}, //6
-          { x: 0.46, y: 0.18}, //6
-        ],
-        '9-direita': [
-          { x: 0.46, y: 0.73 }, //1
-          { x: 0.41, y: 0.63 }, //1
-          { x: 0.32, y: 0.60 }, //1
-
-          { x: 0.29, y: 0.66}, //2
-          { x: 0.23, y: 0.58}, //2
-          { x: 0.16, y: 0.57}, //2
-          
-
-          { x: 0.12, y: 0.60}, //3
-          { x: 0.37, y: 0.50}, //3
-          { x: 0.50, y: 0.54}, //3
-
-          { x: 0.62, y: 0.58}, //4
-          { x: 0.66, y: 0.52}, //4
-          { x: 0.69, y: 0.53}, //4
-
-          { x: 0.74, y: 0.55}, //5
-          { x: 0.79, y: 0.50}, //5
-          { x: 0.81, y: 0.51}, //5
-
-          { x: 0.87, y: 0.52}, //6
-          { x: 0.84, y: 0.38}, //6
-          { x: 0.78, y: 0.33}, //6
-
-          { x: 0.73, y: 0.36}, //7
-          { x: 0.70, y: 0.26}, //7
-          { x: 0.65, y: 0.27}, //7
-
-          { x: 0.60, y: 0.33}, //8
-          { x: 0.55, y: 0.24}, //8
-          { x: 0.50, y: 0.25}, //8
-
-          { x: 0.44, y: 0.29}, //9
-          { x: 0.42, y: 0.24}, //9
-          { x: 0.44, y: 0.20}, //9
-
-          
-        ],
-        '9-esquerda': [
-          { x: 0.53, y: 0.71 }, //1
-          { x: 0.58, y: 0.62 }, //1
-          { x: 0.63, y: 0.61 }, //1
-
-          { x: 0.69, y: 0.66}, //2
-          { x: 0.74, y: 0.58}, //2
-          { x: 0.80, y: 0.57}, //2
-
-          { x: 0.85, y: 0.60}, //3
-          { x: 0.63, y: 0.49}, //3
-          { x: 0.50, y: 0.51}, //3
-
-          { x: 0.36, y: 0.57}, //4
-          { x: 0.32, y: 0.52}, //4
-          { x: 0.29, y: 0.52}, //4
-
-          { x: 0.23, y: 0.55}, //5
-          { x: 0.18, y: 0.48}, //5
-          { x: 0.13, y: 0.50}, //5
-
-          { x: 0.09, y: 0.52}, //6
-          { x: 0.11, y: 0.38}, //6
-          { x: 0.16, y: 0.30}, //6
-
-          { x: 0.24, y: 0.36}, //7
-          { x: 0.28, y: 0.26}, //7
-          { x: 0.32, y: 0.27}, //7
-
-          { x: 0.38, y: 0.32}, //8
-          { x: 0.41, y: 0.23}, //8
-          { x: 0.49, y: 0.25}, //8
-
-          { x: 0.52, y: 0.28}, //9
-          { x: 0.55, y: 0.23}, //9
-          { x: 0.54, y: 0.20}, //9
-        ],
-        '12-direita': [
-         { x: 0.51, y: 0.79 }, //1
-         { x: 0.55, y: 0.74 }, //1
-                   
-         { x: 0.60, y: 0.78}, //2
-         { x: 0.64, y: 0.70}, //2
-
-         { x: 0.70, y: 0.77}, //3
-         { x: 0.54, y: 0.64}, //3
-
-         { x: 0.39, y: 0.70}, //4
-         { x: 0.35, y: 0.65}, //4
-
-         { x: 0.30, y: 0.69}, //5
-         { x: 0.28, y: 0.60}, //5
-
-         { x: 0.22, y: 0.67}, //6
-         { x: 0.40, y: 0.49}, //6
-
-         { x: 0.67, y: 0.60}, //7
-         { x: 0.71, y: 0.54}, //7
-
-         { x: 0.76, y: 0.58}, //8
-         { x: 0.81, y: 0.52}, //8
-
-         { x: 0.87, y: 0.55}, //9
-         { x: 0.52, y: 0.37}, //9
-
-          { x: 0.35, y: 0.38}, //10
-          { x: 0.50, y: 0.30}, //10
-
-          { x: 0.64, y: 0.34}, //11
-          { x: 0.60, y: 0.22}, //11
-
-          { x: 0.48, y: 0.25}, //12
-          { x: 0.47, y: 0.20}, //12
-          
-        ],
-        '12-esquerda': [
-         { x: 0.49, y: 0.80 }, //1
-         { x: 0.45, y: 0.74 }, //1
-                   
-         { x: 0.41, y: 0.78}, //2
-         { x: 0.37, y: 0.70}, //2
-
-         { x: 0.31, y: 0.77}, //3
-         { x: 0.54, y: 0.64}, //3
-
-         { x: 0.64, y: 0.70}, //4
-         { x: 0.67, y: 0.65}, //4
-
-         { x: 0.72, y: 0.69}, //5
-         { x: 0.74, y: 0.60}, //5
-
-         { x: 0.81, y: 0.67}, //6
-         { x: 0.65, y: 0.49}, //6
-
-         { x: 0.35, y: 0.60}, //7
-         { x: 0.30, y: 0.52}, //7
-
-         { x: 0.25, y: 0.58}, //8
-         { x: 0.20, y: 0.50}, //8
-
-         { x: 0.15, y: 0.55}, //9
-         { x: 0.50, y: 0.37}, //9
-
-          { x: 0.69, y: 0.38}, //10
-          { x: 0.49, y: 0.30}, //10
-
-          { x: 0.37, y: 0.34}, //11
-          { x: 0.42, y: 0.21}, //11
-
-          { x: 0.52, y: 0.24}, //12
-          { x: 0.55, y: 0.15}, //12
-        ]
-      };
-
-      const CLAVES = [
-        { id: 'sol', nome: 'Sol', simbolo: '𝄞', fontSize: '74', y: '116', x: '18', anchor: 'start', baseline: 'alphabetic' },
-        // Clave de Dó (alto): o centro da clave marca o Dó na 3a linha.
-        { id: 'do', nome: 'Dó', simbolo: '𝄡', fontSize: '50', y: '105.5', x: '50', anchor: 'middle', baseline: 'middle' },
-        // Clave de Fá: os dois pontos devem "abraçar" a 4a linha (Fá).
-        { id: 'fa', nome: 'Fá', simbolo: '𝄢', fontSize: '53', y: '103.5', x: '60', anchor: 'middle', baseline: 'middle' }
-      ];
-
-      const CLEF_BOTTOM_LINE = {
-        sol: { noteId: 'mi', octave: 4 }, // Mi4 na 1a linha inferior
-        do: { noteId: 'fa', octave: 3 },  // F3 na 1a linha inferior -> 3a linha = Dó4
-        fa: { noteId: 'sol', octave: 2 }  // G2 na 1a linha inferior -> 4a linha = Fá3, 5a = Lá3
-      };
-
-      const NOTE_DEGREE = { do: 0, re: 1, mi: 2, fa: 3, sol: 4, la: 5, si: 6 };
-      const DEGREE_NOTE_ID = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
-      const NOTE_SEMITONE = { do: 0, re: 2, mi: 4, fa: 5, sol: 7, la: 9, si: 11 };
-
-      // ========== INICIALIZAÇÃO DO ÁUDIO ==========
-      function getAudioContext() {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        return audioCtx;
-      }
-
-      function createReverbImpulse(ctx, seconds, decay) {
-        if (!ctx) return null;
-        var len = Math.max(1, Math.floor(ctx.sampleRate * Math.max(0.4, seconds || 1.8)));
-        var impulse = ctx.createBuffer(2, len, ctx.sampleRate);
-        var ch;
-        for (ch = 0; ch < 2; ch++) {
-          var data = impulse.getChannelData(ch);
-          var i;
-          for (i = 0; i < len; i++) {
-            var t = i / len;
-            var env = Math.pow(1 - t, Math.max(1.2, decay || 2.2));
-            data[i] = (Math.random() * 2 - 1) * env;
-          }
-        }
-        return impulse;
-      }
-
-      function getReverbImpulse(ctx) {
-        if (!ctx) return null;
-        if (audioReverbImpulse && audioReverbImpulseCtx === ctx) return audioReverbImpulse;
-        try {
-          audioReverbImpulse = createReverbImpulse(ctx, calmMode ? 1.5 : 1.9, calmMode ? 2.0 : 2.35);
-          audioReverbImpulseCtx = ctx;
-          return audioReverbImpulse;
-        } catch (e) {
-          audioReverbImpulse = null;
-          audioReverbImpulseCtx = null;
-          return null;
-        }
-      }
-
-      /**
-       * Barramento de saída com tratamento leve para timbre mais natural.
-       * Mantém fallback para destination caso qualquer nó não possa ser criado.
-       */
-      function ensureAudioOutputBus(ctx) {
-        if (!ctx) return null;
-        if (audioOutputBus && audioOutputBusCtx === ctx) return audioOutputBus;
-        try {
-          var input = ctx.createGain();
-          var lowShelf = ctx.createBiquadFilter();
-          lowShelf.type = 'lowshelf';
-          lowShelf.frequency.value = 180;
-          lowShelf.gain.value = 1.8;
-
-          var highShelf = ctx.createBiquadFilter();
-          highShelf.type = 'highshelf';
-          highShelf.frequency.value = 4200;
-          highShelf.gain.value = -1.6;
-
-          var compressor = ctx.createDynamicsCompressor();
-          compressor.threshold.value = -18;
-          compressor.knee.value = 18;
-          compressor.ratio.value = 2.4;
-          compressor.attack.value = 0.01;
-          compressor.release.value = 0.22;
-
-          var limiter = ctx.createGain();
-          limiter.gain.value = calmMode ? 0.92 : 0.98;
-          var dryGain = ctx.createGain();
-          dryGain.gain.value = calmMode ? 0.88 : 0.84;
-          var wetGain = ctx.createGain();
-          wetGain.gain.value = calmMode ? 0.1 : 0.16;
-          var convolver = ctx.createConvolver();
-          convolver.normalize = true;
-          convolver.buffer = getReverbImpulse(ctx);
-
-          input.connect(lowShelf);
-          lowShelf.connect(highShelf);
-          highShelf.connect(compressor);
-          compressor.connect(dryGain);
-          compressor.connect(convolver);
-          convolver.connect(wetGain);
-          dryGain.connect(limiter);
-          wetGain.connect(limiter);
-          limiter.connect(ctx.destination);
-
-          audioOutputBus = input;
-          audioOutputBusCtx = ctx;
-          return audioOutputBus;
-        } catch (e) {
-          audioOutputBus = null;
-          audioOutputBusCtx = null;
-          return null;
-        }
-      }
-
-      function connectNodeToOutput(node, ctx) {
-        if (!node || !ctx) return;
-        var bus = ensureAudioOutputBus(ctx);
-        if (bus) {
-          node.connect(bus);
-          return;
-        }
-        node.connect(ctx.destination);
-      }
-
-      function getCurrentInstrumentTimbreProfile() {
-        var inst = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
-        if (inst === 'violino') return { attack: 0.016, release: 0.42, gainMul: 0.96 };
-        if (inst === 'viola') return { attack: 0.018, release: 0.44, gainMul: 0.97 };
-        if (inst === 'violoncelo') return { attack: 0.02, release: 0.48, gainMul: 1.0 };
-        if (inst === 'flauta' || inst === 'clarinete' || inst === 'oboe' || inst === 'fagote') {
-          return { attack: 0.014, release: 0.36, gainMul: 0.95 };
-        }
-        if (inst === 'trompete' || inst === 'trompa' || inst === 'trombone') {
-          return { attack: 0.012, release: 0.33, gainMul: 0.92 };
-        }
-        if (inst === 'voz') return { attack: 0.022, release: 0.5, gainMul: 0.8 };
-        return { attack: 0.012, release: 0.34, gainMul: 0.95 };
-      }
-
-      /** Converte frequência (Hz) em nome da nota MIDI (ex.: 440 -> 'A4'). */
-      function freqToMidiNoteName(freq) {
-        var midi = Math.round(69 + 12 * Math.log2(freq / 440));
-        midi = Math.max(0, Math.min(127, midi));
-        var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-        return names[midi % 12] + Math.floor(midi / 12);
-      }
-
-      /**
-       * Formantes base (neutro) + ajuste “voz feminina / mais aguda” no timbre (não muda a afinação da nota).
-       */
-      function vowelFormantsForPitchClass(pc) {
-        var rows = [
-          { f1: 780, bw1: 130, f2: 1180, bw2: 200, w1: 0.62, w2: 0.48, br: 0.42 },
-          { f1: 520, bw1: 110, f2: 1680, bw2: 240, w1: 0.5, w2: 0.62, br: 0.35 },
-          { f1: 520, bw1: 115, f2: 1760, bw2: 250, w1: 0.52, w2: 0.6, br: 0.34 },
-          { f1: 360, bw1: 100, f2: 2200, bw2: 280, w1: 0.42, w2: 0.72, br: 0.38 },
-          { f1: 300, bw1: 95, f2: 2320, bw2: 300, w1: 0.38, w2: 0.78, br: 0.4 },
-          { f1: 720, bw1: 140, f2: 1120, bw2: 190, w1: 0.65, w2: 0.46, br: 0.44 },
-          { f1: 580, bw1: 120, f2: 920, bw2: 170, w1: 0.58, w2: 0.5, br: 0.36 },
-          { f1: 540, bw1: 125, f2: 880, bw2: 165, w1: 0.56, w2: 0.52, br: 0.35 },
-          { f1: 470, bw1: 105, f2: 1080, bw2: 210, w1: 0.48, w2: 0.58, br: 0.33 },
-          { f1: 760, bw1: 135, f2: 1200, bw2: 195, w1: 0.64, w2: 0.5, br: 0.45 },
-          { f1: 380, bw1: 105, f2: 2100, bw2: 290, w1: 0.44, w2: 0.7, br: 0.37 },
-          { f1: 320, bw1: 100, f2: 2240, bw2: 300, w1: 0.4, w2: 0.76, br: 0.39 }
-        ];
-        var base = rows[((pc % 12) + 12) % 12];
-        var f1 = Math.min(960, base.f1 * 1.09);
-        var f2 = Math.min(2900, base.f2 * 1.11);
-        var f3 = Math.min(3800, Math.max(2680, f2 * 1.36 + 180));
-        return {
-          f1: f1,
-          bw1: Math.max(80, base.bw1 * 0.9),
-          f2: f2,
-          bw2: Math.max(150, base.bw2 * 0.88),
-          f3: f3,
-          bw3: Math.max(280, Math.min(520, f3 * 0.13 + 120)),
-          w1: base.w1 * 0.93,
-          w2: Math.min(0.88, base.w2 * 1.06),
-          w3: Math.min(0.33, 0.22 + Math.min(0.1, Math.max(0, f2 - 1000) / 8000)),
-          br: base.br * 0.9
-        };
-      }
-
-      /**
-       * “Laaaa / miii” sem TTS: pulso suave (triângulo) + sopro no ataque + dois formantes em paralelo (bandpass largo).
-       */
-      function schedulePlayerSungSolfejo(ctx, startAtCtx, freqHz, durationSec, playbackToken) {
-        if (!ctx || !soundEnabled) return;
-        if (playbackToken !== playerPlayToken || !playerPlayback.isPlaying) return;
-        if (!freqHz || !isFinite(freqHz) || freqHz <= 0) return;
-
-        var f = Math.max(90, Math.min(1800, freqHz));
-        var dur = Math.max(0.16, Math.min(durationSec || 0.35, 5));
-        var midi = Math.round(69 + 12 * Math.log2(f / 440));
-        midi = Math.max(0, Math.min(127, midi));
-        var pc = ((midi % 12) + 12) % 12;
-        var fm = vowelFormantsForPitchClass(pc);
-
-        var atk = Math.min(0.32, Math.max(0.08, dur * 0.24));
-        var rel = Math.min(0.42, Math.max(0.1, dur * 0.26));
-        var sustain = Math.max(0.05, dur - atk - rel);
-        var endT = startAtCtx + atk + sustain + rel + 0.06;
-
-        var peak = (calmMode ? 0.36 : 0.5) * INSTRUMENT_OUTPUT_GAIN;
-        if (peak > 0.68) peak = 0.68;
-
-        var master = ctx.createGain();
-        master.gain.setValueAtTime(0.0001, startAtCtx);
-        master.gain.exponentialRampToValueAtTime(peak, startAtCtx + atk);
-        master.gain.setValueAtTime(peak * 0.88, startAtCtx + atk + sustain);
-        master.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
-
-        function qFromBw(centerHz, bwHz) {
-          var bw = Math.max(40, bwHz);
-          var c = Math.max(80, centerHz);
-          return Math.max(0.9, Math.min(4.5, c / bw));
-        }
-
-        // --- Excitação periódica (menos “pure tone” que senoides + peaking) ---
-        var tri1 = ctx.createOscillator();
-        tri1.type = 'triangle';
-        tri1.frequency.setValueAtTime(f, startAtCtx);
-
-        var tri2 = ctx.createOscillator();
-        tri2.type = 'triangle';
-        tri2.frequency.setValueAtTime(f * 2, startAtCtx);
-        var gTri2 = ctx.createGain();
-        gTri2.gain.value = 0.095;
-
-        var tri3 = ctx.createOscillator();
-        tri3.type = 'triangle';
-        tri3.frequency.setValueAtTime(f * 3, startAtCtx);
-        var gTri3 = ctx.createGain();
-        gTri3.gain.value = 0.038;
-
-        var buzzMix = ctx.createGain();
-        buzzMix.gain.value = 1;
-        tri1.connect(buzzMix);
-        tri2.connect(gTri2);
-        gTri2.connect(buzzMix);
-        tri3.connect(gTri3);
-        gTri3.connect(buzzMix);
-
-        var buzzLp = ctx.createBiquadFilter();
-        buzzLp.type = 'lowpass';
-        buzzLp.frequency.setValueAtTime(Math.min(5200, Math.max(1900, f * 10)), startAtCtx);
-        buzzLp.Q.value = 0.65;
-        buzzMix.connect(buzzLp);
-
-        // --- Sopro (ruído) forte no começo, depois baixo — ajuda “fala” sem virar oboé ---
-        var nLen = Math.min(48000, Math.max(8000, Math.ceil(ctx.sampleRate * Math.min(0.55, dur + 0.12))));
-        var nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
-        var nd = nBuf.getChannelData(0);
-        var zi;
-        for (zi = 0; zi < nLen; zi++) nd[zi] = (Math.random() * 2 - 1) * 0.42;
-        var noise = ctx.createBufferSource();
-        noise.buffer = nBuf;
-        noise.loop = false;
-
-        var nHp = ctx.createBiquadFilter();
-        nHp.type = 'highpass';
-        nHp.frequency.value = 440;
-        nHp.Q.value = 0.65;
-        var nLp = ctx.createBiquadFilter();
-        nLp.type = 'lowpass';
-        nLp.frequency.value = 7800;
-        nLp.Q.value = 0.7;
-        noise.connect(nHp);
-        nHp.connect(nLp);
-
-        var breathGain = ctx.createGain();
-        breathGain.gain.setValueAtTime(0.0001, startAtCtx);
-        breathGain.gain.exponentialRampToValueAtTime(fm.br * (calmMode ? 0.85 : 1), startAtCtx + Math.min(0.07, atk * 0.45));
-        breathGain.gain.exponentialRampToValueAtTime(fm.br * 0.22, startAtCtx + atk + 0.02);
-        breathGain.gain.setValueAtTime(fm.br * 0.18, startAtCtx + atk + sustain * 0.5);
-        breathGain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
-        nLp.connect(breathGain);
-
-        var excite = ctx.createGain();
-        excite.gain.value = 1;
-        buzzLp.connect(excite);
-        breathGain.connect(excite);
-
-        var bp1 = ctx.createBiquadFilter();
-        bp1.type = 'bandpass';
-        bp1.frequency.value = fm.f1;
-        bp1.Q.value = qFromBw(fm.f1, fm.bw1);
-
-        var bp2 = ctx.createBiquadFilter();
-        bp2.type = 'bandpass';
-        bp2.frequency.value = fm.f2;
-        bp2.Q.value = qFromBw(fm.f2, fm.bw2);
-
-        var bp3 = ctx.createBiquadFilter();
-        bp3.type = 'bandpass';
-        bp3.frequency.value = fm.f3;
-        bp3.Q.value = qFromBw(fm.f3, fm.bw3);
-
-        var w1 = ctx.createGain();
-        w1.gain.value = fm.w1;
-        var w2 = ctx.createGain();
-        w2.gain.value = fm.w2;
-        var w3 = ctx.createGain();
-        w3.gain.value = fm.w3;
-
-        var formantSum = ctx.createGain();
-        formantSum.gain.value = 1;
-        excite.connect(bp1);
-        excite.connect(bp2);
-        excite.connect(bp3);
-        bp1.connect(w1);
-        bp2.connect(w2);
-        bp3.connect(w3);
-        w1.connect(formantSum);
-        w2.connect(formantSum);
-        w3.connect(formantSum);
-
-        var body = ctx.createBiquadFilter();
-        body.type = 'peaking';
-        body.frequency.value = 2550;
-        body.Q.value = 0.72;
-        body.gain.value = calmMode ? 2.0 : 3.4;
-
-        formantSum.connect(body);
-        body.connect(master);
-        connectNodeToOutput(master, ctx);
-
-        var vibStart = startAtCtx + Math.min(atk * 0.55, 0.1);
-        var lfo = ctx.createOscillator();
-        lfo.type = 'sine';
-        lfo.frequency.setValueAtTime(5.1, startAtCtx);
-        var lfoGain = ctx.createGain();
-        lfoGain.gain.setValueAtTime(0, startAtCtx);
-        lfoGain.gain.linearRampToValueAtTime(calmMode ? 13 : 19, vibStart + 0.06);
-        lfo.connect(lfoGain);
-        lfoGain.connect(tri1.detune);
-
-        var nodes = [
-          tri1, tri2, tri3, gTri2, gTri3, buzzMix, buzzLp, noise, nHp, nLp, breathGain,
-          excite, bp1, bp2, bp3, w1, w2, w3, formantSum, body, master, lfo, lfoGain
-        ];
-
-        try {
-          tri1.start(startAtCtx);
-          tri2.start(startAtCtx);
-          tri3.start(startAtCtx);
-          noise.start(startAtCtx);
-          lfo.start(startAtCtx);
-          tri1.stop(endT);
-          tri2.stop(endT);
-          tri3.stop(endT);
-          noise.stop(endT);
-          lfo.stop(endT);
-        } catch (eStart) {
-          return;
-        }
-
-        playerPlayback.activeStops.push(function (now) {
-          var t = typeof now === 'number' ? now : ctx.currentTime;
-          try {
-            master.gain.cancelScheduledValues(t);
-            master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t);
-            master.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-          } catch (eG) {}
-          try {
-            tri1.stop(t + 0.05);
-            tri2.stop(t + 0.05);
-            tri3.stop(t + 0.05);
-            noise.stop(t + 0.05);
-            lfo.stop(t + 0.05);
-          } catch (eS) {}
-          setTimeout(function () {
-            nodes.forEach(function (n) {
-              try {
-                n.disconnect();
-              } catch (eD) {}
-            });
-          }, 140);
+        });
+        wrap.appendChild(grid);
+        body.appendChild(wrap);
+      });
+
+      det.appendChild(body);
+      container.appendChild(det);
+
+      function applyHinosFaseFilters() {
+        var ton = selTon.value || '';
+        var q = (inpQ.value || '').trim().toLowerCase();
+        body.querySelectorAll('.hinos-cell').forEach(function (cell) {
+          var tCell = cell.getAttribute('data-hinos-ton') || '';
+          var key = (cell.getAttribute('data-hinos-key') || '').toLowerCase();
+          // Evita que o indicador E entre na busca (a busca é principalmente por nº/voz).
+          var numEl = cell.querySelector('.hinos-cell-num');
+          var voicesEl = cell.querySelector('.hinos-cell-voices');
+          var lab = ((numEl ? numEl.textContent : '') + ' ' + (voicesEl ? voicesEl.textContent : '')).toLowerCase();
+          var showTon = !ton || tCell === ton;
+          var showQ = !q || key.indexOf(q) !== -1 || lab.indexOf(q) !== -1;
+          cell.style.display = showTon && showQ ? '' : 'none';
+        });
+        body.querySelectorAll('.hinos-grupo').forEach(function (gw) {
+          var anyVis = false;
+          gw.querySelectorAll('.hinos-cell').forEach(function (c) {
+            if (c.style.display !== 'none') anyVis = true;
+          });
+          gw.style.display = anyVis ? '' : 'none';
         });
       }
 
-      /** Opções de reprodução para deixar o timbre menos "seco". */
-      function buildSoundfontPlayOptions(durationSec, gainValue) {
-        var profile = getCurrentInstrumentTimbreProfile();
-        var g =
-          (typeof gainValue === 'number' && isFinite(gainValue) ? gainValue : 0.5) *
-          INSTRUMENT_OUTPUT_GAIN *
-          (profile.gainMul || 1);
-        if (g > 0.82) g = 0.82;
-        var attack = profile.attack || 0.01;
-        var release = profile.release || 0.34;
-        if (durationSec < 0.2) {
-          attack = Math.min(attack, 0.008);
-          release = Math.min(release, 0.2);
+      selTon.addEventListener('change', applyHinosFaseFilters);
+      inpQ.addEventListener('input', applyHinosFaseFilters);
+      btnClr.addEventListener('click', function () {
+        selTon.value = '';
+        inpQ.value = '';
+        applyHinosFaseFilters();
+      });
+    });
+
+    if (typeof window.gemRefreshLucide === 'function') {
+      window.gemRefreshLucide();
+    }
+
+    if (!container._hinosFaseGridClickBound) {
+      container._hinosFaseGridClickBound = true;
+      container.addEventListener('click', function (e) {
+        var bulk = e.target.closest('.hinos-grupo-bulk');
+        if (bulk && container.contains(bulk)) {
+          e.preventDefault();
+          e.stopPropagation();
+          var phIdx = parseInt(bulk.getAttribute('data-hinos-bulk-phase'), 10);
+          var ton = bulk.getAttribute('data-hinos-bulk-ton') || 'Geral';
+          if (!isNaN(phIdx)) hinosBulkMarkPrincipalInGroup(phIdx, ton);
+          return;
         }
-        return {
-          duration: durationSec,
-          gain: g,
-          attack: attack,
-          release: release
-        };
+        var t = e.target.closest('.hinos-cell');
+        if (!t || !container.contains(t)) return;
+        var k = t.getAttribute('data-hinos-key');
+        if (k) {
+          setHinosSelectedKey(k);
+          refreshHinosVoiceButtonsCore();
+          openHinosEditorModal();
+        }
+      });
+    }
+  }
+
+  function closeHinosEditorModal() {
+    var m = document.getElementById('hinosEditorModal');
+    if (m) m.classList.add('hidden');
+  }
+
+  function closeHinosNewStudentModal() {
+    var m = document.getElementById('hinosNewStudentModal');
+    if (m) m.classList.add('hidden');
+  }
+
+  function openHinosNewStudentModal() {
+    var m = document.getElementById('hinosNewStudentModal');
+    if (!m || currentMode !== 'hinos') return;
+    closeHinosEditorModal();
+    var vozSel = document.getElementById('hinosNewStudentVoz');
+    if (vozSel) vozSel.value = 'S';
+    var inp = document.getElementById('hinosNewStudentName');
+    if (inp) inp.value = '';
+    m.classList.remove('hidden');
+    if (inp) inp.focus();
+  }
+
+  function openHinosEditorModal() {
+    var m = document.getElementById('hinosEditorModal');
+    if (!m || currentMode !== 'hinos') return;
+    closeHinosNewStudentModal();
+    m.classList.remove('hidden');
+    var btn = m.querySelector('.hinos-voz-btn');
+    if (btn) btn.focus();
+  }
+
+  function loadHinosCurriculum(done) {
+    if (hinosCurriculum) {
+      done();
+      return;
+    }
+    fetch('./hinario5-curriculum.json')
+      .then(function (r) {
+        if (!r.ok) throw new Error('no json');
+        return r.json();
+      })
+      .then(function (data) {
+        hinosCurriculum = data;
+        done();
+      })
+      .catch(function () {
+        hinosCurriculum = buildFallbackHinosCurriculum();
+        done();
+      });
+  }
+
+  function hinosGenerateId() {
+    return window.HinosCurriculumUtils.generateStudentId();
+  }
+
+  function loadHinosState() {
+    try {
+      var raw = localStorage.getItem(HINOS_STORAGE_KEY);
+      if (!raw) {
+        hinosState = { version: 1, students: [], activeStudentId: null };
+        return;
       }
-
-      /** Ajusta a frequência conforme a tonalidade: sustenido = +1 semitom, bemol = -1 semitom. */
-      function getFreqInKey(noteId, baseFreq, key) {
-        if (!key || !baseFreq) return baseFreq;
-        if (key.sustenidos && key.sustenidos.indexOf(noteId) >= 0)
-          return baseFreq * Math.pow(2, 1 / 12);
-        if (key.bemolis && key.bemolis.indexOf(noteId) >= 0)
-          return baseFreq * Math.pow(2, -1 / 12);
-        return baseFreq;
+      var parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.students)) {
+        hinosState = { version: 1, students: [], activeStudentId: null };
+        return;
       }
+      hinosState = {
+        version: parsed.version || 1,
+        students: parsed.students,
+        activeStudentId: parsed.activeStudentId || null
+      };
+      if (hinosState.students && hinosState.students.length) {
+        hinosState.students.forEach(ensureStudentHinosShape);
+        saveHinosState();
+      }
+    } catch (err) {
+      hinosState = { version: 1, students: [], activeStudentId: null };
+    }
+  }
 
-      /** Carrega o instrumento (amostras reais) do soundfont MusyngKite. */
-      function loadInstrument(instrumentId) {
-        var inst = INSTRUMENTOS.find(function(i) { return i.id === instrumentId; });
-        if (!inst) return Promise.resolve(null);
-        
-        if (instrumentLoadPromises[instrumentId]) {
-          return instrumentLoadPromises[instrumentId];
-        }
-        
-        var ctx = getAudioContext();
-        if (typeof Soundfont === 'undefined') {
-          instrumentLoadPromises[instrumentId] = Promise.resolve(null);
-          return instrumentLoadPromises[instrumentId];
-        }
+  function saveHinosState() {
+    try {
+      localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
+    } catch (err) { }
+  }
 
-        instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
-          from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/',
-          destination: ensureAudioOutputBus(ctx) || ctx.destination
-        }).then(function (loadedInst) {
-          return loadedInst;
-        }).catch(function () {
-          return null;
+  function parseHinosBackupJson(text) {
+    return window.HinosCurriculumUtils.parseBackupJson(text);
+  }
+
+  function cloneStudentForHinos(st) {
+    return window.HinosCurriculumUtils.cloneStudent(st, HINOS_VOZES);
+  }
+
+  function exportHinosBackup() {
+    var payload = {
+      version: hinosState.version || 1,
+      students: hinosState.students,
+      activeStudentId: hinosState.activeStudentId,
+      exportedAt: new Date().toISOString(),
+      app: 'gem-tools-hinos'
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    var d = new Date();
+    var pad = function (n) {
+      return n < 10 ? '0' + n : '' + n;
+    };
+    a.download = 'gem-tools-hinos-backup-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setMessage('Backup exportado. Transfira o arquivo para o outro aparelho e use Importar backup.');
+  }
+
+  function applyHinosBackupImport(parsed, mode) {
+    var studentsIn = parsed.students.map(cloneStudentForHinos).filter(function (s) {
+      return s !== null;
+    });
+    if (mode === 'replace') {
+      hinosState = {
+        version: parsed.version || 1,
+        students: studentsIn,
+        activeStudentId: parsed.activeStudentId || null
+      };
+    } else {
+      studentsIn.forEach(function (incoming) {
+        var idx = hinosState.students.findIndex(function (s) {
+          return s.id === incoming.id;
         });
-        
-        return instrumentLoadPromises[instrumentId];
+        if (idx >= 0) hinosState.students[idx] = incoming;
+        else hinosState.students.push(incoming);
+      });
+      if (
+        !hinosState.activeStudentId ||
+        !hinosState.students.some(function (s) {
+          return s.id === hinosState.activeStudentId;
+        })
+      ) {
+        var aid = parsed.activeStudentId;
+        hinosState.activeStudentId =
+          aid && hinosState.students.some(function (s) {
+            return s.id === aid;
+          })
+            ? aid
+            : hinosState.students.length
+              ? hinosState.students[0].id
+              : null;
+      }
+    }
+    if (
+      hinosState.activeStudentId &&
+      !hinosState.students.some(function (s) {
+        return s.id === hinosState.activeStudentId;
+      })
+    ) {
+      hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
+    }
+    saveHinosState();
+    renderHinosStudentSelect();
+    syncHinosActiveStudentVozUI();
+    refreshHinosVoiceButtons();
+  }
+
+  function ensureStudentHinosShape(st) {
+    window.HinosCurriculumUtils.ensureStudentShape(st, HINOS_VOZES);
+  }
+
+  function getActiveHinosStudent() {
+    if (!hinosState.activeStudentId) return null;
+    return hinosState.students.find(function (s) { return s.id === hinosState.activeStudentId; }) || null;
+  }
+
+  /** Afinação sugerida da ficha conforme instrumento (aluno pode trocar a aba). */
+  function getDefaultHinarioAfinação(inst) {
+    return window.HinosCurriculumUtils.defaultAfinaçãoForInstrument(inst);
+  }
+
+  function setHinosAfinaçãoTab(afin) {
+    if (afin !== 'do' && afin !== 'mib' && afin !== 'sib') afin = 'do';
+    hinosActiveAfinação = afin;
+    document.querySelectorAll('.hinos-afin-btn').forEach(function (btn) {
+      var id = btn.getAttribute('data-hinos-afin');
+      btn.classList.toggle('active', id === afin);
+      btn.setAttribute('aria-selected', id === afin ? 'true' : 'false');
+    });
+  }
+
+  function syncHinosAfinaçãoFromInstrument(inst) {
+    setHinosAfinaçãoTab(getDefaultHinarioAfinação(inst || currentInstrument));
+  }
+
+  function clampHinoNum(n) {
+    return window.HinosCurriculumUtils.clampHinoNumber(n, HINOS_TOTAL);
+  }
+
+  function syncHinosActiveStudentVozUI() {
+    var edit = document.getElementById('hinosActiveStudentVoz');
+    if (!edit) return;
+    var st = getActiveHinosStudent();
+    if (!st) {
+      edit.disabled = true;
+      edit.value = 'S';
+      return;
+    }
+    edit.disabled = false;
+    edit.value = hinosGetStudentVozPrincipal(st);
+  }
+
+  function renderHinosStudentSelect() {
+    var sel = document.getElementById('hinosStudentSelect');
+    if (!sel) return;
+    var prev = hinosState.activeStudentId;
+    sel.innerHTML = '';
+    hinosState.students.forEach(function (st) {
+      ensureStudentHinosShape(st);
+      var opt = document.createElement('option');
+      opt.value = st.id;
+      opt.textContent = st.name || 'Aluno';
+      sel.appendChild(opt);
+    });
+    if (!hinosState.students.length) {
+      hinosState.activeStudentId = null;
+      saveHinosState();
+      syncHinosActiveStudentVozUI();
+      return;
+    }
+    if (prev && hinosState.students.some(function (s) { return s.id === prev; })) {
+      sel.value = prev;
+    } else {
+      hinosState.activeStudentId = hinosState.students[0].id;
+      sel.value = hinosState.activeStudentId;
+      saveHinosState();
+    }
+    syncHinosActiveStudentVozUI();
+  }
+
+  function refreshHinosVoiceButtonsCore() {
+    var st = getActiveHinosStudent();
+    if (!hinosIsCoroKey(hinosSelectedKey)) {
+      hinosSelectedKey = String(clampHinoNum(hinosSelectedKey));
+    }
+    syncHinosDetailControlsFromKey();
+    var key = hinosSelectedKey;
+    document.querySelectorAll('.hinos-voz-btn').forEach(function (btn) {
+      var v = btn.getAttribute('data-hinos-voice');
+      var on = false;
+      if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
+        on = !!st.hinos[hinosActiveAfinação][key][v];
+      }
+      btn.classList.toggle('on', on);
+    });
+    document.querySelectorAll('.hinos-study-btn').forEach(function (btn) {
+      var flag = btn.getAttribute('data-hinos-study');
+      var on = false;
+      if (st && st.hinos && st.hinos[hinosActiveAfinação] && st.hinos[hinosActiveAfinação][key]) {
+        on = !!st.hinos[hinosActiveAfinação][key][flag];
+      }
+      btn.classList.toggle('on', on);
+    });
+    var sumEl = document.getElementById('hinosSummary');
+    if (sumEl) {
+      if (!st) {
+        sumEl.textContent = 'Adicione um aluno para começar a marcar os hinos.';
+      } else {
+        var book = st.hinos[hinosActiveAfinação] || {};
+        var withAny = 0;
+        var voices = 0;
+        Object.keys(book).forEach(function (hk) {
+          var ent = book[hk];
+          var any = false;
+          HINOS_VOZES.forEach(function (vv) {
+            if (ent && ent[vv]) {
+              any = true;
+              voices++;
+            }
+          });
+          if (any) withAny++;
+        });
+        var afinLbl = hinosActiveAfinação === 'do' ? 'Dó' : hinosActiveAfinação === 'mib' ? 'Mib' : 'Sib';
+        var vP = hinosGetStudentVozPrincipal(st);
+        var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
+        sumEl.textContent = 'Nesta ficha (' + afinLbl + '), voz principal: ' + vName + ' — ' + withAny + ' itens com ao menos uma voz · ' + voices + ' marcações no total.';
+      }
+    }
+    updateHinosOverviewBars();
+    updateHinosFaseGridCellClasses();
+    document.querySelectorAll('.hinos-cell').forEach(function (el) {
+      el.classList.toggle('current', el.getAttribute('data-hinos-key') === hinosSelectedKey);
+    });
+  }
+
+  function refreshHinosVoiceButtons() {
+    loadHinosCurriculum(function () {
+      ensureHinosFasePanels();
+      refreshHinosVoiceButtonsCore();
+    });
+  }
+
+  function toggleHinosVoice(voice) {
+    var st = getActiveHinosStudent();
+    if (!st) {
+      setMessage('Adicione e selecione um aluno primeiro.');
+      return false;
+    }
+    ensureStudentHinosShape(st);
+    var key = hinosSelectedKey;
+    if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+    if (!st.hinos[hinosActiveAfinação][key]) {
+      st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false };
+    }
+    var cur = !!st.hinos[hinosActiveAfinação][key][voice];
+    st.hinos[hinosActiveAfinação][key][voice] = !cur;
+    saveHinosState();
+    refreshHinosVoiceButtons();
+    return true;
+  }
+
+  function toggleHinosStudyFlag(flag) {
+    var st = getActiveHinosStudent();
+    if (!st) {
+      setMessage('Adicione e selecione um aluno primeiro.');
+      return;
+    }
+    ensureStudentHinosShape(st);
+    var key = hinosSelectedKey;
+    if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+    if (!st.hinos[hinosActiveAfinação][key]) {
+      st.hinos[hinosActiveAfinação][key] = { S: false, C: false, T: false, B: false, E: false };
+    }
+    var cur = !!st.hinos[hinosActiveAfinação][key][flag];
+    st.hinos[hinosActiveAfinação][key][flag] = !cur;
+    saveHinosState();
+    refreshHinosVoiceButtons();
+  }
+
+  function clearCurrentHinoVoices() {
+    var st = getActiveHinosStudent();
+    if (!st) return;
+    ensureStudentHinosShape(st);
+    var key = hinosSelectedKey;
+    if (!hinosIsCoroKey(key)) key = String(clampHinoNum(key));
+    delete st.hinos[hinosActiveAfinação][key];
+    saveHinosState();
+    refreshHinosVoiceButtons();
+  }
+
+  function bindHinosEvents() {
+    window.HinosEvents.bindHinosEvents();
+  }
+
+  function initHinosUI() {
+    loadHinosState();
+    renderHinosStudentSelect();
+    syncHinosAfinaçãoFromInstrument(currentInstrument);
+    hinosLastSyncInstrumentId = currentInstrument.id;
+    refreshHinosVoiceButtons();
+  }
+
+  /** Ponte para `hinos-events.js` (handlers permanecem no escopo do app). */
+  window.HinosBindingAccess = {
+    onStudentSelectChange: function (id) {
+      hinosState.activeStudentId = id;
+      saveHinosState();
+      syncHinosActiveStudentVozUI();
+      refreshHinosVoiceButtons();
+    },
+    onActiveStudentVozChange: function (value) {
+      var st = getActiveHinosStudent();
+      if (!st) return;
+      var v = value;
+      if (HINOS_VOZES.indexOf(v) === -1) return;
+      st.vozPrincipal = v;
+      saveHinosState();
+      refreshHinosVoiceButtons();
+    },
+    tryAddStudentFromModal: function () {
+      var inp = document.getElementById('hinosNewStudentName');
+      var vozSel = document.getElementById('hinosNewStudentVoz');
+      var name = inp && inp.value ? inp.value.trim() : '';
+      if (!name) {
+        setMessage('Digite o nome do aluno.');
+        return;
+      }
+      var voz = vozSel && vozSel.value ? vozSel.value : 'S';
+      if (HINOS_VOZES.indexOf(voz) === -1) voz = 'S';
+      var st = { id: hinosGenerateId(), name: name, vozPrincipal: voz, hinos: { do: {}, mib: {}, sib: {} } };
+      ensureStudentHinosShape(st);
+      hinosState.students.push(st);
+      hinosState.activeStudentId = st.id;
+      saveHinosState();
+      if (inp) inp.value = '';
+      closeHinosNewStudentModal();
+      renderHinosStudentSelect();
+      refreshHinosVoiceButtons();
+      setMessage('Aluno adicionado: ' + name + '.');
+    },
+    removeActiveStudentIfConfirmed: function () {
+      var st = getActiveHinosStudent();
+      if (!st) return;
+      if (!window.confirm('Remover o aluno "' + (st.name || '') + '" e todo o progresso de hinos dele neste aparelho?')) return;
+      hinosState.students = hinosState.students.filter(function (s) { return s.id !== st.id; });
+      hinosState.activeStudentId = hinosState.students.length ? hinosState.students[0].id : null;
+      saveHinosState();
+      renderHinosStudentSelect();
+      refreshHinosVoiceButtons();
+    },
+    exportBackup: function () {
+      exportHinosBackup();
+    },
+    onImportBackupText: function (text) {
+      try {
+        var parsed = parseHinosBackupJson(text);
+        var merge = !window.confirm(
+          'Substituir todos os alunos e o progresso deste aparelho pelos dados do arquivo?\n\n' +
+          'OK = substituir tudo pelo backup.\n' +
+          'Cancelar = mesclar: mantém alunos que não estão no arquivo e atualiza quem tiver o mesmo ID.'
+        );
+        applyHinosBackupImport(parsed, merge ? 'merge' : 'replace');
+        setMessage(merge ? 'Backup mesclado com os dados locais.' : 'Backup importado: dados substituídos.');
+      } catch (e) {
+        setMessage('Não foi possível importar: ' + (e && e.message ? e.message : 'arquivo inválido.'));
+      }
+    },
+    onImportBackupReadError: function () {
+      setMessage('Não foi possível ler o arquivo.');
+    },
+    onAfinaçãoTabClick: function (afin) {
+      setHinosAfinaçãoTab(afin);
+      refreshHinosVoiceButtons();
+    },
+    onHinoPrev: function (numIn) {
+      if (hinosIsCoroKey(hinosSelectedKey)) return;
+      var n = clampHinoNum(parseInt(numIn.value, 10) - 1);
+      hinosSelectedKey = String(n);
+      numIn.value = String(n);
+      refreshHinosVoiceButtons();
+    },
+    onHinoNext: function (numIn) {
+      if (hinosIsCoroKey(hinosSelectedKey)) return;
+      var n = clampHinoNum(parseInt(numIn.value, 10) + 1);
+      hinosSelectedKey = String(n);
+      numIn.value = String(n);
+      refreshHinosVoiceButtons();
+    },
+    onHinoNumChange: function (numIn) {
+      var n = clampHinoNum(numIn.value);
+      hinosSelectedKey = String(n);
+      numIn.value = String(n);
+      refreshHinosVoiceButtons();
+    },
+    onVoiceButtonClick: function (v) {
+      if (!v) return;
+      if (toggleHinosVoice(v)) closeHinosEditorModal();
+    },
+    onStudyFlagClick: function (flag) {
+      toggleHinosStudyFlag(flag);
+    },
+    clearCurrentHinoVoices: function () {
+      clearCurrentHinoVoices();
+    },
+    closeEditorModal: function () {
+      closeHinosEditorModal();
+    },
+    closeNewStudentModal: function () {
+      closeHinosNewStudentModal();
+    },
+    openNewStudentModal: function () {
+      openHinosNewStudentModal();
+    },
+    onDocumentEscapeKey: function (e) {
+      var newM = document.getElementById('hinosNewStudentModal');
+      if (newM && !newM.classList.contains('hidden')) {
+        e.preventDefault();
+        closeHinosNewStudentModal();
+        return;
+      }
+      var m = document.getElementById('hinosEditorModal');
+      if (m && !m.classList.contains('hidden')) {
+        e.preventDefault();
+        closeHinosEditorModal();
+      }
+    }
+  };
+
+  // Coordenadas manuais do solfejo por imagem/mão.
+  // Formato: chave "N-lado" -> array com N ou mais pontos:
+  // [ponto1, ponto2, ...]
+  // Sem "preparacao". O loop é: 1 -> 2 -> ... -> N -> 1.
+  // Cada ponto usa coordenadas normalizadas (0..1) no tamanho natural da imagem.
+  // Exemplo: x=0.5 / y=0.5 = centro da imagem.
+  //
+  // Ajuste manualmente estes valores para alinhar a ponta do dedo exatamente nas bolinhas.
+  const SOLFEJO_MANUAL_POINTS = {
+    '2-direita': [
+
+      { x: 0.48, y: 0.72 }, // ponto 1
+      { x: 0.70, y: 0.50 }, // ponto 1
+      { x: 0.65, y: 0.22 }, // ponto 1
+      { x: 0.48, y: 0.32 },  // ponto 2
+      { x: 0.40, y: 0.22 },  // ponto 2
+      { x: 0.42, y: 0.22 }  // ponto 2
+
+    ],
+    '2-esquerda': [
+      { x: 0.50, y: 0.72 }, //  ponto 1 
+      { x: 0.35, y: 0.50 }, // ponto 1
+      { x: 0.31, y: 0.22 }, // ponto 1
+
+      { x: 0.48, y: 0.32 },  // ponto 2
+      { x: 0.58, y: 0.24 },  // ponto 2
+      { x: 0.50, y: 0.22 } //  ponto 2
+
+    ],
+    '3-direita': [
+      { x: 0.41, y: 0.71 }, //1
+      { x: 0.55, y: 0.51 }, //1
+      { x: 0.61, y: 0.48 }, //1
+
+      { x: 0.77, y: 0.54 }, //2
+      { x: 0.67, y: 0.29 }, //2
+      { x: 0.58, y: 0.25 }, //2
+
+      { x: 0.46, y: 0.34 }, //3
+      { x: 0.44, y: 0.20 }, //3
+      { x: 0.44, y: 0.71 }, //3
+
+    ],
+    '3-esquerda': [
+      { x: 0.59, y: 0.74 }, //1
+      { x: 0.47, y: 0.55 }, //1
+      { x: 0.37, y: 0.48 }, //1
+
+      { x: 0.23, y: 0.57 }, //2
+      { x: 0.28, y: 0.33 }, //2
+      { x: 0.41, y: 0.26 }, //2
+
+
+      { x: 0.55, y: 0.37 }, //3
+      { x: 0.58, y: 0.28 }, //3
+      { x: 0.54, y: 0.20 }, //3
+
+
+    ],
+    '4-direita': [
+      { x: 0.50, y: 0.73 }, //1
+      { x: 0.44, y: 0.55 }, //1
+      { x: 0.32, y: 0.52 }, //1
+
+      { x: 0.16, y: 0.58 }, //2
+      { x: 0.41, y: 0.42 }, //2
+      { x: 0.70, y: 0.42 }, //2
+
+
+      { x: 0.82, y: 0.49 }, //3
+      { x: 0.72, y: 0.26 }, //3
+      { x: 0.60, y: 0.25 }, //3
+
+      { x: 0.52, y: 0.33 }, //4
+      { x: 0.51, y: 0.28 }, //4
+      { x: 0.54, y: 0.20 }, //4
+    ],
+    '4-esquerda': [
+      { x: 0.46, y: 0.73 }, //1
+      { x: 0.57, y: 0.52 }, //1
+      { x: 0.70, y: 0.54 }, //1
+
+      { x: 0.80, y: 0.58 }, //2
+      { x: 0.48, y: 0.40 }, //2
+      { x: 0.32, y: 0.41 }, //2
+
+
+      { x: 0.16, y: 0.49 }, //3
+      { x: 0.22, y: 0.33 }, //3
+      { x: 0.33, y: 0.28 }, //3
+
+      { x: 0.44, y: 0.33 }, //4
+      { x: 0.45, y: 0.24 }, //4
+      { x: 0.43, y: 0.20 }, //4
+    ],
+    '6-direita': [
+
+      { x: 0.49, y: 0.74 }, //1
+      { x: 0.45, y: 0.64 }, //1
+      { x: 0.38, y: 0.63 }, //1
+
+      { x: 0.30, y: 0.68 }, //2
+      { x: 0.25, y: 0.58 }, //2
+      { x: 0.20, y: 0.54 }, //2
+
+      { x: 0.12, y: 0.60 }, //3
+      { x: 0.35, y: 0.44 }, //3
+      { x: 0.63, y: 0.45 }, //3
+
+      { x: 0.74, y: 0.55 }, //4
+      { x: 0.79, y: 0.46 }, //4
+      { x: 0.83, y: 0.46 }, //4
+
+      { x: 0.89, y: 0.51 }, //5
+      { x: 0.78, y: 0.26 }, //5
+      { x: 0.63, y: 0.28 }, //5
+
+      { x: 0.57, y: 0.35 }, //6
+      { x: 0.49, y: 0.20 }, //6
+      { x: 0.50, y: 0.50 }, //6
+    ],
+    '6-esquerda': [
+      { x: 0.49, y: 0.74 }, //1
+      { x: 0.54, y: 0.64 }, //1
+      { x: 0.64, y: 0.65 }, //1
+
+      { x: 0.69, y: 0.67 }, //2
+      { x: 0.73, y: 0.58 }, //2
+      { x: 0.78, y: 0.54 }, //2
+
+      { x: 0.87, y: 0.60 }, //3
+      { x: 0.63, y: 0.44 }, //3
+      { x: 0.40, y: 0.43 }, //3
+
+      { x: 0.24, y: 0.54 }, //4
+      { x: 0.20, y: 0.46 }, //4
+      { x: 0.14, y: 0.47 }, //4
+
+      { x: 0.08, y: 0.51 }, //5
+      { x: 0.18, y: 0.27 }, //5
+      { x: 0.35, y: 0.31 }, //5
+
+      { x: 0.40, y: 0.34 }, //6
+      { x: 0.49, y: 0.20 }, //6
+      { x: 0.46, y: 0.18 }, //6
+    ],
+    '9-direita': [
+      { x: 0.46, y: 0.73 }, //1
+      { x: 0.41, y: 0.63 }, //1
+      { x: 0.32, y: 0.60 }, //1
+
+      { x: 0.29, y: 0.66 }, //2
+      { x: 0.23, y: 0.58 }, //2
+      { x: 0.16, y: 0.57 }, //2
+
+
+      { x: 0.12, y: 0.60 }, //3
+      { x: 0.37, y: 0.50 }, //3
+      { x: 0.50, y: 0.54 }, //3
+
+      { x: 0.62, y: 0.58 }, //4
+      { x: 0.66, y: 0.52 }, //4
+      { x: 0.69, y: 0.53 }, //4
+
+      { x: 0.74, y: 0.55 }, //5
+      { x: 0.79, y: 0.50 }, //5
+      { x: 0.81, y: 0.51 }, //5
+
+      { x: 0.87, y: 0.52 }, //6
+      { x: 0.84, y: 0.38 }, //6
+      { x: 0.78, y: 0.33 }, //6
+
+      { x: 0.73, y: 0.36 }, //7
+      { x: 0.70, y: 0.26 }, //7
+      { x: 0.65, y: 0.27 }, //7
+
+      { x: 0.60, y: 0.33 }, //8
+      { x: 0.55, y: 0.24 }, //8
+      { x: 0.50, y: 0.25 }, //8
+
+      { x: 0.44, y: 0.29 }, //9
+      { x: 0.42, y: 0.24 }, //9
+      { x: 0.44, y: 0.20 }, //9
+
+
+    ],
+    '9-esquerda': [
+      { x: 0.53, y: 0.71 }, //1
+      { x: 0.58, y: 0.62 }, //1
+      { x: 0.63, y: 0.61 }, //1
+
+      { x: 0.69, y: 0.66 }, //2
+      { x: 0.74, y: 0.58 }, //2
+      { x: 0.80, y: 0.57 }, //2
+
+      { x: 0.85, y: 0.60 }, //3
+      { x: 0.63, y: 0.49 }, //3
+      { x: 0.50, y: 0.51 }, //3
+
+      { x: 0.36, y: 0.57 }, //4
+      { x: 0.32, y: 0.52 }, //4
+      { x: 0.29, y: 0.52 }, //4
+
+      { x: 0.23, y: 0.55 }, //5
+      { x: 0.18, y: 0.48 }, //5
+      { x: 0.13, y: 0.50 }, //5
+
+      { x: 0.09, y: 0.52 }, //6
+      { x: 0.11, y: 0.38 }, //6
+      { x: 0.16, y: 0.30 }, //6
+
+      { x: 0.24, y: 0.36 }, //7
+      { x: 0.28, y: 0.26 }, //7
+      { x: 0.32, y: 0.27 }, //7
+
+      { x: 0.38, y: 0.32 }, //8
+      { x: 0.41, y: 0.23 }, //8
+      { x: 0.49, y: 0.25 }, //8
+
+      { x: 0.52, y: 0.28 }, //9
+      { x: 0.55, y: 0.23 }, //9
+      { x: 0.54, y: 0.20 }, //9
+    ],
+    '12-direita': [
+      { x: 0.51, y: 0.79 }, //1
+      { x: 0.55, y: 0.74 }, //1
+
+      { x: 0.60, y: 0.78 }, //2
+      { x: 0.64, y: 0.70 }, //2
+
+      { x: 0.70, y: 0.77 }, //3
+      { x: 0.54, y: 0.64 }, //3
+
+      { x: 0.39, y: 0.70 }, //4
+      { x: 0.35, y: 0.65 }, //4
+
+      { x: 0.30, y: 0.69 }, //5
+      { x: 0.28, y: 0.60 }, //5
+
+      { x: 0.22, y: 0.67 }, //6
+      { x: 0.40, y: 0.49 }, //6
+
+      { x: 0.67, y: 0.60 }, //7
+      { x: 0.71, y: 0.54 }, //7
+
+      { x: 0.76, y: 0.58 }, //8
+      { x: 0.81, y: 0.52 }, //8
+
+      { x: 0.87, y: 0.55 }, //9
+      { x: 0.52, y: 0.37 }, //9
+
+      { x: 0.35, y: 0.38 }, //10
+      { x: 0.50, y: 0.30 }, //10
+
+      { x: 0.64, y: 0.34 }, //11
+      { x: 0.60, y: 0.22 }, //11
+
+      { x: 0.48, y: 0.25 }, //12
+      { x: 0.47, y: 0.20 }, //12
+
+    ],
+    '12-esquerda': [
+      { x: 0.49, y: 0.80 }, //1
+      { x: 0.45, y: 0.74 }, //1
+
+      { x: 0.41, y: 0.78 }, //2
+      { x: 0.37, y: 0.70 }, //2
+
+      { x: 0.31, y: 0.77 }, //3
+      { x: 0.54, y: 0.64 }, //3
+
+      { x: 0.64, y: 0.70 }, //4
+      { x: 0.67, y: 0.65 }, //4
+
+      { x: 0.72, y: 0.69 }, //5
+      { x: 0.74, y: 0.60 }, //5
+
+      { x: 0.81, y: 0.67 }, //6
+      { x: 0.65, y: 0.49 }, //6
+
+      { x: 0.35, y: 0.60 }, //7
+      { x: 0.30, y: 0.52 }, //7
+
+      { x: 0.25, y: 0.58 }, //8
+      { x: 0.20, y: 0.50 }, //8
+
+      { x: 0.15, y: 0.55 }, //9
+      { x: 0.50, y: 0.37 }, //9
+
+      { x: 0.69, y: 0.38 }, //10
+      { x: 0.49, y: 0.30 }, //10
+
+      { x: 0.37, y: 0.34 }, //11
+      { x: 0.42, y: 0.21 }, //11
+
+      { x: 0.52, y: 0.24 }, //12
+      { x: 0.55, y: 0.15 }, //12
+    ]
+  };
+
+  const CLAVES = [
+    { id: 'sol', nome: 'Sol', simbolo: '𝄞', fontSize: '74', y: '116', x: '18', anchor: 'start', baseline: 'alphabetic' },
+    // Clave de Dó (alto): o centro da clave marca o Dó na 3a linha.
+    { id: 'do', nome: 'Dó', simbolo: '𝄡', fontSize: '50', y: '105.5', x: '50', anchor: 'middle', baseline: 'middle' },
+    // Clave de Fá: os dois pontos devem "abraçar" a 4a linha (Fá).
+    { id: 'fa', nome: 'Fá', simbolo: '𝄢', fontSize: '53', y: '103.5', x: '60', anchor: 'middle', baseline: 'middle' }
+  ];
+
+  const CLEF_BOTTOM_LINE = {
+    sol: { noteId: 'mi', octave: 4 }, // Mi4 na 1a linha inferior
+    do: { noteId: 'fa', octave: 3 },  // F3 na 1a linha inferior -> 3a linha = Dó4
+    fa: { noteId: 'sol', octave: 2 }  // G2 na 1a linha inferior -> 4a linha = Fá3, 5a = Lá3
+  };
+
+  const NOTE_DEGREE = { do: 0, re: 1, mi: 2, fa: 3, sol: 4, la: 5, si: 6 };
+  const DEGREE_NOTE_ID = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
+  const NOTE_SEMITONE = { do: 0, re: 2, mi: 4, fa: 5, sol: 7, la: 9, si: 11 };
+
+  // ========== INICIALIZAÇÃO DO ÁUDIO ==========
+  function getAudioContext() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+  }
+
+  function createReverbImpulse(ctx, seconds, decay) {
+    if (!ctx) return null;
+    var len = Math.max(1, Math.floor(ctx.sampleRate * Math.max(0.4, seconds || 1.8)));
+    var impulse = ctx.createBuffer(2, len, ctx.sampleRate);
+    var ch;
+    for (ch = 0; ch < 2; ch++) {
+      var data = impulse.getChannelData(ch);
+      var i;
+      for (i = 0; i < len; i++) {
+        var t = i / len;
+        var env = Math.pow(1 - t, Math.max(1.2, decay || 2.2));
+        data[i] = (Math.random() * 2 - 1) * env;
+      }
+    }
+    return impulse;
+  }
+
+  function getReverbImpulse(ctx) {
+    if (!ctx) return null;
+    if (audioReverbImpulse && audioReverbImpulseCtx === ctx) return audioReverbImpulse;
+    try {
+      audioReverbImpulse = createReverbImpulse(ctx, calmMode ? 1.5 : 1.9, calmMode ? 2.0 : 2.35);
+      audioReverbImpulseCtx = ctx;
+      return audioReverbImpulse;
+    } catch (e) {
+      audioReverbImpulse = null;
+      audioReverbImpulseCtx = null;
+      return null;
+    }
+  }
+
+  /**
+   * Barramento de saída com tratamento leve para timbre mais natural.
+   * Mantém fallback para destination caso qualquer nó não possa ser criado.
+   */
+  function ensureAudioOutputBus(ctx) {
+    if (!ctx) return null;
+    if (audioOutputBus && audioOutputBusCtx === ctx) return audioOutputBus;
+    try {
+      var input = ctx.createGain();
+      var lowShelf = ctx.createBiquadFilter();
+      lowShelf.type = 'lowshelf';
+      lowShelf.frequency.value = 180;
+      lowShelf.gain.value = 1.8;
+
+      var highShelf = ctx.createBiquadFilter();
+      highShelf.type = 'highshelf';
+      highShelf.frequency.value = 4200;
+      highShelf.gain.value = -1.6;
+
+      var compressor = ctx.createDynamicsCompressor();
+      compressor.threshold.value = -18;
+      compressor.knee.value = 18;
+      compressor.ratio.value = 2.4;
+      compressor.attack.value = 0.01;
+      compressor.release.value = 0.22;
+
+      var limiter = ctx.createGain();
+      limiter.gain.value = calmMode ? 0.92 : 0.98;
+      var dryGain = ctx.createGain();
+      dryGain.gain.value = calmMode ? 0.88 : 0.84;
+      var wetGain = ctx.createGain();
+      wetGain.gain.value = calmMode ? 0.1 : 0.16;
+      var convolver = ctx.createConvolver();
+      convolver.normalize = true;
+      convolver.buffer = getReverbImpulse(ctx);
+
+      input.connect(lowShelf);
+      lowShelf.connect(highShelf);
+      highShelf.connect(compressor);
+      compressor.connect(dryGain);
+      compressor.connect(convolver);
+      convolver.connect(wetGain);
+      dryGain.connect(limiter);
+      wetGain.connect(limiter);
+      limiter.connect(ctx.destination);
+
+      audioOutputBus = input;
+      audioOutputBusCtx = ctx;
+      return audioOutputBus;
+    } catch (e) {
+      audioOutputBus = null;
+      audioOutputBusCtx = null;
+      return null;
+    }
+  }
+
+  function connectNodeToOutput(node, ctx) {
+    if (!node || !ctx) return;
+    var bus = ensureAudioOutputBus(ctx);
+    if (bus) {
+      node.connect(bus);
+      return;
+    }
+    node.connect(ctx.destination);
+  }
+
+  /**
+   * Perfis de EQ + saturação leve por instrumento.
+   * Os valores estão calibrados para tirar a aspereza típica de soundfont GM,
+   * dar corpo nas cordas, ar nos sopros e brilho nos metais, sem ficar artificial.
+   */
+  var INSTRUMENT_SHAPING_PROFILES = {
+    violino: {
+      filters: [
+        { type: 'highpass', frequency: 140, Q: 0.7 },
+        { type: 'peaking', frequency: 260, gain: 1.6, Q: 0.9 },
+        { type: 'peaking', frequency: 1100, gain: -2.0, Q: 1.2 },
+        { type: 'peaking', frequency: 3400, gain: 2.0, Q: 0.9 },
+        { type: 'highshelf', frequency: 9000, gain: -2.0 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    viola: {
+      filters: [
+        { type: 'highpass', frequency: 110, Q: 0.7 },
+        { type: 'peaking', frequency: 220, gain: 1.8, Q: 0.9 },
+        { type: 'peaking', frequency: 950, gain: -1.8, Q: 1.2 },
+        { type: 'peaking', frequency: 2800, gain: 1.6, Q: 0.9 },
+        { type: 'highshelf', frequency: 8500, gain: -2.4 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    violoncelo: {
+      filters: [
+        { type: 'highpass', frequency: 55, Q: 0.7 },
+        { type: 'peaking', frequency: 160, gain: 0.8, Q: 0.9 },
+        { type: 'peaking', frequency: 900, gain: 0.6, Q: 1.0 },
+        { type: 'peaking', frequency: 2200, gain: 0.8, Q: 0.9 },
+        { type: 'highshelf', frequency: 8500, gain: -1.4 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    contrabaixo: {
+      filters: [
+        { type: 'highpass', frequency: 32, Q: 0.7 },
+        { type: 'peaking', frequency: 90, gain: 1.0, Q: 0.9 },
+        { type: 'peaking', frequency: 700, gain: 0.5, Q: 1.0 },
+        { type: 'peaking', frequency: 1700, gain: 0.6, Q: 0.9 },
+        { type: 'highshelf', frequency: 7500, gain: -1.8 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    flauta: {
+      filters: [
+        { type: 'highpass', frequency: 180, Q: 0.7 },
+        { type: 'peaking', frequency: 600, gain: -1.4, Q: 1.0 },
+        { type: 'peaking', frequency: 3000, gain: 1.4, Q: 0.9 },
+        { type: 'highshelf', frequency: 6500, gain: 1.8 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    clarinete: {
+      filters: [
+        { type: 'highpass', frequency: 150, Q: 0.7 },
+        { type: 'peaking', frequency: 400, gain: 2.5, Q: 0.8 },   // Encorpa a ressonância chalumeau de madeira
+        { type: 'peaking', frequency: 1500, gain: -1.8, Q: 1.0 }, // Suaviza de forma sutil a aspereza média
+        { type: 'highshelf', frequency: 6500, gain: -2.5 }        // Suaviza levemente a sibilância extrema acima de 6.5kHz
+      ],
+      saturation: 0,
+      outGain: 1.12
+    },
+    oboe: {
+      filters: [
+        { type: 'highpass', frequency: 140, Q: 0.7 },
+        { type: 'peaking', frequency: 420, gain: 1.4, Q: 0.9 },
+        { type: 'peaking', frequency: 1700, gain: -1.4, Q: 1.0 },
+        { type: 'peaking', frequency: 3000, gain: 1.8, Q: 0.9 },
+        { type: 'highshelf', frequency: 9000, gain: -1.4 }
+      ],
+      saturation: 0,
+      outGain: 0.98
+    },
+    fagote: {
+      filters: [
+        { type: 'highpass', frequency: 55, Q: 0.7 },
+        { type: 'peaking', frequency: 140, gain: 1.4, Q: 0.8 },
+        { type: 'peaking', frequency: 900, gain: -0.8, Q: 1.0 },
+        { type: 'peaking', frequency: 2200, gain: 1.0, Q: 0.9 },
+        { type: 'highshelf', frequency: 7500, gain: -1.8 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    trompete: {
+      filters: [
+        { type: 'highpass', frequency: 150, Q: 0.7 },
+        { type: 'peaking', frequency: 280, gain: -1.6, Q: 1.0 },
+        { type: 'peaking', frequency: 1800, gain: 2.2, Q: 0.9 },
+        { type: 'peaking', frequency: 5000, gain: 1.6, Q: 0.9 },
+        { type: 'highshelf', frequency: 9000, gain: -1.8 }
+      ],
+      saturation: 0.18,
+      outGain: 0.92
+    },
+    trompa: {
+      filters: [
+        { type: 'highpass', frequency: 90, Q: 0.7 },
+        { type: 'peaking', frequency: 200, gain: 1.4, Q: 0.9 },
+        { type: 'peaking', frequency: 900, gain: -1.2, Q: 1.0 },
+        { type: 'peaking', frequency: 2600, gain: 1.6, Q: 0.9 },
+        { type: 'highshelf', frequency: 8000, gain: -2.4 }
+      ],
+      saturation: 0.10,
+      outGain: 0.96
+    },
+    trombone: {
+      filters: [
+        { type: 'highpass', frequency: 70, Q: 0.7 },
+        { type: 'peaking', frequency: 160, gain: 1.6, Q: 0.9 },
+        { type: 'peaking', frequency: 700, gain: -1.4, Q: 1.0 },
+        { type: 'peaking', frequency: 2200, gain: 1.8, Q: 0.9 },
+        { type: 'highshelf', frequency: 8500, gain: -2.0 }
+      ],
+      saturation: 0.14,
+      outGain: 0.94
+    },
+    voz: {
+      filters: [
+        { type: 'highpass', frequency: 110, Q: 0.7 },
+        { type: 'peaking', frequency: 280, gain: 1.2, Q: 0.9 },
+        { type: 'peaking', frequency: 2800, gain: 1.6, Q: 0.9 },
+        { type: 'highshelf', frequency: 9500, gain: -1.0 }
+      ],
+      saturation: 0,
+      outGain: 1.0
+    },
+    _default: { filters: [], saturation: 0, outGain: 1.0 }
+  };
+
+  function makeSoftSaturationCurve(amount) {
+    var n = 1024;
+    var curve = new Float32Array(n);
+    var k = Math.max(0, amount) * 4;
+    var denom = Math.tanh(1 + k);
+    for (var i = 0; i < n; i++) {
+      var x = (i * 2 / n) - 1;
+      curve[i] = denom > 0 ? Math.tanh(x * (1 + k)) / denom : x;
+    }
+    return curve;
+  }
+
+  function buildInstrumentShapingChain(ctx, instrumentId) {
+    if (!ctx) return null;
+    var profile = INSTRUMENT_SHAPING_PROFILES[instrumentId] || INSTRUMENT_SHAPING_PROFILES._default;
+    try {
+      var input = ctx.createGain();
+      input.gain.value = 1.0;
+      var output = ctx.createGain();
+      output.gain.value = profile.outGain != null ? profile.outGain : 1.0;
+
+      var head = input;
+      (profile.filters || []).forEach(function (f) {
+        var node = ctx.createBiquadFilter();
+        node.type = f.type;
+        node.frequency.value = f.frequency;
+        if (typeof f.gain === 'number') node.gain.value = f.gain;
+        if (typeof f.Q === 'number') node.Q.value = f.Q;
+        head.connect(node);
+        head = node;
+      });
+
+      if (profile.saturation && profile.saturation > 0) {
+        var shaper = ctx.createWaveShaper();
+        shaper.curve = makeSoftSaturationCurve(profile.saturation);
+        shaper.oversample = '2x';
+        head.connect(shaper);
+        head = shaper;
       }
 
-      /** Fallback: som por síntese (duração fixa). */
-      function playNoteSoundFallback(freq) {
-        var ctx = getAudioContext();
+      head.connect(output);
+      return { input: input, output: output };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /**
+   * Devolve o nó de entrada da cadeia de modelagem do instrumento já conectado ao barramento.
+   * Em caso de falha (instrumento desconhecido, contexto fechando), volta direto ao barramento.
+   */
+  function getInstrumentShapingDestination(ctx, instrumentId) {
+    if (!ctx) return null;
+    var bus = ensureAudioOutputBus(ctx);
+    if (instrumentShapingChainsCtx !== ctx) {
+      instrumentShapingChains = {};
+      instrumentShapingChainsCtx = ctx;
+    }
+    var chain = instrumentShapingChains[instrumentId];
+    if (!chain) {
+      chain = buildInstrumentShapingChain(ctx, instrumentId);
+      if (chain && bus) {
+        try { chain.output.connect(bus); }
+        catch (e) { chain = null; }
+      }
+      if (chain) instrumentShapingChains[instrumentId] = chain;
+    }
+    return chain ? chain.input : (bus || ctx.destination);
+  }
+
+  function getCurrentInstrumentTimbreProfile() {
+    var inst = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
+    if (inst === 'violino') return { attack: 0.022, release: 0.46, gainMul: 0.96 };
+    if (inst === 'viola') return { attack: 0.024, release: 0.48, gainMul: 0.97 };
+    if (inst === 'violoncelo') return { attack: 0.018, release: 0.50, gainMul: 1.00 };
+    if (inst === 'contrabaixo') return { attack: 0.020, release: 0.52, gainMul: 1.00 };
+    if (inst === 'flauta') return { attack: 0.013, release: 0.32, gainMul: 0.95 };
+    if (inst === 'clarinete') return { attack: 0.016, release: 0.38, gainMul: 0.96 };
+    if (inst === 'oboe') return { attack: 0.014, release: 0.36, gainMul: 0.93 };
+    if (inst === 'fagote') return { attack: 0.017, release: 0.40, gainMul: 0.97 };
+    if (inst === 'trompete') return { attack: 0.011, release: 0.30, gainMul: 0.90 };
+    if (inst === 'trompa') return { attack: 0.015, release: 0.38, gainMul: 0.94 };
+    if (inst === 'trombone') return { attack: 0.013, release: 0.34, gainMul: 0.92 };
+    if (inst === 'voz') return { attack: 0.024, release: 0.55, gainMul: 0.82 };
+    return { attack: 0.012, release: 0.34, gainMul: 0.95 };
+  }
+
+  /** Converte frequência (Hz) em nome da nota MIDI (ex.: 440 -> 'A4'). */
+  function freqToMidiNoteName(freq) {
+    var midi = Math.round(69 + 12 * Math.log2(freq / 440));
+    midi = Math.max(0, Math.min(127, midi));
+    var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    return names[midi % 12] + Math.floor(midi / 12);
+  }
+
+  /**
+   * Formantes base (neutro) + ajuste “voz feminina / mais aguda” no timbre (não muda a afinação da nota).
+   */
+  function vowelFormantsForPitchClass(pc) {
+    var rows = [
+      { f1: 780, bw1: 130, f2: 1180, bw2: 200, w1: 0.62, w2: 0.48, br: 0.42 },
+      { f1: 520, bw1: 110, f2: 1680, bw2: 240, w1: 0.5, w2: 0.62, br: 0.35 },
+      { f1: 520, bw1: 115, f2: 1760, bw2: 250, w1: 0.52, w2: 0.6, br: 0.34 },
+      { f1: 360, bw1: 100, f2: 2200, bw2: 280, w1: 0.42, w2: 0.72, br: 0.38 },
+      { f1: 300, bw1: 95, f2: 2320, bw2: 300, w1: 0.38, w2: 0.78, br: 0.4 },
+      { f1: 720, bw1: 140, f2: 1120, bw2: 190, w1: 0.65, w2: 0.46, br: 0.44 },
+      { f1: 580, bw1: 120, f2: 920, bw2: 170, w1: 0.58, w2: 0.5, br: 0.36 },
+      { f1: 540, bw1: 125, f2: 880, bw2: 165, w1: 0.56, w2: 0.52, br: 0.35 },
+      { f1: 470, bw1: 105, f2: 1080, bw2: 210, w1: 0.48, w2: 0.58, br: 0.33 },
+      { f1: 760, bw1: 135, f2: 1200, bw2: 195, w1: 0.64, w2: 0.5, br: 0.45 },
+      { f1: 380, bw1: 105, f2: 2100, bw2: 290, w1: 0.44, w2: 0.7, br: 0.37 },
+      { f1: 320, bw1: 100, f2: 2240, bw2: 300, w1: 0.4, w2: 0.76, br: 0.39 }
+    ];
+    var base = rows[((pc % 12) + 12) % 12];
+    var f1 = Math.min(960, base.f1 * 1.09);
+    var f2 = Math.min(2900, base.f2 * 1.11);
+    var f3 = Math.min(3800, Math.max(2680, f2 * 1.36 + 180));
+    return {
+      f1: f1,
+      bw1: Math.max(80, base.bw1 * 0.9),
+      f2: f2,
+      bw2: Math.max(150, base.bw2 * 0.88),
+      f3: f3,
+      bw3: Math.max(280, Math.min(520, f3 * 0.13 + 120)),
+      w1: base.w1 * 0.93,
+      w2: Math.min(0.88, base.w2 * 1.06),
+      w3: Math.min(0.33, 0.22 + Math.min(0.1, Math.max(0, f2 - 1000) / 8000)),
+      br: base.br * 0.9
+    };
+  }
+
+  /**
+   * “Laaaa / miii” sem TTS: pulso suave (triângulo) + sopro no ataque + dois formantes em paralelo (bandpass largo).
+   */
+  function schedulePlayerSungSolfejo(ctx, startAtCtx, freqHz, durationSec, playbackToken) {
+    if (!ctx || !soundEnabled) return;
+    if (playbackToken !== playerPlayToken || !playerPlayback.isPlaying) return;
+    if (!freqHz || !isFinite(freqHz) || freqHz <= 0) return;
+
+    var f = Math.max(90, Math.min(1800, freqHz));
+    var dur = Math.max(0.16, Math.min(durationSec || 0.35, 5));
+    var midi = Math.round(69 + 12 * Math.log2(f / 440));
+    midi = Math.max(0, Math.min(127, midi));
+    var pc = ((midi % 12) + 12) % 12;
+    var fm = vowelFormantsForPitchClass(pc);
+
+    var atk = Math.min(0.32, Math.max(0.08, dur * 0.24));
+    var rel = Math.min(0.42, Math.max(0.1, dur * 0.26));
+    var sustain = Math.max(0.05, dur - atk - rel);
+    var endT = startAtCtx + atk + sustain + rel + 0.06;
+
+    var peak = (calmMode ? 0.36 : 0.5) * INSTRUMENT_OUTPUT_GAIN;
+    if (peak > 0.68) peak = 0.68;
+
+    var master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, startAtCtx);
+    master.gain.exponentialRampToValueAtTime(peak, startAtCtx + atk);
+    master.gain.setValueAtTime(peak * 0.88, startAtCtx + atk + sustain);
+    master.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
+
+    function qFromBw(centerHz, bwHz) {
+      var bw = Math.max(40, bwHz);
+      var c = Math.max(80, centerHz);
+      return Math.max(0.9, Math.min(4.5, c / bw));
+    }
+
+    // --- Excitação periódica (menos “pure tone” que senoides + peaking) ---
+    var tri1 = ctx.createOscillator();
+    tri1.type = 'triangle';
+    tri1.frequency.setValueAtTime(f, startAtCtx);
+
+    var tri2 = ctx.createOscillator();
+    tri2.type = 'triangle';
+    tri2.frequency.setValueAtTime(f * 2, startAtCtx);
+    var gTri2 = ctx.createGain();
+    gTri2.gain.value = 0.095;
+
+    var tri3 = ctx.createOscillator();
+    tri3.type = 'triangle';
+    tri3.frequency.setValueAtTime(f * 3, startAtCtx);
+    var gTri3 = ctx.createGain();
+    gTri3.gain.value = 0.038;
+
+    var buzzMix = ctx.createGain();
+    buzzMix.gain.value = 1;
+    tri1.connect(buzzMix);
+    tri2.connect(gTri2);
+    gTri2.connect(buzzMix);
+    tri3.connect(gTri3);
+    gTri3.connect(buzzMix);
+
+    var buzzLp = ctx.createBiquadFilter();
+    buzzLp.type = 'lowpass';
+    buzzLp.frequency.setValueAtTime(Math.min(5200, Math.max(1900, f * 10)), startAtCtx);
+    buzzLp.Q.value = 0.65;
+    buzzMix.connect(buzzLp);
+
+    // --- Sopro (ruído) forte no começo, depois baixo — ajuda “fala” sem virar oboé ---
+    var nLen = Math.min(48000, Math.max(8000, Math.ceil(ctx.sampleRate * Math.min(0.55, dur + 0.12))));
+    var nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
+    var nd = nBuf.getChannelData(0);
+    var zi;
+    for (zi = 0; zi < nLen; zi++) nd[zi] = (Math.random() * 2 - 1) * 0.42;
+    var noise = ctx.createBufferSource();
+    noise.buffer = nBuf;
+    noise.loop = false;
+
+    var nHp = ctx.createBiquadFilter();
+    nHp.type = 'highpass';
+    nHp.frequency.value = 440;
+    nHp.Q.value = 0.65;
+    var nLp = ctx.createBiquadFilter();
+    nLp.type = 'lowpass';
+    nLp.frequency.value = 7800;
+    nLp.Q.value = 0.7;
+    noise.connect(nHp);
+    nHp.connect(nLp);
+
+    var breathGain = ctx.createGain();
+    breathGain.gain.setValueAtTime(0.0001, startAtCtx);
+    breathGain.gain.exponentialRampToValueAtTime(fm.br * (calmMode ? 0.85 : 1), startAtCtx + Math.min(0.07, atk * 0.45));
+    breathGain.gain.exponentialRampToValueAtTime(fm.br * 0.22, startAtCtx + atk + 0.02);
+    breathGain.gain.setValueAtTime(fm.br * 0.18, startAtCtx + atk + sustain * 0.5);
+    breathGain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + atk + sustain + rel);
+    nLp.connect(breathGain);
+
+    var excite = ctx.createGain();
+    excite.gain.value = 1;
+    buzzLp.connect(excite);
+    breathGain.connect(excite);
+
+    var bp1 = ctx.createBiquadFilter();
+    bp1.type = 'bandpass';
+    bp1.frequency.value = fm.f1;
+    bp1.Q.value = qFromBw(fm.f1, fm.bw1);
+
+    var bp2 = ctx.createBiquadFilter();
+    bp2.type = 'bandpass';
+    bp2.frequency.value = fm.f2;
+    bp2.Q.value = qFromBw(fm.f2, fm.bw2);
+
+    var bp3 = ctx.createBiquadFilter();
+    bp3.type = 'bandpass';
+    bp3.frequency.value = fm.f3;
+    bp3.Q.value = qFromBw(fm.f3, fm.bw3);
+
+    var w1 = ctx.createGain();
+    w1.gain.value = fm.w1;
+    var w2 = ctx.createGain();
+    w2.gain.value = fm.w2;
+    var w3 = ctx.createGain();
+    w3.gain.value = fm.w3;
+
+    var formantSum = ctx.createGain();
+    formantSum.gain.value = 1;
+    excite.connect(bp1);
+    excite.connect(bp2);
+    excite.connect(bp3);
+    bp1.connect(w1);
+    bp2.connect(w2);
+    bp3.connect(w3);
+    w1.connect(formantSum);
+    w2.connect(formantSum);
+    w3.connect(formantSum);
+
+    var body = ctx.createBiquadFilter();
+    body.type = 'peaking';
+    body.frequency.value = 2550;
+    body.Q.value = 0.72;
+    body.gain.value = calmMode ? 2.0 : 3.4;
+
+    formantSum.connect(body);
+    body.connect(master);
+    connectNodeToOutput(master, ctx);
+
+    var vibStart = startAtCtx + Math.min(atk * 0.55, 0.1);
+    var lfo = ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(5.1, startAtCtx);
+    var lfoGain = ctx.createGain();
+    lfoGain.gain.setValueAtTime(0, startAtCtx);
+    lfoGain.gain.linearRampToValueAtTime(calmMode ? 13 : 19, vibStart + 0.06);
+    lfo.connect(lfoGain);
+    lfoGain.connect(tri1.detune);
+
+    var nodes = [
+      tri1, tri2, tri3, gTri2, gTri3, buzzMix, buzzLp, noise, nHp, nLp, breathGain,
+      excite, bp1, bp2, bp3, w1, w2, w3, formantSum, body, master, lfo, lfoGain
+    ];
+
+    try {
+      tri1.start(startAtCtx);
+      tri2.start(startAtCtx);
+      tri3.start(startAtCtx);
+      noise.start(startAtCtx);
+      lfo.start(startAtCtx);
+      tri1.stop(endT);
+      tri2.stop(endT);
+      tri3.stop(endT);
+      noise.stop(endT);
+      lfo.stop(endT);
+    } catch (eStart) {
+      return;
+    }
+
+    playerPlayback.activeStops.push(function (now) {
+      var t = typeof now === 'number' ? now : ctx.currentTime;
+      try {
+        master.gain.cancelScheduledValues(t);
+        master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t);
+        master.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+      } catch (eG) { }
+      try {
+        tri1.stop(t + 0.05);
+        tri2.stop(t + 0.05);
+        tri3.stop(t + 0.05);
+        noise.stop(t + 0.05);
+        lfo.stop(t + 0.05);
+      } catch (eS) { }
+      setTimeout(function () {
+        nodes.forEach(function (n) {
+          try {
+            n.disconnect();
+          } catch (eD) { }
+        });
+      }, 140);
+    });
+  }
+
+  /** Opções de reprodução para deixar o timbre natural da soundfont. */
+  function buildSoundfontPlayOptions(durationSec, gainValue) {
+    var profile = getCurrentInstrumentTimbreProfile();
+    var g =
+      (typeof gainValue === 'number' && isFinite(gainValue) ? gainValue : 0.5) *
+      INSTRUMENT_OUTPUT_GAIN *
+      (profile.gainMul || 1);
+    if (g > 0.82) g = 0.82;
+    return {
+      duration: durationSec,
+      gain: g,
+      attack: typeof profile.attack === 'number' ? profile.attack : 0.02,
+      release: typeof profile.release === 'number' ? profile.release : 0.4
+    };
+  }
+
+  /** Ajusta a frequência conforme a tonalidade: sustenido = +1 semitom, bemol = -1 semitom. */
+  function getFreqInKey(noteId, baseFreq, key) {
+    if (!key || !baseFreq) return baseFreq;
+    if (key.sustenidos && key.sustenidos.indexOf(noteId) >= 0)
+      return baseFreq * Math.pow(2, 1 / 12);
+    if (key.bemolis && key.bemolis.indexOf(noteId) >= 0)
+      return baseFreq * Math.pow(2, -1 / 12);
+    return baseFreq;
+  }
+
+  /** Carrega o instrumento (amostras reais) do soundfont MusyngKite. */
+  function loadInstrument(instrumentId) {
+    var inst = INSTRUMENTOS.find(function (i) { return i.id === instrumentId; });
+    if (!inst) return Promise.resolve(null);
+
+    if (instrumentLoadPromises[instrumentId]) {
+      return instrumentLoadPromises[instrumentId];
+    }
+
+    var ctx = getAudioContext();
+    if (typeof Soundfont === 'undefined') {
+      instrumentLoadPromises[instrumentId] = Promise.resolve(null);
+      return instrumentLoadPromises[instrumentId];
+    }
+
+    var soundfontUrl = inst.soundfontUrl || 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/';
+    instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
+      from: soundfontUrl,
+      destination: getInstrumentShapingDestination(ctx, instrumentId) || ensureAudioOutputBus(ctx) || ctx.destination
+    }).then(function (loadedInst) {
+      return loadedInst;
+    }).catch(function () {
+      return null;
+    });
+
+    return instrumentLoadPromises[instrumentId];
+  }
+
+  /** Fallback: som por síntese (duração fixa). */
+  function playNoteSoundFallback(freq) {
+    var ctx = getAudioContext();
+    var now = ctx.currentTime;
+    var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
+    if (vol > 0.38) vol = 0.38;
+    var osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, now);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(vol, now + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+    osc.connect(g);
+    connectNodeToOutput(g, ctx);
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  function playGameSfx(type) {
+    if (!soundEnabled) return;
+    var ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    var now = ctx.currentTime;
+    var baseVol = calmMode ? 0.07 : 0.14;
+
+    function tone(freq, startOffset, duration, wave) {
+      var osc = ctx.createOscillator();
+      var g = ctx.createGain();
+      osc.type = wave || 'triangle';
+      osc.frequency.setValueAtTime(freq, now + startOffset);
+      g.gain.setValueAtTime(0.0001, now + startOffset);
+      g.gain.exponentialRampToValueAtTime(baseVol, now + startOffset + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
+      osc.connect(g);
+      connectNodeToOutput(g, ctx);
+      osc.start(now + startOffset);
+      osc.stop(now + startOffset + duration + 0.01);
+    }
+
+    if (type === 'correct') {
+      tone(523.25, 0.00, 0.10, 'triangle'); // C5
+      tone(659.25, 0.11, 0.12, 'triangle'); // E5
+      tone(783.99, 0.24, 0.14, 'triangle'); // G5
+    } else if (type === 'wrong') {
+      tone(329.63, 0.00, 0.10, 'sawtooth'); // E4
+      tone(277.18, 0.10, 0.12, 'sawtooth'); // C#4
+      tone(220.00, 0.22, 0.16, 'sawtooth'); // A3
+    }
+  }
+
+  /** Para a nota que está tocando sustentada (enquanto o botão está pressionado). */
+  function stopNoteSound() {
+    if (currentSustainedNoteStop) {
+      try { currentSustainedNoteStop(); } catch (e) { }
+      currentSustainedNoteStop = null;
+    }
+    Object.keys(activePointerNotes).forEach(function (pid) {
+      var p = activePointerNotes[pid];
+      if (!p) return;
+      if (p.cancelInit) {
+        try { p.cancelInit(); } catch (e) { }
+      }
+      if (p.stop) {
+        try { p.stop(); } catch (e) { }
+      }
+      if (p.cell) p.cell.classList.remove('playing');
+    });
+    activePointerNotes = {};
+  }
+
+  /**
+   * Inicia a nota em modo sustentado: toca enquanto não chamar stopNoteSound().
+   * Usado quando o botão fica pressionado.
+   */
+  function startNoteSound(noteId, freqHz) {
+    if (!soundEnabled) return;
+    stopNoteSound();
+    var nota = NOTAS.find(function (n) { return n.id === noteId; });
+    if (!nota) return;
+    var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+    freq = getFreqInKey(noteId, freq, currentKey);
+
+    var ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    loadInstrument(currentInstrument.id).then(function (inst) {
+      if (inst) {
+        var noteName = freqToMidiNoteName(freq);
+        var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
+        if (note && typeof note.stop === 'function') {
+          currentSustainedNoteStop = function () { note.stop(ctx.currentTime); };
+        }
+      } else {
         var now = ctx.currentTime;
         var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
         if (vol > 0.38) vol = 0.38;
@@ -2307,6017 +2658,7262 @@
         var g = ctx.createGain();
         g.gain.setValueAtTime(0, now);
         g.gain.linearRampToValueAtTime(vol, now + 0.05);
-        g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
         osc.connect(g);
         connectNodeToOutput(g, ctx);
         osc.start(now);
-        osc.stop(now + 0.75);
+        currentSustainedNoteStop = function () {
+          var t = ctx.currentTime;
+          g.gain.linearRampToValueAtTime(0, t + 0.05);
+          osc.stop(t + 0.06);
+        };
       }
+    }).catch(function () {
+      var now = ctx.currentTime;
+      var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
+      if (vol > 0.38) vol = 0.38;
+      var osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0, now);
+      g.gain.linearRampToValueAtTime(vol, now + 0.05);
+      osc.connect(g);
+      connectNodeToOutput(g, ctx);
+      osc.start(now);
+      currentSustainedNoteStop = function () {
+        var t = ctx.currentTime;
+        g.gain.linearRampToValueAtTime(0, t + 0.05);
+        osc.stop(t + 0.06);
+      };
+    });
+  }
 
-      function playGameSfx(type) {
-        if (!soundEnabled) return;
-        var ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
+  /** Inicia nota sustentada por ponteiro (suporta múltiplos toques). */
+  function startNoteSoundForPointer(noteId, freqHz, onReady) {
+    if (!soundEnabled) return function () { };
+    var nota = NOTAS.find(function (n) { return n.id === noteId; });
+    if (!nota) return function () { };
+    var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+    freq = getFreqInKey(noteId, freq, currentKey);
+    var ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    var cancelled = false;
+    var stopFn = null;
+    function setStop(fn) {
+      if (cancelled) {
+        try { fn(); } catch (e) { }
+        return;
+      }
+      stopFn = fn;
+      if (typeof onReady === 'function') onReady(fn);
+    }
+
+    loadInstrument(currentInstrument.id).then(function (inst) {
+      if (cancelled) return;
+      if (inst) {
+        var noteName = freqToMidiNoteName(freq);
+        var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
+        if (note && typeof note.stop === 'function') {
+          setStop(function () { note.stop(ctx.currentTime); });
+        }
+      } else {
         var now = ctx.currentTime;
-        var baseVol = calmMode ? 0.07 : 0.14;
-
-        function tone(freq, startOffset, duration, wave) {
-          var osc = ctx.createOscillator();
-          var g = ctx.createGain();
-          osc.type = wave || 'triangle';
-          osc.frequency.setValueAtTime(freq, now + startOffset);
-          g.gain.setValueAtTime(0.0001, now + startOffset);
-          g.gain.exponentialRampToValueAtTime(baseVol, now + startOffset + 0.01);
-          g.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
-          osc.connect(g);
-          connectNodeToOutput(g, ctx);
-          osc.start(now + startOffset);
-          osc.stop(now + startOffset + duration + 0.01);
-        }
-
-        if (type === 'correct') {
-          tone(523.25, 0.00, 0.10, 'triangle'); // C5
-          tone(659.25, 0.11, 0.12, 'triangle'); // E5
-          tone(783.99, 0.24, 0.14, 'triangle'); // G5
-        } else if (type === 'wrong') {
-          tone(329.63, 0.00, 0.10, 'sawtooth'); // E4
-          tone(277.18, 0.10, 0.12, 'sawtooth'); // C#4
-          tone(220.00, 0.22, 0.16, 'sawtooth'); // A3
-        }
-      }
-
-      /** Para a nota que está tocando sustentada (enquanto o botão está pressionado). */
-      function stopNoteSound() {
-        if (currentSustainedNoteStop) {
-          try { currentSustainedNoteStop(); } catch (e) {}
-          currentSustainedNoteStop = null;
-        }
-        Object.keys(activePointerNotes).forEach(function (pid) {
-          var p = activePointerNotes[pid];
-          if (!p) return;
-          if (p.cancelInit) {
-            try { p.cancelInit(); } catch (e) {}
-          }
-          if (p.stop) {
-            try { p.stop(); } catch (e) {}
-          }
-          if (p.cell) p.cell.classList.remove('playing');
+        var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
+        if (vol > 0.38) vol = 0.38;
+        var osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(vol, now + 0.05);
+        osc.connect(g);
+        connectNodeToOutput(g, ctx);
+        osc.start(now);
+        setStop(function () {
+          var t = ctx.currentTime;
+          g.gain.linearRampToValueAtTime(0, t + 0.05);
+          osc.stop(t + 0.06);
         });
-        activePointerNotes = {};
+      }
+    }).catch(function () {
+      if (cancelled) return;
+      var now = ctx.currentTime;
+      var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
+      if (vol > 0.38) vol = 0.38;
+      var osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0, now);
+      g.gain.linearRampToValueAtTime(vol, now + 0.05);
+      osc.connect(g);
+      connectNodeToOutput(g, ctx);
+      osc.start(now);
+      setStop(function () {
+        var t = ctx.currentTime;
+        g.gain.linearRampToValueAtTime(0, t + 0.05);
+        osc.stop(t + 0.06);
+      });
+    });
+
+    return function () {
+      cancelled = true;
+      if (stopFn) {
+        try { stopFn(); } catch (e) { }
+        stopFn = null;
+      }
+    };
+  }
+
+  /**
+   * Toca a nota por tempo fixo (usado no modo Desafio quando o jogo toca a nota).
+   */
+  function playNoteSound(noteId, freqHz) {
+    if (!soundEnabled) return;
+    var nota = NOTAS.find(function (n) { return n.id === noteId; });
+    if (!nota) return;
+    var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
+    freq = getFreqInKey(noteId, freq, currentKey);
+
+    var ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    loadInstrument(currentInstrument.id).then(function (inst) {
+      if (inst) {
+        var noteName = freqToMidiNoteName(freq);
+        inst.play(noteName, 0, buildSoundfontPlayOptions(1.25, calmMode ? 0.33 : 0.52));
+      } else {
+        playNoteSoundFallback(freq);
+      }
+    }).catch(function () {
+      playNoteSoundFallback(freq);
+    });
+  }
+
+  // ========== NARRAÇÃO (WEB SPEECH API) ==========
+  function speak(text, force) {
+    if (!force && !narrationEnabled) return;
+    if (!('speechSynthesis' in window)) return;
+    speechSynth = window.speechSynthesis;
+    speechSynth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'pt-BR';
+    u.rate = 0.9;
+    u.pitch = 1;
+    u.volume = calmMode ? 0.6 : 1;
+    speechSynth.speak(u);
+  }
+
+  function repeatInstruction() {
+    const msg = document.getElementById('instructionText');
+    if (msg && msg.textContent) speak(msg.textContent, true);
+  }
+
+  // ========== TRILHA AMBIENTE SUAVE (OPCIONAL) ==========
+  function startAmbient() {
+    if (!ambientEnabled || !soundEnabled) return;
+    const ctx = getAudioContext();
+    if (ambientOsc) return;
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, ctx.currentTime);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 1);
+    osc.connect(gain);
+    connectNodeToOutput(gain, ctx);
+    osc.start(ctx.currentTime);
+    ambientOsc = osc;
+    ambientGain = gain;
+  }
+
+  function stopAmbient() {
+    if (!ambientOsc || !ambientGain) return;
+    const ctx = getAudioContext();
+    ambientGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+    ambientOsc.stop(ctx.currentTime + 0.6);
+    ambientOsc = null;
+    ambientGain = null;
+  }
+
+  function toggleAmbient() {
+    ambientEnabled = !ambientEnabled;
+    const btn = document.getElementById('btnAmbient');
+    if (btn) btn.textContent = ambientEnabled ? '🎵 Ambiente ligado' : '🎵 Ambiente';
+    if (ambientEnabled) startAmbient(); else stopAmbient();
+  }
+
+  function updateFullscreenButton() {
+    return window.UiCoreModule.updateFullscreenButton();
+  }
+
+  function toggleFullscreen() {
+    return window.UiCoreModule.toggleFullscreen();
+  }
+
+  function readStoredThemeMode() {
+    try {
+      var raw = localStorage.getItem(THEME_STORAGE_KEY);
+      if (raw === 'light' || raw === 'dark' || raw === 'system') return raw;
+    } catch (e) { }
+    return 'light';
+  }
+
+  function writeStoredThemeMode(mode) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, mode);
+    } catch (e) { }
+  }
+
+  function effectiveThemeIsDark(mode) {
+    if (mode === 'dark') return true;
+    if (mode === 'light') return false;
+    try {
+      return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    } catch (e2) {
+      return false;
+    }
+  }
+
+  function applyThemeToDom(mode) {
+    var root = document.documentElement;
+    var dark = effectiveThemeIsDark(mode);
+    root.classList.remove('theme-light', 'theme-dark');
+    root.classList.add(dark ? 'theme-dark' : 'theme-light');
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    root.setAttribute('data-theme-mode', mode);
+    if (document.body) {
+      document.body.classList.remove('theme-light', 'theme-dark');
+      document.body.classList.add(dark ? 'theme-dark' : 'theme-light');
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0e0e10' : '#7d9d7a');
+  }
+
+  function themeModeButtonLabel(mode) {
+    if (mode === 'light') return 'Tema: claro';
+    if (mode === 'dark') return 'Tema: escuro';
+    return 'Tema: seguir sistema';
+  }
+
+  function syncThemeCycleButton() {
+    var btn = document.getElementById('btnThemeCycle');
+    if (!btn) return;
+    var mode = readStoredThemeMode();
+    var dark = effectiveThemeIsDark(mode);
+    btn.textContent = themeModeButtonLabel(mode);
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    btn.title = 'Alternar tema (claro, escuro ou seguir o sistema). Atual: ' + themeModeButtonLabel(mode) + '.';
+  }
+
+  function bindThemePreferenceListener() {
+    if (themePrefMqBound) return;
+    if (!window.matchMedia) return;
+    try {
+      themePrefMq = window.matchMedia('(prefers-color-scheme: dark)');
+    } catch (e) {
+      return;
+    }
+    themePrefMqHandler = function () {
+      if (readStoredThemeMode() !== 'system') return;
+      applyThemeToDom('system');
+      syncThemeCycleButton();
+    };
+    if (typeof themePrefMq.addEventListener === 'function') {
+      themePrefMq.addEventListener('change', themePrefMqHandler);
+    } else if (typeof themePrefMq.addListener === 'function') {
+      themePrefMq.addListener(themePrefMqHandler);
+    }
+    themePrefMqBound = true;
+  }
+
+  function cycleThemeMode() {
+    var cur = readStoredThemeMode();
+    var next = cur === 'system' ? 'light' : (cur === 'light' ? 'dark' : 'system');
+    writeStoredThemeMode(next);
+    applyThemeToDom(next);
+    syncThemeCycleButton();
+  }
+
+  function initTheme() {
+    applyThemeToDom(readStoredThemeMode());
+    bindThemePreferenceListener();
+    syncThemeCycleButton();
+  }
+
+  // ========== UI: MENSAGEM E MASCOTE ==========
+  function setMessage(text) {
+    return window.UiCoreModule.setMessage(text);
+  }
+
+  function showPositiveFeedback() {
+    const mascot = document.getElementById('mascot');
+    if (mascot) {
+      mascot.classList.add('happy');
+      setTimeout(function () { mascot.classList.remove('happy'); }, 800);
+    }
+    const msg = MENSAGENS_POSITIVAS[Math.floor(Math.random() * MENSAGENS_POSITIVAS.length)];
+    setMessage(msg);
+    speak(msg);
+  }
+
+  // ========== VIOLINO: DESTAQUE DA POSIÇÃO (todas as células com essa nota) ==========
+  function highlightViolinPosition(noteId) {
+    document.querySelectorAll('.finger-cell[data-note-id="' + noteId + '"]').forEach(function (cell) {
+      cell.classList.add('highlight');
+    });
+  }
+
+  // Destaque apenas uma célula específica no espelho (ex.: nota esperada no desafio).
+  // Para cordas usa `data-string-key` e `data-position` para evitar destacar todas as ocorrências da mesma nota.
+  function highlightViolinCellByTarget(target) {
+    if (!target || !target.id) return;
+
+    var selector = '.finger-cell[data-note-id="' + target.id + '"]';
+
+    if (target.stringKey) selector += '[data-string-key="' + target.stringKey + '"]';
+    if (typeof target.pos !== 'undefined' && target.pos !== null) selector += '[data-position="' + String(target.pos) + '"]';
+
+    var cells = document.querySelectorAll(selector);
+    if (!cells || cells.length === 0) {
+      // Fallback: caso a célula exata não exista (ex.: instrumentos sem string/pos), destaca por nota.
+      highlightViolinPosition(target.id);
+      return;
+    }
+
+    cells.forEach(function (cell) {
+      cell.classList.add('highlight');
+    });
+  }
+
+  function clearViolinHighlight() {
+    document.querySelectorAll('.finger-cell.highlight').forEach(function (cell) {
+      cell.classList.remove('highlight');
+    });
+  }
+
+  // ========== TONALIDADE: nome da nota na escala atual (ex.: Fá M → Sib) ==========
+  function getNoteNameInKey(noteId, key) {
+    return window.NoteUtils.getNoteNameInKey(noteId, key);
+  }
+
+  function getNoteName(noteId) {
+    return getNoteNameInKey(noteId, currentKey);
+  }
+
+  function freqClose(a, b) {
+    return window.NoteUtils.freqClose(a, b, 0.5);
+  }
+
+  function buildChallengeTargetLabel(target) {
+    return window.NoteUtils.buildChallengeTargetLabel(target, currentKey);
+  }
+
+  function diatonicValue(noteId, octave) {
+    return window.StaffMathUtils.diatonicValue(noteId, octave, NOTE_DEGREE);
+  }
+
+  function noteFromDiatonic(value) {
+    return window.StaffMathUtils.noteFromDiatonic(value, DEGREE_NOTE_ID);
+  }
+
+  function naturalMidi(noteId, octave) {
+    return window.StaffMathUtils.naturalMidi(noteId, octave, NOTE_SEMITONE);
+  }
+
+  function midiToFreq(midi) {
+    return window.StaffMathUtils.midiToFreq(midi);
+  }
+
+  function getLedgerLineDiffs(diff) {
+    return window.StaffMathUtils.getLedgerLineDiffs(diff);
+  }
+
+  function buildStaffPositionsForClef(clefId) {
+    var bottom = CLEF_BOTTOM_LINE[clefId] || CLEF_BOTTOM_LINE.sol;
+    var bottomDiatonic = diatonicValue(bottom.noteId, bottom.octave);
+    var positions = [];
+    for (var diff = STAFF_MIN_DIFF; diff <= STAFF_MAX_DIFF; diff++) {
+      var current = noteFromDiatonic(bottomDiatonic + diff);
+      var midi = naturalMidi(current.noteId, current.octave);
+      var y = STAFF_BOTTOM_LINE_Y - (diff * STAFF_STEP_PX);
+      var ledgerDiffs = getLedgerLineDiffs(diff);
+      var ledgerYs = ledgerDiffs.map(function (ledgerDiff) {
+        return STAFF_BOTTOM_LINE_Y - (ledgerDiff * STAFF_STEP_PX);
+      });
+      positions.push({
+        noteId: current.noteId,
+        octave: current.octave,
+        y: y,
+        freq: midiToFreq(midi),
+        ledgerYs: ledgerYs
+      });
+    }
+    return positions;
+  }
+
+  function updateViolinBoardLabels() {
+    document.querySelectorAll('.finger-cell').forEach(function (cell) {
+      var noteId = cell.dataset.noteId;
+      if (noteId) {
+        var noteName = getNoteNameInKey(noteId, currentKey);
+        var noteMain = cell.querySelector('.finger-note');
+        if (noteMain) {
+          noteMain.textContent = noteName;
+        } else {
+          cell.textContent = noteName;
+        }
+        var pos = cell.dataset.freq ? ' (freq: ' + Math.round(parseFloat(cell.dataset.freq)) + 'Hz)' : '';
+        var fingering = cell.dataset.fingering ? ', ' + cell.dataset.fingering : '';
+        cell.setAttribute('aria-label', 'Nota ' + noteName + pos + fingering);
+      }
+    });
+    document.querySelectorAll('.violin-board .string-label').forEach(function (el, i) {
+      if (CORDAS && CORDAS[i]) el.textContent = getNoteNameInKey(CORDAS[i], currentKey);
+    });
+  }
+
+  function createViolinBoard() {
+    const board = document.getElementById('violinBoard');
+    if (!board) return;
+    board.innerHTML = '';
+    board.classList.remove('wind-layout');
+
+    // Atualiza variáveis globais com o instrumento atual
+    CORDAS = currentInstrument.cordas || [];
+    CORDA_CLASS = currentInstrument.cordaClasses || {};
+    FINGERBOARD = currentInstrument.fingerboard || [];
+    FREQ_BOARD = currentInstrument.freqBoard || [];
+
+    // Atualiza título
+    var titleEl = document.getElementById('instrumentTitle');
+    if (titleEl) {
+      titleEl.textContent = currentInstrument.descricao || 'Espelho do instrumento';
+    }
+
+    // Atualiza mascote
+    var mascot = document.getElementById('mascot');
+    if (mascot) mascot.textContent = currentInstrument.emoji || '🎻';
+
+    // Instrumentos de corda: grade de cordas × posições
+    if (currentInstrument.tipo === 'corda' && CORDAS.length > 0 && FINGERBOARD.length > 0) {
+      board.style.gridTemplateColumns = '40px ' + '1fr '.repeat(5);
+      board.style.gridTemplateRows = 'auto '.repeat(CORDAS.length + 1);
+
+      // Cabeçalho: posições
+      var empty = document.createElement('div');
+      empty.className = 'pos-label';
+      empty.setAttribute('aria-hidden', 'true');
+      board.appendChild(empty);
+
+      for (var pos = 4; pos >= 0; pos--) {
+        var pl = document.createElement('div');
+        pl.className = 'pos-label';
+        pl.setAttribute('aria-hidden', 'true');
+        pl.textContent = pos;
+        board.appendChild(pl);
       }
 
-      /**
-       * Inicia a nota em modo sustentado: toca enquanto não chamar stopNoteSound().
-       * Usado quando o botão fica pressionado.
-       */
-      function startNoteSound(noteId, freqHz) {
-        if (!soundEnabled) return;
-        stopNoteSound();
-        var nota = NOTAS.find(function (n) { return n.id === noteId; });
-        if (!nota) return;
-        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-        freq = getFreqInKey(noteId, freq, currentKey);
+      // Linhas: uma por corda
+      for (var s = 0; s < CORDAS.length; s++) {
+        var stringKey = CORDAS[s];
+        var sl = document.createElement('div');
+        sl.className = 'string-label';
+        sl.setAttribute('aria-hidden', 'true');
+        sl.textContent = getNoteNameInKey(stringKey, currentKey);
+        board.appendChild(sl);
 
-        var ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
+        for (var pos = 4; pos >= 0; pos--) {
+          var noteId = FINGERBOARD[pos][s];
+          var freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
+          var cell = document.createElement('button');
+          cell.type = 'button';
+          cell.className = 'finger-cell pos-' + pos + ' ' + (CORDA_CLASS[stringKey] || '');
+          cell.dataset.noteId = noteId;
+          if (freq) cell.dataset.freq = String(freq);
+          cell.dataset.stringKey = stringKey;
+          cell.dataset.position = String(pos);
+          cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', posição ' + pos);
+          cell.textContent = getNoteNameInKey(noteId, currentKey);
+          board.appendChild(cell);
+        }
+      }
+    }
+    // Instrumentos de sopro/metal: teclas/válvulas simples (notas em linha)
+    else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
+      board.classList.add('wind-layout');
+      board.style.gridTemplateColumns = '1fr '.repeat(currentInstrument.notas.length);
+      board.style.gridTemplateRows = 'auto';
 
-        loadInstrument(currentInstrument.id).then(function (inst) {
-          if (inst) {
-            var noteName = freqToMidiNoteName(freq);
-            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
-            if (note && typeof note.stop === 'function') {
-              currentSustainedNoteStop = function () { note.stop(ctx.currentTime); };
-            }
-          } else {
-            var now = ctx.currentTime;
-            var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
-            if (vol > 0.38) vol = 0.38;
-            var osc = ctx.createOscillator();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now);
-            var g = ctx.createGain();
-            g.gain.setValueAtTime(0, now);
-            g.gain.linearRampToValueAtTime(vol, now + 0.05);
-            osc.connect(g);
-            connectNodeToOutput(g, ctx);
-            osc.start(now);
-            currentSustainedNoteStop = function () {
-              var t = ctx.currentTime;
-              g.gain.linearRampToValueAtTime(0, t + 0.05);
-              osc.stop(t + 0.06);
+      for (var i = 0; i < currentInstrument.notas.length; i++) {
+        var noteId = currentInstrument.notas[i];
+        var freq = currentInstrument.freqBoard[i] ? currentInstrument.freqBoard[i][0] : NOTAS.find(function (n) { return n.id === noteId; }).freq;
+        var fingeringText = currentInstrument.fingeringMap && currentInstrument.fingeringMap[noteId]
+          ? currentInstrument.fingeringMap[noteId]
+          : 'dedilhado basico';
+        var cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'finger-cell pos-' + i;
+        cell.dataset.noteId = noteId;
+        cell.dataset.freq = String(freq);
+        cell.dataset.fingering = fingeringText;
+        cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', ' + fingeringText);
+        cell.innerHTML = '<span class="finger-note">' + getNoteNameInKey(noteId, currentKey) + '</span><span class="finger-meta">' + fingeringText + '</span>';
+        board.appendChild(cell);
+      }
+    }
+  }
+
+  // ========== SELEÇÃO DE INSTRUMENTO ==========
+  function setInstrument(instrumentId) {
+    var inst = INSTRUMENTOS.find(function (i) { return i.id === instrumentId; });
+    if (!inst) return;
+
+    currentInstrument = inst;
+    createViolinBoard();
+    updateViolinBoardLabels();
+    clearViolinHighlight();
+    document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+
+    // Atualiza botões de instrumentos
+    document.querySelectorAll('.instrument-btn').forEach(function (btn) {
+      var active = btn.dataset.instrumentId === instrumentId;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+
+    var instMsgSuffix = 'Escolha um modo.';
+    if (currentMode === 'learn') instMsgSuffix = 'Mantenha pressionado numa nota para ouvir.';
+    else if (currentMode === 'player') instMsgSuffix = '';
+    if (currentMode !== 'player') {
+      setMessage('Instrumento: ' + inst.nome + '. ' + instMsgSuffix);
+    }
+    if (currentMode === 'hinos') {
+      syncHinosAfinaçãoFromInstrument(inst);
+      hinosLastSyncInstrumentId = inst.id;
+      refreshHinosVoiceButtons();
+    }
+    if (currentMode === 'player') {
+      renderPlayerCatalogControls();
+      loadPlayerSelectionFromCatalog(false).catch(function () { });
+    }
+  }
+
+  function createInstrumentButtons() {
+    var container = document.getElementById('instrumentTabs');
+    if (!container) return;
+    container.innerHTML = '';
+
+    INSTRUMENTOS.forEach(function (inst) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'instrument-btn du-btn du-btn-outline du-btn-sm' + (inst.id === currentInstrument.id ? ' active' : '');
+      btn.dataset.instrumentId = inst.id;
+      btn.setAttribute('aria-pressed', inst.id === currentInstrument.id ? 'true' : 'false');
+      btn.textContent = inst.emoji + ' ' + inst.nome;
+      container.appendChild(btn);
+    });
+  }
+
+  function updateBottomNavVisibility(forceVisible) {
+    return window.UiCoreModule.updateBottomNavVisibility(forceVisible);
+  }
+
+  function initBottomNavObserver() {
+    var sentinel = document.getElementById('bottomNavSentinel');
+    if (!sentinel) return;
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function () {
+        /* Nunca forçar true/false pelo IO: isIntersecting pode ficar false no fim do scroll em alguns layouts. Só recalcula. */
+        updateBottomNavVisibility();
+      }, {
+        root: null,
+        threshold: 0,
+        rootMargin: '0px 0px 80px 0px'
+      });
+      observer.observe(sentinel);
+      return;
+    }
+    updateBottomNavVisibility();
+  }
+
+  function setMoreMenuOpen(isOpen) {
+    var menu = document.getElementById('modeMoreMenu');
+    var btn = document.getElementById('btnMoreMenu');
+    if (!menu || !btn) return;
+    window.UiCoreModule.toggleClass(menu, 'hidden', !isOpen);
+    window.UiCoreModule.setAriaExpanded(btn, isOpen);
+  }
+
+  function openSettingsPanel() {
+    var modal = document.getElementById('settingsModal');
+    var btn = document.getElementById('btnMoreSettings');
+    var btnMoreMenu = document.getElementById('btnMoreMenu');
+    if (!modal) return;
+    setMoreMenuOpen(false);
+    modal.classList.remove('hidden');
+    if (btnMoreMenu) btnMoreMenu.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      window.UiCoreModule.setAriaExpanded(btn, true);
+    }
+  }
+
+  function closeSettingsPanel() {
+    var modal = document.getElementById('settingsModal');
+    var btn = document.getElementById('btnMoreSettings');
+    var btnMoreMenu = document.getElementById('btnMoreMenu');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    if (btn) {
+      btn.classList.remove('active');
+      window.UiCoreModule.setAriaExpanded(btn, false);
+    }
+    if (btnMoreMenu && currentMode !== 'tuner' && currentMode !== 'hinos') btnMoreMenu.classList.remove('active');
+  }
+
+  function tunerNoteToMidi(noteName) {
+    return window.TunerUtils.noteToMidi(noteName);
+  }
+
+  function tunerMidiToName(midi) {
+    return window.TunerUtils.midiToName(midi);
+  }
+
+  function tunerHumanNoteLabel(noteName) {
+    return window.TunerUtils.humanNoteLabel(noteName);
+  }
+
+  function tunerHumanNoteWithOctave(noteName) {
+    return window.TunerUtils.humanNoteWithOctave(noteName);
+  }
+
+  function tunerAdjacentHumanLabels(noteName) {
+    return window.TunerUtils.adjacentHumanLabels(noteName);
+  }
+
+  function tunerFreqToMidi(freq) {
+    return window.TunerUtils.freqToMidi(freq);
+  }
+
+  /** Detector com autocorrelacao normalizada, priorizando a fundamental real. */
+  function tunerDetectPitch(buf, sampleRate, minRmsOverride) {
+    var size = buf.length;
+    if (!size) return -1;
+    var rms = 0;
+    for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
+    rms = Math.sqrt(rms / size);
+    var rmsLimit = typeof minRmsOverride === 'number' ? minRmsOverride : 0.0018;
+    if (rms < rmsLimit) return -1;
+
+    var minFreq = 35;
+    var maxFreq = 1200;
+    var minOffset = Math.floor(sampleRate / maxFreq);
+    var maxOffset = Math.floor(sampleRate / minFreq);
+    if (maxOffset >= size) maxOffset = size - 1;
+    if (minOffset < 2) minOffset = 2;
+    if (maxOffset <= minOffset) return -1;
+
+    var correlations = new Float32Array(maxOffset + 1);
+    var bestOffset = -1;
+    var bestCorrelation = 0;
+    for (var offset = minOffset; offset <= maxOffset; offset++) {
+      var correlation = 0;
+      var energy1 = 0;
+      var energy2 = 0;
+      var samples = size - offset;
+      for (var j = 0; j < samples; j++) {
+        var a = buf[j];
+        var b = buf[j + offset];
+        correlation += a * b;
+        energy1 += a * a;
+        energy2 += b * b;
+      }
+      var denom = Math.sqrt(energy1 * energy2);
+      correlation = denom > 0 ? correlation / denom : 0;
+      correlations[offset] = correlation;
+      if (correlation > bestCorrelation) {
+        bestCorrelation = correlation;
+        bestOffset = offset;
+      }
+    }
+
+    var foundDip = false;
+    for (var t = minOffset + 1; t < maxOffset - 1; t++) {
+      var corr = correlations[t];
+      if (!foundDip) {
+        if (corr < 0.65) foundDip = true;
+        continue;
+      }
+      if (corr > 0.78 && corr >= correlations[t - 1] && corr >= correlations[t + 1]) {
+        bestOffset = t;
+        bestCorrelation = corr;
+        break;
+      }
+    }
+
+    if (bestOffset < 0 || bestCorrelation < 0.68) return -1;
+
+    var refinedOffset = bestOffset;
+    if (bestOffset > minOffset && bestOffset < maxOffset) {
+      var prevCorr = correlations[bestOffset - 1];
+      var currCorr = correlations[bestOffset];
+      var nextCorr = correlations[bestOffset + 1];
+      var denom2 = prevCorr - 2 * currCorr + nextCorr;
+      if (Math.abs(denom2) > 1e-9) {
+        refinedOffset = bestOffset + (prevCorr - nextCorr) / (2 * denom2);
+      }
+    }
+
+    if (!isFinite(refinedOffset) || refinedOffset <= 0) return -1;
+    var freq = sampleRate / refinedOffset;
+    if (!isFinite(freq) || freq < minFreq || freq > maxFreq) return -1;
+    return freq;
+  }
+
+  function tunerNormalizeFrequency(freq) {
+    var sel = document.getElementById('tunerInstrumentSelect');
+    var presetId = sel ? sel.value : 'chromatic';
+    var notes = TUNER_PRESETS[presetId] || [];
+    return window.TunerUtils.normalizeFrequency(freq, notes, {
+      freqToMidi: tunerFreqToMidi,
+      midiToFreq: midiToFreq,
+      noteToMidi: tunerNoteToMidi,
+      presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
+        return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
+      }
+    });
+  }
+
+  function tunerPresetTargetForFreq(freq) {
+    var sel = document.getElementById('tunerInstrumentSelect');
+    var presetId = sel ? sel.value : 'chromatic';
+    var notes = TUNER_PRESETS[presetId] || [];
+    return window.TunerUtils.presetTargetForFreq(freq, notes, tunerNoteToMidi, midiToFreq);
+  }
+
+  function renderTunerPresetDynamicInfo() {
+    var sel = document.getElementById('tunerInstrumentSelect');
+    var listEl = document.getElementById('tunerPresetDynamicList');
+    if (!sel || !listEl) return;
+    var presetId = sel.value || 'chromatic';
+    var notes = TUNER_PRESETS[presetId] || [];
+    listEl.innerHTML = '';
+    if (!notes.length) {
+      var empty = document.createElement('span');
+      empty.className = 'tuner-preset-dynamic-empty';
+      empty.textContent = 'Modo cromático: qualquer nota é válida.';
+      listEl.appendChild(empty);
+      return;
+    }
+    notes.forEach(function (noteName) {
+      var hz = window.TunerUtils.noteFrequency(noteName, tunerNoteToMidi, midiToFreq);
+      if (hz === null) return;
+      var chip = document.createElement('span');
+      chip.className = 'tuner-preset-dynamic-item du-badge du-badge-outline';
+      var hzText = window.TunerUtils.formatHz(hz, 1);
+      chip.textContent = noteName + ' \u00b7 ' + hzText;
+      listEl.appendChild(chip);
+    });
+  }
+
+  function updateTunerUINoSignal() {
+    var noteEl = document.getElementById('tunerDetectedNote');
+    var statusEl = document.getElementById('tunerStatus');
+    var fEl = document.getElementById('tunerFreqValue');
+    var tEl = document.getElementById('tunerTargetValue');
+    var cEl = document.getElementById('tunerCentsValue');
+    var placeholders = window.TunerUtils.noSignalPlaceholders();
+    window.UiCoreModule.setText(noteEl, placeholders.note);
+    if (statusEl) {
+      window.UiCoreModule.replaceStatusClasses(statusEl, ['ok', 'flat', 'sharp'], '');
+      statusEl.textContent = placeholders.statusText;
+    }
+    if (fEl) {
+      fEl.textContent = window.TunerUtils.formatHz(tunerLastFreq, 2);
+    }
+    window.UiCoreModule.setText(tEl, placeholders.target);
+    window.UiCoreModule.setText(cEl, placeholders.deviation);
+    var idleState = window.TunerUtils.idleUiState();
+    tunerLastCents = idleState.cents;
+    tunerLastStatus = idleState.status;
+    tunerLastNote = idleState.note;
+    tunerLastTargetFreq = idleState.targetFreq;
+    tunerRawHistory = idleState.rawHistory;
+    drawTunerGauge(0, 'idle');
+  }
+
+  function resizeCanvasToDisplay(canvas) {
+    return window.UiCoreModule.resizeCanvasToDisplay(canvas);
+  }
+
+  function getTunerSmoothingConfig() {
+    return window.TunerUtils.getSmoothingConfig();
+  }
+
+  /** Suavização mais forte que o afinador isolado: leitura ao vivo prioriza estabilidade em ruído. */
+  function getPlayerLiveSmoothingConfig() {
+    return { alpha: 0.4, medianWindow: 4 };
+  }
+
+  function tunerMedian(values) {
+    return window.TunerUtils.median(values);
+  }
+
+  function drawTunerGauge(deviationHz, statusMode) {
+    var canvas = document.getElementById('tunerGauge');
+    if (!canvas) return;
+    resizeCanvasToDisplay(canvas);
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    var w = canvas.width;
+    var h = canvas.height;
+    if (w < 60 || h < 60) return;
+    ctx.clearRect(0, 0, w, h);
+    var s = Math.max(0.2, Math.min(1.6, w / 540));
+
+    var cx = w * 0.5;
+    var cy = h * 0.84;
+    var radius = Math.min(w * 0.44, h * 0.62);
+    var deviationRangeHz = 50;
+
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    // Geometria da regua: -50 (esquerda/baixo) -> 0 (topo) -> +50 (direita/baixo)
+    // No canvas, para cruzar pelo topo precisamos usar o angulo final equivalente em 340deg.
+    var startAng = degToRad(200);
+    var endAng = degToRad(340);
+    var span = endAng - startAng;
+
+    // Arco azul (laterais)
+    ctx.lineWidth = 9 * s;
+    ctx.strokeStyle = '#88b5de';
+    var leftEnd = startAng + ((-10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
+    var rightStart = startAng + ((10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, startAng, leftEnd, false);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, rightStart, endAng, false);
+    ctx.stroke();
+
+    // Faixa afinada central (verde)
+    ctx.lineWidth = 9 * s;
+    ctx.strokeStyle = '#9ed948';
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, leftEnd, rightStart, false);
+    ctx.stroke();
+
+    // Leque discreto central (fundo escuro transparente)
+    ctx.fillStyle = 'rgba(78, 104, 129, 0.24)';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + 2 * s);
+    ctx.arc(cx, cy, radius - 32 * s, leftEnd, rightStart, false);
+    ctx.closePath();
+    ctx.fill();
+
+    // Regua de desvio em Hz: -50 .. 0 .. +50 (de 10 em 10)
+    ctx.lineWidth = 1.2 * s;
+    ctx.font = '700 ' + Math.round(9 * s) + 'px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var t = -deviationRangeHz; t <= deviationRangeHz; t += 10) {
+      var normalizedTick = (t + deviationRangeHz) / (2 * deviationRangeHz);
+      var a = startAng + normalizedTick * span;
+      var x1 = cx + (radius - 1) * Math.cos(a);
+      var y1 = cy + (radius - 1) * Math.sin(a);
+      var len = t % 50 === 0 ? 12 : Math.abs(t) <= 10 ? 11 : 7;
+      var x2 = cx + (radius - len) * Math.cos(a);
+      var y2 = cy + (radius - len) * Math.sin(a);
+      var isCenterBand = Math.abs(t) <= 10;
+      ctx.strokeStyle = isCenterBand ? '#9ed948' : '#88b5de';
+      ctx.fillStyle = isCenterBand ? '#9ed948' : '#88b5de';
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+      if (t % 10 === 0) {
+        var lx = cx + (radius + 14) * Math.cos(a);
+        var ly = cy + (radius + 14) * Math.sin(a);
+        var lab = String(t);
+        ctx.fillText(lab, lx, ly);
+      }
+    }
+
+    // Ponteiro
+    var clamped = Math.max(-deviationRangeHz, Math.min(deviationRangeHz, deviationHz));
+    var normalized = (clamped + deviationRangeHz) / (2 * deviationRangeHz);
+    var ang = startAng + normalized * span;
+    var nx = cx + (radius - 16) * Math.cos(ang);
+    var ny = cy + (radius - 16) * Math.sin(ang);
+    ctx.strokeStyle = '#db2730';
+    ctx.lineWidth = 3.2 * s;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(nx, ny);
+    ctx.stroke();
+    var isInTune = statusMode === 'ok';
+    var statusR = 18 * s;
+    ctx.fillStyle = isInTune ? '#95ff17' : '#2a3344';
+    ctx.beginPath();
+    ctx.arc(cx, cy, statusR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = isInTune ? '#678735' : '#5d6b85';
+    ctx.lineWidth = 1.6 * s;
+    ctx.stroke();
+    ctx.fillStyle = isInTune ? '#1f7240' : '#ff6c79';
+    ctx.font = '900 ' + Math.round(22 * s) + 'px Segoe UI';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(isInTune ? '✓' : 'X', cx, cy);
+    ctx.textBaseline = 'alphabetic';
+
+    // Nota atual com oitava no topo
+    var adjacent = tunerAdjacentHumanLabels(tunerLastNote);
+    ctx.fillStyle = '#7fa8d3';
+    ctx.font = '700 ' + Math.round(13 * s) + 'px Segoe UI';
+    ctx.fillText(tunerHumanNoteWithOctave(tunerLastNote) + (tunerLastTargetFreq ? ': ' + Math.round(tunerLastTargetFreq) + 'Hz' : ''), cx, 18 * s);
+
+    // Nota anterior e proxima nas laterais da regua
+    ctx.fillStyle = '#7fa8d3';
+    ctx.font = '700 ' + Math.round(12 * s) + 'px Segoe UI';
+    ctx.fillText(adjacent.prev, cx - radius * 0.93, cy - radius * 0.13);
+    ctx.fillText(adjacent.next, cx + radius * 0.93, cy - radius * 0.13);
+
+    // Badge de cents no lado direito (como apps de tuner)
+    var badgeX = cx + radius * 0.48;
+    var badgeY = cy - radius * 0.30;
+    var liveHz = tunerLastFreq && isFinite(tunerLastFreq) ? tunerLastFreq.toFixed(1) : '--';
+    var badgeText = liveHz + 'Hz';
+    ctx.fillStyle = 'rgba(47, 71, 104, 0.9)';
+    ctx.strokeStyle = 'rgba(106, 145, 196, 0.9)';
+    ctx.lineWidth = 1 * s;
+    var bw = 78 * s;
+    var bh = 38 * s;
+    ctx.beginPath();
+    ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5 * s);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#8ab8f1';
+    ctx.font = '700 ' + Math.round(20 * s) + 'px Segoe UI';
+    ctx.fillText(badgeText, badgeX, badgeY + 1);
+  }
+
+  function drawTunerChart() {
+    var canvas = document.getElementById('tunerHzChart');
+    if (!canvas) return;
+    resizeCanvasToDisplay(canvas);
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    var w = canvas.width;
+    var h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillRect(0, 0, w, h);
+
+    if (!tunerHistory.length) return;
+    var bounds = window.TunerUtils.chartBounds(tunerHistory, 2);
+    if (!bounds) return;
+    var min = bounds.min;
+    var max = bounds.max;
+
+    ctx.strokeStyle = 'rgba(125,157,122,0.25)';
+    ctx.lineWidth = 1;
+    for (var g = 1; g <= 3; g++) {
+      var gy = (h / 4) * g;
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(w, gy);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = '#5f9f77';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    tunerHistory.forEach(function (v, i) {
+      var x = (i / Math.max(1, tunerHistory.length - 1)) * w;
+      var y = h - ((v - min) / (max - min)) * h;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  function updateTunerUI(freq) {
+    var analysis = window.TunerUtils.analyzeFrequency(freq, {
+      freqToMidi: tunerFreqToMidi,
+      midiToFreq: midiToFreq,
+      midiToName: tunerMidiToName,
+      presetTargetForFreq: tunerPresetTargetForFreq
+    });
+    var targetFreq = analysis.targetFreq;
+    var deviationHz = analysis.deviationHz;
+    var noteName = analysis.noteName;
+
+    var noteEl = document.getElementById('tunerDetectedNote');
+    var statusEl = document.getElementById('tunerStatus');
+    var fEl = document.getElementById('tunerFreqValue');
+    var tEl = document.getElementById('tunerTargetValue');
+    var cEl = document.getElementById('tunerCentsValue');
+    window.UiCoreModule.setText(noteEl, tunerHumanNoteLabel(noteName));
+    if (fEl) fEl.textContent = window.TunerUtils.formatHz(freq, 2);
+    if (tEl) tEl.textContent = window.TunerUtils.formatHz(targetFreq, 2);
+    if (cEl) {
+      cEl.textContent = window.TunerUtils.formatSignedHz(deviationHz, 1);
+    }
+    tunerLastCents = deviationHz;
+    tunerLastNote = noteName;
+    tunerLastTargetFreq = targetFreq;
+    tunerLastFreq = freq;
+    if (statusEl) {
+      var statusInfo = window.TunerUtils.statusFromDeviation(deviationHz, 0.8);
+      window.UiCoreModule.replaceStatusClasses(statusEl, ['ok', 'flat', 'sharp'], statusInfo.mode);
+      tunerLastStatus = statusInfo.mode;
+      statusEl.textContent = statusInfo.text;
+    }
+    drawTunerGauge(deviationHz, tunerLastStatus);
+  }
+
+  function tunerLoop() {
+    if (!tunerRunning || !tunerAnalyzer || !tunerData) return;
+    tunerAnalyzer.getFloatTimeDomainData(tunerData);
+    var raw = tunerDetectPitch(tunerData, tunerAnalyzer.context.sampleRate);
+    if (raw > 0) {
+      tunerNoSignalFrames = 0;
+      var cfg = getTunerSmoothingConfig();
+      var normalizedRaw = tunerNormalizeFrequency(raw);
+      window.TunerUtils.pushWithLimit(tunerRawHistory, normalizedRaw, 6);
+      var win = Math.min(cfg.medianWindow, tunerRawHistory.length);
+      var filtered = tunerMedian(tunerRawHistory.slice(-win));
+      tunerSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(tunerSmoothedFreq, filtered, cfg.alpha);
+      updateTunerUI(tunerSmoothedFreq);
+      window.TunerUtils.pushWithLimit(tunerHistory, tunerSmoothedFreq, 90);
+    } else {
+      tunerNoSignalFrames += 1;
+      if (tunerSmoothedFreq > 0) {
+        window.TunerUtils.pushWithLimit(tunerHistory, tunerSmoothedFreq, 90);
+        var holdFreqEl = document.getElementById('tunerFreqValue');
+        if (holdFreqEl) {
+          holdFreqEl.textContent = window.TunerUtils.formatHz(tunerSmoothedFreq, 2);
+        }
+        tunerLastFreq = tunerSmoothedFreq;
+        drawTunerGauge(tunerLastCents, tunerLastStatus);
+      }
+      if (tunerNoSignalFrames > 16) {
+        tunerSmoothedFreq = 0;
+        updateTunerUINoSignal();
+      }
+    }
+    drawTunerChart();
+    tunerFrameId = requestAnimationFrame(tunerLoop);
+  }
+
+  function requestScreenWakeLock() {
+    if (!('wakeLock' in navigator) || wakeLockSentinel) return;
+    navigator.wakeLock.request('screen').then(function (lock) {
+      wakeLockSentinel = lock;
+      lock.addEventListener('release', function () {
+        wakeLockSentinel = null;
+      });
+    }).catch(function () { });
+  }
+
+  function bootstrapScreenWakeLock() {
+    if (wakeLockBootstrapped) return;
+    wakeLockBootstrapped = true;
+    requestScreenWakeLock();
+    ['pointerdown', 'touchstart', 'keydown'].forEach(function (eventName) {
+      window.addEventListener(eventName, requestScreenWakeLock, { passive: true });
+    });
+  }
+
+  function releaseScreenWakeLock() {
+    if (!wakeLockSentinel) return;
+    wakeLockSentinel.release().catch(function () { });
+    wakeLockSentinel = null;
+  }
+
+  function ensureMicrophonePermission() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      return Promise.resolve(false);
+    }
+    return navigator.mediaDevices.getUserMedia({
+      audio: {
+        channelCount: 1,
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    }).then(function (stream) {
+      return stream;
+    });
+  }
+
+  function setTunerMicDeniedVisible(visible) {
+    var wrap = document.getElementById('tunerMicDeniedWrap');
+    window.UiCoreModule.setHiddenClass(wrap, !visible);
+  }
+
+  function guessAndroidBrowserPackage() {
+    var ua = navigator.userAgent || '';
+    if (/SamsungBrowser/i.test(ua)) return 'com.sec.android.app.sbrowser';
+    if (/Firefox/i.test(ua)) return 'org.mozilla.firefox';
+    if (/EdgA/i.test(ua)) return 'com.microsoft.emmx';
+    if (/Brave/i.test(ua)) return 'com.brave.browser';
+    if (/OPR|Opera/i.test(ua)) return 'com.opera.browser';
+    return 'com.android.chrome';
+  }
+
+  /** Android: tenta abrir a tela de detalhes do app do navegador (onde ficam as permissões). iOS/desktop: não há URL universal; abre o passo a passo. */
+  function tryOpenTunerMicrophoneSettings() {
+    var ua = navigator.userAgent || '';
+    if (/Android/i.test(ua)) {
+      var pkg = guessAndroidBrowserPackage();
+      var intentUrl = 'intent://#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:' + pkg + ';end';
+      try {
+        window.location.href = intentUrl;
+      } catch (e) { }
+      return;
+    }
+    openTunerMicHelpModal();
+  }
+
+  function buildTunerMicHelpHtml() {
+    var ua = navigator.userAgent || '';
+    if (/Android/i.test(ua)) {
+      return (
+        '<p><strong>Android</strong></p>' +
+        '<ol>' +
+        '<li>Abra <strong>Configurações</strong> do aparelho.</li>' +
+        '<li><strong>Aplicativos</strong> (ou Apps) → encontre o <strong>navegador</strong> que você usa (Chrome, Samsung Internet, Firefox…).</li>' +
+        '<li><strong>Permissões</strong> → <strong>Microfone</strong> → <strong>Permitir</strong>.</li>' +
+        '</ol>' +
+        '<p>O botão <strong>Abrir configurações</strong> tenta levar direto à página desse app. Se não abrir, siga os passos acima.</p>' +
+        '<p>No próprio site: toque no <strong>cadeado</strong> ou <strong>⋮</strong> na barra de endereço → <strong>Permissões</strong> → Microfone.</p>'
+      );
+    }
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      return (
+        '<p><strong>iPhone / iPad</strong></p>' +
+        '<p>O Safari não permite abrir Ajustes a partir de um site. Faça manualmente:</p>' +
+        '<ul style="margin:0 0 0.65rem 1rem;padding:0;">' +
+        '<li><strong>Safari:</strong> Ajustes → Safari → Microfone; ou Ajustes → Privacidade e segurança → Microfone.</li>' +
+        '<li>No site: toque em <strong>Aa</strong> à esquerda do endereço → <strong>Configurações do site</strong> → Microfone.</li>' +
+        '<li><strong>App na tela inicial (PWA):</strong> Ajustes → role até <strong>GEM Tools</strong> → Microfone.</li>' +
+        '</ul>'
+      );
+    }
+    return (
+      '<p><strong>Computador (Chrome / Edge / Firefox)</strong></p>' +
+      '<ol>' +
+      '<li>Clique no <strong>cadeado</strong> ou no ícone à esquerda do endereço.</li>' +
+      '<li><strong>Permissões do site</strong> ou <strong>Configurações do site</strong> → Microfone → <strong>Permitir</strong>.</li>' +
+      '</ol>' +
+      '<p>Ou: menu do navegador → Configurações → Privacidade e segurança → Configurações do site → Microfone.</p>'
+    );
+  }
+
+  function openTunerMicHelpModal() {
+    var modal = document.getElementById('tunerMicHelpModal');
+    var body = document.getElementById('tunerMicHelpContent');
+    if (body) body.innerHTML = buildTunerMicHelpHtml();
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeTunerMicHelpModal() {
+    var modal = document.getElementById('tunerMicHelpModal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function stopTuner() {
+    tunerRunning = false;
+    tunerNoSignalFrames = 0;
+    if (tunerFrameId) {
+      cancelAnimationFrame(tunerFrameId);
+      tunerFrameId = 0;
+    }
+    if (tunerSource) {
+      try {
+        tunerSource.disconnect();
+      } catch (e) { }
+      tunerSource = null;
+    }
+    if (tunerStream) {
+      tunerStream.getTracks().forEach(function (t) {
+        try {
+          t.stop();
+        } catch (e) { }
+      });
+      tunerStream = null;
+    }
+    tunerData = null;
+    tunerFreqData = null;
+    var st = document.getElementById('tunerStatus');
+    if (st) {
+      st.classList.remove('ok', 'flat', 'sharp');
+      st.textContent = 'Microfone parado';
+    }
+    var startBtn = document.getElementById('tunerStartBtn');
+    var stopBtn = document.getElementById('tunerStopBtn');
+    window.UiCoreModule.setDisabled(startBtn, false);
+    window.UiCoreModule.setDisabled(stopBtn, true);
+  }
+
+  function startTuner() {
+    if (tunerRunning) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setMessage('Este navegador não suporta acesso ao microfone.');
+      return;
+    }
+    ensureMicrophonePermission().then(function (stream) {
+      var ctx = getAudioContext();
+      if (!ctx) {
+        stream.getTracks().forEach(function (t) { t.stop(); });
+        return;
+      }
+      tunerStream = stream;
+      tunerAnalyzer = ctx.createAnalyser();
+      tunerAnalyzer.fftSize = 8192;
+      tunerAnalyzer.smoothingTimeConstant = 0;
+      tunerSource = ctx.createMediaStreamSource(stream);
+      tunerSource.connect(tunerAnalyzer);
+      tunerData = new Float32Array(tunerAnalyzer.fftSize);
+      tunerFreqData = new Uint8Array(tunerAnalyzer.frequencyBinCount);
+      tunerHistory = [];
+      tunerRawHistory = [];
+      tunerSmoothedFreq = 0;
+      tunerNoSignalFrames = 0;
+      tunerRunning = true;
+      setTunerMicDeniedVisible(false);
+      var startBtn = document.getElementById('tunerStartBtn');
+      var stopBtn = document.getElementById('tunerStopBtn');
+      window.UiCoreModule.setDisabled(startBtn, true);
+      window.UiCoreModule.setDisabled(stopBtn, false);
+      requestScreenWakeLock();
+      setMessage('Afinador ativo. Toque uma corda/nota do instrumento.');
+      tunerLoop();
+    }).catch(function () {
+      var st = document.getElementById('tunerStatus');
+      if (st) st.textContent = 'Permissão do microfone bloqueada';
+      setMessage('Não foi possível acessar o microfone para o afinador.');
+      setTunerMicDeniedVisible(true);
+    });
+  }
+
+  function resizePlayerOsmdIfActive() {
+    if (currentMode !== 'player' || !playerOsmd) return;
+    try {
+      if (typeof playerOsmd.resize === 'function') playerOsmd.resize();
+    } catch (e) { }
+    requestAnimationFrame(function () {
+      if (currentMode === 'player') buildPlayerNoteAnchorsFromDom();
+    });
+  }
+
+  function playerClientToSvgPoint(svg, clientX, clientY) {
+    try {
+      if (!svg || !svg.getBoundingClientRect) return null;
+      var svgRect = svg.getBoundingClientRect();
+      var scaleX = 1;
+      var scaleY = 1;
+
+      // Tenta ler o viewBox como atributo de forma ultra-robusta
+      var viewBoxAttr = svg.getAttribute('viewBox');
+      if (viewBoxAttr) {
+        var parts = viewBoxAttr.split(/[ ,]+/).map(parseFloat);
+        if (parts.length === 4 && !parts.some(isNaN)) {
+          var vbX = parts[0];
+          var vbY = parts[1];
+          var vbW = parts[2];
+          var vbH = parts[3];
+          if (vbW > 0 && vbH > 0) {
+            scaleX = vbW / svgRect.width;
+            scaleY = vbH / svgRect.height;
+            return {
+              x: (clientX - svgRect.left) * scaleX + vbX,
+              y: (clientY - svgRect.top) * scaleY + vbY,
+              debugMethod: 'viewBoxAttr'
             };
           }
-        }).catch(function () {
-          var now = ctx.currentTime;
-          var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
-          if (vol > 0.38) vol = 0.38;
-          var osc = ctx.createOscillator();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-          var g = ctx.createGain();
-          g.gain.setValueAtTime(0, now);
-          g.gain.linearRampToValueAtTime(vol, now + 0.05);
-          osc.connect(g);
-          connectNodeToOutput(g, ctx);
-          osc.start(now);
-          currentSustainedNoteStop = function () {
-            var t = ctx.currentTime;
-            g.gain.linearRampToValueAtTime(0, t + 0.05);
-            osc.stop(t + 0.06);
+        }
+      }
+
+      // Fallback 1: viewBox via DOM baseVal (se disponível)
+      var viewBox = svg.viewBox && svg.viewBox.baseVal;
+      if (viewBox && viewBox.width > 0 && viewBox.height > 0) {
+        scaleX = viewBox.width / svgRect.width;
+        scaleY = viewBox.height / svgRect.height;
+        return {
+          x: (clientX - svgRect.left) * scaleX + viewBox.x,
+          y: (clientY - svgRect.top) * scaleY + viewBox.y,
+          debugMethod: 'viewBoxDOM'
+        };
+      }
+
+      // Fallback 2: getScreenCTM nativo do navegador
+      if (typeof svg.createSVGPoint === 'function') {
+        var pt = svg.createSVGPoint();
+        pt.x = clientX;
+        pt.y = clientY;
+        var m = svg.getScreenCTM();
+        if (m && typeof m.inverse === 'function') {
+          var resPt = pt.matrixTransform(m.inverse());
+          return {
+            x: resPt.x,
+            y: resPt.y,
+            debugMethod: 'getScreenCTM'
           };
-        });
+        }
       }
 
-      /** Inicia nota sustentada por ponteiro (suporta múltiplos toques). */
-      function startNoteSoundForPointer(noteId, freqHz, onReady) {
-        if (!soundEnabled) return function () {};
-        var nota = NOTAS.find(function (n) { return n.id === noteId; });
-        if (!nota) return function () {};
-        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-        freq = getFreqInKey(noteId, freq, currentKey);
-        var ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
+      // Último recurso: relativa em pixels físicos
+      return {
+        x: clientX - svgRect.left,
+        y: clientY - svgRect.top,
+        debugMethod: 'relativePhysical'
+      };
+    } catch (ePt) {
+      return null;
+    }
+  }
 
-        var cancelled = false;
-        var stopFn = null;
-        function setStop(fn) {
-          if (cancelled) {
-            try { fn(); } catch (e) {}
-            return;
+  /** Retângulo na tela que cobre a cabeça da nota (path costuma ter bbox minúsculo → usa só o pai imediato se for plausível). */
+  function playerNoteheadScreenRect(el) {
+    if (!el || !el.getBoundingClientRect) return null;
+    var tag = String(el.tagName || '').toLowerCase();
+    var r = el.getBoundingClientRect();
+    if (!r || r.width <= 0 || r.height <= 0) return null;
+    var best = { left: r.left, top: r.top, width: r.width, height: r.height };
+
+    if (tag === 'path') {
+      var p = el.parentElement;
+      if (p && p.getBoundingClientRect) {
+        var rp = p.getBoundingClientRect();
+        if (rp && rp.width > 0 && rp.height > 0) {
+          var nw = rp.width;
+          var nh = rp.height;
+          if (
+            nw >= best.width * 1.06 &&
+            nw <= Math.max(best.width * 10, 56) &&
+            nh <= Math.max(best.height * 5, 40)
+          ) {
+            best = { left: rp.left, top: rp.top, width: nw, height: nh };
           }
-          stopFn = fn;
-          if (typeof onReady === 'function') onReady(fn);
-        }
-
-        loadInstrument(currentInstrument.id).then(function (inst) {
-          if (cancelled) return;
-          if (inst) {
-            var noteName = freqToMidiNoteName(freq);
-            var note = inst.play(noteName, 0, buildSoundfontPlayOptions(60, calmMode ? 0.36 : 0.58));
-            if (note && typeof note.stop === 'function') {
-              setStop(function () { note.stop(ctx.currentTime); });
-            }
-          } else {
-            var now = ctx.currentTime;
-            var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
-            if (vol > 0.38) vol = 0.38;
-            var osc = ctx.createOscillator();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now);
-            var g = ctx.createGain();
-            g.gain.setValueAtTime(0, now);
-            g.gain.linearRampToValueAtTime(vol, now + 0.05);
-            osc.connect(g);
-            connectNodeToOutput(g, ctx);
-            osc.start(now);
-            setStop(function () {
-              var t = ctx.currentTime;
-              g.gain.linearRampToValueAtTime(0, t + 0.05);
-              osc.stop(t + 0.06);
-            });
-          }
-        }).catch(function () {
-          if (cancelled) return;
-          var now = ctx.currentTime;
-          var vol = (calmMode ? 0.12 : 0.25) * INSTRUMENT_OUTPUT_GAIN;
-          if (vol > 0.38) vol = 0.38;
-          var osc = ctx.createOscillator();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-          var g = ctx.createGain();
-          g.gain.setValueAtTime(0, now);
-          g.gain.linearRampToValueAtTime(vol, now + 0.05);
-          osc.connect(g);
-          connectNodeToOutput(g, ctx);
-          osc.start(now);
-          setStop(function () {
-            var t = ctx.currentTime;
-            g.gain.linearRampToValueAtTime(0, t + 0.05);
-            osc.stop(t + 0.06);
-          });
-        });
-
-        return function () {
-          cancelled = true;
-          if (stopFn) {
-            try { stopFn(); } catch (e) {}
-            stopFn = null;
-          }
-        };
-      }
-
-      /**
-       * Toca a nota por tempo fixo (usado no modo Desafio quando o jogo toca a nota).
-       */
-      function playNoteSound(noteId, freqHz) {
-        if (!soundEnabled) return;
-        var nota = NOTAS.find(function (n) { return n.id === noteId; });
-        if (!nota) return;
-        var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-        freq = getFreqInKey(noteId, freq, currentKey);
-
-        var ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
-
-        loadInstrument(currentInstrument.id).then(function (inst) {
-          if (inst) {
-            var noteName = freqToMidiNoteName(freq);
-            inst.play(noteName, 0, buildSoundfontPlayOptions(1.25, calmMode ? 0.33 : 0.52));
-          } else {
-            playNoteSoundFallback(freq);
-          }
-        }).catch(function () {
-          playNoteSoundFallback(freq);
-        });
-      }
-
-      // ========== NARRAÇÃO (WEB SPEECH API) ==========
-      function speak(text, force) {
-        if (!force && !narrationEnabled) return;
-        if (!('speechSynthesis' in window)) return;
-        speechSynth = window.speechSynthesis;
-        speechSynth.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'pt-BR';
-        u.rate = 0.9;
-        u.pitch = 1;
-        u.volume = calmMode ? 0.6 : 1;
-        speechSynth.speak(u);
-      }
-
-      function repeatInstruction() {
-        const msg = document.getElementById('instructionText');
-        if (msg && msg.textContent) speak(msg.textContent, true);
-      }
-
-      // ========== TRILHA AMBIENTE SUAVE (OPCIONAL) ==========
-      function startAmbient() {
-        if (!ambientEnabled || !soundEnabled) return;
-        const ctx = getAudioContext();
-        if (ambientOsc) return;
-        const osc = ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(220, ctx.currentTime);
-        const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 1);
-        osc.connect(gain);
-        connectNodeToOutput(gain, ctx);
-        osc.start(ctx.currentTime);
-        ambientOsc = osc;
-        ambientGain = gain;
-      }
-
-      function stopAmbient() {
-        if (!ambientOsc || !ambientGain) return;
-        const ctx = getAudioContext();
-        ambientGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-        ambientOsc.stop(ctx.currentTime + 0.6);
-        ambientOsc = null;
-        ambientGain = null;
-      }
-
-      function toggleAmbient() {
-        ambientEnabled = !ambientEnabled;
-        const btn = document.getElementById('btnAmbient');
-        if (btn) btn.textContent = ambientEnabled ? '🎵 Ambiente ligado' : '🎵 Ambiente';
-        if (ambientEnabled) startAmbient(); else stopAmbient();
-      }
-
-      function updateFullscreenButton() {
-        return window.UiCoreModule.updateFullscreenButton();
-      }
-
-      function toggleFullscreen() {
-        return window.UiCoreModule.toggleFullscreen();
-      }
-
-      function readStoredThemeMode() {
-        try {
-          var raw = localStorage.getItem(THEME_STORAGE_KEY);
-          if (raw === 'light' || raw === 'dark' || raw === 'system') return raw;
-        } catch (e) {}
-        return 'light';
-      }
-
-      function writeStoredThemeMode(mode) {
-        try {
-          localStorage.setItem(THEME_STORAGE_KEY, mode);
-        } catch (e) {}
-      }
-
-      function effectiveThemeIsDark(mode) {
-        if (mode === 'dark') return true;
-        if (mode === 'light') return false;
-        try {
-          return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        } catch (e2) {
-          return false;
         }
       }
+    }
 
-      function applyThemeToDom(mode) {
-        var root = document.documentElement;
-        var dark = effectiveThemeIsDark(mode);
-        root.classList.remove('theme-light', 'theme-dark');
-        root.classList.add(dark ? 'theme-dark' : 'theme-light');
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
-        root.setAttribute('data-theme-mode', mode);
-        if (document.body) {
-          document.body.classList.remove('theme-light', 'theme-dark');
-          document.body.classList.add(dark ? 'theme-dark' : 'theme-light');
-        }
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', dark ? '#0e0e10' : '#7d9d7a');
-      }
+    if (best.width < 3 || best.height < 3) return null;
+    return best;
+  }
 
-      function themeModeButtonLabel(mode) {
-        if (mode === 'light') return 'Tema: claro';
-        if (mode === 'dark') return 'Tema: escuro';
-        return 'Tema: seguir sistema';
-      }
+  /** Converte nome OSMD/Vex (ex. A#4, Bb4, C4) em MIDI cromático padrão. */
+  function playerOsmdPitchStringToMidi(short) {
+    var t = String(short || '').trim();
+    if (!t || t === 'rest') return null;
+    if (window.TunerUtils) {
+      var direct = window.TunerUtils.noteToMidi(t);
+      if (direct != null) return direct;
+    }
+    var m = /^([A-G])(#|b|bb|##|n)?(-?\d+)$/.exec(t);
+    if (!m) return null;
+    var letter = m[1];
+    var acc = m[2] || '';
+    var oct = parseInt(m[3], 10);
+    var baseMap = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+    var base = baseMap[letter];
+    if (base == null || isNaN(oct)) return null;
+    var off = 0;
+    if (acc === '#') off = 1;
+    else if (acc === 'b') off = -1;
+    else if (acc === '##') off = 2;
+    else if (acc === 'bb') off = -2;
+    else if (acc === 'n') off = 0;
+    var midiVal = (oct + 1) * 12 + base + off;
+    if (midiVal < 0 || midiVal > 127) return null;
+    return midiVal;
+  }
 
-      function syncThemeCycleButton() {
-        var btn = document.getElementById('btnThemeCycle');
-        if (!btn) return;
-        var mode = readStoredThemeMode();
-        var dark = effectiveThemeIsDark(mode);
-        btn.textContent = themeModeButtonLabel(mode);
-        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-        btn.title = 'Alternar tema (claro, escuro ou seguir o sistema). Atual: ' + themeModeButtonLabel(mode) + '.';
-      }
+  /**
+   * Posições e alturas a partir do modelo gráfico do OSMD (respeita clave, armadura e notação).
+   * Fallback: timeline + DOM (menos fiável em partituras longas / várias pautas).
+   */
+  function collectPlayerOsmdNoteLabelPlacements(osmd) {
+    var placements = [];
+    if (!osmd) return placements;
+    var sheet = osmd.graphic || osmd.GraphicSheet;
+    if (!sheet) return placements;
+    var measureList = sheet.measureList || sheet.MeasureList;
+    if (!measureList || !measureList.length) return placements;
 
-      function bindThemePreferenceListener() {
-        if (themePrefMqBound) return;
-        if (!window.matchMedia) return;
-        try {
-          themePrefMq = window.matchMedia('(prefers-color-scheme: dark)');
-        } catch (e) {
-          return;
-        }
-        themePrefMqHandler = function () {
-          if (readStoredThemeMode() !== 'system') return;
-          applyThemeToDom('system');
-          syncThemeCycleButton();
-        };
-        if (typeof themePrefMq.addEventListener === 'function') {
-          themePrefMq.addEventListener('change', themePrefMqHandler);
-        } else if (typeof themePrefMq.addListener === 'function') {
-          themePrefMq.addListener(themePrefMqHandler);
-        }
-        themePrefMqBound = true;
-      }
+    var i;
+    for (i = 0; i < measureList.length; i++) {
+      var measures = measureList[i];
+      if (!measures) continue;
+      if (!Array.isArray(measures)) measures = [measures];
+      var j;
+      for (j = 0; j < measures.length; j++) {
+        var measure = measures[j];
+        if (!measure || !measure.staffEntries) continue;
+        var k;
+        for (k = 0; k < measure.staffEntries.length; k++) {
+          var se = measure.staffEntries[k];
+          if (!se || !se.graphicalVoiceEntries) continue;
+          var l;
+          for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+            var gve = se.graphicalVoiceEntries[l];
+            if (!gve || !gve.notes) continue;
+            var mn;
+            for (mn = 0; mn < gve.notes.length; mn++) {
+              var gn = gve.notes[mn];
+              var sn = gn && gn.sourceNote;
+              if (!sn) continue;
+              if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+              if (sn.IsGraceNote || sn.isGraceNote) continue;
+              try {
+                if (sn.PrintObject === false) continue;
+              } catch (ePo) { }
 
-      function cycleThemeMode() {
-        var cur = readStoredThemeMode();
-        var next = cur === 'system' ? 'light' : (cur === 'light' ? 'dark' : 'system');
-        writeStoredThemeMode(next);
-        applyThemeToDom(next);
-        syncThemeCycleButton();
-      }
+              var pitch = sn.TransposedPitch || sn.Pitch;
+              if (!pitch) continue;
+              var shortStr = null;
+              try {
+                if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+              } catch (eTs) { }
+              if (!shortStr) continue;
 
-      function initTheme() {
-        applyThemeToDom(readStoredThemeMode());
-        bindThemePreferenceListener();
-        syncThemeCycleButton();
-      }
+              var midi = playerOsmdPitchStringToMidi(shortStr);
+              if (midi == null) continue;
 
-      // ========== UI: MENSAGEM E MASCOTE ==========
-      function setMessage(text) {
-        return window.UiCoreModule.setMessage(text);
-      }
+              var el = null;
+              if (typeof gn.getSVGGElement === 'function') {
+                try {
+                  el = gn.getSVGGElement();
+                } catch (eSvg) { }
+              }
+              if (!el || !el.getBoundingClientRect) continue;
+              var r = el.getBoundingClientRect();
+              if (!r || r.width < 2 || r.height < 2) continue;
 
-      function showPositiveFeedback() {
-        const mascot = document.getElementById('mascot');
-        if (mascot) {
-          mascot.classList.add('happy');
-          setTimeout(function () { mascot.classList.remove('happy'); }, 800);
-        }
-        const msg = MENSAGENS_POSITIVAS[Math.floor(Math.random() * MENSAGENS_POSITIVAS.length)];
-        setMessage(msg);
-        speak(msg);
-      }
-
-      // ========== VIOLINO: DESTAQUE DA POSIÇÃO (todas as células com essa nota) ==========
-      function highlightViolinPosition(noteId) {
-        document.querySelectorAll('.finger-cell[data-note-id="' + noteId + '"]').forEach(function (cell) {
-          cell.classList.add('highlight');
-        });
-      }
-
-      // Destaque apenas uma célula específica no espelho (ex.: nota esperada no desafio).
-      // Para cordas usa `data-string-key` e `data-position` para evitar destacar todas as ocorrências da mesma nota.
-      function highlightViolinCellByTarget(target) {
-        if (!target || !target.id) return;
-
-        var selector = '.finger-cell[data-note-id="' + target.id + '"]';
-
-        if (target.stringKey) selector += '[data-string-key="' + target.stringKey + '"]';
-        if (typeof target.pos !== 'undefined' && target.pos !== null) selector += '[data-position="' + String(target.pos) + '"]';
-
-        var cells = document.querySelectorAll(selector);
-        if (!cells || cells.length === 0) {
-          // Fallback: caso a célula exata não exista (ex.: instrumentos sem string/pos), destaca por nota.
-          highlightViolinPosition(target.id);
-          return;
-        }
-
-        cells.forEach(function (cell) {
-          cell.classList.add('highlight');
-        });
-      }
-
-      function clearViolinHighlight() {
-        document.querySelectorAll('.finger-cell.highlight').forEach(function (cell) {
-          cell.classList.remove('highlight');
-        });
-      }
-
-      // ========== TONALIDADE: nome da nota na escala atual (ex.: Fá M → Sib) ==========
-      function getNoteNameInKey(noteId, key) {
-        return window.NoteUtils.getNoteNameInKey(noteId, key);
-      }
-
-      function getNoteName(noteId) {
-        return getNoteNameInKey(noteId, currentKey);
-      }
-
-      function freqClose(a, b) {
-        return window.NoteUtils.freqClose(a, b, 0.5);
-      }
-
-      function buildChallengeTargetLabel(target) {
-        return window.NoteUtils.buildChallengeTargetLabel(target, currentKey);
-      }
-
-      function diatonicValue(noteId, octave) {
-        return window.StaffMathUtils.diatonicValue(noteId, octave, NOTE_DEGREE);
-      }
-
-      function noteFromDiatonic(value) {
-        return window.StaffMathUtils.noteFromDiatonic(value, DEGREE_NOTE_ID);
-      }
-
-      function naturalMidi(noteId, octave) {
-        return window.StaffMathUtils.naturalMidi(noteId, octave, NOTE_SEMITONE);
-      }
-
-      function midiToFreq(midi) {
-        return window.StaffMathUtils.midiToFreq(midi);
-      }
-
-      function getLedgerLineDiffs(diff) {
-        return window.StaffMathUtils.getLedgerLineDiffs(diff);
-      }
-
-      function buildStaffPositionsForClef(clefId) {
-        var bottom = CLEF_BOTTOM_LINE[clefId] || CLEF_BOTTOM_LINE.sol;
-        var bottomDiatonic = diatonicValue(bottom.noteId, bottom.octave);
-        var positions = [];
-        for (var diff = STAFF_MIN_DIFF; diff <= STAFF_MAX_DIFF; diff++) {
-          var current = noteFromDiatonic(bottomDiatonic + diff);
-          var midi = naturalMidi(current.noteId, current.octave);
-          var y = STAFF_BOTTOM_LINE_Y - (diff * STAFF_STEP_PX);
-          var ledgerDiffs = getLedgerLineDiffs(diff);
-          var ledgerYs = ledgerDiffs.map(function (ledgerDiff) {
-            return STAFF_BOTTOM_LINE_Y - (ledgerDiff * STAFF_STEP_PX);
-          });
-          positions.push({
-            noteId: current.noteId,
-            octave: current.octave,
-            y: y,
-            freq: midiToFreq(midi),
-            ledgerYs: ledgerYs
-          });
-        }
-        return positions;
-      }
-
-      function updateViolinBoardLabels() {
-        document.querySelectorAll('.finger-cell').forEach(function (cell) {
-          var noteId = cell.dataset.noteId;
-          if (noteId) {
-            var noteName = getNoteNameInKey(noteId, currentKey);
-            var noteMain = cell.querySelector('.finger-note');
-            if (noteMain) {
-              noteMain.textContent = noteName;
-            } else {
-              cell.textContent = noteName;
-            }
-            var pos = cell.dataset.freq ? ' (freq: ' + Math.round(parseFloat(cell.dataset.freq)) + 'Hz)' : '';
-            var fingering = cell.dataset.fingering ? ', ' + cell.dataset.fingering : '';
-            cell.setAttribute('aria-label', 'Nota ' + noteName + pos + fingering);
-          }
-        });
-        document.querySelectorAll('.violin-board .string-label').forEach(function (el, i) {
-          if (CORDAS && CORDAS[i]) el.textContent = getNoteNameInKey(CORDAS[i], currentKey);
-        });
-      }
-
-      function createViolinBoard() {
-        const board = document.getElementById('violinBoard');
-        if (!board) return;
-        board.innerHTML = '';
-        board.classList.remove('wind-layout');
-        
-        // Atualiza variáveis globais com o instrumento atual
-        CORDAS = currentInstrument.cordas || [];
-        CORDA_CLASS = currentInstrument.cordaClasses || {};
-        FINGERBOARD = currentInstrument.fingerboard || [];
-        FREQ_BOARD = currentInstrument.freqBoard || [];
-        
-        // Atualiza título
-        var titleEl = document.getElementById('instrumentTitle');
-        if (titleEl) {
-          titleEl.textContent = currentInstrument.descricao || 'Espelho do instrumento';
-        }
-        
-        // Atualiza mascote
-        var mascot = document.getElementById('mascot');
-        if (mascot) mascot.textContent = currentInstrument.emoji || '🎻';
-        
-        // Instrumentos de corda: grade de cordas × posições
-        if (currentInstrument.tipo === 'corda' && CORDAS.length > 0 && FINGERBOARD.length > 0) {
-          board.style.gridTemplateColumns = '40px ' + '1fr '.repeat(5);
-          board.style.gridTemplateRows = 'auto '.repeat(CORDAS.length + 1);
-          
-          // Cabeçalho: posições
-          var empty = document.createElement('div');
-          empty.className = 'pos-label';
-          empty.setAttribute('aria-hidden', 'true');
-          board.appendChild(empty);
-          
-          for (var pos = 4; pos >= 0; pos--) {
-            var pl = document.createElement('div');
-            pl.className = 'pos-label';
-            pl.setAttribute('aria-hidden', 'true');
-            pl.textContent = pos;
-            board.appendChild(pl);
-          }
-          
-          // Linhas: uma por corda
-          for (var s = 0; s < CORDAS.length; s++) {
-            var stringKey = CORDAS[s];
-            var sl = document.createElement('div');
-            sl.className = 'string-label';
-            sl.setAttribute('aria-hidden', 'true');
-            sl.textContent = getNoteNameInKey(stringKey, currentKey);
-            board.appendChild(sl);
-            
-            for (var pos = 4; pos >= 0; pos--) {
-              var noteId = FINGERBOARD[pos][s];
-              var freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
-              var cell = document.createElement('button');
-              cell.type = 'button';
-              cell.className = 'finger-cell pos-' + pos + ' ' + (CORDA_CLASS[stringKey] || '');
-              cell.dataset.noteId = noteId;
-              if (freq) cell.dataset.freq = String(freq);
-              cell.dataset.stringKey = stringKey;
-              cell.dataset.position = String(pos);
-              cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', posição ' + pos);
-              cell.textContent = getNoteNameInKey(noteId, currentKey);
-              board.appendChild(cell);
+              placements.push({
+                cx: r.left + r.width * 0.5,
+                noteBottom: r.top + r.height,
+                midi: midi,
+                dPx: Math.max(r.width, r.height)
+              });
             }
           }
         }
-        // Instrumentos de sopro/metal: teclas/válvulas simples (notas em linha)
-        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
-          board.classList.add('wind-layout');
-          board.style.gridTemplateColumns = '1fr '.repeat(currentInstrument.notas.length);
-          board.style.gridTemplateRows = 'auto';
-          
-          for (var i = 0; i < currentInstrument.notas.length; i++) {
-            var noteId = currentInstrument.notas[i];
-            var freq = currentInstrument.freqBoard[i] ? currentInstrument.freqBoard[i][0] : NOTAS.find(function(n) { return n.id === noteId; }).freq;
-            var fingeringText = currentInstrument.fingeringMap && currentInstrument.fingeringMap[noteId]
-              ? currentInstrument.fingeringMap[noteId]
-              : 'dedilhado basico';
-            var cell = document.createElement('button');
-            cell.type = 'button';
-            cell.className = 'finger-cell pos-' + i;
-            cell.dataset.noteId = noteId;
-            cell.dataset.freq = String(freq);
-            cell.dataset.fingering = fingeringText;
-            cell.setAttribute('aria-label', 'Nota ' + getNoteNameInKey(noteId, currentKey) + ', ' + fingeringText);
-            cell.innerHTML = '<span class="finger-note">' + getNoteNameInKey(noteId, currentKey) + '</span><span class="finger-meta">' + fingeringText + '</span>';
-            board.appendChild(cell);
+      }
+    }
+
+    placements.sort(function (a, b) {
+      var ay = a.noteBottom != null ? a.noteBottom : a.cy;
+      var by = b.noteBottom != null ? b.noteBottom : b.cy;
+      var dy = ay - by;
+      if (Math.abs(dy) > 8) return dy;
+      return a.cx - b.cx;
+    });
+    return placements;
+  }
+
+  function collectPlayerNoteLabelPlacementsFromDomFallback() {
+    var placements = [];
+    if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return placements;
+    var host = document.getElementById('playerOsmdContainer');
+    if (!host) return placements;
+
+    var nonChordEvents = playerScoreData.events.filter(function (ev) {
+      return !ev.isChord;
+    });
+    if (!nonChordEvents.length) return placements;
+
+    var nodes = host.querySelectorAll(
+      '.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]'
+    );
+    if (!nodes || !nodes.length) return placements;
+
+    var usableNodes = [];
+    nodes.forEach(function (n) {
+      var rect = playerNoteheadScreenRect(n);
+      if (!rect) return;
+      usableNodes.push({ rect: rect });
+    });
+    if (!usableNodes.length) return placements;
+
+    usableNodes.sort(function (a, b) {
+      var dy = a.rect.top - b.rect.top;
+      if (Math.abs(dy) > 8) return dy;
+      return a.rect.left - b.rect.left;
+    });
+
+    var max = Math.min(nonChordEvents.length, usableNodes.length);
+    var pi;
+    for (pi = 0; pi < max; pi++) {
+      var ev = nonChordEvents[pi];
+      if (!ev || ev.isRest || ev.midi == null) continue;
+      var rr = usableNodes[pi].rect;
+      placements.push({
+        cx: rr.left + rr.width * 0.5,
+        noteBottom: rr.top + rr.height,
+        midi: ev.midi,
+        dPx: Math.max(rr.width, rr.height)
+      });
+    }
+    return placements;
+  }
+
+  /** Reduz sobreposição em colcheias / notas lado a lado (nudge vertical + fonte menor). */
+  function applyPlayerNoteLabelCrowdingAdjustments(arr) {
+    if (!arr || arr.length < 2) return;
+    var i;
+    for (i = 0; i < arr.length; i++) {
+      arr[i].cyNudgePx = 0;
+      arr[i].fontMult = 1;
+    }
+    var run = 0;
+    for (i = 1; i < arr.length; i++) {
+      var a = arr[i - 1];
+      var b = arr[i];
+      var ay = a.noteBottom != null ? a.noteBottom : a.cy;
+      var by = b.noteBottom != null ? b.noteBottom : b.cy;
+      var dy = Math.abs(by - ay);
+      var dx = b.cx - a.cx;
+      if (dy < 11 && dx < 36 && dx >= -3) {
+        run++;
+        b.cyNudgePx = run % 2 === 1 ? -4 : 4;
+        b.fontMult = 0.74;
+      } else {
+        run = 0;
+      }
+    }
+  }
+
+  function collectPlayerChronologicalSvgNotes(svg) {
+    var placements = [];
+    if (!playerOsmd) return placements;
+    var sheet = playerOsmd.graphic || playerOsmd.GraphicSheet;
+    if (!sheet) return placements;
+    var measureList = sheet.measureList || sheet.MeasureList;
+    if (!measureList || !measureList.length) return placements;
+
+    var i;
+    for (i = 0; i < measureList.length; i++) {
+      var measures = measureList[i];
+      if (!measures) continue;
+      if (!Array.isArray(measures)) measures = [measures];
+      var j;
+      for (j = 0; j < measures.length; j++) {
+        var measure = measures[j];
+        if (!measure || !measure.staffEntries) continue;
+        var k;
+        for (k = 0; k < measure.staffEntries.length; k++) {
+          var se = measure.staffEntries[k];
+          if (!se || !se.graphicalVoiceEntries) continue;
+          var l;
+          for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+            var gve = se.graphicalVoiceEntries[l];
+            if (!gve || !gve.notes) continue;
+            var mn;
+            for (mn = 0; mn < gve.notes.length; mn++) {
+              var gn = gve.notes[mn];
+              var sn = gn && gn.sourceNote;
+              if (!sn) continue;
+              if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+              if (sn.IsGraceNote || sn.isGraceNote) continue;
+              var activeVoice = getPlayerLiveActiveVoiceChar();
+              var staffIdx = 0;
+              if (se && se.parentStaff) {
+                staffIdx = se.parentStaff.idInMusicSheet != null
+                  ? se.parentStaff.idInMusicSheet
+                  : (se.parentStaff.StaffNumber != null ? se.parentStaff.StaffNumber - 1 : 0);
+              }
+              var voiceId = "1";
+              if (sn.parentVoiceEntry && sn.parentVoiceEntry.parentVoice && sn.parentVoiceEntry.parentVoice.VoiceId != null) {
+                voiceId = String(sn.parentVoiceEntry.parentVoice.VoiceId).trim();
+              }
+
+              // Mapeia para a voz (s, c, t, b) com base na pauta e na voz lida do MusicXML
+              var noteVoice = 's';
+              if (staffIdx === 0) {
+                noteVoice = (voiceId === '2') ? 'c' : 's';
+              } else {
+                noteVoice = (voiceId === '1' || voiceId === '3') ? 't' : 'b';
+              }
+
+              if (noteVoice !== activeVoice) continue;
+
+              try {
+                if (sn.PrintObject === false) continue;
+              } catch (ePo) { }
+
+              var pitch = sn.TransposedPitch || sn.Pitch;
+              if (!pitch) continue;
+              var midi = null;
+              var shortStr = null;
+              if (pitch && isFinite(pitch.frequency) && pitch.frequency > 0) {
+                midi = tunerFreqToMidi(pitch.frequency);
+                try {
+                  if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                } catch (eTs) { }
+              } else {
+                try {
+                  if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+                } catch (eTs) { }
+                if (shortStr) midi = playerOsmdPitchStringToMidi(shortStr);
+              }
+              if (midi == null) continue;
+
+              var el = null;
+              if (typeof gn.getSVGGElement === 'function') {
+                try {
+                  el = gn.getSVGGElement();
+                } catch (eSvg) { }
+              }
+              if (!el || !el.getBoundingClientRect) continue;
+
+              // Tenta localizar especificamente a elipse da cabeça da nota (notehead)
+              var headEl = el.querySelector('.vf-notehead, path.vf-notehead, [class*="notehead"]');
+              var targetEl = el; // fallback padrão é o grupo completo
+              if (headEl) {
+                var hr = headEl.getBoundingClientRect();
+                if (hr && hr.width >= 3 && hr.height >= 3) {
+                  targetEl = headEl;
+                }
+              }
+
+              var r = targetEl.getBoundingClientRect();
+              if (!r || r.width < 2 || r.height < 2) continue;
+
+              var cx = r.left + r.width * 0.5;
+              var cy = r.top + r.height * 0.5;
+
+              // Calcula o ponto local do SVG no exato instante da coleta (DOM imutável)
+              var svgPt = null;
+              if (svg) {
+                svgPt = playerClientToSvgPoint(svg, cx, cy);
+              }
+
+              placements.push({
+                el: el,
+                cx: cx,
+                cy: cy,
+                svgX: svgPt ? svgPt.x : null,
+                svgY: svgPt ? svgPt.y : null,
+                midi: midi,
+                originalPitch: pitch,
+                shortStr: shortStr
+              });
+            }
           }
         }
       }
-      
-      // ========== SELEÇÃO DE INSTRUMENTO ==========
-      function setInstrument(instrumentId) {
-        var inst = INSTRUMENTOS.find(function(i) { return i.id === instrumentId; });
-        if (!inst) return;
-        
-        currentInstrument = inst;
-        createViolinBoard();
-        updateViolinBoardLabels();
-        clearViolinHighlight();
-        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
-        
-        // Atualiza botões de instrumentos
-        document.querySelectorAll('.instrument-btn').forEach(function (btn) {
-          var active = btn.dataset.instrumentId === instrumentId;
-          btn.classList.toggle('active', active);
-          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-        });
-        
-        var instMsgSuffix = 'Escolha um modo.';
-        if (currentMode === 'learn') instMsgSuffix = 'Mantenha pressionado numa nota para ouvir.';
-        else if (currentMode === 'player') instMsgSuffix = '';
-        if (currentMode !== 'player') {
-          setMessage('Instrumento: ' + inst.nome + '. ' + instMsgSuffix);
-        }
-        if (currentMode === 'hinos') {
-          syncHinosAfinaçãoFromInstrument(inst);
-          hinosLastSyncInstrumentId = inst.id;
-          refreshHinosVoiceButtons();
-        }
-        if (currentMode === 'player') {
-          renderPlayerCatalogControls();
-          loadPlayerSelectionFromCatalog(false).catch(function () { });
-        }
+    }
+    return placements;
+  }
+
+  function getPlayerActiveSvgElement(host) {
+    if (!host) return null;
+    var svgs = host.querySelectorAll('svg');
+    if (!svgs || !svgs.length) return null;
+    for (var idx = 0; idx < svgs.length; idx++) {
+      var s = svgs[idx];
+      var r = s.getBoundingClientRect();
+      if (r && r.width > 50 && r.height > 50) {
+        return s;
       }
-      
-      function createInstrumentButtons() {
-        var container = document.getElementById('instrumentTabs');
-        if (!container) return;
-        container.innerHTML = '';
-        
-        INSTRUMENTOS.forEach(function (inst) {
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'instrument-btn du-btn du-btn-outline du-btn-sm' + (inst.id === currentInstrument.id ? ' active' : '');
-          btn.dataset.instrumentId = inst.id;
-          btn.setAttribute('aria-pressed', inst.id === currentInstrument.id ? 'true' : 'false');
-          btn.textContent = inst.emoji + ' ' + inst.nome;
-          container.appendChild(btn);
-        });
+    }
+    return svgs[svgs.length - 1];
+  }
+
+  function initPlayerLiveBars() {
+    var host = document.getElementById('playerOsmdContainer');
+    if (host) {
+      var prev = host.querySelector('#gem-player-live-bars');
+      if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+    }
+    playerLiveBarsMap = {};
+    if (!playerLiveListenEnabled) return;
+
+    if (!host || !playerScoreData || !playerScoreData.events) return;
+    var svg = getPlayerActiveSvgElement(host);
+    if (!svg) return;
+
+    try {
+      var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      layer.setAttribute('id', 'gem-player-live-bars');
+      layer.setAttribute('pointer-events', 'none');
+
+      // Desenha as barras DE BAIXO da cabeça da nota (inserindo no início do SVG, antes das notas/linhas)
+      if (svg.firstChild) {
+        svg.insertBefore(layer, svg.firstChild);
+      } else {
+        svg.appendChild(layer);
       }
 
-      function updateBottomNavVisibility(forceVisible) {
-        return window.UiCoreModule.updateBottomNavVisibility(forceVisible);
-      }
+      var ns = 'http://www.w3.org/2000/svg';
+      var events = playerScoreData.events;
+      var activeVoice = getPlayerLiveActiveVoiceChar();
 
-      function initBottomNavObserver() {
-        var sentinel = document.getElementById('bottomNavSentinel');
-        if (!sentinel) return;
-        if ('IntersectionObserver' in window) {
-          var observer = new IntersectionObserver(function () {
-            /* Nunca forçar true/false pelo IO: isIntersecting pode ficar false no fim do scroll em alguns layouts. Só recalcula. */
-            updateBottomNavVisibility();
-          }, {
-            root: null,
-            threshold: 0,
-            rootMargin: '0px 0px 80px 0px'
-          });
-          observer.observe(sentinel);
-          return;
-        }
-        updateBottomNavVisibility();
-      }
-
-      function setMoreMenuOpen(isOpen) {
-        var menu = document.getElementById('modeMoreMenu');
-        var btn = document.getElementById('btnMoreMenu');
-        if (!menu || !btn) return;
-        window.UiCoreModule.toggleClass(menu, 'hidden', !isOpen);
-        window.UiCoreModule.setAriaExpanded(btn, isOpen);
-      }
-
-      function openSettingsPanel() {
-        var modal = document.getElementById('settingsModal');
-        var btn = document.getElementById('btnMoreSettings');
-        var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (!modal) return;
-        setMoreMenuOpen(false);
-        modal.classList.remove('hidden');
-        if (btnMoreMenu) btnMoreMenu.classList.add('active');
-        if (btn) {
-          btn.classList.add('active');
-          window.UiCoreModule.setAriaExpanded(btn, true);
-        }
-      }
-
-      function closeSettingsPanel() {
-        var modal = document.getElementById('settingsModal');
-        var btn = document.getElementById('btnMoreSettings');
-        var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (!modal) return;
-        modal.classList.add('hidden');
-        if (btn) {
-          btn.classList.remove('active');
-          window.UiCoreModule.setAriaExpanded(btn, false);
-        }
-        if (btnMoreMenu && currentMode !== 'tuner' && currentMode !== 'hinos') btnMoreMenu.classList.remove('active');
-      }
-
-      function tunerNoteToMidi(noteName) {
-        return window.TunerUtils.noteToMidi(noteName);
-      }
-
-      function tunerMidiToName(midi) {
-        return window.TunerUtils.midiToName(midi);
-      }
-
-      function tunerHumanNoteLabel(noteName) {
-        return window.TunerUtils.humanNoteLabel(noteName);
-      }
-
-      function tunerHumanNoteWithOctave(noteName) {
-        return window.TunerUtils.humanNoteWithOctave(noteName);
-      }
-
-      function tunerAdjacentHumanLabels(noteName) {
-        return window.TunerUtils.adjacentHumanLabels(noteName);
-      }
-
-      function tunerFreqToMidi(freq) {
-        return window.TunerUtils.freqToMidi(freq);
-      }
-
-      /** Detector com autocorrelacao normalizada, priorizando a fundamental real. */
-      function tunerDetectPitch(buf, sampleRate) {
-        var size = buf.length;
-        if (!size) return -1;
-        var rms = 0;
-        for (var i = 0; i < size; i++) rms += buf[i] * buf[i];
-        rms = Math.sqrt(rms / size);
-        if (rms < 0.0018) return -1;
-
-        var minFreq = 35;
-        var maxFreq = 1200;
-        var minOffset = Math.floor(sampleRate / maxFreq);
-        var maxOffset = Math.floor(sampleRate / minFreq);
-        if (maxOffset >= size) maxOffset = size - 1;
-        if (minOffset < 2) minOffset = 2;
-        if (maxOffset <= minOffset) return -1;
-
-        var correlations = new Float32Array(maxOffset + 1);
-        var bestOffset = -1;
-        var bestCorrelation = 0;
-        for (var offset = minOffset; offset <= maxOffset; offset++) {
-          var correlation = 0;
-          var energy1 = 0;
-          var energy2 = 0;
-          var samples = size - offset;
-          for (var j = 0; j < samples; j++) {
-            var a = buf[j];
-            var b = buf[j + offset];
-            correlation += a * b;
-            energy1 += a * a;
-            energy2 += b * b;
+      // Filtra os eventos jogáveis de notas reais pertencentes apenas à voz ativa do instrumento do aluno
+      var playableEvents = [];
+      for (var i = 0; i < events.length; i++) {
+        var ev = events[i];
+        if (ev && !ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0) {
+          if (getPlayerEventVoiceChar(ev) === activeVoice) {
+            playableEvents.push({ ev: ev, origIndex: i });
           }
-          var denom = Math.sqrt(energy1 * energy2);
-          correlation = denom > 0 ? correlation / denom : 0;
-          correlations[offset] = correlation;
-          if (correlation > bestCorrelation) {
-            bestCorrelation = correlation;
-            bestOffset = offset;
+        }
+      }
+
+      var svgNotes = collectPlayerChronologicalSvgNotes(svg);
+
+      var mappedNotes = [];
+      var lastCx = -1;
+      var lastCy = -1;
+
+      // Mapeia os eventos filtrados da voz ativa
+      for (var pi = 0; pi < playableEvents.length; pi++) {
+        var item = playableEvents[pi];
+        var ev = item.ev;
+        var origIdx = item.origIndex;
+        var targetMidi = playerEventMidi(ev);
+
+        var bestIdx = -1;
+        var bestScore = Infinity;
+
+        for (var k = 0; k < svgNotes.length; k++) {
+          var n = svgNotes[k];
+          if (!n || n.mapped) continue;
+
+          var midiDiff = Math.abs(n.midi - targetMidi);
+          if (midiDiff > 1) continue;
+
+          var isBackwards = (Math.abs(n.cy - lastCy) < 30 && n.cx < lastCx);
+          var score = midiDiff * 10 + k;
+          if (isBackwards) score += 1000;
+
+          if (score < bestScore) {
+            bestScore = score;
+            bestIdx = k;
           }
         }
 
-        var foundDip = false;
-        for (var t = minOffset + 1; t < maxOffset - 1; t++) {
-          var corr = correlations[t];
-          if (!foundDip) {
-            if (corr < 0.65) foundDip = true;
-            continue;
-          }
-          if (corr > 0.78 && corr >= correlations[t - 1] && corr >= correlations[t + 1]) {
-            bestOffset = t;
-            bestCorrelation = corr;
+        if (bestIdx >= 0) {
+          svgNotes[bestIdx].mapped = true;
+          var chosen = svgNotes[bestIdx];
+          lastCx = chosen.cx;
+          lastCy = chosen.cy;
+          mappedNotes[origIdx] = chosen;
+        }
+      }
+
+      // Cria as barras apenas para as notas mapeadas da voz ativa
+      for (var pi = 0; pi < playableEvents.length; pi++) {
+        var item = playableEvents[pi];
+        var origIdx = item.origIndex;
+        var ev = item.ev;
+        var chosen = mappedNotes[origIdx];
+        if (!chosen) continue;
+
+        var ptX = chosen.svgX;
+        var ptY = chosen.svgY;
+        if (ptX == null || ptY == null || !isFinite(ptX) || !isFinite(ptY)) continue;
+
+        var largura = Math.max(25, (ev.durationSec || 0.2) * 60);
+
+        // Acha a próxima nota mapeada na voz ativa para calcular a largura contígua
+        var nextPlayableIndex = pi + 1;
+        var nextChosen = null;
+        while (nextPlayableIndex < playableEvents.length) {
+          var nextOrigIdx = playableEvents[nextPlayableIndex].origIndex;
+          if (mappedNotes[nextOrigIdx]) {
+            nextChosen = mappedNotes[nextOrigIdx];
             break;
           }
+          nextPlayableIndex++;
         }
 
-        if (bestOffset < 0 || bestCorrelation < 0.68) return -1;
-
-        var refinedOffset = bestOffset;
-        if (bestOffset > minOffset && bestOffset < maxOffset) {
-          var prevCorr = correlations[bestOffset - 1];
-          var currCorr = correlations[bestOffset];
-          var nextCorr = correlations[bestOffset + 1];
-          var denom2 = prevCorr - 2 * currCorr + nextCorr;
-          if (Math.abs(denom2) > 1e-9) {
-            refinedOffset = bestOffset + (prevCorr - nextCorr) / (2 * denom2);
+        if (nextChosen && nextChosen.svgX != null && isFinite(nextChosen.svgX)) {
+          if (nextChosen.svgX > ptX && Math.abs(nextChosen.svgY - ptY) < 15) {
+            largura = nextChosen.svgX - ptX;
           }
         }
 
-        if (!isFinite(refinedOffset) || refinedOffset <= 0) return -1;
-        var freq = sampleRate / refinedOffset;
-        if (!isFinite(freq) || freq < minFreq || freq > maxFreq) return -1;
-        return freq;
+        var alt = 11;
+        var yPos = ptY - alt * 0.5;
+
+        var rectBg = document.createElementNS(ns, 'rect');
+        rectBg.setAttribute('x', String(ptX));
+        rectBg.setAttribute('y', String(yPos));
+        rectBg.setAttribute('width', String(largura));
+        rectBg.setAttribute('height', String(alt));
+        rectBg.setAttribute('rx', String(alt * 0.5));
+        rectBg.setAttribute('ry', String(alt * 0.5));
+        rectBg.setAttribute('fill', 'rgba(215, 222, 235, 0.45)');
+        layer.appendChild(rectBg);
+
+        var rectFg = document.createElementNS(ns, 'rect');
+        rectFg.setAttribute('x', String(ptX));
+        rectFg.setAttribute('y', String(yPos));
+        rectFg.setAttribute('width', '0');
+        rectFg.setAttribute('height', String(alt));
+        rectFg.setAttribute('rx', String(alt * 0.5));
+        rectFg.setAttribute('ry', String(alt * 0.5));
+        rectFg.setAttribute('fill', 'transparent');
+        layer.appendChild(rectFg);
+
+        playerLiveBarsMap[String(origIdx)] = {
+          el: rectFg,
+          maxWidth: largura
+        };
       }
+    } catch (err) { }
+  }
 
-      function tunerNormalizeFrequency(freq) {
-        var sel = document.getElementById('tunerInstrumentSelect');
-        var presetId = sel ? sel.value : 'chromatic';
-        var notes = TUNER_PRESETS[presetId] || [];
-        return window.TunerUtils.normalizeFrequency(freq, notes, {
-          freqToMidi: tunerFreqToMidi,
-          midiToFreq: midiToFreq,
-          noteToMidi: tunerNoteToMidi,
-          presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
-            return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
-          }
-        });
+  /** Rótulos Dó/Ré/Sol dentro das cabeças (SVG). */
+  function syncPlayerNoteNameLabelOverlays() {
+    var host = document.getElementById('playerOsmdContainer');
+    if (host) {
+      var prev = host.querySelector('#gem-player-note-labels');
+      if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+    }
+    if (!playerNoteNameLabels || !host) return;
+    var svg = getPlayerActiveSvgElement(host);
+    if (!svg) return;
+
+    var placements = collectPlayerOsmdNoteLabelPlacements(playerOsmd);
+    if (!placements || !placements.length) placements = collectPlayerNoteLabelPlacementsFromDomFallback();
+    if (!placements || !placements.length) return;
+    applyPlayerNoteLabelCrowdingAdjustments(placements);
+
+    var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    layer.setAttribute('id', 'gem-player-note-labels');
+    layer.setAttribute('pointer-events', 'none');
+    var ns = 'http://www.w3.org/2000/svg';
+    var pi;
+    for (pi = 0; pi < placements.length; pi++) {
+      var pl = placements[pi];
+      if (!pl || pl.midi == null) continue;
+
+      var rawLabel = tunerHumanNoteLabel(tunerMidiToName(pl.midi));
+      if (!rawLabel) continue;
+      var shortLabel = rawLabel.replace('♯', '#').replace('♭', 'b');
+      if (shortLabel.length > 5) shortLabel = shortLabel.slice(0, 5);
+
+      var dPx = Math.max(10, pl.dPx != null && isFinite(pl.dPx) ? pl.dPx : 14);
+      var fontMult = (pl.fontMult != null && isFinite(pl.fontMult) ? pl.fontMult : 1) * (shortLabel.length > 2 ? 0.84 : 1);
+      var fontPx = Math.max(5.2, Math.min(12, dPx * 0.34 * fontMult));
+      var noteBottom =
+        pl.noteBottom != null && isFinite(pl.noteBottom) ? pl.noteBottom : pl.cy + dPx * 0.35;
+      var gapPx = 1.5 + fontPx * 0.1;
+      var nudge = pl.cyNudgePx || 0;
+      var cyScreen = noteBottom + gapPx + nudge;
+      var p = playerClientToSvgPoint(svg, pl.cx, cyScreen);
+      if (!p || !isFinite(p.x) || !isFinite(p.y)) continue;
+
+      var strokeW = Math.max(0.7, fontPx * 0.15);
+      var letterSp = shortLabel.length > 3 ? '-0.06em' : '-0.03em';
+      var text = document.createElementNS(ns, 'text');
+      text.setAttribute('x', String(Math.round(p.x * 100) / 100));
+      text.setAttribute('y', String(Math.round(p.y * 100) / 100));
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('dominant-baseline', 'hanging');
+      text.setAttribute('fill', '#ffffff');
+      text.setAttribute(
+        'style',
+        'font-family: Nunito, "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: ' +
+        fontPx +
+        'px; letter-spacing: ' +
+        letterSp +
+        '; paint-order: stroke fill; stroke: #e87328; stroke-width: ' +
+        strokeW +
+        'px; filter: drop-shadow(0 0 1.5px rgba(232,115,40,0.95)) drop-shadow(0 1px 2px rgba(160,70,10,0.35));'
+      );
+      text.textContent = shortLabel;
+      layer.appendChild(text);
+    }
+
+    if (layer.childNodes.length) svg.appendChild(layer);
+  }
+
+  function formatPlayerTime(seconds) {
+    return window.AppUtils.formatMmSs(seconds);
+  }
+
+  function findPlayerEventIndexByTime(seconds) {
+    return window.PlayerTimelineUtils.findEventIndexByTime(
+      playerScoreData ? playerScoreData.events : [],
+      seconds
+    );
+  }
+
+  function findPlayerCursorIndexByTime(seconds) {
+    return window.PlayerTimelineUtils.findCursorIndexByTime(
+      playerScoreData ? playerScoreData.cursorStarts : [],
+      seconds
+    );
+  }
+
+  function findPlayerDisplayCursorIndexByTime(seconds) {
+    return window.PlayerTimelineUtils.findCursorDisplayIndexByTime(
+      playerScoreData ? (playerScoreData.visualCursorStarts || playerScoreData.cursorStarts) : [],
+      seconds
+    );
+  }
+
+  /**
+   * Quantos cursor.next() apos reset() para a nota no indice displayIndex.
+   * Com CursorIgnoreRepetitions o reset().update() ja aponta para a 1a nota; idx 0 = 0 next.
+   */
+  function osmdStepsForDisplayCursorIndex(displayIndex) {
+    var idx = typeof displayIndex === 'number' && isFinite(displayIndex) ? Math.max(0, Math.floor(displayIndex)) : 0;
+    return idx;
+  }
+
+  function playerScoreHasExpandedRepeats() {
+    return !!(playerScoreData && playerScoreData.repeatMap && playerScoreData.repeatMap.length);
+  }
+
+  /**
+   * Sincroniza o cursor nativo do OSMD com o tempo visual da partitura (uma passagem linear no desenho).
+   * Em retornelas: reset completo em saltos (volta ao inicio, casa 3, Final); avanco de 1 passo quando continuo.
+   */
+  function syncPlayerOsmdCursorToDisplay(displaySec, forceFullReset) {
+    if (!playerOsmd || !playerOsmd.cursor || !playerScoreData) return;
+    var displayIdx = findPlayerDisplayCursorIndexByTime(Math.max(0, displaySec));
+    var targetOsmdSteps = osmdStepsForDisplayCursorIndex(displayIdx);
+    var prevOsmdSteps = playerPlayback.osmdSyncedSteps;
+    if (prevOsmdSteps == null || !isFinite(prevOsmdSteps)) prevOsmdSteps = -1;
+    var stepDelta = targetOsmdSteps - prevOsmdSteps;
+    var needReset = !!forceFullReset || stepDelta < 0 || stepDelta > 1;
+    try {
+      playerOsmd.cursor.show();
+      if (needReset) {
+        playerOsmd.cursor.reset();
+        var ri;
+        for (ri = 0; ri < targetOsmdSteps; ri++) playerOsmd.cursor.next();
+        playerPlayback.osmdSyncedSteps = targetOsmdSteps;
+        return;
       }
-
-      function tunerPresetTargetForFreq(freq) {
-        var sel = document.getElementById('tunerInstrumentSelect');
-        var presetId = sel ? sel.value : 'chromatic';
-        var notes = TUNER_PRESETS[presetId] || [];
-        return window.TunerUtils.presetTargetForFreq(freq, notes, tunerNoteToMidi, midiToFreq);
+      if (stepDelta === 1) {
+        playerOsmd.cursor.next();
+        playerPlayback.osmdSyncedSteps = targetOsmdSteps;
       }
+    } catch (eSync) {
+      playerPlayback.osmdSyncedSteps = null;
+    }
+  }
 
-      function renderTunerPresetDynamicInfo() {
-        var sel = document.getElementById('tunerInstrumentSelect');
-        var listEl = document.getElementById('tunerPresetDynamicList');
-        if (!sel || !listEl) return;
-        var presetId = sel.value || 'chromatic';
-        var notes = TUNER_PRESETS[presetId] || [];
-        listEl.innerHTML = '';
-        if (!notes.length) {
-          var empty = document.createElement('span');
-          empty.className = 'tuner-preset-dynamic-empty';
-          empty.textContent = 'Modo cromático: qualquer nota é válida.';
-          listEl.appendChild(empty);
-          return;
-        }
-        notes.forEach(function (noteName) {
-          var hz = window.TunerUtils.noteFrequency(noteName, tunerNoteToMidi, midiToFreq);
-          if (hz === null) return;
-          var chip = document.createElement('span');
-          chip.className = 'tuner-preset-dynamic-item du-badge du-badge-outline';
-          var hzText = window.TunerUtils.formatHz(hz, 1);
-          chip.textContent = noteName + ' \u00b7 ' + hzText;
-          listEl.appendChild(chip);
-        });
-      }
+  function findPlayerBeatIndexByTime(seconds) {
+    return window.PlayerTimelineUtils.findBeatIndexByTime(
+      playerScoreData ? playerScoreData.beatEvents : [],
+      seconds
+    );
+  }
 
-      function updateTunerUINoSignal() {
-        var noteEl = document.getElementById('tunerDetectedNote');
-        var statusEl = document.getElementById('tunerStatus');
-        var fEl = document.getElementById('tunerFreqValue');
-        var tEl = document.getElementById('tunerTargetValue');
-        var cEl = document.getElementById('tunerCentsValue');
-        var placeholders = window.TunerUtils.noSignalPlaceholders();
-        window.UiCoreModule.setText(noteEl, placeholders.note);
-        if (statusEl) {
-          window.UiCoreModule.replaceStatusClasses(statusEl, ['ok', 'flat', 'sharp'], '');
-          statusEl.textContent = placeholders.statusText;
-        }
-        if (fEl) {
-          fEl.textContent = window.TunerUtils.formatHz(tunerLastFreq, 2);
-        }
-        window.UiCoreModule.setText(tEl, placeholders.target);
-        window.UiCoreModule.setText(cEl, placeholders.deviation);
-        var idleState = window.TunerUtils.idleUiState();
-        tunerLastCents = idleState.cents;
-        tunerLastStatus = idleState.status;
-        tunerLastNote = idleState.note;
-        tunerLastTargetFreq = idleState.targetFreq;
-        tunerRawHistory = idleState.rawHistory;
-        drawTunerGauge(0, 'idle');
-      }
+  function getPlayerSpeedBpm() {
+    var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+    return window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
+  }
 
-      function resizeCanvasToDisplay(canvas) {
-        return window.UiCoreModule.resizeCanvasToDisplay(canvas);
-      }
+  function setPlayerSpeedPopoverOpen(open) {
+    var pop = document.getElementById('playerSpeedPopover');
+    var btn = document.getElementById('btnPlayerSpeed');
+    if (!pop || !btn) return;
+    window.UiCoreModule.setHiddenClass(pop, !open);
+    window.UiCoreModule.setAriaExpanded(btn, open);
+  }
 
-      function getTunerSmoothingConfig() {
-        return window.TunerUtils.getSmoothingConfig();
-      }
+  function syncPlayerSpeedUi() {
+    var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+    var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+    var bpm = window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
+    var btn = document.getElementById('btnPlayerSpeed');
+    var inp = document.getElementById('playerSpeedInput');
+    var slider = document.getElementById('playerSpeedSlider');
+    var unit = document.getElementById('playerSpeedUnit');
+    if (btn) {
+      var t = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(bpm, beatU);
+      window.UiCoreModule.setAriaLabelAndTitle(btn, t);
+    }
+    if (inp) inp.value = String(bpm);
+    if (slider) slider.value = String(bpm);
+    if (unit) unit.textContent = window.PlayerSpeedUtils.beatUnitLabelPt(beatU);
+  }
 
-      /** Suavização mais forte que o afinador isolado: leitura ao vivo prioriza estabilidade em ruído. */
-      function getPlayerLiveSmoothingConfig() {
-        return { alpha: 0.4, medianWindow: 4 };
-      }
+  function syncPlayerLeverUi() {
+    var metroToggle = document.getElementById('playerMetronomeToggle');
+    window.UiCoreModule.setAriaPressed(metroToggle, playerMetronomeEnabled);
+    var scrollToggle = document.getElementById('playerAutoScrollToggle');
+    window.UiCoreModule.setAriaPressed(scrollToggle, playerAutoScrollEnabled);
+    var loopToggle = document.getElementById('playerLoopToggle');
+    window.UiCoreModule.setAriaPressed(loopToggle, playerLoopEnabled);
+    var colorToggle = document.getElementById('playerColorToggle');
+    window.UiCoreModule.setAriaPressed(colorToggle, playerColorizedNotes);
+    var noteNamesToggle = document.getElementById('playerNoteNamesToggle');
+    window.UiCoreModule.setAriaPressed(noteNamesToggle, playerNoteNameLabels);
+    var fingeringToggle = document.getElementById('playerFingeringToggle');
+    window.UiCoreModule.setAriaPressed(fingeringToggle, playerShowFingering);
+    var liveListenToggle = document.getElementById('playerLiveListenToggle');
+    window.UiCoreModule.setAriaPressed(liveListenToggle, playerLiveListenEnabled);
+    var mutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
+    window.UiCoreModule.setAriaPressed(mutePlaybackToggle, playerMutePlaybackEnabled);
+    var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
+    window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
+  }
 
-      function tunerMedian(values) {
-        return window.TunerUtils.median(values);
-      }
+  function buildPlayerDisplayMusicXml(xmlText) {
+    return window.PlayerMusicXmlUtils.buildDisplayMusicXml(xmlText, {
+      colorizedNotes: !!playerColorizedNotes,
+      showFingering: !!playerShowFingering
+    });
+  }
 
-      function drawTunerGauge(deviationHz, statusMode) {
-        var canvas = document.getElementById('tunerGauge');
-        if (!canvas) return;
-        resizeCanvasToDisplay(canvas);
-        var ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        var w = canvas.width;
-        var h = canvas.height;
-        if (w < 60 || h < 60) return;
-        ctx.clearRect(0, 0, w, h);
-        var s = Math.max(0.2, Math.min(1.6, w / 540));
-
-        var cx = w * 0.5;
-        var cy = h * 0.84;
-        var radius = Math.min(w * 0.44, h * 0.62);
-        var deviationRangeHz = 50;
-
-        function degToRad(deg) {
-          return deg * Math.PI / 180;
-        }
-
-        // Geometria da regua: -50 (esquerda/baixo) -> 0 (topo) -> +50 (direita/baixo)
-        // No canvas, para cruzar pelo topo precisamos usar o angulo final equivalente em 340deg.
-        var startAng = degToRad(200);
-        var endAng = degToRad(340);
-        var span = endAng - startAng;
-
-        // Arco azul (laterais)
-        ctx.lineWidth = 9 * s;
-        ctx.strokeStyle = '#88b5de';
-        var leftEnd = startAng + ((-10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
-        var rightStart = startAng + ((10 + deviationRangeHz) / (2 * deviationRangeHz)) * span;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, startAng, leftEnd, false);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, rightStart, endAng, false);
-        ctx.stroke();
-
-        // Faixa afinada central (verde)
-        ctx.lineWidth = 9 * s;
-        ctx.strokeStyle = '#9ed948';
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, leftEnd, rightStart, false);
-        ctx.stroke();
-
-        // Leque discreto central (fundo escuro transparente)
-        ctx.fillStyle = 'rgba(78, 104, 129, 0.24)';
-        ctx.beginPath();
-        ctx.moveTo(cx, cy + 2 * s);
-        ctx.arc(cx, cy, radius - 32 * s, leftEnd, rightStart, false);
-        ctx.closePath();
-        ctx.fill();
-
-        // Regua de desvio em Hz: -50 .. 0 .. +50 (de 10 em 10)
-        ctx.lineWidth = 1.2 * s;
-        ctx.font = '700 ' + Math.round(9 * s) + 'px Segoe UI';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        for (var t = -deviationRangeHz; t <= deviationRangeHz; t += 10) {
-          var normalizedTick = (t + deviationRangeHz) / (2 * deviationRangeHz);
-          var a = startAng + normalizedTick * span;
-          var x1 = cx + (radius - 1) * Math.cos(a);
-          var y1 = cy + (radius - 1) * Math.sin(a);
-          var len = t % 50 === 0 ? 12 : Math.abs(t) <= 10 ? 11 : 7;
-          var x2 = cx + (radius - len) * Math.cos(a);
-          var y2 = cy + (radius - len) * Math.sin(a);
-          var isCenterBand = Math.abs(t) <= 10;
-          ctx.strokeStyle = isCenterBand ? '#9ed948' : '#88b5de';
-          ctx.fillStyle = isCenterBand ? '#9ed948' : '#88b5de';
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(x2, y2);
-          ctx.stroke();
-          if (t % 10 === 0) {
-            var lx = cx + (radius + 14) * Math.cos(a);
-            var ly = cy + (radius + 14) * Math.sin(a);
-            var lab = String(t);
-            ctx.fillText(lab, lx, ly);
-          }
-        }
-
-        // Ponteiro
-        var clamped = Math.max(-deviationRangeHz, Math.min(deviationRangeHz, deviationHz));
-        var normalized = (clamped + deviationRangeHz) / (2 * deviationRangeHz);
-        var ang = startAng + normalized * span;
-        var nx = cx + (radius - 16) * Math.cos(ang);
-        var ny = cy + (radius - 16) * Math.sin(ang);
-        ctx.strokeStyle = '#db2730';
-        ctx.lineWidth = 3.2 * s;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(nx, ny);
-        ctx.stroke();
-        var isInTune = statusMode === 'ok';
-        var statusR = 18 * s;
-        ctx.fillStyle = isInTune ? '#95ff17' : '#2a3344';
-        ctx.beginPath();
-        ctx.arc(cx, cy, statusR, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = isInTune ? '#678735' : '#5d6b85';
-        ctx.lineWidth = 1.6 * s;
-        ctx.stroke();
-        ctx.fillStyle = isInTune ? '#1f7240' : '#ff6c79';
-        ctx.font = '900 ' + Math.round(22 * s) + 'px Segoe UI';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(isInTune ? '✓' : 'X', cx, cy);
-        ctx.textBaseline = 'alphabetic';
-
-        // Nota atual com oitava no topo
-        var adjacent = tunerAdjacentHumanLabels(tunerLastNote);
-        ctx.fillStyle = '#7fa8d3';
-        ctx.font = '700 ' + Math.round(13 * s) + 'px Segoe UI';
-        ctx.fillText(tunerHumanNoteWithOctave(tunerLastNote) + (tunerLastTargetFreq ? ': ' + Math.round(tunerLastTargetFreq) + 'Hz' : ''), cx, 18 * s);
-
-        // Nota anterior e proxima nas laterais da regua
-        ctx.fillStyle = '#7fa8d3';
-        ctx.font = '700 ' + Math.round(12 * s) + 'px Segoe UI';
-        ctx.fillText(adjacent.prev, cx - radius * 0.93, cy - radius * 0.13);
-        ctx.fillText(adjacent.next, cx + radius * 0.93, cy - radius * 0.13);
-
-        // Badge de cents no lado direito (como apps de tuner)
-        var badgeX = cx + radius * 0.48;
-        var badgeY = cy - radius * 0.30;
-        var liveHz = tunerLastFreq && isFinite(tunerLastFreq) ? tunerLastFreq.toFixed(1) : '--';
-        var badgeText = liveHz + 'Hz';
-        ctx.fillStyle = 'rgba(47, 71, 104, 0.9)';
-        ctx.strokeStyle = 'rgba(106, 145, 196, 0.9)';
-        ctx.lineWidth = 1 * s;
-        var bw = 78 * s;
-        var bh = 38 * s;
-        ctx.beginPath();
-        ctx.roundRect(badgeX - bw / 2, badgeY - bh / 2, bw, bh, 5 * s);
-        ctx.fill();
-        ctx.stroke();
-        ctx.fillStyle = '#8ab8f1';
-        ctx.font = '700 ' + Math.round(20 * s) + 'px Segoe UI';
-        ctx.fillText(badgeText, badgeX, badgeY + 1);
-      }
-
-      function drawTunerChart() {
-        var canvas = document.getElementById('tunerHzChart');
-        if (!canvas) return;
-        resizeCanvasToDisplay(canvas);
-        var ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        var w = canvas.width;
-        var h = canvas.height;
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        ctx.fillRect(0, 0, w, h);
-
-        if (!tunerHistory.length) return;
-        var bounds = window.TunerUtils.chartBounds(tunerHistory, 2);
-        if (!bounds) return;
-        var min = bounds.min;
-        var max = bounds.max;
-
-        ctx.strokeStyle = 'rgba(125,157,122,0.25)';
-        ctx.lineWidth = 1;
-        for (var g = 1; g <= 3; g++) {
-          var gy = (h / 4) * g;
-          ctx.beginPath();
-          ctx.moveTo(0, gy);
-          ctx.lineTo(w, gy);
-          ctx.stroke();
-        }
-
-        ctx.strokeStyle = '#5f9f77';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        tunerHistory.forEach(function (v, i) {
-          var x = (i / Math.max(1, tunerHistory.length - 1)) * w;
-          var y = h - ((v - min) / (max - min)) * h;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        });
-        ctx.stroke();
-      }
-
-      function updateTunerUI(freq) {
-        var analysis = window.TunerUtils.analyzeFrequency(freq, {
-          freqToMidi: tunerFreqToMidi,
-          midiToFreq: midiToFreq,
-          midiToName: tunerMidiToName,
-          presetTargetForFreq: tunerPresetTargetForFreq
-        });
-        var targetFreq = analysis.targetFreq;
-        var deviationHz = analysis.deviationHz;
-        var noteName = analysis.noteName;
-
-        var noteEl = document.getElementById('tunerDetectedNote');
-        var statusEl = document.getElementById('tunerStatus');
-        var fEl = document.getElementById('tunerFreqValue');
-        var tEl = document.getElementById('tunerTargetValue');
-        var cEl = document.getElementById('tunerCentsValue');
-        window.UiCoreModule.setText(noteEl, tunerHumanNoteLabel(noteName));
-        if (fEl) fEl.textContent = window.TunerUtils.formatHz(freq, 2);
-        if (tEl) tEl.textContent = window.TunerUtils.formatHz(targetFreq, 2);
-        if (cEl) {
-          cEl.textContent = window.TunerUtils.formatSignedHz(deviationHz, 1);
-        }
-        tunerLastCents = deviationHz;
-        tunerLastNote = noteName;
-        tunerLastTargetFreq = targetFreq;
-        tunerLastFreq = freq;
-        if (statusEl) {
-          var statusInfo = window.TunerUtils.statusFromDeviation(deviationHz, 0.8);
-          window.UiCoreModule.replaceStatusClasses(statusEl, ['ok', 'flat', 'sharp'], statusInfo.mode);
-          tunerLastStatus = statusInfo.mode;
-          statusEl.textContent = statusInfo.text;
-        }
-        drawTunerGauge(deviationHz, tunerLastStatus);
-      }
-
-      function tunerLoop() {
-        if (!tunerRunning || !tunerAnalyzer || !tunerData) return;
-        tunerAnalyzer.getFloatTimeDomainData(tunerData);
-        var raw = tunerDetectPitch(tunerData, tunerAnalyzer.context.sampleRate);
-        if (raw > 0) {
-          tunerNoSignalFrames = 0;
-          var cfg = getTunerSmoothingConfig();
-          var normalizedRaw = tunerNormalizeFrequency(raw);
-          window.TunerUtils.pushWithLimit(tunerRawHistory, normalizedRaw, 6);
-          var win = Math.min(cfg.medianWindow, tunerRawHistory.length);
-          var filtered = tunerMedian(tunerRawHistory.slice(-win));
-          tunerSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(tunerSmoothedFreq, filtered, cfg.alpha);
-          updateTunerUI(tunerSmoothedFreq);
-          window.TunerUtils.pushWithLimit(tunerHistory, tunerSmoothedFreq, 90);
-        } else {
-          tunerNoSignalFrames += 1;
-          if (tunerSmoothedFreq > 0) {
-            window.TunerUtils.pushWithLimit(tunerHistory, tunerSmoothedFreq, 90);
-            var holdFreqEl = document.getElementById('tunerFreqValue');
-            if (holdFreqEl) {
-              holdFreqEl.textContent = window.TunerUtils.formatHz(tunerSmoothedFreq, 2);
-            }
-            tunerLastFreq = tunerSmoothedFreq;
-            drawTunerGauge(tunerLastCents, tunerLastStatus);
-          }
-          if (tunerNoSignalFrames > 16) {
-            tunerSmoothedFreq = 0;
-            updateTunerUINoSignal();
-          }
-        }
-        drawTunerChart();
-        tunerFrameId = requestAnimationFrame(tunerLoop);
-      }
-
-      function requestScreenWakeLock() {
-        if (!('wakeLock' in navigator) || wakeLockSentinel) return;
-        navigator.wakeLock.request('screen').then(function (lock) {
-          wakeLockSentinel = lock;
-          lock.addEventListener('release', function () {
-            wakeLockSentinel = null;
-          });
-        }).catch(function () {});
-      }
-
-      function bootstrapScreenWakeLock() {
-        if (wakeLockBootstrapped) return;
-        wakeLockBootstrapped = true;
-        requestScreenWakeLock();
-        ['pointerdown', 'touchstart', 'keydown'].forEach(function (eventName) {
-          window.addEventListener(eventName, requestScreenWakeLock, { passive: true });
-        });
-      }
-
-      function releaseScreenWakeLock() {
-        if (!wakeLockSentinel) return;
-        wakeLockSentinel.release().catch(function () {});
-        wakeLockSentinel = null;
-      }
-
-      function ensureMicrophonePermission() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          return Promise.resolve(false);
-        }
-        return navigator.mediaDevices.getUserMedia({
-          audio: {
-            channelCount: 1,
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        }).then(function (stream) {
-          return stream;
-        });
-      }
-
-      function setTunerMicDeniedVisible(visible) {
-        var wrap = document.getElementById('tunerMicDeniedWrap');
-        window.UiCoreModule.setHiddenClass(wrap, !visible);
-      }
-
-      function guessAndroidBrowserPackage() {
-        var ua = navigator.userAgent || '';
-        if (/SamsungBrowser/i.test(ua)) return 'com.sec.android.app.sbrowser';
-        if (/Firefox/i.test(ua)) return 'org.mozilla.firefox';
-        if (/EdgA/i.test(ua)) return 'com.microsoft.emmx';
-        if (/Brave/i.test(ua)) return 'com.brave.browser';
-        if (/OPR|Opera/i.test(ua)) return 'com.opera.browser';
-        return 'com.android.chrome';
-      }
-
-      /** Android: tenta abrir a tela de detalhes do app do navegador (onde ficam as permissões). iOS/desktop: não há URL universal; abre o passo a passo. */
-      function tryOpenTunerMicrophoneSettings() {
-        var ua = navigator.userAgent || '';
-        if (/Android/i.test(ua)) {
-          var pkg = guessAndroidBrowserPackage();
-          var intentUrl = 'intent://#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:' + pkg + ';end';
-          try {
-            window.location.href = intentUrl;
-          } catch (e) {}
-          return;
-        }
-        openTunerMicHelpModal();
-      }
-
-      function buildTunerMicHelpHtml() {
-        var ua = navigator.userAgent || '';
-        if (/Android/i.test(ua)) {
-          return (
-            '<p><strong>Android</strong></p>' +
-            '<ol>' +
-            '<li>Abra <strong>Configurações</strong> do aparelho.</li>' +
-            '<li><strong>Aplicativos</strong> (ou Apps) → encontre o <strong>navegador</strong> que você usa (Chrome, Samsung Internet, Firefox…).</li>' +
-            '<li><strong>Permissões</strong> → <strong>Microfone</strong> → <strong>Permitir</strong>.</li>' +
-            '</ol>' +
-            '<p>O botão <strong>Abrir configurações</strong> tenta levar direto à página desse app. Se não abrir, siga os passos acima.</p>' +
-            '<p>No próprio site: toque no <strong>cadeado</strong> ou <strong>⋮</strong> na barra de endereço → <strong>Permissões</strong> → Microfone.</p>'
-          );
-        }
-        if (/iPhone|iPad|iPod/i.test(ua)) {
-          return (
-            '<p><strong>iPhone / iPad</strong></p>' +
-            '<p>O Safari não permite abrir Ajustes a partir de um site. Faça manualmente:</p>' +
-            '<ul style="margin:0 0 0.65rem 1rem;padding:0;">' +
-            '<li><strong>Safari:</strong> Ajustes → Safari → Microfone; ou Ajustes → Privacidade e segurança → Microfone.</li>' +
-            '<li>No site: toque em <strong>Aa</strong> à esquerda do endereço → <strong>Configurações do site</strong> → Microfone.</li>' +
-            '<li><strong>App na tela inicial (PWA):</strong> Ajustes → role até <strong>GEM Tools</strong> → Microfone.</li>' +
-            '</ul>'
-          );
-        }
-        return (
-          '<p><strong>Computador (Chrome / Edge / Firefox)</strong></p>' +
-          '<ol>' +
-          '<li>Clique no <strong>cadeado</strong> ou no ícone à esquerda do endereço.</li>' +
-          '<li><strong>Permissões do site</strong> ou <strong>Configurações do site</strong> → Microfone → <strong>Permitir</strong>.</li>' +
-          '</ol>' +
-          '<p>Ou: menu do navegador → Configurações → Privacidade e segurança → Configurações do site → Microfone.</p>'
-        );
-      }
-
-      function openTunerMicHelpModal() {
-        var modal = document.getElementById('tunerMicHelpModal');
-        var body = document.getElementById('tunerMicHelpContent');
-        if (body) body.innerHTML = buildTunerMicHelpHtml();
-        if (modal) modal.classList.remove('hidden');
-      }
-
-      function closeTunerMicHelpModal() {
-        var modal = document.getElementById('tunerMicHelpModal');
-        if (modal) modal.classList.add('hidden');
-      }
-
-      function stopTuner() {
-        tunerRunning = false;
-        tunerNoSignalFrames = 0;
-        if (tunerFrameId) {
-          cancelAnimationFrame(tunerFrameId);
-          tunerFrameId = 0;
-        }
-        if (tunerSource) {
-          try {
-            tunerSource.disconnect();
-          } catch (e) {}
-          tunerSource = null;
-        }
-        if (tunerStream) {
-          tunerStream.getTracks().forEach(function (t) {
-            try {
-              t.stop();
-            } catch (e) {}
-          });
-          tunerStream = null;
-        }
-        tunerData = null;
-        tunerFreqData = null;
-        var st = document.getElementById('tunerStatus');
-        if (st) {
-          st.classList.remove('ok', 'flat', 'sharp');
-          st.textContent = 'Microfone parado';
-        }
-        var startBtn = document.getElementById('tunerStartBtn');
-        var stopBtn = document.getElementById('tunerStopBtn');
-        window.UiCoreModule.setDisabled(startBtn, false);
-        window.UiCoreModule.setDisabled(stopBtn, true);
-      }
-
-      function startTuner() {
-        if (tunerRunning) return;
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          setMessage('Este navegador não suporta acesso ao microfone.');
-          return;
-        }
-        ensureMicrophonePermission().then(function (stream) {
-          var ctx = getAudioContext();
-          if (!ctx) {
-            stream.getTracks().forEach(function (t) { t.stop(); });
-            return;
-          }
-          tunerStream = stream;
-          tunerAnalyzer = ctx.createAnalyser();
-          tunerAnalyzer.fftSize = 8192;
-          tunerAnalyzer.smoothingTimeConstant = 0;
-          tunerSource = ctx.createMediaStreamSource(stream);
-          tunerSource.connect(tunerAnalyzer);
-          tunerData = new Float32Array(tunerAnalyzer.fftSize);
-          tunerFreqData = new Uint8Array(tunerAnalyzer.frequencyBinCount);
-          tunerHistory = [];
-          tunerRawHistory = [];
-          tunerSmoothedFreq = 0;
-          tunerNoSignalFrames = 0;
-          tunerRunning = true;
-          setTunerMicDeniedVisible(false);
-          var startBtn = document.getElementById('tunerStartBtn');
-          var stopBtn = document.getElementById('tunerStopBtn');
-          window.UiCoreModule.setDisabled(startBtn, true);
-          window.UiCoreModule.setDisabled(stopBtn, false);
-          requestScreenWakeLock();
-          setMessage('Afinador ativo. Toque uma corda/nota do instrumento.');
-          tunerLoop();
-        }).catch(function () {
-          var st = document.getElementById('tunerStatus');
-          if (st) st.textContent = 'Permissão do microfone bloqueada';
-          setMessage('Não foi possível acessar o microfone para o afinador.');
-          setTunerMicDeniedVisible(true);
-        });
-      }
-
-      function resizePlayerOsmdIfActive() {
-        if (currentMode !== 'player' || !playerOsmd) return;
+  function stopPlayerLiveListen() {
+    playerLiveListenRunning = false;
+    playerLiveListenNoSignalFrames = 0;
+    if (playerLiveListenFrameId) {
+      cancelAnimationFrame(playerLiveListenFrameId);
+      playerLiveListenFrameId = 0;
+    }
+    if (playerLiveListenSource) {
+      try {
+        playerLiveListenSource.disconnect();
+      } catch (e) { }
+      playerLiveListenSource = null;
+    }
+    if (playerLiveListenStream) {
+      playerLiveListenStream.getTracks().forEach(function (t) {
         try {
-          if (typeof playerOsmd.resize === 'function') playerOsmd.resize();
-        } catch (e) {}
-        requestAnimationFrame(function () {
-          if (currentMode === 'player') buildPlayerNoteAnchorsFromDom();
-        });
+          t.stop();
+        } catch (e) { }
+      });
+      playerLiveListenStream = null;
+    }
+    playerLiveListenAnalyzer = null;
+    playerLiveListenData = null;
+    playerLiveListenSmoothedFreq = 0;
+    playerLiveListenRawHistory = [];
+    playerLiveListenLastFreq = 0;
+    playerLiveListenLastCents = 0;
+    playerLiveListenHasSignal = false;
+    playerLiveListenHintExpectedFreq = 0;
+    if (playerLiveCurrentEventIndex >= 0) {
+      finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+      playerLiveCurrentEventIndex = -1;
+    }
+    clearPlayerLiveFeedbackVisualOnly();
+    initPlayerLiveBars();
+    syncPlayerLiveScoreUi();
+  }
+
+  function playerLiveListenNormalizeFrequency(freq) {
+    var deps = {
+      freqToMidi: tunerFreqToMidi,
+      midiToFreq: midiToFreq,
+      noteToMidi: tunerNoteToMidi,
+      presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
+        return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
       }
+    };
+    if (isFinite(playerLiveListenHintExpectedFreq) && playerLiveListenHintExpectedFreq > 0) {
+      deps.hintExpectedFreq = playerLiveListenHintExpectedFreq;
+    }
+    return window.TunerUtils.normalizeFrequency(freq, [], deps);
+  }
 
-      function playerClientToSvgPoint(svg, clientX, clientY) {
-        try {
-          if (!svg || typeof svg.createSVGPoint !== 'function') return null;
-          var pt = svg.createSVGPoint();
-          pt.x = clientX;
-          pt.y = clientY;
-          var m = svg.getScreenCTM();
-          if (!m || typeof m.inverse !== 'function') return null;
-          return pt.matrixTransform(m.inverse());
-        } catch (ePt) {
-          return null;
-        }
-      }
-
-      /** Retângulo na tela que cobre a cabeça da nota (path costuma ter bbox minúsculo → usa só o pai imediato se for plausível). */
-      function playerNoteheadScreenRect(el) {
-        if (!el || !el.getBoundingClientRect) return null;
-        var tag = String(el.tagName || '').toLowerCase();
-        var r = el.getBoundingClientRect();
-        if (!r || r.width <= 0 || r.height <= 0) return null;
-        var best = { left: r.left, top: r.top, width: r.width, height: r.height };
-
-        if (tag === 'path') {
-          var p = el.parentElement;
-          if (p && p.getBoundingClientRect) {
-            var rp = p.getBoundingClientRect();
-            if (rp && rp.width > 0 && rp.height > 0) {
-              var nw = rp.width;
-              var nh = rp.height;
-              if (
-                nw >= best.width * 1.06 &&
-                nw <= Math.max(best.width * 10, 56) &&
-                nh <= Math.max(best.height * 5, 40)
-              ) {
-                best = { left: rp.left, top: rp.top, width: nw, height: nh };
-              }
-            }
-          }
-        }
-
-        if (best.width < 3 || best.height < 3) return null;
-        return best;
-      }
-
-      /** Converte nome OSMD/Vex (ex. A#4, Bb4, C4) em MIDI cromático padrão. */
-      function playerOsmdPitchStringToMidi(short) {
-        var t = String(short || '').trim();
-        if (!t || t === 'rest') return null;
-        if (window.TunerUtils) {
-          var direct = window.TunerUtils.noteToMidi(t);
-          if (direct != null) return direct;
-        }
-        var m = /^([A-G])(#|b|bb|##|n)?(-?\d+)$/.exec(t);
-        if (!m) return null;
-        var letter = m[1];
-        var acc = m[2] || '';
-        var oct = parseInt(m[3], 10);
-        var baseMap = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
-        var base = baseMap[letter];
-        if (base == null || isNaN(oct)) return null;
-        var off = 0;
-        if (acc === '#') off = 1;
-        else if (acc === 'b') off = -1;
-        else if (acc === '##') off = 2;
-        else if (acc === 'bb') off = -2;
-        else if (acc === 'n') off = 0;
-        var midiVal = (oct + 1) * 12 + base + off;
-        if (midiVal < 0 || midiVal > 127) return null;
-        return midiVal;
-      }
-
-      /**
-       * Posições e alturas a partir do modelo gráfico do OSMD (respeita clave, armadura e notação).
-       * Fallback: timeline + DOM (menos fiável em partituras longas / várias pautas).
-       */
-      function collectPlayerOsmdNoteLabelPlacements(osmd) {
-        var placements = [];
-        if (!osmd) return placements;
-        var sheet = osmd.graphic || osmd.GraphicSheet;
-        if (!sheet) return placements;
-        var measureList = sheet.measureList || sheet.MeasureList;
-        if (!measureList || !measureList.length) return placements;
-
-        var i;
-        for (i = 0; i < measureList.length; i++) {
-          var measures = measureList[i];
-          if (!measures) continue;
-          if (!Array.isArray(measures)) measures = [measures];
-          var j;
-          for (j = 0; j < measures.length; j++) {
-            var measure = measures[j];
-            if (!measure || !measure.staffEntries) continue;
-            var k;
-            for (k = 0; k < measure.staffEntries.length; k++) {
-              var se = measure.staffEntries[k];
-              if (!se || !se.graphicalVoiceEntries) continue;
-              var l;
-              for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
-                var gve = se.graphicalVoiceEntries[l];
-                if (!gve || !gve.notes) continue;
-                var mn;
-                for (mn = 0; mn < gve.notes.length; mn++) {
-                  var gn = gve.notes[mn];
-                  var sn = gn && gn.sourceNote;
-                  if (!sn) continue;
-                  if (typeof sn.isRest === 'function' && sn.isRest()) continue;
-                  if (sn.IsGraceNote || sn.isGraceNote) continue;
-                  try {
-                    if (sn.PrintObject === false) continue;
-                  } catch (ePo) {}
-
-                  var pitch = sn.TransposedPitch || sn.Pitch;
-                  if (!pitch) continue;
-                  var shortStr = null;
-                  try {
-                    if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
-                  } catch (eTs) {}
-                  if (!shortStr) continue;
-
-                  var midi = playerOsmdPitchStringToMidi(shortStr);
-                  if (midi == null) continue;
-
-                  var el = null;
-                  if (typeof gn.getSVGGElement === 'function') {
-                    try {
-                      el = gn.getSVGGElement();
-                    } catch (eSvg) {}
-                  }
-                  if (!el || !el.getBoundingClientRect) continue;
-                  var r = el.getBoundingClientRect();
-                  if (!r || r.width < 2 || r.height < 2) continue;
-
-                  placements.push({
-                    cx: r.left + r.width * 0.5,
-                    noteBottom: r.top + r.height,
-                    midi: midi,
-                    dPx: Math.max(r.width, r.height)
-                  });
-                }
-              }
-            }
-          }
-        }
-
-        placements.sort(function (a, b) {
-          var ay = a.noteBottom != null ? a.noteBottom : a.cy;
-          var by = b.noteBottom != null ? b.noteBottom : b.cy;
-          var dy = ay - by;
-          if (Math.abs(dy) > 8) return dy;
-          return a.cx - b.cx;
-        });
-        return placements;
-      }
-
-      function collectPlayerNoteLabelPlacementsFromDomFallback() {
-        var placements = [];
-        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return placements;
-        var host = document.getElementById('playerOsmdContainer');
-        if (!host) return placements;
-
-        var nonChordEvents = playerScoreData.events.filter(function (ev) {
-          return !ev.isChord;
-        });
-        if (!nonChordEvents.length) return placements;
-
-        var nodes = host.querySelectorAll(
-          '.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]'
-        );
-        if (!nodes || !nodes.length) return placements;
-
-        var usableNodes = [];
-        nodes.forEach(function (n) {
-          var rect = playerNoteheadScreenRect(n);
-          if (!rect) return;
-          usableNodes.push({ rect: rect });
-        });
-        if (!usableNodes.length) return placements;
-
-        usableNodes.sort(function (a, b) {
-          var dy = a.rect.top - b.rect.top;
-          if (Math.abs(dy) > 8) return dy;
-          return a.rect.left - b.rect.left;
-        });
-
-        var max = Math.min(nonChordEvents.length, usableNodes.length);
-        var pi;
-        for (pi = 0; pi < max; pi++) {
-          var ev = nonChordEvents[pi];
-          if (!ev || ev.isRest || ev.midi == null) continue;
-          var rr = usableNodes[pi].rect;
-          placements.push({
-            cx: rr.left + rr.width * 0.5,
-            noteBottom: rr.top + rr.height,
-            midi: ev.midi,
-            dPx: Math.max(rr.width, rr.height)
-          });
-        }
-        return placements;
-      }
-
-      /** Reduz sobreposição em colcheias / notas lado a lado (nudge vertical + fonte menor). */
-      function applyPlayerNoteLabelCrowdingAdjustments(arr) {
-        if (!arr || arr.length < 2) return;
-        var i;
-        for (i = 0; i < arr.length; i++) {
-          arr[i].cyNudgePx = 0;
-          arr[i].fontMult = 1;
-        }
-        var run = 0;
-        for (i = 1; i < arr.length; i++) {
-          var a = arr[i - 1];
-          var b = arr[i];
-          var ay = a.noteBottom != null ? a.noteBottom : a.cy;
-          var by = b.noteBottom != null ? b.noteBottom : b.cy;
-          var dy = Math.abs(by - ay);
-          var dx = b.cx - a.cx;
-          if (dy < 11 && dx < 36 && dx >= -3) {
-            run++;
-            b.cyNudgePx = run % 2 === 1 ? -4 : 4;
-            b.fontMult = 0.74;
-          } else {
-            run = 0;
-          }
-        }
-      }
-
-      /** Rótulos Dó/Ré/Sol dentro das cabeças (SVG). */
-      function syncPlayerNoteNameLabelOverlays() {
-        var host = document.getElementById('playerOsmdContainer');
-        if (host) {
-          var prev = host.querySelector('#gem-player-note-labels');
-          if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
-        }
-        if (!playerNoteNameLabels || !host) return;
-        var svg = host.querySelector('svg');
-        if (!svg) return;
-
-        var placements = collectPlayerOsmdNoteLabelPlacements(playerOsmd);
-        if (!placements || !placements.length) placements = collectPlayerNoteLabelPlacementsFromDomFallback();
-        if (!placements || !placements.length) return;
-        applyPlayerNoteLabelCrowdingAdjustments(placements);
-
-        var layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        layer.setAttribute('id', 'gem-player-note-labels');
-        layer.setAttribute('pointer-events', 'none');
-        var ns = 'http://www.w3.org/2000/svg';
-        var pi;
-        for (pi = 0; pi < placements.length; pi++) {
-          var pl = placements[pi];
-          if (!pl || pl.midi == null) continue;
-
-          var rawLabel = tunerHumanNoteLabel(tunerMidiToName(pl.midi));
-          if (!rawLabel) continue;
-          var shortLabel = rawLabel.replace('♯', '#').replace('♭', 'b');
-          if (shortLabel.length > 5) shortLabel = shortLabel.slice(0, 5);
-
-          var dPx = Math.max(10, pl.dPx != null && isFinite(pl.dPx) ? pl.dPx : 14);
-          var fontMult = (pl.fontMult != null && isFinite(pl.fontMult) ? pl.fontMult : 1) * (shortLabel.length > 2 ? 0.84 : 1);
-          var fontPx = Math.max(5.2, Math.min(12, dPx * 0.34 * fontMult));
-          var noteBottom =
-            pl.noteBottom != null && isFinite(pl.noteBottom) ? pl.noteBottom : pl.cy + dPx * 0.35;
-          var gapPx = 1.5 + fontPx * 0.1;
-          var nudge = pl.cyNudgePx || 0;
-          var cyScreen = noteBottom + gapPx + nudge;
-          var p = playerClientToSvgPoint(svg, pl.cx, cyScreen);
-          if (!p || !isFinite(p.x) || !isFinite(p.y)) continue;
-
-          var strokeW = Math.max(0.7, fontPx * 0.15);
-          var letterSp = shortLabel.length > 3 ? '-0.06em' : '-0.03em';
-          var text = document.createElementNS(ns, 'text');
-          text.setAttribute('x', String(Math.round(p.x * 100) / 100));
-          text.setAttribute('y', String(Math.round(p.y * 100) / 100));
-          text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('dominant-baseline', 'hanging');
-          text.setAttribute('fill', '#ffffff');
-          text.setAttribute(
-            'style',
-            'font-family: Nunito, "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: ' +
-              fontPx +
-              'px; letter-spacing: ' +
-              letterSp +
-              '; paint-order: stroke fill; stroke: #e87328; stroke-width: ' +
-              strokeW +
-              'px; filter: drop-shadow(0 0 1.5px rgba(232,115,40,0.95)) drop-shadow(0 1px 2px rgba(160,70,10,0.35));'
-          );
-          text.textContent = shortLabel;
-          layer.appendChild(text);
-        }
-
-        if (layer.childNodes.length) svg.appendChild(layer);
-      }
-
-      function formatPlayerTime(seconds) {
-        return window.AppUtils.formatMmSs(seconds);
-      }
-
-      function findPlayerEventIndexByTime(seconds) {
-        return window.PlayerTimelineUtils.findEventIndexByTime(
-          playerScoreData ? playerScoreData.events : [],
-          seconds
-        );
-      }
-
-      function findPlayerCursorIndexByTime(seconds) {
-        return window.PlayerTimelineUtils.findCursorIndexByTime(
-          playerScoreData ? playerScoreData.cursorStarts : [],
-          seconds
-        );
-      }
-
-      function findPlayerBeatIndexByTime(seconds) {
-        return window.PlayerTimelineUtils.findBeatIndexByTime(
-          playerScoreData ? playerScoreData.beatEvents : [],
-          seconds
-        );
-      }
-
-      function getPlayerSpeedBpm() {
-        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
-        return window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
-      }
-
-      function setPlayerSpeedPopoverOpen(open) {
-        var pop = document.getElementById('playerSpeedPopover');
-        var btn = document.getElementById('btnPlayerSpeed');
-        if (!pop || !btn) return;
-        window.UiCoreModule.setHiddenClass(pop, !open);
-        window.UiCoreModule.setAriaExpanded(btn, open);
-      }
-
-      function syncPlayerSpeedUi() {
-        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
-        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
-        var bpm = window.PlayerSpeedUtils.bpmFromRate(playerPlaybackRate || 1, base);
-        var btn = document.getElementById('btnPlayerSpeed');
-        var inp = document.getElementById('playerSpeedInput');
-        var slider = document.getElementById('playerSpeedSlider');
-        var unit = document.getElementById('playerSpeedUnit');
-        if (btn) {
-          var t = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(bpm, beatU);
-          window.UiCoreModule.setAriaLabelAndTitle(btn, t);
-        }
-        if (inp) inp.value = String(bpm);
-        if (slider) slider.value = String(bpm);
-        if (unit) unit.textContent = window.PlayerSpeedUtils.beatUnitLabelPt(beatU);
-      }
-
-      function syncPlayerLeverUi() {
-        var metroToggle = document.getElementById('playerMetronomeToggle');
-        window.UiCoreModule.setAriaPressed(metroToggle, playerMetronomeEnabled);
-        var scrollToggle = document.getElementById('playerAutoScrollToggle');
-        window.UiCoreModule.setAriaPressed(scrollToggle, playerAutoScrollEnabled);
-        var loopToggle = document.getElementById('playerLoopToggle');
-        window.UiCoreModule.setAriaPressed(loopToggle, playerLoopEnabled);
-        var colorToggle = document.getElementById('playerColorToggle');
-        window.UiCoreModule.setAriaPressed(colorToggle, playerColorizedNotes);
-        var noteNamesToggle = document.getElementById('playerNoteNamesToggle');
-        window.UiCoreModule.setAriaPressed(noteNamesToggle, playerNoteNameLabels);
-        var fingeringToggle = document.getElementById('playerFingeringToggle');
-        window.UiCoreModule.setAriaPressed(fingeringToggle, playerShowFingering);
-        var liveListenToggle = document.getElementById('playerLiveListenToggle');
-        window.UiCoreModule.setAriaPressed(liveListenToggle, playerLiveListenEnabled);
-        var mutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
-        window.UiCoreModule.setAriaPressed(mutePlaybackToggle, playerMutePlaybackEnabled);
-        var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
-        window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
-      }
-
-      function buildPlayerDisplayMusicXml(xmlText) {
-        return window.PlayerMusicXmlUtils.buildDisplayMusicXml(xmlText, {
-          colorizedNotes: !!playerColorizedNotes,
-          showFingering: !!playerShowFingering
-        });
-      }
-
-      function stopPlayerLiveListen() {
-        playerLiveListenRunning = false;
-        playerLiveListenNoSignalFrames = 0;
-        if (playerLiveListenFrameId) {
-          cancelAnimationFrame(playerLiveListenFrameId);
-          playerLiveListenFrameId = 0;
-        }
-        if (playerLiveListenSource) {
-          try {
-            playerLiveListenSource.disconnect();
-          } catch (e) {}
-          playerLiveListenSource = null;
-        }
-        if (playerLiveListenStream) {
-          playerLiveListenStream.getTracks().forEach(function (t) {
-            try {
-              t.stop();
-            } catch (e) {}
-          });
-          playerLiveListenStream = null;
-        }
-        playerLiveListenAnalyzer = null;
-        playerLiveListenData = null;
+  function playerLiveListenLoop() {
+    if (!playerLiveListenRunning || !playerLiveListenAnalyzer || !playerLiveListenData) return;
+    playerLiveListenAnalyzer.getFloatTimeDomainData(playerLiveListenData);
+    var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate, 0.0035);
+    if (raw > 0) {
+      playerLiveListenNoSignalFrames = 0;
+      var cfg = getPlayerLiveSmoothingConfig();
+      var normalizedRaw = playerLiveListenNormalizeFrequency(raw);
+      window.TunerUtils.pushWithLimit(playerLiveListenRawHistory, normalizedRaw, 10);
+      var win = Math.min(cfg.medianWindow, playerLiveListenRawHistory.length);
+      var filtered = tunerMedian(playerLiveListenRawHistory.slice(-win));
+      playerLiveListenSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(
+        playerLiveListenSmoothedFreq,
+        filtered,
+        cfg.alpha
+      );
+      playerLiveListenLastFreq = playerLiveListenSmoothedFreq;
+    } else {
+      playerLiveListenNoSignalFrames += 1;
+      if (playerLiveListenNoSignalFrames > 16) {
         playerLiveListenSmoothedFreq = 0;
-        playerLiveListenRawHistory = [];
-        playerLiveListenLastFreq = 0;
-        playerLiveListenLastCents = 0;
-        playerLiveListenHasSignal = false;
-        playerLiveListenHintExpectedFreq = 0;
-        if (playerLiveCurrentEventIndex >= 0) {
-          finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
-          playerLiveCurrentEventIndex = -1;
-        }
-        clearPlayerLiveFeedbackVisualOnly();
-        syncPlayerLiveScoreUi();
       }
+    }
+    playerLiveListenFrameId = requestAnimationFrame(playerLiveListenLoop);
+  }
 
-      function playerLiveListenNormalizeFrequency(freq) {
-        var deps = {
-          freqToMidi: tunerFreqToMidi,
-          midiToFreq: midiToFreq,
-          noteToMidi: tunerNoteToMidi,
-          presetTargetForFreq: function (f, n, noteToMidiFn, midiToFreqFn) {
-            return window.TunerUtils.presetTargetForFreq(f, n, noteToMidiFn, midiToFreqFn);
-          }
-        };
-        if (isFinite(playerLiveListenHintExpectedFreq) && playerLiveListenHintExpectedFreq > 0) {
-          deps.hintExpectedFreq = playerLiveListenHintExpectedFreq;
-        }
-        return window.TunerUtils.normalizeFrequency(freq, [], deps);
-      }
-
-      function playerLiveListenLoop() {
-        if (!playerLiveListenRunning || !playerLiveListenAnalyzer || !playerLiveListenData) return;
-        playerLiveListenAnalyzer.getFloatTimeDomainData(playerLiveListenData);
-        var raw = tunerDetectPitch(playerLiveListenData, playerLiveListenAnalyzer.context.sampleRate);
-        if (raw > 0) {
-          playerLiveListenNoSignalFrames = 0;
-          var cfg = getPlayerLiveSmoothingConfig();
-          var normalizedRaw = playerLiveListenNormalizeFrequency(raw);
-          window.TunerUtils.pushWithLimit(playerLiveListenRawHistory, normalizedRaw, 10);
-          var win = Math.min(cfg.medianWindow, playerLiveListenRawHistory.length);
-          var filtered = tunerMedian(playerLiveListenRawHistory.slice(-win));
-          playerLiveListenSmoothedFreq = window.TunerUtils.nextSmoothedFrequency(
-            playerLiveListenSmoothedFreq,
-            filtered,
-            cfg.alpha
-          );
-          playerLiveListenLastFreq = playerLiveListenSmoothedFreq;
-        } else {
-          playerLiveListenNoSignalFrames += 1;
-          if (playerLiveListenNoSignalFrames > 16) {
-            playerLiveListenSmoothedFreq = 0;
-          }
-        }
-        playerLiveListenFrameId = requestAnimationFrame(playerLiveListenLoop);
-      }
-
-      function startPlayerLiveListen() {
-        if (playerLiveListenRunning) return;
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          setMessage('Este navegador não suporta acesso ao microfone para leitura ao vivo.');
-          playerLiveListenEnabled = false;
-          syncPlayerLeverUi();
-          return;
-        }
-        ensureMicrophonePermission().then(function (stream) {
-          var ctx = getAudioContext();
-          if (!ctx) {
-            stream.getTracks().forEach(function (t) {
-              try { t.stop(); } catch (e) {}
-            });
-            playerLiveListenEnabled = false;
-            syncPlayerLeverUi();
-            return;
-          }
-          playerLiveListenStream = stream;
-          playerLiveListenAnalyzer = ctx.createAnalyser();
-          playerLiveListenAnalyzer.fftSize = 8192;
-          playerLiveListenAnalyzer.smoothingTimeConstant = 0;
-          playerLiveListenSource = ctx.createMediaStreamSource(stream);
-          playerLiveListenSource.connect(playerLiveListenAnalyzer);
-          playerLiveListenData = new Float32Array(playerLiveListenAnalyzer.fftSize);
-          playerLiveListenRawHistory = [];
-          playerLiveListenSmoothedFreq = 0;
-          playerLiveListenNoSignalFrames = 0;
-          playerLiveListenLastFreq = 0;
-          playerLiveListenLastCents = 0;
-          playerLiveListenHasSignal = false;
-          playerLiveListenRunning = true;
-          resetPlayerLiveScoreTotals();
-          clearPlayerLiveFeedback();
-          syncPlayerLiveScoreUi();
-          setMessage('Leitura ao vivo ativa: microfone captando frequência.');
-          playerLiveListenLoop();
-        }).catch(function () {
-          playerLiveListenEnabled = false;
-          syncPlayerLeverUi();
-          syncPlayerLiveScoreUi();
-          setMessage('Não foi possível acessar o microfone para leitura ao vivo.');
+  function startPlayerLiveListen() {
+    if (playerLiveListenRunning) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setMessage('Este navegador não suporta acesso ao microfone para leitura ao vivo.');
+      playerLiveListenEnabled = false;
+      syncPlayerLeverUi();
+      return;
+    }
+    ensureMicrophonePermission().then(function (stream) {
+      var ctx = getAudioContext();
+      if (!ctx) {
+        stream.getTracks().forEach(function (t) {
+          try { t.stop(); } catch (e) { }
         });
+        playerLiveListenEnabled = false;
+        syncPlayerLeverUi();
+        return;
       }
+      playerLiveListenStream = stream;
+      playerLiveListenAnalyzer = ctx.createAnalyser();
+      playerLiveListenAnalyzer.fftSize = 8192;
+      playerLiveListenAnalyzer.smoothingTimeConstant = 0;
+      playerLiveListenSource = ctx.createMediaStreamSource(stream);
+      playerLiveListenSource.connect(playerLiveListenAnalyzer);
+      playerLiveListenData = new Float32Array(playerLiveListenAnalyzer.fftSize);
+      playerLiveListenRawHistory = [];
+      playerLiveListenSmoothedFreq = 0;
+      playerLiveListenNoSignalFrames = 0;
+      playerLiveListenLastFreq = 0;
+      playerLiveListenLastCents = 0;
+      playerLiveListenHasSignal = false;
+      playerLiveListenRunning = true;
+      resetPlayerLiveScoreTotals();
+      clearPlayerLiveFeedback();
+      initPlayerLiveBars();
+      syncPlayerLiveScoreUi();
+      setMessage('Leitura ao vivo ativa: microfone captando frequência.');
+      playerLiveListenLoop();
+    }).catch(function () {
+      playerLiveListenEnabled = false;
+      syncPlayerLeverUi();
+      syncPlayerLiveScoreUi();
+      setMessage('Não foi possível acessar o microfone para leitura ao vivo.');
+    });
+  }
 
-      function playerEventMidi(ev) {
-        if (!ev) return null;
-        if (isFinite(ev.midi)) return Number(ev.midi);
-        if (isFinite(ev.freq) && ev.freq > 0) return tunerFreqToMidi(ev.freq);
-        return null;
-      }
+  function playerEventMidi(ev) {
+    if (!ev) return null;
+    if (isFinite(ev.midi)) return Number(ev.midi);
+    if (isFinite(ev.freq) && ev.freq > 0) return tunerFreqToMidi(ev.freq);
+    return null;
+  }
 
-      function collectPlayerOsmdGraphicalNotes() {
-        var out = [];
-        if (!playerOsmd) return out;
-        var sheet = playerOsmd.graphic || playerOsmd.GraphicSheet;
-        if (!sheet) return out;
-        var measureList = sheet.measureList || sheet.MeasureList;
-        if (!measureList || !measureList.length) return out;
-        var seen = new Set();
-        var i;
-        for (i = 0; i < measureList.length; i++) {
-          var measures = measureList[i];
-          if (!measures) continue;
-          if (!Array.isArray(measures)) measures = [measures];
-          var j;
-          for (j = 0; j < measures.length; j++) {
-            var measure = measures[j];
-            if (!measure || !measure.staffEntries) continue;
-            var k;
-            for (k = 0; k < measure.staffEntries.length; k++) {
-              var se = measure.staffEntries[k];
-              if (!se || !se.graphicalVoiceEntries) continue;
-              var l;
-              for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
-                var gve = se.graphicalVoiceEntries[l];
-                if (!gve || !gve.notes) continue;
-                var mn;
-                for (mn = 0; mn < gve.notes.length; mn++) {
-                  var gn = gve.notes[mn];
-                  var sn = gn && gn.sourceNote;
-                  if (!sn) continue;
-                  if (typeof sn.isRest === 'function' && sn.isRest()) continue;
-                  if (sn.IsGraceNote || sn.isGraceNote) continue;
-                  try {
-                    if (sn.PrintObject === false) continue;
-                  } catch (ePo) {}
-                  var pitch = sn.TransposedPitch || sn.Pitch;
-                  if (!pitch) continue;
-                  var shortStr = null;
-                  try {
-                    if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
-                  } catch (eTs) {}
-                  var midi = playerOsmdPitchStringToMidi(shortStr);
-                  if (midi == null) continue;
-                  var el = null;
-                  if (typeof gn.getSVGGElement === 'function') {
-                    try { el = gn.getSVGGElement(); } catch (eSvg) {}
-                  }
-                  if (!el) continue;
-                  var anchorTarget = el;
-                  var tag = String(anchorTarget.tagName || '').toLowerCase();
-                  if (tag === 'path' && anchorTarget.parentElement) anchorTarget = anchorTarget.parentElement;
-                  if (!anchorTarget || seen.has(anchorTarget) || typeof anchorTarget.getBoundingClientRect !== 'function') continue;
-                  var rr = null;
-                  try { rr = anchorTarget.getBoundingClientRect(); } catch (eR) {}
-                  if (!rr || rr.width < 2 || rr.height < 2) continue;
-                  seen.add(anchorTarget);
-                  out.push({
-                    el: anchorTarget,
-                    midi: midi,
-                    cx: rr.left + rr.width * 0.5,
-                    cy: rr.top + rr.height * 0.5
-                  });
-                }
+  function getPlayerLiveActiveVoiceChar() {
+    var st = getActiveHinosStudent();
+    if (st) {
+      var vp = hinosGetStudentVozPrincipal(st);
+      if (vp) return vp.toLowerCase();
+    }
+    var instId = currentInstrument ? currentInstrument.id : 'violino';
+    if (instId === 'viola' || instId === 'trompa') return 'c';
+    if (instId === 'trombone' || instId === 'fagote') return 't';
+    if (instId === 'violoncelo' || instId === 'contrabaixo') return 'b';
+    return 's'; // default Soprano para violino, flauta, clarinete, oboe, trompete, voz
+  }
+
+  function getPlayerEventVoiceChar(ev) {
+    if (!ev || ev.partIndex == null || !playerSelectedVoices) return 's';
+    var char = playerSelectedVoices[ev.partIndex];
+    return char ? char.toLowerCase() : 's';
+  }
+
+  function collectPlayerOsmdGraphicalNotes() {
+    var out = [];
+    if (!playerOsmd) return out;
+    var sheet = playerOsmd.graphic || playerOsmd.GraphicSheet;
+    if (!sheet) return out;
+    var measureList = sheet.measureList || sheet.MeasureList;
+    if (!measureList || !measureList.length) return out;
+    var seen = new Set();
+    var i;
+    for (i = 0; i < measureList.length; i++) {
+      var measures = measureList[i];
+      if (!measures) continue;
+      if (!Array.isArray(measures)) measures = [measures];
+      var j;
+      for (j = 0; j < measures.length; j++) {
+        var measure = measures[j];
+        if (!measure || !measure.staffEntries) continue;
+        var k;
+        for (k = 0; k < measure.staffEntries.length; k++) {
+          var se = measure.staffEntries[k];
+          if (!se || !se.graphicalVoiceEntries) continue;
+          var l;
+          for (l = 0; l < se.graphicalVoiceEntries.length; l++) {
+            var gve = se.graphicalVoiceEntries[l];
+            if (!gve || !gve.notes) continue;
+            var mn;
+            for (mn = 0; mn < gve.notes.length; mn++) {
+              var gn = gve.notes[mn];
+              var sn = gn && gn.sourceNote;
+              if (!sn) continue;
+              if (typeof sn.isRest === 'function' && sn.isRest()) continue;
+              if (sn.IsGraceNote || sn.isGraceNote) continue;
+              try {
+                if (sn.PrintObject === false) continue;
+              } catch (ePo) { }
+              var pitch = sn.TransposedPitch || sn.Pitch;
+              if (!pitch) continue;
+              var shortStr = null;
+              try {
+                if (typeof pitch.ToStringShort === 'function') shortStr = pitch.ToStringShort(0);
+              } catch (eTs) { }
+              var midi = playerOsmdPitchStringToMidi(shortStr);
+              if (midi == null) continue;
+              var el = null;
+              if (typeof gn.getSVGGElement === 'function') {
+                try { el = gn.getSVGGElement(); } catch (eSvg) { }
               }
+              if (!el) continue;
+              var anchorTarget = el;
+              var tag = String(anchorTarget.tagName || '').toLowerCase();
+              if (tag === 'path' && anchorTarget.parentElement) anchorTarget = anchorTarget.parentElement;
+              if (!anchorTarget || seen.has(anchorTarget) || typeof anchorTarget.getBoundingClientRect !== 'function') continue;
+              var rr = null;
+              try { rr = anchorTarget.getBoundingClientRect(); } catch (eR) { }
+              if (!rr || rr.width < 2 || rr.height < 2) continue;
+              seen.add(anchorTarget);
+              out.push({
+                el: anchorTarget,
+                midi: midi,
+                cx: rr.left + rr.width * 0.5,
+                cy: rr.top + rr.height * 0.5
+              });
             }
           }
         }
-        return out;
       }
+    }
+    return out;
+  }
 
-      function resolvePlayerNoteElementForEvent(eventIndex, clientX, clientY) {
-        if (!playerScoreData || !playerScoreData.events || eventIndex == null || eventIndex < 0) return null;
-        var ev = playerScoreData.events[eventIndex];
-        if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) return null;
-        var targetMidi = playerEventMidi(ev);
-        if (targetMidi == null) return null;
-        var targetFreq = Number(ev.freq);
-        if (!isFinite(targetFreq) || targetFreq <= 0) return null;
+  function resolvePlayerNoteElementForEvent(eventIndex, clientX, clientY) {
+    if (!playerScoreData || !playerScoreData.events || eventIndex == null || eventIndex < 0) return null;
+    var ev = playerScoreData.events[eventIndex];
+    if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) return null;
+    var targetMidi = playerEventMidi(ev);
+    if (targetMidi == null) return null;
+    var targetFreq = Number(ev.freq);
+    if (!isFinite(targetFreq) || targetFreq <= 0) return null;
 
-        var refX = Number(clientX);
-        var refY = Number(clientY);
-        if (!isFinite(refX) || !isFinite(refY)) {
-          var cursorEl = getPlayerCursorElement();
-          if (!cursorEl || !cursorEl.getBoundingClientRect) return null;
-          var cr = null;
-          try { cr = cursorEl.getBoundingClientRect(); } catch (e) {}
-          if (!cr) return null;
-          refX = cr.left + cr.width * 0.5;
-          refY = cr.top + cr.height * 0.5;
+    var refX = Number(clientX);
+    var refY = Number(clientY);
+    if (!isFinite(refX) || !isFinite(refY)) {
+      var cursorEl = getPlayerCursorElement();
+      if (!cursorEl || !cursorEl.getBoundingClientRect) return null;
+      var cr = null;
+      try { cr = cursorEl.getBoundingClientRect(); } catch (e) { }
+      if (!cr) return null;
+      refX = cr.left + cr.width * 0.5;
+      refY = cr.top + cr.height * 0.5;
+    }
+
+    var notes = collectPlayerOsmdGraphicalNotes();
+    if (!notes.length) return null;
+
+    function pickBest(maxMidiDiff) {
+      var b = null;
+      var bs = Infinity;
+      var ni2;
+      for (ni2 = 0; ni2 < notes.length; ni2++) {
+        var n2 = notes[ni2];
+        if (!n2 || !n2.el) continue;
+        var dm2 = Math.abs((n2.midi || 0) - targetMidi);
+        if (dm2 > maxMidiDiff) continue;
+        var candFreq2 = window.StaffMathUtils && typeof window.StaffMathUtils.midiToFreq === 'function'
+          ? window.StaffMathUtils.midiToFreq(n2.midi)
+          : null;
+        var df2 = 0;
+        if (isFinite(candFreq2) && candFreq2 > 0) {
+          df2 = Math.abs(Math.log(candFreq2 / targetFreq));
         }
-
-        var notes = collectPlayerOsmdGraphicalNotes();
-        if (!notes.length) return null;
-
-        function pickBest(maxMidiDiff) {
-          var b = null;
-          var bs = Infinity;
-          var ni2;
-          for (ni2 = 0; ni2 < notes.length; ni2++) {
-            var n2 = notes[ni2];
-            if (!n2 || !n2.el) continue;
-            var dm2 = Math.abs((n2.midi || 0) - targetMidi);
-            if (dm2 > maxMidiDiff) continue;
-            var candFreq2 = window.StaffMathUtils && typeof window.StaffMathUtils.midiToFreq === 'function'
-              ? window.StaffMathUtils.midiToFreq(n2.midi)
-              : null;
-            var df2 = 0;
-            if (isFinite(candFreq2) && candFreq2 > 0) {
-              df2 = Math.abs(Math.log(candFreq2 / targetFreq));
-            }
-            if (df2 > 0.045) continue;
-            var dx2 = n2.cx - refX;
-            var dy2 = n2.cy - refY;
-            var dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-            var score2 = dist2 + (dm2 * 18) + (df2 * 900);
-            if (score2 < bs) {
-              bs = score2;
-              b = n2.el;
-            }
-          }
-          return { el: b, score: bs };
+        if (df2 > 0.045) continue;
+        var dx2 = n2.cx - refX;
+        var dy2 = n2.cy - refY;
+        var dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+        var score2 = dist2 + (dm2 * 18) + (df2 * 900);
+        if (score2 < bs) {
+          bs = score2;
+          b = n2.el;
         }
-
-        var exact = pickBest(0);
-        var chosen = exact.el && isFinite(exact.score) ? exact : pickBest(1);
-        var best = chosen.el;
-        var bestScore = chosen.score;
-        if (!best || bestScore > 260) return null;
-        return best;
       }
+      return { el: b, score: bs };
+    }
 
-      function getPlayerLiveFeedbackElementByEventIndex(eventIndex) {
-        return resolvePlayerNoteElementForEvent(eventIndex, NaN, NaN);
+    var exact = pickBest(0);
+    var chosen = exact.el && isFinite(exact.score) ? exact : pickBest(1);
+    var best = chosen.el;
+    var bestScore = chosen.score;
+    if (!best || bestScore > 260) return null;
+    return best;
+  }
+
+  function getPlayerLiveFeedbackElementByEventIndex(eventIndex) {
+    return resolvePlayerNoteElementForEvent(eventIndex, NaN, NaN);
+  }
+
+  function clearPlayerLiveCurrentAnchorVisual() {
+    if (!playerLiveCurrentAnchorEl) return;
+    try {
+      playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+    } catch (e) { }
+    playerLiveCurrentAnchorEl = null;
+  }
+
+  function resolvePlayerLiveCurrentAnchorElement(eventIndexHint) {
+    var idx = Number(eventIndexHint);
+    if (!isFinite(idx) || idx < 0) idx = Number(playerLiveCurrentEventIndex);
+    if (isFinite(idx) && idx >= 0) {
+      var mapped = resolvePlayerNoteElementForEvent(idx, NaN, NaN);
+      if (mapped) return mapped;
+    }
+    var host = document.getElementById('playerOsmdContainer');
+    var cursorEl = getPlayerCursorElement();
+    if (!host || !cursorEl || !cursorEl.getBoundingClientRect) return null;
+    var cr = null;
+    try { cr = cursorEl.getBoundingClientRect(); } catch (e) { }
+    if (!cr) return null;
+    var cx = cr.left + (cr.width * 0.5);
+    var cy = cr.top + (cr.height * 0.5);
+    var nodes = host.querySelectorAll('.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]');
+    if (!nodes || !nodes.length) return null;
+    var bestEl = null;
+    var bestScore = Infinity;
+    nodes.forEach(function (n) {
+      var r = playerNoteheadScreenRect(n);
+      if (!r) return;
+      var nx = r.left + (r.width * 0.5);
+      var ny = r.top + (r.height * 0.5);
+      var dx = Math.abs(nx - cx);
+      var dy = Math.abs(ny - cy);
+      // Priorizamos proximidade horizontal ao cursor e penalizamos salto de linha.
+      var score = dx + (dy * 1.15) + (dy > 70 ? 999 : 0);
+      if (score < bestScore) {
+        bestScore = score;
+        bestEl = n;
       }
+    });
+    if (!bestEl || bestScore > 180) return null;
+    var tag = String(bestEl.tagName || '').toLowerCase();
+    if (tag === 'path' && bestEl.parentElement) return bestEl.parentElement;
+    return bestEl;
+  }
 
-      function clearPlayerLiveCurrentAnchorVisual() {
-        if (!playerLiveCurrentAnchorEl) return;
-        try {
-          playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
-        } catch (e) {}
-        playerLiveCurrentAnchorEl = null;
+  function applyPlayerLiveCurrentAnchorStatus(status, eventIndexHint) {
+    var anchorEl = resolvePlayerLiveCurrentAnchorElement(eventIndexHint);
+    if (!anchorEl) {
+      clearPlayerLiveCurrentAnchorVisual();
+      return null;
+    }
+    if (playerLiveCurrentAnchorEl && playerLiveCurrentAnchorEl !== anchorEl) {
+      try {
+        playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+      } catch (e) { }
+    }
+    playerLiveCurrentAnchorEl = anchorEl;
+    anchorEl.classList.add('player-live-note-current');
+    anchorEl.classList.remove('player-live-note-current-ok', 'player-live-note-current-bad');
+    if (status === 'ok') anchorEl.classList.add('player-live-note-current-ok');
+    else if (status === 'bad') anchorEl.classList.add('player-live-note-current-bad');
+    return anchorEl;
+  }
+
+  function clearPlayerLiveFeedback() {
+    playerLiveFeedbackEventIndex = -1;
+    playerLiveFeedbackStatus = '';
+    playerLiveCurrentEventIndex = -1;
+    playerLiveEventMetrics = {};
+    var host = document.getElementById('playerOsmdContainer');
+    if (!host) return;
+    host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
+      el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+    });
+    clearPlayerLiveCurrentAnchorVisual();
+    hidePlayerLiveInlineBadge();
+    for (var k in playerLiveBarsMap) {
+      var b = playerLiveBarsMap[k];
+      if (b && b.el) {
+        b.el.setAttribute('width', '0');
+        b.el.setAttribute('fill', 'transparent');
       }
+    }
+  }
 
-      function resolvePlayerLiveCurrentAnchorElement(eventIndexHint) {
-        var idx = Number(eventIndexHint);
-        if (!isFinite(idx) || idx < 0) idx = Number(playerLiveCurrentEventIndex);
-        if (isFinite(idx) && idx >= 0) {
-          var mapped = resolvePlayerNoteElementForEvent(idx, NaN, NaN);
-          if (mapped) return mapped;
+  function clearPlayerLiveFeedbackVisualOnly(preserveInlineBadge) {
+    playerLiveFeedbackEventIndex = -1;
+    playerLiveFeedbackStatus = '';
+    var host = document.getElementById('playerOsmdContainer');
+    if (!host) return;
+    host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
+      el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
+    });
+    clearPlayerLiveCurrentAnchorVisual();
+    if (!preserveInlineBadge) hidePlayerLiveInlineBadge();
+  }
+
+  function resetPlayerLiveScoreTotals() {
+    playerLiveScoreTotals = {
+      notesTotal: 0,
+      notesPassed: 0,
+      pitchSum: 0,
+      timingSum: 0
+    };
+  }
+
+  function ensurePlayerLiveInlineBadge() {
+    var el = document.getElementById('playerLiveInlineBadge');
+    if (el) return el;
+    el = document.createElement('div');
+    el.id = 'playerLiveInlineBadge';
+    el.className = 'player-live-note-badge hidden is-idle';
+    el.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function hidePlayerLiveInlineBadge() {
+    var el = document.getElementById('playerLiveInlineBadge');
+    if (!el) return;
+    el.classList.add('hidden');
+  }
+
+  function formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) {
+    var ali = Number(alignedHz);
+    var exp = Number(expectedHz);
+    var raw = Number(rawHz);
+    var aliTxt = isFinite(ali) && ali > 0 ? window.TunerUtils.formatHz(ali, 0) : '--';
+    var expTxt = isFinite(exp) && exp > 0 ? window.TunerUtils.formatHz(exp, 0) : '--';
+    var base = aliTxt + ' / ' + expTxt;
+    if (isFinite(raw) && raw > 0) {
+      return base + ' (' + window.TunerUtils.formatHz(raw, 0) + ' bruto)';
+    }
+    return base;
+  }
+
+  function renderPlayerLiveInlineBadge(eventIndex, cents, tuned, hasSignal, anchorElOverride, alignedHz, expectedHz, rawHz) {
+    var el = ensurePlayerLiveInlineBadge();
+    if (!el) {
+      hidePlayerLiveInlineBadge();
+      return;
+    }
+    var useEventFeedback = eventIndex != null && eventIndex >= 0;
+    // Ancorar na nota (se houver evento tocável); em pausa/silêncio ancorar no cursor.
+    var noteEl = useEventFeedback ? getPlayerLiveFeedbackElementByEventIndex(eventIndex) : null;
+    var anchorEl = anchorElOverride || noteEl || getPlayerCursorElement();
+    if (!anchorEl || typeof anchorEl.getBoundingClientRect !== 'function') {
+      hidePlayerLiveInlineBadge();
+      return;
+    }
+    var rr = anchorEl.getBoundingClientRect();
+    if (!rr || !isFinite(rr.left) || !isFinite(rr.top)) {
+      hidePlayerLiveInlineBadge();
+      return;
+    }
+    var x = rr.left + (rr.width / 2);
+    // Alguns px acima da cabeça da nota (mais estável que seguir o cursor).
+    var badgeOffsetPx = 10;
+    var y = rr.top - badgeOffsetPx;
+    el.style.left = Math.round(x) + 'px';
+    el.style.top = Math.round(y) + 'px';
+    el.classList.remove('hidden', 'is-ok', 'is-bad', 'is-idle');
+
+    if (!useEventFeedback) {
+      el.classList.add('is-idle');
+      if (!hasSignal) {
+        el.innerHTML = 'Silêncio / pausa<br><span class="player-live-note-badge-hz">—</span>';
+        return;
+      }
+      var rawGap = Number(rawHz);
+      var hzGap = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(rawGap, NaN, NaN) + '</span>';
+      el.innerHTML = 'Sem nota avaliada<br>' + hzGap;
+      return;
+    }
+
+    if (!hasSignal) {
+      el.classList.add('is-idle');
+      var expOnly = Number(expectedHz);
+      if (isFinite(expOnly) && expOnly > 0) {
+        el.innerHTML = 'Sem sinal<br><span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(NaN, expOnly, NaN) + '</span>';
+      } else {
+        el.textContent = 'Sem sinal';
+      }
+      return;
+    }
+    var rounded = Math.round(Number(cents) || 0);
+    var sign = rounded > 0 ? '+' : '';
+    var hzLine = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) + '</span>';
+    if (tuned) {
+      el.classList.add('is-ok');
+      el.innerHTML = 'Afinado ' + sign + String(rounded) + 'c<br>' + hzLine;
+      return;
+    }
+    el.classList.add('is-bad');
+    if (rounded > 0) {
+      el.innerHTML = 'Mais alto ' + sign + String(rounded) + 'c<br>' + hzLine;
+    } else {
+      el.innerHTML = 'Mais baixo ' + String(rounded) + 'c<br>' + hzLine;
+    }
+  }
+
+  function buildPlayerLiveAggregateTotals() {
+    var total = Math.max(0, playerLiveScoreTotals.notesTotal || 0);
+    var passed = Math.max(0, playerLiveScoreTotals.notesPassed || 0);
+    var pitchSum = Math.max(0, playerLiveScoreTotals.pitchSum || 0);
+    var timingSum = Math.max(0, playerLiveScoreTotals.timingSum || 0);
+
+    if (playerLiveCurrentEventIndex < 0) {
+      return {
+        total: total,
+        passed: passed,
+        pitchAvg: total > 0 ? (pitchSum / total) : 0,
+        timingAvg: total > 0 ? (timingSum / total) : 0
+      };
+    }
+
+    var liveMetric = playerLiveEventMetrics[String(playerLiveCurrentEventIndex)];
+    if (!liveMetric || liveMetric.finalized) {
+      return {
+        total: total,
+        passed: passed,
+        pitchAvg: total > 0 ? (pitchSum / total) : 0,
+        timingAvg: total > 0 ? (timingSum / total) : 0
+      };
+    }
+
+    var signalRatio = liveMetric.totalFrames > 0 ? (liveMetric.signalFrames / liveMetric.totalFrames) : 0;
+    var tunedRatio = liveMetric.signalFrames > 0 ? (liveMetric.tunedFrames / liveMetric.signalFrames) : 0;
+    var timingRatio = Math.min(1, Math.max(0, signalRatio));
+    if (liveMetric.expectedStartSec != null && liveMetric.firstSignalSec != null) {
+      var attackTolerance = Math.min(0.24, Math.max(0.09, (liveMetric.expectedDurationSec || 0.2) * 0.28));
+      var delay = Math.abs(liveMetric.firstSignalSec - liveMetric.expectedStartSec);
+      var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
+      timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
+    }
+    var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
+    var passThLive = getPlayerLivePassThresholds(liveMetric.expectedDurationSec || 0.06);
+    var passedLive = timingRatio >= passThLive.minTiming && pitchRatio >= passThLive.minPitch;
+
+    var aggTotal = total + 1;
+    var aggPassed = passed + (passedLive ? 1 : 0);
+    return {
+      total: aggTotal,
+      passed: aggPassed,
+      pitchAvg: (pitchSum + pitchRatio) / aggTotal,
+      timingAvg: (timingSum + timingRatio) / aggTotal
+    };
+  }
+
+  function syncPlayerLiveScoreUi() {
+    var panel = document.getElementById('playerLiveScore');
+    var notesEl = document.getElementById('playerLiveScoreNotes');
+    var pitchEl = document.getElementById('playerLiveScorePitch');
+    var timingEl = document.getElementById('playerLiveScoreTiming');
+    var overallEl = document.getElementById('playerLiveScoreOverall');
+    var show = !!(playerLiveListenEnabled && currentMode === 'player');
+    window.UiCoreModule.setHiddenClass(panel, !show);
+    if (!show) {
+      hidePlayerLiveInlineBadge();
+      return;
+    }
+
+    var aggregate = buildPlayerLiveAggregateTotals();
+    var total = aggregate.total;
+    var passed = aggregate.passed;
+    var pitchAvg = aggregate.pitchAvg;
+    var timingAvg = aggregate.timingAvg;
+    var overall = Math.round((pitchAvg * 0.65 + timingAvg * 0.35) * 100);
+    var pitchPct = Math.round(pitchAvg * 100);
+    var timingPct = Math.round(timingAvg * 100);
+
+    if (notesEl) notesEl.textContent = 'Notas: ' + passed + '/' + total;
+    if (pitchEl) pitchEl.textContent = 'Afinação: ' + pitchPct + '%';
+    if (timingEl) timingEl.textContent = 'Tempo: ' + timingPct + '%';
+    if (overallEl) overallEl.textContent = 'Score: ' + overall + '%';
+  }
+
+  function applyPlayerLiveFeedback(eventIndex, status, keepPrevious) {
+    if (eventIndex == null || eventIndex < 0) return;
+    if (playerLiveFeedbackEventIndex === eventIndex && playerLiveFeedbackStatus === status) return;
+    if (!keepPrevious) {
+      var prevEl = getPlayerLiveFeedbackElementByEventIndex(playerLiveFeedbackEventIndex);
+      if (prevEl) prevEl.classList.remove('player-live-note-ok', 'player-live-note-bad');
+    }
+    playerLiveFeedbackEventIndex = eventIndex;
+    playerLiveFeedbackStatus = status || '';
+    var el = getPlayerLiveFeedbackElementByEventIndex(eventIndex);
+    if (!el) return;
+    el.classList.remove('player-live-note-ok', 'player-live-note-bad');
+    if (status === 'ok') el.classList.add('player-live-note-ok');
+    else if (status === 'bad') el.classList.add('player-live-note-bad');
+  }
+
+  function getPlayerInstrumentFreqRange() {
+    var board = currentInstrument && Array.isArray(currentInstrument.freqBoard) ? currentInstrument.freqBoard : [];
+    var min = Infinity;
+    var max = -Infinity;
+    board.forEach(function (row) {
+      if (!Array.isArray(row)) return;
+      row.forEach(function (f) {
+        if (!isFinite(f) || f <= 0) return;
+        if (f < min) min = f;
+        if (f > max) max = f;
+      });
+    });
+    if (!isFinite(min) || !isFinite(max) || min <= 0 || max <= 0 || max <= min) return null;
+    return { min: min * 0.9, max: max * 1.1 };
+  }
+
+  function alignDetectedFreqToExpected(detectedFreq, expectedFreq) {
+    if (!isFinite(detectedFreq) || detectedFreq <= 0 || !isFinite(expectedFreq) || expectedFreq <= 0) return -1;
+    var best = detectedFreq;
+    var bestDelta = Math.abs(Math.log(detectedFreq / expectedFreq));
+    var range = getPlayerInstrumentFreqRange();
+    var multipliers = [0.25, 1 / 3, 0.5, 1, 2, 3, 4];
+    multipliers.forEach(function (mul) {
+      var cand = detectedFreq * mul;
+      if (!isFinite(cand) || cand <= 0) return;
+      if (range && (cand < range.min || cand > range.max)) return;
+      var delta = Math.abs(Math.log(cand / expectedFreq));
+      if (delta < bestDelta) {
+        bestDelta = delta;
+        best = cand;
+      }
+    });
+    return best;
+  }
+
+  function getPlayerLiveExpectedFreq(eventObj) {
+    if (!eventObj || !isFinite(eventObj.freq) || eventObj.freq <= 0) return -1;
+    // A afinação (Dó/Mib/Sib) já é respeitada pela partitura carregada no player;
+    // aqui apenas consumimos a frequência esperada do evento ativo.
+    return eventObj.freq;
+  }
+
+  function getPlayerLiveCentsTolerance(ev, nowSec) {
+    // Margem maior que o tuner “seco”: leitura ao vivo depende de microfone, sala e ruído.
+    var baseTolerance = 85;
+    if (!ev) return baseTolerance;
+    var start = Number(ev.startSec) || 0;
+    var duration = Math.max(0.04, Number(ev.durationSec) || 0.06);
+    // Ataque da nota: deixa uma margem maior no começo para o instrumento "assentar".
+    var settleSec = Math.min(0.3, Math.max(0.14, duration * 0.35));
+    var attackTolerance = 110;
+    var elapsed = Math.max(0, nowSec - start);
+    if (elapsed >= settleSec) return baseTolerance;
+    var t = elapsed / settleSec;
+    return attackTolerance + ((baseTolerance - attackTolerance) * t);
+  }
+
+  /** Frames seguidos dentro da tolerância antes de mostrar “afinado” (evita piscar). */
+  var PLAYER_LIVE_TUNED_OK_FRAMES = 2;
+
+  /**
+   * Notas curtas: exige menos pitchRatio no “passa” e um pouco mais de timing (menos frames no tempo).
+   * durationSec = duração nominal do evento na partitura.
+   */
+  function getPlayerLivePassThresholds(durationSec) {
+    var d = Math.max(0.04, Number(durationSec) || 0.06);
+    var minPitch = 0.55;
+    var minTiming = 0.5;
+    if (d < 0.22) {
+      var t = (d - 0.06) / (0.22 - 0.06);
+      if (!isFinite(t)) t = 0;
+      t = Math.max(0, Math.min(1, t));
+      minPitch = 0.28 + (0.55 - 0.28) * t;
+      minTiming = 0.45 + (0.5 - 0.45) * t;
+    }
+    return { minPitch: minPitch, minTiming: minTiming };
+  }
+
+  function ensurePlayerLiveMetric(eventIndex) {
+    var key = String(eventIndex);
+    var metric = playerLiveEventMetrics[key];
+    if (!metric) {
+      metric = {
+        totalFrames: 0,
+        signalFrames: 0,
+        tunedFrames: 0,
+        consecutiveTunedFrames: 0,
+        consecutiveBadFrames: 0,
+        lastStableTuned: false,
+        attackHit: false,
+        firstSignalSec: null,
+        firstTunedSec: null,
+        expectedStartSec: null
+      };
+      playerLiveEventMetrics[key] = metric;
+    } else {
+      if (typeof metric.consecutiveTunedFrames !== 'number') {
+        metric.consecutiveTunedFrames = 0;
+      }
+      if (typeof metric.consecutiveBadFrames !== 'number') {
+        metric.consecutiveBadFrames = 0;
+      }
+      if (typeof metric.lastStableTuned !== 'boolean') {
+        metric.lastStableTuned = false;
+      }
+    }
+    return metric;
+  }
+
+  function finalizePlayerLiveMetric(eventIndex) {
+    if (eventIndex == null || eventIndex < 0) return;
+    var metric = playerLiveEventMetrics[String(eventIndex)];
+    if (!metric) return;
+    if (metric.finalized) return;
+    var signalRatio = metric.totalFrames > 0 ? (metric.signalFrames / metric.totalFrames) : 0;
+    var tunedRatio = metric.signalFrames > 0 ? (metric.tunedFrames / metric.signalFrames) : 0;
+    var timingRatio = Math.min(1, Math.max(0, signalRatio));
+    if (metric.expectedStartSec != null && metric.firstSignalSec != null) {
+      // Penaliza entrada tardia/adiantada em relacao ao inicio esperado da nota.
+      var attackTolerance = Math.min(0.24, Math.max(0.09, (metric.expectedDurationSec || 0.2) * 0.28));
+      var delay = Math.abs(metric.firstSignalSec - metric.expectedStartSec);
+      var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
+      // Combina presenca durante a nota com precisao de ataque.
+      timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
+    }
+    var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
+    var passTh = getPlayerLivePassThresholds(metric.expectedDurationSec || 0.06);
+    var passed = timingRatio >= passTh.minTiming && pitchRatio >= passTh.minPitch;
+    playerLiveScoreTotals.notesTotal += 1;
+    if (passed) playerLiveScoreTotals.notesPassed += 1;
+    playerLiveScoreTotals.pitchSum += pitchRatio;
+    playerLiveScoreTotals.timingSum += timingRatio;
+    metric.finalized = true;
+    var barObj = playerLiveBarsMap[String(eventIndex)];
+    if (barObj && barObj.el) {
+      barObj.el.setAttribute('width', String(barObj.maxWidth));
+      barObj.el.setAttribute('fill', passed ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
+    }
+    syncPlayerLiveScoreUi();
+    applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', false);
+  }
+
+  function findPlayerActivePlayableEventIndex(nowSec) {
+    if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return -1;
+    var events = playerScoreData.events;
+    var activeVoice = getPlayerLiveActiveVoiceChar();
+    var liveIdx = Number(playerPlayback && playerPlayback.liveEventIndex);
+    if (isFinite(liveIdx) && liveIdx >= 0 && liveIdx < events.length) {
+      var liveEv = events[liveIdx];
+      if (liveEv && !liveEv.isRest && !liveEv.isChord && isFinite(liveEv.freq) && liveEv.freq > 0) {
+        if (getPlayerEventVoiceChar(liveEv) === activeVoice) {
+          var liveStart = liveEv.startSec || 0;
+          var liveEnd = liveStart + Math.max(0.04, liveEv.durationSec || 0.06);
+          if (nowSec >= liveStart && nowSec <= (liveEnd + 0.025)) return liveIdx;
         }
-        var host = document.getElementById('playerOsmdContainer');
-        var cursorEl = getPlayerCursorElement();
-        if (!host || !cursorEl || !cursorEl.getBoundingClientRect) return null;
-        var cr = null;
-        try { cr = cursorEl.getBoundingClientRect(); } catch (e) {}
-        if (!cr) return null;
-        var cx = cr.left + (cr.width * 0.5);
-        var cy = cr.top + (cr.height * 0.5);
-        var nodes = host.querySelectorAll('.vf-stavenote .vf-notehead, g.vf-notehead, path.vf-notehead, .vf-notehead, g[class*="notehead"]');
-        if (!nodes || !nodes.length) return null;
-        var bestEl = null;
-        var bestScore = Infinity;
-        nodes.forEach(function (n) {
-          var r = playerNoteheadScreenRect(n);
-          if (!r) return;
-          var nx = r.left + (r.width * 0.5);
-          var ny = r.top + (r.height * 0.5);
-          var dx = Math.abs(nx - cx);
-          var dy = Math.abs(ny - cy);
-          // Priorizamos proximidade horizontal ao cursor e penalizamos salto de linha.
-          var score = dx + (dy * 1.15) + (dy > 70 ? 999 : 0);
-          if (score < bestScore) {
-            bestScore = score;
-            bestEl = n;
-          }
-        });
-        if (!bestEl || bestScore > 180) return null;
-        var tag = String(bestEl.tagName || '').toLowerCase();
-        if (tag === 'path' && bestEl.parentElement) return bestEl.parentElement;
-        return bestEl;
       }
+    }
+    var idx = findPlayerEventIndexByTime(nowSec);
+    // Segue exatamente o tempo do cursor: não antecipa nota futura.
+    var tailPadAfter = 0.025;
+    var candidates = [idx, idx - 1, idx + 1];
+    for (var i = 0; i < candidates.length; i++) {
+      var k = candidates[i];
+      if (k < 0 || k >= events.length) continue;
+      var ev = events[k];
+      if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
+      if (getPlayerEventVoiceChar(ev) !== activeVoice) continue;
+      var start = ev.startSec || 0;
+      var end = start + Math.max(0.04, ev.durationSec || 0.06);
+      if (nowSec >= start && nowSec <= (end + tailPadAfter)) return k;
+    }
+    return -1;
+  }
 
-      function applyPlayerLiveCurrentAnchorStatus(status, eventIndexHint) {
-        var anchorEl = resolvePlayerLiveCurrentAnchorElement(eventIndexHint);
-        if (!anchorEl) {
-          clearPlayerLiveCurrentAnchorVisual();
-          return null;
-        }
-        if (playerLiveCurrentAnchorEl && playerLiveCurrentAnchorEl !== anchorEl) {
-          try {
-            playerLiveCurrentAnchorEl.classList.remove('player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
-          } catch (e) {}
-        }
-        playerLiveCurrentAnchorEl = anchorEl;
-        anchorEl.classList.add('player-live-note-current');
-        anchorEl.classList.remove('player-live-note-current-ok', 'player-live-note-current-bad');
-        if (status === 'ok') anchorEl.classList.add('player-live-note-current-ok');
-        else if (status === 'bad') anchorEl.classList.add('player-live-note-current-bad');
-        return anchorEl;
-      }
-
-      function clearPlayerLiveFeedback() {
-        playerLiveFeedbackEventIndex = -1;
-        playerLiveFeedbackStatus = '';
+  function updatePlayerLiveFeedbackNow(nowSec) {
+    if (!playerLiveListenEnabled || !playerLiveListenRunning || !playerPlayback.isPlaying) {
+      playerLiveListenHintExpectedFreq = 0;
+      playerLiveListenHasSignal = false;
+      playerLiveListenLastCents = 0;
+      if (playerLiveCurrentEventIndex >= 0) {
+        finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
         playerLiveCurrentEventIndex = -1;
-        playerLiveEventMetrics = {};
-        var host = document.getElementById('playerOsmdContainer');
-        if (!host) return;
-        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
-          el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
-        });
-        clearPlayerLiveCurrentAnchorVisual();
-        hidePlayerLiveInlineBadge();
       }
-
-      function clearPlayerLiveFeedbackVisualOnly(preserveInlineBadge) {
-        playerLiveFeedbackEventIndex = -1;
-        playerLiveFeedbackStatus = '';
-        var host = document.getElementById('playerOsmdContainer');
-        if (!host) return;
-        host.querySelectorAll('.player-live-note-ok, .player-live-note-bad, .player-live-note-current, .player-live-note-current-ok, .player-live-note-current-bad').forEach(function (el) {
-          el.classList.remove('player-live-note-ok', 'player-live-note-bad', 'player-live-note-current', 'player-live-note-current-ok', 'player-live-note-current-bad');
-        });
-        clearPlayerLiveCurrentAnchorVisual();
-        if (!preserveInlineBadge) hidePlayerLiveInlineBadge();
+      clearPlayerLiveFeedbackVisualOnly();
+      syncPlayerLiveScoreUi();
+      return;
+    }
+    var eventIndex = findPlayerActivePlayableEventIndex(nowSec);
+    if (eventIndex < 0) {
+      playerLiveListenHintExpectedFreq = 0;
+      playerLiveListenLastCents = 0;
+      if (playerLiveCurrentEventIndex >= 0) {
+        finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+        playerLiveCurrentEventIndex = -1;
       }
+      clearPlayerLiveFeedbackVisualOnly(true);
+      var detGap = playerLiveListenLastFreq;
+      var hasSigGap = isFinite(detGap) && detGap > 0;
+      playerLiveListenHasSignal = hasSigGap;
+      renderPlayerLiveInlineBadge(-1, 0, false, hasSigGap, null, NaN, NaN, hasSigGap ? detGap : NaN);
+      syncPlayerLiveScoreUi();
+      return;
+    }
+    var ev = playerScoreData.events[eventIndex];
+    var expectedFreqEarly = (!ev || !isFinite(ev.freq) || ev.freq <= 0) ? NaN : getPlayerLiveExpectedFreq(ev);
+    if (!ev || !isFinite(ev.freq) || ev.freq <= 0) {
+      playerLiveListenHintExpectedFreq = 0;
+      playerLiveListenHasSignal = false;
+      playerLiveListenLastCents = 0;
+      applyPlayerLiveFeedback(eventIndex, 'bad', false);
+      applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
+      renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreqEarly, NaN);
+      syncPlayerLiveScoreUi();
+      return;
+    }
 
-      function resetPlayerLiveScoreTotals() {
-        playerLiveScoreTotals = {
-          notesTotal: 0,
-          notesPassed: 0,
-          pitchSum: 0,
-          timingSum: 0
-        };
+    if (playerLiveCurrentEventIndex !== eventIndex) {
+      if (playerLiveCurrentEventIndex >= 0) finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+      playerLiveCurrentEventIndex = eventIndex;
+    }
+
+    var expectedFreq = getPlayerLiveExpectedFreq(ev);
+    playerLiveListenHintExpectedFreq = expectedFreq;
+    var metric = ensurePlayerLiveMetric(eventIndex);
+    metric.totalFrames += 1;
+    metric.expectedStartSec = ev.startSec || 0;
+    metric.expectedDurationSec = Math.max(0.04, ev.durationSec || 0.06);
+
+    var detected = playerLiveListenLastFreq;
+    if (!isFinite(detected) || detected <= 0) {
+      playerLiveListenHasSignal = false;
+      playerLiveListenLastCents = 0;
+      metric.consecutiveBadFrames += 1;
+      if (metric.consecutiveBadFrames >= 3) {
+        metric.consecutiveTunedFrames = 0;
+        metric.lastStableTuned = false;
       }
-
-      function ensurePlayerLiveInlineBadge() {
-        var el = document.getElementById('playerLiveInlineBadge');
-        if (el) return el;
-        el = document.createElement('div');
-        el.id = 'playerLiveInlineBadge';
-        el.className = 'player-live-note-badge hidden is-idle';
-        el.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(el);
-        return el;
+      var liveStatusNull = !!metric.lastStableTuned ? 'ok' : 'bad';
+      var barObj = playerLiveBarsMap[String(eventIndex)];
+      if (barObj && barObj.el) {
+        var pct = Math.max(0, Math.min(1, (nowSec - ev.startSec) / (ev.durationSec || 0.2)));
+        barObj.el.setAttribute('width', String(barObj.maxWidth * pct));
+        barObj.el.setAttribute('fill', !!metric.lastStableTuned ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
       }
+      applyPlayerLiveFeedback(eventIndex, liveStatusNull, false);
+      applyPlayerLiveCurrentAnchorStatus(liveStatusNull, eventIndex);
+      renderPlayerLiveInlineBadge(eventIndex, 0, !!metric.lastStableTuned, false, null, NaN, expectedFreq, NaN);
+      syncPlayerLiveScoreUi();
+      return;
+    }
+    metric.signalFrames += 1;
+    if (metric.firstSignalSec == null) metric.firstSignalSec = nowSec;
+    var alignedDetected = alignDetectedFreqToExpected(detected, expectedFreq);
+    var cents = 1200 * (Math.log(alignedDetected / expectedFreq) / Math.log(2));
+    var absCents = Math.abs(cents);
+    var centsTolerance = getPlayerLiveCentsTolerance(ev, nowSec);
+    var tuned = absCents <= centsTolerance;
 
-      function hidePlayerLiveInlineBadge() {
-        var el = document.getElementById('playerLiveInlineBadge');
-        if (!el) return;
-        el.classList.add('hidden');
+    var stableTuned = false;
+    if (tuned) {
+      metric.consecutiveTunedFrames += 1;
+      metric.consecutiveBadFrames = 0;
+      if (metric.consecutiveTunedFrames >= PLAYER_LIVE_TUNED_OK_FRAMES) {
+        metric.lastStableTuned = true;
       }
-
-      function formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) {
-        var ali = Number(alignedHz);
-        var exp = Number(expectedHz);
-        var raw = Number(rawHz);
-        var aliTxt = isFinite(ali) && ali > 0 ? window.TunerUtils.formatHz(ali, 0) : '--';
-        var expTxt = isFinite(exp) && exp > 0 ? window.TunerUtils.formatHz(exp, 0) : '--';
-        var base = aliTxt + ' / ' + expTxt;
-        if (isFinite(raw) && raw > 0) {
-          return base + ' (' + window.TunerUtils.formatHz(raw, 0) + ' bruto)';
-        }
-        return base;
+    } else {
+      metric.consecutiveBadFrames += 1;
+      if (metric.consecutiveBadFrames >= 3) {
+        metric.consecutiveTunedFrames = 0;
+        metric.lastStableTuned = false;
       }
+    }
+    stableTuned = !!metric.lastStableTuned;
 
-      function renderPlayerLiveInlineBadge(eventIndex, cents, tuned, hasSignal, anchorElOverride, alignedHz, expectedHz, rawHz) {
-        var el = ensurePlayerLiveInlineBadge();
-        if (!el) {
-          hidePlayerLiveInlineBadge();
-          return;
-        }
-        var useEventFeedback = eventIndex != null && eventIndex >= 0;
-        // Ancorar na nota (se houver evento tocável); em pausa/silêncio ancorar no cursor.
-        var noteEl = useEventFeedback ? getPlayerLiveFeedbackElementByEventIndex(eventIndex) : null;
-        var anchorEl = anchorElOverride || noteEl || getPlayerCursorElement();
-        if (!anchorEl || typeof anchorEl.getBoundingClientRect !== 'function') {
-          hidePlayerLiveInlineBadge();
-          return;
-        }
-        var rr = anchorEl.getBoundingClientRect();
-        if (!rr || !isFinite(rr.left) || !isFinite(rr.top)) {
-          hidePlayerLiveInlineBadge();
-          return;
-        }
-        var x = rr.left + (rr.width / 2);
-        // Alguns px acima da cabeça da nota (mais estável que seguir o cursor).
-        var badgeOffsetPx = 10;
-        var y = rr.top - badgeOffsetPx;
-        el.style.left = Math.round(x) + 'px';
-        el.style.top = Math.round(y) + 'px';
-        el.classList.remove('hidden', 'is-ok', 'is-bad', 'is-idle');
+    playerLiveListenHasSignal = true;
+    playerLiveListenLastCents = cents;
+    if (tuned) metric.tunedFrames += 1;
+    if (tuned && metric.firstTunedSec == null) metric.firstTunedSec = nowSec;
 
-        if (!useEventFeedback) {
-          el.classList.add('is-idle');
-          if (!hasSignal) {
-            el.innerHTML = 'Silêncio / pausa<br><span class="player-live-note-badge-hz">—</span>';
-            return;
-          }
-          var rawGap = Number(rawHz);
-          var hzGap = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(rawGap, NaN, NaN) + '</span>';
-          el.innerHTML = 'Sem nota avaliada<br>' + hzGap;
-          return;
-        }
+    var start = ev.startSec || 0;
+    var attackWindowSec = Math.min(0.22, Math.max(0.08, (ev.durationSec || 0.2) * 0.22));
+    if ((nowSec - start) <= attackWindowSec && tuned) {
+      metric.attackHit = true;
+    }
 
-        if (!hasSignal) {
-          el.classList.add('is-idle');
-          var expOnly = Number(expectedHz);
-          if (isFinite(expOnly) && expOnly > 0) {
-            el.innerHTML = 'Sem sinal<br><span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(NaN, expOnly, NaN) + '</span>';
-          } else {
-            el.textContent = 'Sem sinal';
-          }
-          return;
-        }
-        var rounded = Math.round(Number(cents) || 0);
-        var sign = rounded > 0 ? '+' : '';
-        var hzLine = '<span class="player-live-note-badge-hz">' + formatPlayerLiveDebugHzPair(alignedHz, expectedHz, rawHz) + '</span>';
-        if (tuned) {
-          el.classList.add('is-ok');
-          el.innerHTML = 'Afinado ' + sign + String(rounded) + 'c<br>' + hzLine;
-          return;
-        }
-        el.classList.add('is-bad');
-        if (rounded > 0) {
-          el.innerHTML = 'Mais alto ' + sign + String(rounded) + 'c<br>' + hzLine;
-        } else {
-          el.innerHTML = 'Mais baixo ' + String(rounded) + 'c<br>' + hzLine;
-        }
+    var liveStatus = stableTuned ? 'ok' : 'bad';
+    var barObj = playerLiveBarsMap[String(eventIndex)];
+    if (barObj && barObj.el) {
+      var pct = Math.max(0, Math.min(1, (nowSec - ev.startSec) / (ev.durationSec || 0.2)));
+      barObj.el.setAttribute('width', String(barObj.maxWidth * pct));
+      barObj.el.setAttribute('fill', stableTuned ? 'rgba(34, 197, 94, 0.68)' : 'rgba(239, 68, 68, 0.65)');
+    }
+    applyPlayerLiveFeedback(eventIndex, liveStatus, false);
+    applyPlayerLiveCurrentAnchorStatus(liveStatus, eventIndex);
+    renderPlayerLiveInlineBadge(eventIndex, cents, stableTuned, true, null, alignedDetected, expectedFreq, detected);
+    syncPlayerLiveScoreUi();
+  }
+
+  function previewPlayerSpeedBpm(bpm) {
+    var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+    var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+    var clamped = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
+    var btn = document.getElementById('btnPlayerSpeed');
+    var inp = document.getElementById('playerSpeedInput');
+    var slider = document.getElementById('playerSpeedSlider');
+    if (btn) {
+      var t2 = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(clamped, beatU);
+      window.UiCoreModule.setAriaLabelAndTitle(btn, t2);
+    }
+    if (inp) inp.value = String(clamped);
+    if (slider) slider.value = String(clamped);
+  }
+
+  function applyPlayerSpeedBpm(bpm, fromUser) {
+    var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
+    var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
+    var nextRate = window.PlayerSpeedUtils.rateFromBpm(bpm, base);
+    if (!isFinite(nextRate) || nextRate <= 0) nextRate = 1;
+    var changed = Math.abs(nextRate - playerPlaybackRate) > 0.0001;
+    playerPlaybackRate = nextRate;
+    syncPlayerSpeedUi();
+    if (!changed) return;
+    var wasPlaying = playerPlayback.isPlaying;
+    if (wasPlaying) stopPlayerPlayback(true);
+    updatePlayerUiNow(playerPlayback.positionSec);
+    if (wasPlaying) startPlayerPlayback();
+    if (fromUser) {
+      var disp = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
+      setMessage('Tempo ajustado para ' + disp + ' ' + window.PlayerSpeedUtils.beatUnitLabelPt(beatU) + '.');
+    }
+  }
+
+  function beginPlayerSpeedAdjust() {
+    if (playerSpeedAdjusting) return;
+    playerSpeedAdjusting = true;
+    playerSpeedResumeAfterAdjust = playerPlayback.isPlaying;
+    if (playerPlayback.isPlaying) {
+      stopPlayerPlayback(true);
+    }
+    playerSpeedFrozenSec = Math.max(0, playerPlayback.positionSec || 0);
+  }
+
+  function endPlayerSpeedAdjust(rawBpm) {
+    var cur = getPlayerSpeedBpm();
+    var bpm = parseInt(rawBpm != null && rawBpm !== '' ? String(rawBpm) : String(cur), 10);
+    if (!isFinite(bpm)) bpm = cur;
+    applyPlayerSpeedBpm(bpm, true);
+    if (!playerSpeedAdjusting) return;
+    // Garante retomada exatamente no mesmo ponto congelado.
+    seekPlayerToTime(playerSpeedFrozenSec, false);
+    if (playerSpeedResumeAfterAdjust) startPlayerPlayback();
+    playerSpeedAdjusting = false;
+    playerSpeedResumeAfterAdjust = false;
+  }
+
+  function playerVoiceLabel(voice) {
+    return window.PlayerViewUtils.voiceLabel(voice);
+  }
+
+  function normalizePlayerCatalogJson(json) {
+    return window.PlayerCatalogModule.normalizeCatalogJson(json);
+  }
+
+  function getPlayerCatalogCollections() {
+    return window.PlayerCatalogModule.getCollections(playerCatalog);
+  }
+
+  function getCurrentPlayerCollection() {
+    return window.PlayerCatalogModule.getCurrentCollection(playerCatalog, playerSelectedCollectionId);
+  }
+
+  function getPlayerCatalogItems() {
+    return window.PlayerCatalogModule.getItems(playerCatalog, playerSelectedCollectionId);
+  }
+
+  function getPlayerCatalogItemByNumero(numero) {
+    return window.PlayerCatalogModule.getItemByNumero(playerCatalog, playerSelectedCollectionId, numero);
+  }
+
+  function getPlayerCatalogItemById(itemId) {
+    return window.PlayerCatalogModule.getItemById(playerCatalog, playerSelectedCollectionId, itemId);
+  }
+
+  function normalizePlayerSearchText(text) {
+    return window.AppUtils.normalizeSearchText(text);
+  }
+
+  function parsePlayerNumeroFromInputValue(value) {
+    var parsed = window.AppUtils.parseNumeroInput(value);
+    return parsed === null ? NaN : parsed;
+  }
+
+  function getPlayerInstrumentFiles(item) {
+    var instrumentId = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
+    return window.PlayerSelectionModule.getInstrumentFiles(item, instrumentId);
+  }
+
+  function getPlayerAvailableVoices(item) {
+    var instrumentId = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
+    return window.PlayerSelectionModule.getAvailableVoices(item, instrumentId);
+  }
+
+  function syncPlayerHeaderTitle(item, voice) {
+    var titleEl = document.getElementById('playerSectionTitle');
+    if (!titleEl) return;
+    var col = getCurrentPlayerCollection();
+    var colName = col && col.nome ? String(col.nome) : 'Coleção';
+    var baseTitle = window.PlayerViewUtils.buildHeaderTitle(colName, item, voice);
+
+    var inst = currentInstrument;
+    if (inst && inst.nome) {
+      var instText = inst.nome + (inst.emoji ? (' ' + inst.emoji) : '');
+      var parts = baseTitle.split(' · ');
+      if (parts.length >= 4) {
+        // Insere o instrumento com emoji antes da voz (posição 3)
+        parts.splice(3, 0, instText);
+        titleEl.textContent = parts.join(' · ');
+      } else {
+        titleEl.textContent = baseTitle + ' · ' + instText;
       }
+    } else {
+      titleEl.textContent = baseTitle;
+    }
+  }
 
-      function buildPlayerLiveAggregateTotals() {
-        var total = Math.max(0, playerLiveScoreTotals.notesTotal || 0);
-        var passed = Math.max(0, playerLiveScoreTotals.notesPassed || 0);
-        var pitchSum = Math.max(0, playerLiveScoreTotals.pitchSum || 0);
-        var timingSum = Math.max(0, playerLiveScoreTotals.timingSum || 0);
+  function normalizePlayerSelectedVoices(availableVoices) {
+    playerSelectedVoices = window.PlayerSelectionModule.normalizeSelectedVoices(playerSelectedVoices, availableVoices);
+  }
 
-        if (playerLiveCurrentEventIndex < 0) {
-          return {
-            total: total,
-            passed: passed,
-            pitchAvg: total > 0 ? (pitchSum / total) : 0,
-            timingAvg: total > 0 ? (timingSum / total) : 0
-          };
-        }
+  function resolvePlayerCurrentSelection() {
+    var item = getPlayerCatalogItemById(playerSelectedItemId);
+    if (!item) item = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+    if (!item) {
+      var items = getPlayerCatalogItems();
+      if (!items.length) return null;
+      item = items[0];
+      playerSelectedItemId = String(item.id || '');
+      playerSelectedHinoNumero = Number(item.numero);
+    }
+    var availableVoices = getPlayerAvailableVoices(item);
+    if (!availableVoices.length) return null;
+    normalizePlayerSelectedVoices(availableVoices);
+    var files = getPlayerInstrumentFiles(item);
+    var paths = null;
+    paths = window.PlayerSelectionModule.buildVoicePaths(files, playerSelectedVoices || []);
+    if (!paths.length) return null;
+    return {
+      item: item,
+      voices: playerSelectedVoices.slice(),
+      path: paths[0],
+      paths: paths
+    };
+  }
 
-        var liveMetric = playerLiveEventMetrics[String(playerLiveCurrentEventIndex)];
-        if (!liveMetric || liveMetric.finalized) {
-          return {
-            total: total,
-            passed: passed,
-            pitchAvg: total > 0 ? (pitchSum / total) : 0,
-            timingAvg: total > 0 ? (timingSum / total) : 0
-          };
-        }
+  function renderPlayerCatalogControls(skipInputValueSync) {
+    var selCollection = document.getElementById('playerSelectCollection');
+    var selAfin = document.getElementById('playerSelectAfinacao');
+    var selHino = document.getElementById('playerSelectHino');
+    var hinoSuggestions = document.getElementById('playerHinoSuggestions');
+    var voiceChecks = document.getElementById('playerVoiceChecks');
+    var collections = getPlayerCatalogCollections();
 
-        var signalRatio = liveMetric.totalFrames > 0 ? (liveMetric.signalFrames / liveMetric.totalFrames) : 0;
-        var tunedRatio = liveMetric.signalFrames > 0 ? (liveMetric.tunedFrames / liveMetric.signalFrames) : 0;
-        var timingRatio = Math.min(1, Math.max(0, signalRatio));
-        if (liveMetric.expectedStartSec != null && liveMetric.firstSignalSec != null) {
-          var attackTolerance = Math.min(0.24, Math.max(0.09, (liveMetric.expectedDurationSec || 0.2) * 0.28));
-          var delay = Math.abs(liveMetric.firstSignalSec - liveMetric.expectedStartSec);
-          var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
-          timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
-        }
-        var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
-        var passThLive = getPlayerLivePassThresholds(liveMetric.expectedDurationSec || 0.06);
-        var passedLive = liveMetric.attackHit && timingRatio >= passThLive.minTiming && pitchRatio >= passThLive.minPitch;
-
-        var aggTotal = total + 1;
-        var aggPassed = passed + (passedLive ? 1 : 0);
-        return {
-          total: aggTotal,
-          passed: aggPassed,
-          pitchAvg: (pitchSum + pitchRatio) / aggTotal,
-          timingAvg: (timingSum + timingRatio) / aggTotal
-        };
+    if (!selCollection || !selAfin || !selHino || !hinoSuggestions || !voiceChecks) return;
+    if (!collections.length) {
+      var collectionEmptyHtml = window.PlayerRenderUtils.buildSingleOption('', 'Sem coleção');
+      window.UiCoreModule.setHtml(selCollection, collectionEmptyHtml);
+    } else {
+      collections = window.PlayerFilterUtils.sortCollectionsByOrder(collections);
+      var resolvedCollectionId = window.PlayerFilterUtils.resolveSelectedCollectionId(collections, playerSelectedCollectionId);
+      if (resolvedCollectionId !== String(playerSelectedCollectionId || '')) {
+        playerSelectedCollectionId = resolvedCollectionId;
+        playerSelectedItemId = null;
+        playerSelectedHinoNumero = null;
       }
+      var collectionOptionsHtml = window.PlayerRenderUtils.buildCollectionOptions(collections);
+      window.UiCoreModule.setHtml(selCollection, collectionOptionsHtml);
+      window.UiCoreModule.setSelectValue(selCollection, playerSelectedCollectionId);
+    }
 
-      function syncPlayerLiveScoreUi() {
-        var panel = document.getElementById('playerLiveScore');
-        var notesEl = document.getElementById('playerLiveScoreNotes');
-        var pitchEl = document.getElementById('playerLiveScorePitch');
-        var timingEl = document.getElementById('playerLiveScoreTiming');
-        var overallEl = document.getElementById('playerLiveScoreOverall');
-        var show = !!(playerLiveListenEnabled && currentMode === 'player');
-        window.UiCoreModule.setHiddenClass(panel, !show);
-        if (!show) {
-          hidePlayerLiveInlineBadge();
-          return;
-        }
+    var items = getPlayerCatalogItems();
+    if (!items.length) {
+      var afinEmptyHtml = window.PlayerRenderUtils.buildSingleOption('', 'Sem catálogo');
+      window.UiCoreModule.setHtml(selAfin, afinEmptyHtml);
+      window.UiCoreModule.setHtml(hinoSuggestions, '');
+      hinoSuggestions.classList.add('hidden');
+      window.UiCoreModule.setInputValue(selHino, '');
+      window.UiCoreModule.setPlaceholder(selHino, 'Sem itens');
+      voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+        var checkedDefault = cb.value === 's';
+        window.UiCoreModule.setCheckboxState(cb, false, checkedDefault);
+      });
+      syncPlayerHeaderTitle(null, 's');
+      return;
+    }
 
-        var aggregate = buildPlayerLiveAggregateTotals();
-        var total = aggregate.total;
-        var passed = aggregate.passed;
-        var pitchAvg = aggregate.pitchAvg;
-        var timingAvg = aggregate.timingAvg;
-        var overall = Math.round((pitchAvg * 0.65 + timingAvg * 0.35) * 100);
-        var pitchPct = Math.round(pitchAvg * 100);
-        var timingPct = Math.round(timingAvg * 100);
+    var currentCollection = getCurrentPlayerCollection();
+    var afinacoes = (currentCollection && currentCollection.filtros && currentCollection.filtros.afinacoes)
+      ? currentCollection.filtros.afinacoes
+      : window.PlayerFilterUtils.getAfinacoes(items);
+    if (afinacoes.indexOf(playerSelectedAfinacao) === -1) playerSelectedAfinacao = afinacoes[0];
 
-        if (notesEl) notesEl.textContent = 'Notas: ' + passed + '/' + total;
-        if (pitchEl) pitchEl.textContent = 'Afinação: ' + pitchPct + '%';
-        if (timingEl) timingEl.textContent = 'Tempo: ' + timingPct + '%';
-        if (overallEl) overallEl.textContent = 'Score: ' + overall + '%';
-      }
+    var afinOptionsHtml = afinacoes.map(function (a) {
+      var label = window.PlayerFilterUtils.afinacaoLabel(a);
+      return '<option value="' + a + '">' + label + '</option>';
+    }).join('');
+    window.UiCoreModule.setHtml(selAfin, afinOptionsHtml);
+    window.UiCoreModule.setSelectValue(selAfin, playerSelectedAfinacao);
 
-      function applyPlayerLiveFeedback(eventIndex, status, keepPrevious) {
-        if (eventIndex == null || eventIndex < 0) return;
-        if (playerLiveFeedbackEventIndex === eventIndex && playerLiveFeedbackStatus === status) return;
-        if (!keepPrevious) {
-          var prevEl = getPlayerLiveFeedbackElementByEventIndex(playerLiveFeedbackEventIndex);
-          if (prevEl) prevEl.classList.remove('player-live-note-ok', 'player-live-note-bad');
-        }
-        playerLiveFeedbackEventIndex = eventIndex;
-        playerLiveFeedbackStatus = status || '';
-        var el = getPlayerLiveFeedbackElementByEventIndex(eventIndex);
-        if (!el) return;
-        el.classList.remove('player-live-note-ok', 'player-live-note-bad');
-        if (status === 'ok') el.classList.add('player-live-note-ok');
-        else if (status === 'bad') el.classList.add('player-live-note-bad');
-      }
+    var hinosFiltrados = window.PlayerFilterUtils.filterByAfinacao(items, playerSelectedAfinacao);
+    if (!hinosFiltrados.length) hinosFiltrados = items.slice();
 
-      function getPlayerInstrumentFreqRange() {
-        var board = currentInstrument && Array.isArray(currentInstrument.freqBoard) ? currentInstrument.freqBoard : [];
-        var min = Infinity;
-        var max = -Infinity;
-        board.forEach(function (row) {
-          if (!Array.isArray(row)) return;
-          row.forEach(function (f) {
-            if (!isFinite(f) || f <= 0) return;
-            if (f < min) min = f;
-            if (f > max) max = f;
-          });
-        });
-        if (!isFinite(min) || !isFinite(max) || min <= 0 || max <= 0 || max <= min) return null;
-        return { min: min * 0.9, max: max * 1.1 };
-      }
-
-      function alignDetectedFreqToExpected(detectedFreq, expectedFreq) {
-        if (!isFinite(detectedFreq) || detectedFreq <= 0 || !isFinite(expectedFreq) || expectedFreq <= 0) return -1;
-        var best = detectedFreq;
-        var bestDelta = Math.abs(Math.log(detectedFreq / expectedFreq));
-        var range = getPlayerInstrumentFreqRange();
-        var multipliers = [0.25, 1 / 3, 0.5, 1, 2, 3, 4];
-        multipliers.forEach(function (mul) {
-          var cand = detectedFreq * mul;
-          if (!isFinite(cand) || cand <= 0) return;
-          if (range && (cand < range.min || cand > range.max)) return;
-          var delta = Math.abs(Math.log(cand / expectedFreq));
-          if (delta < bestDelta) {
-            bestDelta = delta;
-            best = cand;
-          }
-        });
-        return best;
-      }
-
-      function getPlayerLiveExpectedFreq(eventObj) {
-        if (!eventObj || !isFinite(eventObj.freq) || eventObj.freq <= 0) return -1;
-        // A afinação (Dó/Mib/Sib) já é respeitada pela partitura carregada no player;
-        // aqui apenas consumimos a frequência esperada do evento ativo.
-        return eventObj.freq;
-      }
-
-      function getPlayerLiveCentsTolerance(ev, nowSec) {
-        // Margem maior que o tuner “seco”: leitura ao vivo depende de microfone, sala e ruído.
-        var baseTolerance = 60;
-        if (!ev) return baseTolerance;
-        var start = Number(ev.startSec) || 0;
-        var duration = Math.max(0.04, Number(ev.durationSec) || 0.06);
-        // Ataque da nota: deixa uma margem maior no começo para o instrumento "assentar".
-        var settleSec = Math.min(0.3, Math.max(0.14, duration * 0.35));
-        var attackTolerance = 100;
-        var elapsed = Math.max(0, nowSec - start);
-        if (elapsed >= settleSec) return baseTolerance;
-        var t = elapsed / settleSec;
-        return attackTolerance + ((baseTolerance - attackTolerance) * t);
-      }
-
-      /** Frames seguidos dentro da tolerância antes de mostrar “afinado” (evita piscar). */
-      var PLAYER_LIVE_TUNED_OK_FRAMES = 3;
-
-      /**
-       * Notas curtas: exige menos pitchRatio no “passa” e um pouco mais de timing (menos frames no tempo).
-       * durationSec = duração nominal do evento na partitura.
-       */
-      function getPlayerLivePassThresholds(durationSec) {
-        var d = Math.max(0.04, Number(durationSec) || 0.06);
-        var minPitch = 0.6;
-        var minTiming = 0.55;
-        if (d < 0.22) {
-          var t = (d - 0.06) / (0.22 - 0.06);
-          if (!isFinite(t)) t = 0;
-          t = Math.max(0, Math.min(1, t));
-          minPitch = 0.32 + (0.6 - 0.32) * t;
-          minTiming = 0.48 + (0.55 - 0.48) * t;
-        }
-        return { minPitch: minPitch, minTiming: minTiming };
-      }
-
-      function ensurePlayerLiveMetric(eventIndex) {
-        var key = String(eventIndex);
-        var metric = playerLiveEventMetrics[key];
-        if (!metric) {
-          metric = {
-            totalFrames: 0,
-            signalFrames: 0,
-            tunedFrames: 0,
-            consecutiveTunedFrames: 0,
-            attackHit: false,
-            firstSignalSec: null,
-            firstTunedSec: null,
-            expectedStartSec: null
-          };
-          playerLiveEventMetrics[key] = metric;
-        } else if (typeof metric.consecutiveTunedFrames !== 'number') {
-          metric.consecutiveTunedFrames = 0;
-        }
-        return metric;
-      }
-
-      function finalizePlayerLiveMetric(eventIndex) {
-        if (eventIndex == null || eventIndex < 0) return;
-        var metric = playerLiveEventMetrics[String(eventIndex)];
-        if (!metric) return;
-        if (metric.finalized) return;
-        var signalRatio = metric.totalFrames > 0 ? (metric.signalFrames / metric.totalFrames) : 0;
-        var tunedRatio = metric.signalFrames > 0 ? (metric.tunedFrames / metric.signalFrames) : 0;
-        var timingRatio = Math.min(1, Math.max(0, signalRatio));
-        if (metric.expectedStartSec != null && metric.firstSignalSec != null) {
-          // Penaliza entrada tardia/adiantada em relacao ao inicio esperado da nota.
-          var attackTolerance = Math.min(0.24, Math.max(0.09, (metric.expectedDurationSec || 0.2) * 0.28));
-          var delay = Math.abs(metric.firstSignalSec - metric.expectedStartSec);
-          var attackTiming = Math.max(0, 1 - (delay / attackTolerance));
-          // Combina presenca durante a nota com precisao de ataque.
-          timingRatio = Math.max(0, Math.min(1, (timingRatio * 0.55) + (attackTiming * 0.45)));
-        }
-        var pitchRatio = Math.min(1, Math.max(0, tunedRatio));
-        var passTh = getPlayerLivePassThresholds(metric.expectedDurationSec || 0.06);
-        var passed = metric.attackHit && timingRatio >= passTh.minTiming && pitchRatio >= passTh.minPitch;
-        playerLiveScoreTotals.notesTotal += 1;
-        if (passed) playerLiveScoreTotals.notesPassed += 1;
-        playerLiveScoreTotals.pitchSum += pitchRatio;
-        playerLiveScoreTotals.timingSum += timingRatio;
-        metric.finalized = true;
-        syncPlayerLiveScoreUi();
-        applyPlayerLiveFeedback(eventIndex, passed ? 'ok' : 'bad', false);
-      }
-
-      function findPlayerActivePlayableEventIndex(nowSec) {
-        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return -1;
-        var events = playerScoreData.events;
-        var liveIdx = Number(playerPlayback && playerPlayback.liveEventIndex);
-        if (isFinite(liveIdx) && liveIdx >= 0 && liveIdx < events.length) {
-          var liveEv = events[liveIdx];
-          if (liveEv && !liveEv.isRest && !liveEv.isChord && isFinite(liveEv.freq) && liveEv.freq > 0) {
-            var liveStart = liveEv.startSec || 0;
-            var liveEnd = liveStart + Math.max(0.04, liveEv.durationSec || 0.06);
-            if (nowSec >= liveStart && nowSec <= (liveEnd + 0.025)) return liveIdx;
-          }
-        }
-        var idx = findPlayerEventIndexByTime(nowSec);
-        // Segue exatamente o tempo do cursor: não antecipa nota futura.
-        var tailPadAfter = 0.025;
-        var candidates = [idx, idx - 1, idx + 1];
-        for (var i = 0; i < candidates.length; i++) {
-          var k = candidates[i];
-          if (k < 0 || k >= events.length) continue;
-          var ev = events[k];
-          if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
-          var start = ev.startSec || 0;
-          var end = start + Math.max(0.04, ev.durationSec || 0.06);
-          if (nowSec >= start && nowSec <= (end + tailPadAfter)) return k;
-        }
-        return -1;
-      }
-
-      function updatePlayerLiveFeedbackNow(nowSec) {
-        if (!playerLiveListenEnabled || !playerLiveListenRunning || !playerPlayback.isPlaying) {
-          playerLiveListenHintExpectedFreq = 0;
-          playerLiveListenHasSignal = false;
-          playerLiveListenLastCents = 0;
-          if (playerLiveCurrentEventIndex >= 0) {
-            finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
-            playerLiveCurrentEventIndex = -1;
-          }
-          clearPlayerLiveFeedbackVisualOnly();
-          syncPlayerLiveScoreUi();
-          return;
-        }
-        var eventIndex = findPlayerActivePlayableEventIndex(nowSec);
-        if (eventIndex < 0) {
-          playerLiveListenHintExpectedFreq = 0;
-          playerLiveListenLastCents = 0;
-          if (playerLiveCurrentEventIndex >= 0) {
-            finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
-            playerLiveCurrentEventIndex = -1;
-          }
-          clearPlayerLiveFeedbackVisualOnly(true);
-          var detGap = playerLiveListenLastFreq;
-          var hasSigGap = isFinite(detGap) && detGap > 0;
-          playerLiveListenHasSignal = hasSigGap;
-          renderPlayerLiveInlineBadge(-1, 0, false, hasSigGap, null, NaN, NaN, hasSigGap ? detGap : NaN);
-          syncPlayerLiveScoreUi();
-          return;
-        }
-        var ev = playerScoreData.events[eventIndex];
-        var expectedFreqEarly = (!ev || !isFinite(ev.freq) || ev.freq <= 0) ? NaN : getPlayerLiveExpectedFreq(ev);
-        if (!ev || !isFinite(ev.freq) || ev.freq <= 0) {
-          playerLiveListenHintExpectedFreq = 0;
-          playerLiveListenHasSignal = false;
-          playerLiveListenLastCents = 0;
-          applyPlayerLiveFeedback(eventIndex, 'bad', false);
-          applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
-          renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreqEarly, NaN);
-          syncPlayerLiveScoreUi();
-          return;
-        }
-
-        if (playerLiveCurrentEventIndex !== eventIndex) {
-          if (playerLiveCurrentEventIndex >= 0) finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
-          playerLiveCurrentEventIndex = eventIndex;
-        }
-
-        var expectedFreq = getPlayerLiveExpectedFreq(ev);
-        playerLiveListenHintExpectedFreq = expectedFreq;
-        var metric = ensurePlayerLiveMetric(eventIndex);
-        metric.totalFrames += 1;
-        metric.expectedStartSec = ev.startSec || 0;
-        metric.expectedDurationSec = Math.max(0.04, ev.durationSec || 0.06);
-
-        var detected = playerLiveListenLastFreq;
-        if (!isFinite(detected) || detected <= 0) {
-          playerLiveListenHasSignal = false;
-          playerLiveListenLastCents = 0;
-          metric.consecutiveTunedFrames = 0;
-          applyPlayerLiveFeedback(eventIndex, 'bad', false);
-          applyPlayerLiveCurrentAnchorStatus('bad', eventIndex);
-          renderPlayerLiveInlineBadge(eventIndex, 0, false, false, null, NaN, expectedFreq, NaN);
-          syncPlayerLiveScoreUi();
-          return;
-        }
-        metric.signalFrames += 1;
-        if (metric.firstSignalSec == null) metric.firstSignalSec = nowSec;
-        var alignedDetected = alignDetectedFreqToExpected(detected, expectedFreq);
-        var cents = 1200 * (Math.log(alignedDetected / expectedFreq) / Math.log(2));
-        var absCents = Math.abs(cents);
-        var centsTolerance = getPlayerLiveCentsTolerance(ev, nowSec);
-        var tuned = absCents <= centsTolerance;
-        if (tuned) {
-          metric.consecutiveTunedFrames += 1;
-        } else {
-          metric.consecutiveTunedFrames = 0;
-        }
-        var stableTuned = metric.consecutiveTunedFrames >= PLAYER_LIVE_TUNED_OK_FRAMES;
-        playerLiveListenHasSignal = true;
-        playerLiveListenLastCents = cents;
-        if (tuned) metric.tunedFrames += 1;
-        if (tuned && metric.firstTunedSec == null) metric.firstTunedSec = nowSec;
-
-        var start = ev.startSec || 0;
-        var attackWindowSec = Math.min(0.22, Math.max(0.08, (ev.durationSec || 0.2) * 0.22));
-        if ((nowSec - start) <= attackWindowSec && tuned) {
-          metric.attackHit = true;
-        }
-
-        var liveStatus = stableTuned ? 'ok' : 'bad';
-        applyPlayerLiveFeedback(eventIndex, liveStatus, false);
-        applyPlayerLiveCurrentAnchorStatus(liveStatus, eventIndex);
-        renderPlayerLiveInlineBadge(eventIndex, cents, stableTuned, true, null, alignedDetected, expectedFreq, detected);
-        syncPlayerLiveScoreUi();
-      }
-
-      function previewPlayerSpeedBpm(bpm) {
-        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
-        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
-        var clamped = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
-        var btn = document.getElementById('btnPlayerSpeed');
-        var inp = document.getElementById('playerSpeedInput');
-        var slider = document.getElementById('playerSpeedSlider');
-        if (btn) {
-          var t2 = window.PlayerSpeedUtils.formatSpeedLabelFromBpm(clamped, beatU);
-          window.UiCoreModule.setAriaLabelAndTitle(btn, t2);
-        }
-        if (inp) inp.value = String(clamped);
-        if (slider) slider.value = String(clamped);
-      }
-
-      function applyPlayerSpeedBpm(bpm, fromUser) {
-        var base = window.PlayerSpeedUtils.baselineMarkingBpmFromScore(playerScoreData);
-        var beatU = window.PlayerSpeedUtils.baselineBeatUnitFromScore(playerScoreData);
-        var nextRate = window.PlayerSpeedUtils.rateFromBpm(bpm, base);
-        if (!isFinite(nextRate) || nextRate <= 0) nextRate = 1;
-        var changed = Math.abs(nextRate - playerPlaybackRate) > 0.0001;
-        playerPlaybackRate = nextRate;
-        syncPlayerSpeedUi();
-        if (!changed) return;
-        var wasPlaying = playerPlayback.isPlaying;
-        if (wasPlaying) stopPlayerPlayback(true);
-        updatePlayerUiNow(playerPlayback.positionSec);
-        if (wasPlaying) startPlayerPlayback();
-        if (fromUser) {
-          var disp = window.PlayerSpeedUtils.clampPlayerBpm(bpm);
-          setMessage('Tempo ajustado para ' + disp + ' ' + window.PlayerSpeedUtils.beatUnitLabelPt(beatU) + '.');
+    var forceShowAll = selHino.dataset.openAll === '1';
+    var rawHinoInput = String(selHino.value || '');
+    var searchTerm = forceShowAll ? '' : normalizePlayerSearchText(rawHinoInput);
+    /* Valor após escolha na lista é "n · título"; filtrar por esse texto inteiro não bate com o
+       catálogo (combo usa espaço, não o separador do rótulo) e zera a lista — no mobile as vozes
+       ficam todas disabled até focar de novo no Item. */
+    if (searchTerm && !forceShowAll) {
+      var labelItem =
+        (playerSelectedItemId && getPlayerCatalogItemById(playerSelectedItemId)) ||
+        (isFinite(playerSelectedHinoNumero) && playerSelectedHinoNumero > 0
+          ? getPlayerCatalogItemByNumero(playerSelectedHinoNumero)
+          : null);
+      if (labelItem) {
+        var canonicalLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(labelItem);
+        if (normalizePlayerSearchText(rawHinoInput) === normalizePlayerSearchText(canonicalLabel)) {
+          searchTerm = '';
         }
       }
+    }
+    /* Igualdade exata do rótulo pode falhar (apóstrofo, hífen, Unicode) e ainda zerar o filtro ao
+       fechar a lista. Formato "NNN · título" com o mesmo número do item selecionado = modo exibição. */
+    if (searchTerm && !forceShowAll && !skipInputValueSync) {
+      var trimmedForLead = String(rawHinoInput || '').trim();
+      var leadNumero = parsePlayerNumeroFromInputValue(trimmedForLead);
+      if (
+        isFinite(leadNumero) &&
+        leadNumero > 0 &&
+        Number(playerSelectedHinoNumero) === leadNumero &&
+        /^\d+\s*[\u00b7\u2022]\s*\S/.test(trimmedForLead)
+      ) {
+        searchTerm = '';
+      }
+    }
+    if (searchTerm) {
+      hinosFiltrados = window.PlayerFilterUtils.filterBySearch(hinosFiltrados, searchTerm, normalizePlayerSearchText);
+    }
+    if (!hinosFiltrados.length) {
+      window.UiCoreModule.setHtml(hinoSuggestions, '');
+      hinoSuggestions.classList.add('hidden');
+      window.UiCoreModule.setPlaceholder(selHino, 'Nenhum hino encontrado');
+      voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+        cb.disabled = true;
+      });
+      syncPlayerHeaderTitle(null, 's');
+      return;
+    }
+    var selectedResolved = window.PlayerFilterUtils.resolveSelectedItem(hinosFiltrados, playerSelectedHinoNumero, playerSelectedItemId);
+    playerSelectedHinoNumero = selectedResolved.numero;
+    if (selectedResolved.itemId) playerSelectedItemId = selectedResolved.itemId;
 
-      function beginPlayerSpeedAdjust() {
-        if (playerSpeedAdjusting) return;
-        playerSpeedAdjusting = true;
-        playerSpeedResumeAfterAdjust = playerPlayback.isPlaying;
-        if (playerPlayback.isPlaying) {
-          stopPlayerPlayback(true);
+    window.UiCoreModule.setPlaceholder(selHino, 'Digite número ou título');
+    var suggestionsHtml = window.PlayerRenderUtils.buildHinoSuggestions(hinosFiltrados);
+    window.UiCoreModule.setHtml(hinoSuggestions, suggestionsHtml);
+    var selectedItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+    if (selectedItem && !searchTerm) {
+      playerSelectedItemId = String(selectedItem.id || '');
+      playerSelectedHinoNumero = Number(selectedItem.numero || 0);
+      if (!skipInputValueSync) {
+        var selectedLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(selectedItem);
+        window.UiCoreModule.setInputValue(selHino, selectedLabel);
+      }
+    }
+
+    var currentItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+    var voices = getPlayerAvailableVoices(currentItem);
+    if (!voices.length) voices = ['s'];
+    normalizePlayerSelectedVoices(voices);
+    voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+      var v = String(cb.value || '').toLowerCase();
+      var enabled = voices.indexOf(v) >= 0;
+      var checked = enabled && playerSelectedVoices.indexOf(v) >= 0;
+      window.UiCoreModule.setCheckboxState(cb, enabled, checked);
+    });
+
+    syncPlayerHeaderTitle(currentItem, playerSelectedVoices);
+  }
+
+  function ensurePlayerCatalogLoaded(forceReload) {
+    if (forceReload) playerCatalog = null;
+    if (!forceReload && playerCatalog && Array.isArray(playerCatalog.colecoes)) return Promise.resolve(playerCatalog);
+    if (playerCatalogPromise) return playerCatalogPromise;
+    var cacheBust = forceReload ? ('&ts=' + Date.now()) : '';
+    var url = PLAYER_CATALOG_URL + '?v=' + encodeURIComponent(APP_VERSION) + cacheBust;
+    playerCatalogPromise = fetch(url, { cache: 'no-store' }).then(function (res) {
+      if (!res.ok) throw new Error('http ' + res.status);
+      return res.json();
+    }).then(function (json) {
+      playerCatalog = normalizePlayerCatalogJson(json);
+      renderPlayerCatalogControls();
+      return playerCatalog;
+    }).catch(function () {
+      playerCatalog = { colecoes: [] };
+      renderPlayerCatalogControls();
+      return playerCatalog;
+    }).finally(function () {
+      playerCatalogPromise = null;
+    });
+    return playerCatalogPromise;
+  }
+
+  function seekPlayerToTime(targetSec, resumeIfPlaying) {
+    if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+    var clamped = Math.max(0, Math.min(playerScoreData.totalDurationSec, targetSec || 0));
+    var wasPlaying = !!resumeIfPlaying && playerPlayback.isPlaying;
+    if (playerPlayback.isPlaying) stopPlayerPlayback(true);
+    playerPlayback.positionSec = clamped;
+    playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
+    playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
+    playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
+    playerPlayback.lastPlaybackElapsed = null;
+    playerPlayback.lastDisplayElapsed = null;
+    playerPlayback.osmdSyncedSteps = null;
+    playerPlayback.lastPlaybackRepeatSegment = null;
+    playerAutoScrollNeedsInitial = false;
+    resetPlayerCursorToCurrentPosition(clamped);
+    updatePlayerUiNow(clamped);
+    if (wasPlaying) startPlayerPlayback();
+  }
+
+  function buildPlayerNoteAnchorsFromDom() {
+    // Mapeamento global por lista foi removido: a nota correta é resolvida por evento + midi + proximidade.
+    playerNoteAnchors = [];
+    clearPlayerLiveFeedback();
+    syncPlayerNoteNameLabelOverlays();
+    initPlayerLiveBars();
+  }
+
+  function seekPlayerFromClick(clientX, clientY) {
+    if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return false;
+    if (!playerOsmd) return false;
+    var notes = collectPlayerOsmdGraphicalNotes();
+    if (!notes.length) return false;
+
+    var bestNote = null;
+    var bestDist = Infinity;
+    var ni;
+    for (ni = 0; ni < notes.length; ni++) {
+      var n = notes[ni];
+      if (!n) continue;
+      var dx = n.cx - clientX;
+      var dy = n.cy - clientY;
+      var d2 = dx * dx + dy * dy;
+      if (d2 < bestDist) {
+        bestDist = d2;
+        bestNote = n;
+      }
+    }
+    if (!bestNote || bestDist > (220 * 220)) return false;
+
+    var bestEv = null;
+    var bestScore = Infinity;
+    var ei;
+    for (ei = 0; ei < playerScoreData.events.length; ei++) {
+      var ev = playerScoreData.events[ei];
+      if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
+      var em = playerEventMidi(ev);
+      if (em == null) continue;
+      var dm = Math.abs(em - bestNote.midi);
+      if (dm > 1) continue;
+      var score = Math.abs((ev.startSec || 0) - (playerPlayback.positionSec || 0)) * 0.35 + dm * 0.6;
+      if (score < bestScore) {
+        bestScore = score;
+        bestEv = ev;
+      }
+    }
+    if (!bestEv) return false;
+    seekPlayerToTime(bestEv.startSec, true);
+    return true;
+  }
+
+  function getPlayerCursorElement() {
+    var host = document.getElementById('playerOsmdContainer');
+    if (!host) return null;
+    if (playerOsmd && playerOsmd.cursor) {
+      var oc = playerOsmd.cursor;
+      var keys = ['cursorElement', 'cursorHTMLElement', 'htmlElement', 'element'];
+      var ki;
+      for (ki = 0; ki < keys.length; ki++) {
+        var node = oc[keys[ki]];
+        if (node && node.getBoundingClientRect) {
+          try {
+            var r0 = node.getBoundingClientRect();
+            if (r0 && r0.width > 0 && r0.height > 0) return node;
+          } catch (eK) { }
         }
-        playerSpeedFrozenSec = Math.max(0, playerPlayback.positionSec || 0);
       }
-
-      function endPlayerSpeedAdjust(rawBpm) {
-        var cur = getPlayerSpeedBpm();
-        var bpm = parseInt(rawBpm != null && rawBpm !== '' ? String(rawBpm) : String(cur), 10);
-        if (!isFinite(bpm)) bpm = cur;
-        applyPlayerSpeedBpm(bpm, true);
-        if (!playerSpeedAdjusting) return;
-        // Garante retomada exatamente no mesmo ponto congelado.
-        seekPlayerToTime(playerSpeedFrozenSec, false);
-        if (playerSpeedResumeAfterAdjust) startPlayerPlayback();
-        playerSpeedAdjusting = false;
-        playerSpeedResumeAfterAdjust = false;
-      }
-
-      function playerVoiceLabel(voice) {
-        return window.PlayerViewUtils.voiceLabel(voice);
-      }
-
-      function normalizePlayerCatalogJson(json) {
-        return window.PlayerCatalogModule.normalizeCatalogJson(json);
-      }
-
-      function getPlayerCatalogCollections() {
-        return window.PlayerCatalogModule.getCollections(playerCatalog);
-      }
-
-      function getCurrentPlayerCollection() {
-        return window.PlayerCatalogModule.getCurrentCollection(playerCatalog, playerSelectedCollectionId);
-      }
-
-      function getPlayerCatalogItems() {
-        return window.PlayerCatalogModule.getItems(playerCatalog, playerSelectedCollectionId);
-      }
-
-      function getPlayerCatalogItemByNumero(numero) {
-        return window.PlayerCatalogModule.getItemByNumero(playerCatalog, playerSelectedCollectionId, numero);
-      }
-
-      function getPlayerCatalogItemById(itemId) {
-        return window.PlayerCatalogModule.getItemById(playerCatalog, playerSelectedCollectionId, itemId);
-      }
-
-      function normalizePlayerSearchText(text) {
-        return window.AppUtils.normalizeSearchText(text);
-      }
-
-      function parsePlayerNumeroFromInputValue(value) {
-        var parsed = window.AppUtils.parseNumeroInput(value);
-        return parsed === null ? NaN : parsed;
-      }
-
-      function getPlayerInstrumentFiles(item) {
-        var instrumentId = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
-        return window.PlayerSelectionModule.getInstrumentFiles(item, instrumentId);
-      }
-
-      function getPlayerAvailableVoices(item) {
-        var instrumentId = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
-        return window.PlayerSelectionModule.getAvailableVoices(item, instrumentId);
-      }
-
-      function syncPlayerHeaderTitle(item, voice) {
-        var titleEl = document.getElementById('playerSectionTitle');
-        if (!titleEl) return;
-        var col = getCurrentPlayerCollection();
-        var colName = col && col.nome ? String(col.nome) : 'Coleção';
-        titleEl.textContent = window.PlayerViewUtils.buildHeaderTitle(colName, item, voice);
-      }
-
-      function normalizePlayerSelectedVoices(availableVoices) {
-        playerSelectedVoices = window.PlayerSelectionModule.normalizeSelectedVoices(playerSelectedVoices, availableVoices);
-      }
-
-      function resolvePlayerCurrentSelection() {
-        var item = getPlayerCatalogItemById(playerSelectedItemId);
-        if (!item) item = getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
-        if (!item) {
-          var items = getPlayerCatalogItems();
-          if (!items.length) return null;
-          item = items[0];
-          playerSelectedItemId = String(item.id || '');
-          playerSelectedHinoNumero = Number(item.numero);
-        }
-        var availableVoices = getPlayerAvailableVoices(item);
-        if (!availableVoices.length) return null;
-        normalizePlayerSelectedVoices(availableVoices);
-        var files = getPlayerInstrumentFiles(item);
-        var paths = null;
-        paths = window.PlayerSelectionModule.buildVoicePaths(files, playerSelectedVoices || []);
-        if (!paths.length) return null;
-        return {
-          item: item,
-          voices: playerSelectedVoices.slice(),
-          path: paths[0],
-          paths: paths
-        };
-      }
-
-      function renderPlayerCatalogControls() {
-        var selCollection = document.getElementById('playerSelectCollection');
-        var selAfin = document.getElementById('playerSelectAfinacao');
-        var selHino = document.getElementById('playerSelectHino');
-        var hinoSuggestions = document.getElementById('playerHinoSuggestions');
-        var voiceChecks = document.getElementById('playerVoiceChecks');
-        var collections = getPlayerCatalogCollections();
-
-        if (!selCollection || !selAfin || !selHino || !hinoSuggestions || !voiceChecks) return;
-        if (!collections.length) {
-          var collectionEmptyHtml = window.PlayerRenderUtils.buildSingleOption('', 'Sem coleção');
-          window.UiCoreModule.setHtml(selCollection, collectionEmptyHtml);
-        } else {
-          collections = window.PlayerFilterUtils.sortCollectionsByOrder(collections);
-          var resolvedCollectionId = window.PlayerFilterUtils.resolveSelectedCollectionId(collections, playerSelectedCollectionId);
-          if (resolvedCollectionId !== String(playerSelectedCollectionId || '')) {
-            playerSelectedCollectionId = resolvedCollectionId;
-            playerSelectedItemId = null;
-            playerSelectedHinoNumero = null;
-          }
-          var collectionOptionsHtml = window.PlayerRenderUtils.buildCollectionOptions(collections);
-          window.UiCoreModule.setHtml(selCollection, collectionOptionsHtml);
-          window.UiCoreModule.setSelectValue(selCollection, playerSelectedCollectionId);
-        }
-
-        var items = getPlayerCatalogItems();
-        if (!items.length) {
-          var afinEmptyHtml = window.PlayerRenderUtils.buildSingleOption('', 'Sem catálogo');
-          window.UiCoreModule.setHtml(selAfin, afinEmptyHtml);
-          window.UiCoreModule.setHtml(hinoSuggestions, '');
-          hinoSuggestions.classList.add('hidden');
-          window.UiCoreModule.setInputValue(selHino, '');
-          window.UiCoreModule.setPlaceholder(selHino, 'Sem itens');
-          voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
-            var checkedDefault = cb.value === 's';
-            window.UiCoreModule.setCheckboxState(cb, false, checkedDefault);
-          });
-          syncPlayerHeaderTitle(null, 's');
-          return;
-        }
-
-        var afinacoes = window.PlayerFilterUtils.getAfinacoes(items);
-        if (afinacoes.indexOf(playerSelectedAfinacao) === -1) playerSelectedAfinacao = afinacoes[0];
-
-        var afinOptionsHtml = afinacoes.map(function (a) {
-          var label = window.PlayerFilterUtils.afinacaoLabel(a);
-          return '<option value="' + a + '">' + label + '</option>';
-        }).join('');
-        window.UiCoreModule.setHtml(selAfin, afinOptionsHtml);
-        window.UiCoreModule.setSelectValue(selAfin, playerSelectedAfinacao);
-
-        var hinosFiltrados = window.PlayerFilterUtils.filterByAfinacao(items, playerSelectedAfinacao);
-        if (!hinosFiltrados.length) hinosFiltrados = items.slice();
-
-        var forceShowAll = selHino.dataset.openAll === '1';
-        var rawHinoInput = String(selHino.value || '');
-        var searchTerm = forceShowAll ? '' : normalizePlayerSearchText(rawHinoInput);
-        /* Valor após escolha na lista é "n · título"; filtrar por esse texto inteiro não bate com o
-           catálogo (combo usa espaço, não o separador do rótulo) e zera a lista — no mobile as vozes
-           ficam todas disabled até focar de novo no Item. */
-        if (searchTerm && !forceShowAll) {
-          var labelItem =
-            (playerSelectedItemId && getPlayerCatalogItemById(playerSelectedItemId)) ||
-            (isFinite(playerSelectedHinoNumero) && playerSelectedHinoNumero > 0
-              ? getPlayerCatalogItemByNumero(playerSelectedHinoNumero)
-              : null);
-          if (labelItem) {
-            var canonicalLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(labelItem);
-            if (normalizePlayerSearchText(rawHinoInput) === normalizePlayerSearchText(canonicalLabel)) {
-              searchTerm = '';
-            }
-          }
-        }
-        /* Igualdade exata do rótulo pode falhar (apóstrofo, hífen, Unicode) e ainda zerar o filtro ao
-           fechar a lista. Formato "NNN · título" com o mesmo número do item selecionado = modo exibição. */
-        if (searchTerm && !forceShowAll) {
-          var trimmedForLead = String(rawHinoInput || '').trim();
-          var leadNumero = parsePlayerNumeroFromInputValue(trimmedForLead);
-          if (
-            isFinite(leadNumero) &&
-            leadNumero > 0 &&
-            Number(playerSelectedHinoNumero) === leadNumero &&
-            /^\d+\s*[\u00b7\u2022]\s*\S/.test(trimmedForLead)
-          ) {
-            searchTerm = '';
-          }
-        }
-        if (searchTerm) {
-          hinosFiltrados = window.PlayerFilterUtils.filterBySearch(hinosFiltrados, searchTerm, normalizePlayerSearchText);
-        }
-        if (!hinosFiltrados.length) {
-          window.UiCoreModule.setHtml(hinoSuggestions, '');
-          hinoSuggestions.classList.add('hidden');
-          window.UiCoreModule.setPlaceholder(selHino, 'Nenhum hino encontrado');
-          voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
-            cb.disabled = true;
-          });
-          syncPlayerHeaderTitle(null, 's');
-          return;
-        }
-        var selectedResolved = window.PlayerFilterUtils.resolveSelectedItem(hinosFiltrados, playerSelectedHinoNumero, playerSelectedItemId);
-        playerSelectedHinoNumero = selectedResolved.numero;
-        if (selectedResolved.itemId) playerSelectedItemId = selectedResolved.itemId;
-
-        window.UiCoreModule.setPlaceholder(selHino, 'Digite número ou título');
-        var suggestionsHtml = window.PlayerRenderUtils.buildHinoSuggestions(hinosFiltrados);
-        window.UiCoreModule.setHtml(hinoSuggestions, suggestionsHtml);
-        var selectedItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
-        if (selectedItem && !searchTerm) {
-          playerSelectedItemId = String(selectedItem.id || '');
-          playerSelectedHinoNumero = Number(selectedItem.numero || 0);
-          var selectedLabel = window.PlayerRenderUtils.buildSelectedHinoLabel(selectedItem);
-          window.UiCoreModule.setInputValue(selHino, selectedLabel);
-        }
-
-        var currentItem = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
-        var voices = getPlayerAvailableVoices(currentItem);
-        if (!voices.length) voices = ['s'];
-        normalizePlayerSelectedVoices(voices);
-        voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
-          var v = String(cb.value || '').toLowerCase();
-          var enabled = voices.indexOf(v) >= 0;
-          var checked = enabled && playerSelectedVoices.indexOf(v) >= 0;
-          window.UiCoreModule.setCheckboxState(cb, enabled, checked);
-        });
-
-        syncPlayerHeaderTitle(currentItem, playerSelectedVoices);
-      }
-
-      function ensurePlayerCatalogLoaded(forceReload) {
-        if (forceReload) playerCatalog = null;
-        if (!forceReload && playerCatalog && Array.isArray(playerCatalog.colecoes)) return Promise.resolve(playerCatalog);
-        if (playerCatalogPromise) return playerCatalogPromise;
-        var cacheBust = forceReload ? ('&ts=' + Date.now()) : '';
-        var url = PLAYER_CATALOG_URL + '?v=' + encodeURIComponent(APP_VERSION) + cacheBust;
-        playerCatalogPromise = fetch(url, { cache: 'no-store' }).then(function (res) {
-          if (!res.ok) throw new Error('http ' + res.status);
-          return res.json();
-        }).then(function (json) {
-          playerCatalog = normalizePlayerCatalogJson(json);
-          renderPlayerCatalogControls();
-          return playerCatalog;
-        }).catch(function () {
-          playerCatalog = { colecoes: [] };
-          renderPlayerCatalogControls();
-          return playerCatalog;
-        }).finally(function () {
-          playerCatalogPromise = null;
-        });
-        return playerCatalogPromise;
-      }
-
-      function seekPlayerToTime(targetSec, resumeIfPlaying) {
-        if (!playerScoreData || !playerScoreData.totalDurationSec) return;
-        var clamped = Math.max(0, Math.min(playerScoreData.totalDurationSec, targetSec || 0));
-        var wasPlaying = !!resumeIfPlaying && playerPlayback.isPlaying;
-        if (playerPlayback.isPlaying) stopPlayerPlayback(true);
-        playerPlayback.positionSec = clamped;
-        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
-        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
-        playerAutoScrollNeedsInitial = false;
-        resetPlayerCursorToCurrentPosition();
-        updatePlayerUiNow(clamped);
-        if (wasPlaying) startPlayerPlayback();
-      }
-
-      function buildPlayerNoteAnchorsFromDom() {
-        // Mapeamento global por lista foi removido: a nota correta é resolvida por evento + midi + proximidade.
-        playerNoteAnchors = [];
-        clearPlayerLiveFeedback();
-        syncPlayerNoteNameLabelOverlays();
-      }
-
-      function seekPlayerFromClick(clientX, clientY) {
-        if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return false;
-        if (!playerOsmd) return false;
-        var notes = collectPlayerOsmdGraphicalNotes();
-        if (!notes.length) return false;
-
-        var bestNote = null;
-        var bestDist = Infinity;
-        var ni;
-        for (ni = 0; ni < notes.length; ni++) {
-          var n = notes[ni];
-          if (!n) continue;
-          var dx = n.cx - clientX;
-          var dy = n.cy - clientY;
-          var d2 = dx * dx + dy * dy;
-          if (d2 < bestDist) {
-            bestDist = d2;
-            bestNote = n;
-          }
-        }
-        if (!bestNote || bestDist > (220 * 220)) return false;
-
-        var bestEv = null;
-        var bestScore = Infinity;
-        var ei;
-        for (ei = 0; ei < playerScoreData.events.length; ei++) {
-          var ev = playerScoreData.events[ei];
-          if (!ev || ev.isRest || ev.isChord || !isFinite(ev.freq) || ev.freq <= 0) continue;
-          var em = playerEventMidi(ev);
-          if (em == null) continue;
-          var dm = Math.abs(em - bestNote.midi);
-          if (dm > 1) continue;
-          var score = Math.abs((ev.startSec || 0) - (playerPlayback.positionSec || 0)) * 0.35 + dm * 0.6;
-          if (score < bestScore) {
-            bestScore = score;
-            bestEv = ev;
-          }
-        }
-        if (!bestEv) return false;
-        seekPlayerToTime(bestEv.startSec, true);
-        return true;
-      }
-
-      function getPlayerCursorElement() {
-        var host = document.getElementById('playerOsmdContainer');
-        if (!host) return null;
-        if (playerOsmd && playerOsmd.cursor) {
-          var oc = playerOsmd.cursor;
-          var keys = ['cursorElement', 'cursorHTMLElement', 'htmlElement', 'element'];
-          var ki;
-          for (ki = 0; ki < keys.length; ki++) {
-            var node = oc[keys[ki]];
-            if (node && node.getBoundingClientRect) {
-              try {
-                var r0 = node.getBoundingClientRect();
-                if (r0 && r0.width > 0 && r0.height > 0) return node;
-              } catch (eK) {}
-            }
-          }
-          if (typeof oc.getDomElement === 'function') {
-            try {
-              var de = oc.getDomElement();
-              if (de && de.getBoundingClientRect) {
-                var r1 = de.getBoundingClientRect();
-                if (r1 && r1.width > 0 && r1.height > 0) return de;
-              }
-            } catch (eDom) {}
-          }
-        }
-        var candidates = host.querySelectorAll('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
-        if (!candidates || !candidates.length) return null;
-        var best = null;
-        var bestScore = -1;
-        candidates.forEach(function (el) {
-          if (!el || !el.getBoundingClientRect) return;
-          var r = null;
-          try { r = el.getBoundingClientRect(); } catch (e) {}
-          if (!r || r.width <= 0 || r.height <= 0) return;
-          var ratio = r.height / Math.max(1, r.width);
-          var hasShapes = !!(el.querySelector && el.querySelector('rect, line, path'));
-          var score = (ratio > 3 ? ratio : 0) + (hasShapes ? 20 : 0);
-          if (score > bestScore) {
-            bestScore = score;
-            best = el;
-          }
-        });
-        return best || candidates[0];
-      }
-
-      function getPlayerViewportSize() {
-        var vv = window.visualViewport;
-        var w = vv && vv.width ? vv.width : (window.innerWidth || document.documentElement.clientWidth || 0);
-        var h = vv && vv.height ? vv.height : (window.innerHeight || document.documentElement.clientHeight || 0);
-        return { width: Math.max(1, w), height: Math.max(1, h) };
-      }
-
-      function scrollPlayerCursorToViewportCenter(curRect, viewportHeight) {
-        if (!curRect || !viewportHeight) return;
-        var markerCenterY = curRect.top + (curRect.height * 0.5);
-        var viewportCenterY = viewportHeight * 0.5;
-        var deltaY = markerCenterY - viewportCenterY;
-        if (Math.abs(deltaY) <= 6) return;
-        var currentY = window.scrollY || 0;
-        var docHeight = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.offsetHeight
-        );
-        var maxY = Math.max(0, docHeight - viewportHeight);
-        var nextY = Math.max(0, Math.min(maxY, currentY + deltaY));
-        if (nextY >= maxY - 4) playerAutoScrollReachedEnd = true;
-        playerAutoScrollProgrammaticUntil = Date.now() + 280;
+      if (typeof oc.getDomElement === 'function') {
         try {
-          window.scrollTo({ top: nextY, behavior: 'auto' });
+          var de = oc.getDomElement();
+          if (de && de.getBoundingClientRect) {
+            var r1 = de.getBoundingClientRect();
+            if (r1 && r1.width > 0 && r1.height > 0) return de;
+          }
+        } catch (eDom) { }
+      }
+    }
+    var candidates = host.querySelectorAll('.osmd-cursor, .cursor, [class*="osmdCursor"], [class*="Cursor"], [class*="cursor"]');
+    if (!candidates || !candidates.length) return null;
+    var best = null;
+    var bestScore = -1;
+    candidates.forEach(function (el) {
+      if (!el || !el.getBoundingClientRect) return;
+      var r = null;
+      try { r = el.getBoundingClientRect(); } catch (e) { }
+      if (!r || r.width <= 0 || r.height <= 0) return;
+      var ratio = r.height / Math.max(1, r.width);
+      var hasShapes = !!(el.querySelector && el.querySelector('rect, line, path'));
+      var score = (ratio > 3 ? ratio : 0) + (hasShapes ? 20 : 0);
+      if (score > bestScore) {
+        bestScore = score;
+        best = el;
+      }
+    });
+    return best || candidates[0];
+  }
+
+  function getPlayerViewportSize() {
+    var vv = window.visualViewport;
+    var w = vv && vv.width ? vv.width : (window.innerWidth || document.documentElement.clientWidth || 0);
+    var h = vv && vv.height ? vv.height : (window.innerHeight || document.documentElement.clientHeight || 0);
+    return { width: Math.max(1, w), height: Math.max(1, h) };
+  }
+
+  function scrollPlayerCursorToViewportCenter(curRect, viewportHeight) {
+    if (!curRect || !viewportHeight) return;
+    var markerCenterY = curRect.top + (curRect.height * 0.5);
+    var viewportCenterY = viewportHeight * 0.5;
+    var deltaY = markerCenterY - viewportCenterY;
+    if (Math.abs(deltaY) <= 6) return;
+    var currentY = window.scrollY || 0;
+    var docHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+    var maxY = Math.max(0, docHeight - viewportHeight);
+    var nextY = Math.max(0, Math.min(maxY, currentY + deltaY));
+    if (nextY >= maxY - 4) playerAutoScrollReachedEnd = true;
+    playerAutoScrollProgrammaticUntil = Date.now() + 280;
+    try {
+      window.scrollTo({ top: nextY, behavior: 'auto' });
+    } catch (e) {
+      window.scrollTo(0, nextY);
+    }
+  }
+
+  function autoScrollPlayerFollowingCursor(musicSec) {
+    if (!playerAutoScrollEnabled || currentMode !== 'player') return;
+    if (Date.now() < playerAutoScrollUserPausedUntil) return;
+    if (playerAutoScrollReachedEnd) return;
+    if (playerScoreData && playerScoreData.totalDurationSec && musicSec >= (playerScoreData.totalDurationSec - 0.15)) {
+      playerAutoScrollReachedEnd = true;
+      return;
+    }
+    var docHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+    var viewportBottom = (window.scrollY || 0) + (window.innerHeight || 0);
+    if (viewportBottom >= docHeight - 6) {
+      playerAutoScrollReachedEnd = true;
+      return;
+    }
+    var nowTs = performance.now();
+    if (nowTs - playerAutoScrollLastTs < 120) return;
+    playerAutoScrollLastTs = nowTs;
+
+    var scoreHost = document.getElementById('playerScoreHost');
+    var cursorEl = getPlayerCursorElement();
+
+    if (scoreHost && cursorEl) {
+      var viewport = getPlayerViewportSize();
+      // Horizontal: mantém a nota no centro da área visível da partitura.
+      var hostRect = scoreHost.getBoundingClientRect();
+      var curRect = cursorEl.getBoundingClientRect();
+      var curLeftInHost = (curRect.left - hostRect.left) + scoreHost.scrollLeft;
+      var curTopDoc = (window.scrollY || 0) + curRect.top;
+      var maxLeft = Math.max(0, scoreHost.scrollWidth - scoreHost.clientWidth);
+      var desiredLeft = Math.max(0, Math.min(maxLeft, curLeftInHost - (scoreHost.clientWidth * 0.5)));
+      if (Math.abs(scoreHost.scrollLeft - desiredLeft) > 14) {
+        try {
+          scoreHost.scrollTo({ left: desiredLeft, behavior: 'smooth' });
         } catch (e) {
-          window.scrollTo(0, nextY);
+          scoreHost.scrollLeft = desiredLeft;
         }
       }
 
-      function autoScrollPlayerFollowingCursor(musicSec) {
-        if (!playerAutoScrollEnabled || currentMode !== 'player') return;
-        if (Date.now() < playerAutoScrollUserPausedUntil) return;
-        if (playerAutoScrollReachedEnd) return;
-        if (playerScoreData && playerScoreData.totalDurationSec && musicSec >= (playerScoreData.totalDurationSec - 0.15)) {
-          playerAutoScrollReachedEnd = true;
-          return;
-        }
-        var docHeight = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.offsetHeight
-        );
-        var viewportBottom = (window.scrollY || 0) + (window.innerHeight || 0);
-        if (viewportBottom >= docHeight - 6) {
-          playerAutoScrollReachedEnd = true;
-          return;
-        }
-        var nowTs = performance.now();
-        if (nowTs - playerAutoScrollLastTs < 120) return;
-        playerAutoScrollLastTs = nowTs;
-
-        var scoreHost = document.getElementById('playerScoreHost');
-        var cursorEl = getPlayerCursorElement();
-
-        if (scoreHost && cursorEl) {
-          var viewport = getPlayerViewportSize();
-          // Horizontal: mantém a nota no centro da área visível da partitura.
-          var hostRect = scoreHost.getBoundingClientRect();
-          var curRect = cursorEl.getBoundingClientRect();
-          var curLeftInHost = (curRect.left - hostRect.left) + scoreHost.scrollLeft;
-          var curTopDoc = (window.scrollY || 0) + curRect.top;
-          var maxLeft = Math.max(0, scoreHost.scrollWidth - scoreHost.clientWidth);
-          var desiredLeft = Math.max(0, Math.min(maxLeft, curLeftInHost - (scoreHost.clientWidth * 0.5)));
-          if (Math.abs(scoreHost.scrollLeft - desiredLeft) > 14) {
-            try {
-              scoreHost.scrollTo({ left: desiredLeft, behavior: 'smooth' });
-            } catch (e) {
-              scoreHost.scrollLeft = desiredLeft;
-            }
-          }
-
-          // Alinhamento inicial (importante no mobile e em rotação):
-          // já posiciona a nota atual no centro da tela.
-          if (playerAutoScrollNeedsInitial) {
-            playerAutoScrollNeedsInitial = false;
-            scrollPlayerCursorToViewportCenter(curRect, viewport.height);
-            playerAutoScrollLastSystemTop = Math.round(curRect.top / 18) * 18;
-            playerAutoScrollSystemChanges = 0;
-            playerAutoScrollLastCursorLeftInHost = curLeftInHost;
-            playerAutoScrollLastCursorTopDoc = curTopDoc;
-            return;
-          }
-
-          // Vertical: segue o marcador verde.
-          // Sempre que o marcador descer no documento, recentraliza no viewport.
-          var prevLeftInHost = playerAutoScrollLastCursorLeftInHost;
-          var prevTopDoc = playerAutoScrollLastCursorTopDoc;
-          var movedDown = (prevTopDoc != null) && ((curTopDoc - prevTopDoc) > 3);
-
-          playerAutoScrollLastCursorLeftInHost = curLeftInHost;
-          playerAutoScrollLastCursorTopDoc = curTopDoc;
-
-          if (movedDown) {
-            // Ajuste direto quando desce: marcador sempre no centro visível real.
-            scrollPlayerCursorToViewportCenter(curRect, viewport.height);
-          }
-          return;
-        }
-
-        // Fallback: sem cursor DOM detectável, usa progresso para manter a área da partitura em foco.
-        if (!scoreHost || !playerScoreData || !playerScoreData.totalDurationSec) return;
-        var ratio = Math.max(0, Math.min(1, musicSec / playerScoreData.totalDurationSec));
-        var hostBox = scoreHost.getBoundingClientRect();
-        var viewportFallback = getPlayerViewportSize();
-        var targetYFallback = window.scrollY + hostBox.top + (hostBox.height * ratio) - (viewportFallback.height * 0.5);
-        if (Math.abs(window.scrollY - targetYFallback) > 42) {
-          playerAutoScrollProgrammaticUntil = Date.now() + 520;
-          try {
-            window.scrollTo({ top: Math.max(0, targetYFallback), behavior: 'smooth' });
-          } catch (e3) {
-            window.scrollTo(0, Math.max(0, targetYFallback));
-          }
-        }
-      }
-
-      function stopAllPlayerNotes() {
-        if (!playerPlayback.activeStops || playerPlayback.activeStops.length === 0) return;
-        var ctx = getAudioContext();
-        while (playerPlayback.activeStops.length) {
-          var fn = playerPlayback.activeStops.pop();
-          if (typeof fn !== 'function') continue;
-          try {
-            fn(ctx ? ctx.currentTime : undefined);
-          } catch (e) {}
-        }
-      }
-
-      function clearPlayerPreparation() {
-        while (playerPrepTimeouts.length) {
-          var tm = playerPrepTimeouts.pop();
-          try { clearTimeout(tm); } catch (e) {}
-        }
-        playerPrepToken = 0;
-      }
-
-      function resetPlayerCursorToCurrentPosition() {
-        if (!playerOsmd || !playerOsmd.cursor) return;
-        try {
-          playerOsmd.cursor.show();
-          playerOsmd.cursor.reset();
-          var steps = findPlayerCursorIndexByTime(playerPlayback.positionSec);
-          for (var i = 0; i < steps; i++) playerOsmd.cursor.next();
-        } catch (e) {}
-      }
-
-      function schedulePlayerMetronomeClick(startAtCtx, isAccent) {
-        var ctx = getAudioContext();
-        if (!ctx || !playerMetronomeEnabled) return;
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        var freq = isAccent ? 1080 : 820;
-        var vol = calmMode ? 0.045 : 0.08;
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(freq, startAtCtx);
-        gain.gain.setValueAtTime(0.0001, startAtCtx);
-        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.004);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.055);
-        osc.connect(gain);
-        connectNodeToOutput(gain, ctx);
-        osc.start(startAtCtx);
-        osc.stop(startAtCtx + 0.07);
-      }
-
-      function schedulePlayerPreparationClick(startAtCtx, isAccent) {
-        var ctx = getAudioContext();
-        if (!ctx || !soundEnabled) return;
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        var freq = isAccent ? 1600 : 1250;
-        var vol = calmMode ? 0.07 : 0.12;
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(freq, startAtCtx);
-        gain.gain.setValueAtTime(0.0001, startAtCtx);
-        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.002);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.045);
-        osc.connect(gain);
-        connectNodeToOutput(gain, ctx);
-        osc.start(startAtCtx);
-        osc.stop(startAtCtx + 0.06);
-      }
-
-      function getPlayerPreparationBeatSec() {
-        if (playerScoreData && playerScoreData.beatEvents && playerScoreData.beatEvents.length > 1) {
-          var i;
-          for (i = 1; i < playerScoreData.beatEvents.length; i++) {
-            var d = (playerScoreData.beatEvents[i].sec || 0) - (playerScoreData.beatEvents[i - 1].sec || 0);
-            if (isFinite(d) && d > 0.2 && d < 2.0) return d;
-          }
-        }
-        return 0.6;
-      }
-
-      function beginPlayerPlaybackNow(ctx, instrument, fallbackMessage) {
-        playerPlayback.isPlaying = true;
-        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
-        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
-        playerPlayback.liveEventIndex = -1;
-        playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
-        playerAutoScrollNeedsInitial = true;
-        resetPlayerCursorToCurrentPosition();
-        updatePlayerUiNow(playerPlayback.positionSec);
-        playerTickPlaybackLoop(instrument || null);
-        setMessage(fallbackMessage ? 'Playback em andamento (modo síntese).' : 'Playback em andamento.');
-      }
-
-      function updatePlayerUiNow(nowSec) {
-        var total = (playerScoreData && playerScoreData.totalDurationSec) ? playerScoreData.totalDurationSec : 0;
-        var current = Math.max(0, nowSec != null ? nowSec : playerPlayback.positionSec || 0);
-        var seek = document.getElementById('playerSeek');
-        var lbl = document.getElementById('playerTimeLabel');
-        var playBtn = document.getElementById('btnPlayerPlay');
-        var pauseBtn = document.getElementById('btnPlayerPause');
-        var stopBtn = document.getElementById('btnPlayerStop');
-        var hasScore = !!(playerScoreData && playerScoreData.events && playerScoreData.events.length);
-
-        if (seek) {
-          seek.disabled = !hasScore;
-          var ratio = total > 0 ? Math.max(0, Math.min(1, current / total)) : 0;
-          seek.value = String(Math.round(ratio * 1000));
-        }
-        if (lbl) lbl.textContent = formatPlayerTime(current) + ' / ' + formatPlayerTime(total);
-        window.UiCoreModule.setDisabled(playBtn, !hasScore || playerPlayback.isPlaying);
-        window.UiCoreModule.setDisabled(pauseBtn, !playerPlayback.isPlaying);
-        window.UiCoreModule.setDisabled(stopBtn, !hasScore || (!playerPlayback.isPlaying && current <= 0.01));
-        updatePlayerLiveFeedbackNow(current);
-      }
-
-      function scheduleFallbackPlayerNote(freq, startAtCtx, durationSec) {
-        var ctx = getAudioContext();
-        if (!ctx) return;
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        var vol = (calmMode ? 0.12 : 0.23) * INSTRUMENT_OUTPUT_GAIN;
-        if (vol > 0.35) vol = 0.35;
-        var dur = Math.max(0.06, durationSec || 0.16);
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, startAtCtx);
-        gain.gain.setValueAtTime(0.0001, startAtCtx);
-        gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.015);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + Math.max(0.03, dur));
-        osc.connect(gain);
-        connectNodeToOutput(gain, ctx);
-        osc.start(startAtCtx);
-        osc.stop(startAtCtx + Math.max(0.05, dur) + 0.02);
-        playerPlayback.activeStops.push(function () {
-          try {
-            var t = ctx.currentTime;
-            gain.gain.cancelScheduledValues(t);
-            gain.gain.setValueAtTime(gain.gain.value, t);
-            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-            osc.stop(t + 0.06);
-          } catch (e) {}
-        });
-      }
-
-      function schedulePlayerNote(event, startAtCtx, instrument) {
-        if (!event || event.isRest || !event.freq || event.freq <= 0) return;
-        if (playerMutePlaybackEnabled) return;
-        var rate = Math.max(0.4, playerPlaybackRate || 1);
-        var dur = Math.max(0.06, (event.durationSec * 0.96) / rate);
-        if (instrument) {
-          var noteName = freqToMidiNoteName(event.freq);
-          var isVoiceInstrument = currentInstrument && currentInstrument.id === 'voz';
-          var gain = calmMode ? 0.36 : 0.56;
-          if (isVoiceInstrument) gain = calmMode ? 0.02 : 0.035;
-          // Pequena variação de dinâmica para reduzir efeito "machine gun".
-          var humanGain = gain * (0.96 + (Math.random() * 0.08));
-          var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, humanGain));
-          if (isVoiceInstrument) {
-            var ctxSf = getAudioContext();
-            if (ctxSf) schedulePlayerSungSolfejo(ctxSf, startAtCtx, event.freq, dur, playerPlayToken);
-          }
-          if (note && typeof note.stop === 'function') {
-            playerPlayback.activeStops.push(function (now) {
-              try {
-                note.stop(typeof now === 'number' ? now : getAudioContext().currentTime);
-              } catch (e) {}
-            });
-          }
-          return;
-        }
-        scheduleFallbackPlayerNote(event.freq, startAtCtx, dur);
-      }
-
-      function stopPlayerPlayback(keepPosition) {
-        clearPlayerPreparation();
-        playerPlayToken = 0;
-        if (playerPlayback.rafId) {
-          cancelAnimationFrame(playerPlayback.rafId);
-          playerPlayback.rafId = null;
-        }
-        if (playerPlayback.isPlaying) {
-          try {
-            var ctx = getAudioContext();
-            if (ctx) {
-              var rate = Math.max(0.4, playerPlaybackRate || 1);
-              playerPlayback.positionSec = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
-            }
-          } catch (e) {}
-        }
-        playerPlayback.isPlaying = false;
-        stopAllPlayerNotes();
-        if (!keepPosition) playerPlayback.positionSec = 0;
-        playerAutoScrollLastTs = 0;
-        playerAutoScrollLastSystemTop = null;
-        playerAutoScrollLastCursorLeftInHost = null;
-        playerAutoScrollLastCursorTopDoc = null;
-        playerAutoScrollUserPausedUntil = 0;
-        playerAutoScrollProgrammaticUntil = 0;
+      // Alinhamento inicial (importante no mobile e em rotação):
+      // já posiciona a nota atual no centro da tela.
+      if (playerAutoScrollNeedsInitial) {
         playerAutoScrollNeedsInitial = false;
+        scrollPlayerCursorToViewportCenter(curRect, viewport.height);
+        playerAutoScrollLastSystemTop = Math.round(curRect.top / 18) * 18;
         playerAutoScrollSystemChanges = 0;
-        playerAutoScrollReachedEnd = false;
-        if (!keepPosition && playerScoreData) {
-          playerNoteAnchors = playerNoteAnchors || [];
-        }
-        playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
-        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
-        playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
-        playerPlayback.liveEventIndex = -1;
-        if (playerLiveCurrentEventIndex >= 0) {
-          finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
-        }
-        clearPlayerLiveFeedback();
-        resetPlayerCursorToCurrentPosition();
-        updatePlayerUiNow(playerPlayback.positionSec);
+        playerAutoScrollLastCursorLeftInHost = curLeftInHost;
+        playerAutoScrollLastCursorTopDoc = curTopDoc;
+        return;
       }
 
-      function playerTickPlaybackLoop(instrument) {
-        if (!playerPlayback.isPlaying || !playerScoreData) return;
+      // Vertical: segue o marcador verde.
+      // Sempre que o marcador descer no documento, recentraliza no viewport.
+      var prevLeftInHost = playerAutoScrollLastCursorLeftInHost;
+      var prevTopDoc = playerAutoScrollLastCursorTopDoc;
+      var movedDown = (prevTopDoc != null) && ((curTopDoc - prevTopDoc) > 3);
+
+      playerAutoScrollLastCursorLeftInHost = curLeftInHost;
+      playerAutoScrollLastCursorTopDoc = curTopDoc;
+
+      if (movedDown) {
+        // Ajuste direto quando desce: marcador sempre no centro visível real.
+        scrollPlayerCursorToViewportCenter(curRect, viewport.height);
+      }
+      return;
+    }
+
+    // Fallback: sem cursor DOM detectável, usa progresso para manter a área da partitura em foco.
+    if (!scoreHost || !playerScoreData || !playerScoreData.totalDurationSec) return;
+    var ratio = Math.max(0, Math.min(1, musicSec / playerScoreData.totalDurationSec));
+    var hostBox = scoreHost.getBoundingClientRect();
+    var viewportFallback = getPlayerViewportSize();
+    var targetYFallback = window.scrollY + hostBox.top + (hostBox.height * ratio) - (viewportFallback.height * 0.5);
+    if (Math.abs(window.scrollY - targetYFallback) > 42) {
+      playerAutoScrollProgrammaticUntil = Date.now() + 520;
+      try {
+        window.scrollTo({ top: Math.max(0, targetYFallback), behavior: 'smooth' });
+      } catch (e3) {
+        window.scrollTo(0, Math.max(0, targetYFallback));
+      }
+    }
+  }
+
+  function stopAllPlayerNotes() {
+    if (!playerPlayback.activeStops || playerPlayback.activeStops.length === 0) return;
+    var ctx = getAudioContext();
+    while (playerPlayback.activeStops.length) {
+      var fn = playerPlayback.activeStops.pop();
+      if (typeof fn !== 'function') continue;
+      try {
+        fn(ctx ? ctx.currentTime : undefined);
+      } catch (e) { }
+    }
+  }
+
+  function hidePlayerPrepOverlay() {
+    var overlay = document.getElementById('playerPrepOverlay');
+    if (!overlay) return;
+    overlay.classList.add('hidden');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  function showPlayerPrepCount(remaining) {
+    var overlay = document.getElementById('playerPrepOverlay');
+    var span = document.getElementById('playerPrepCount');
+    if (!overlay || !span) return;
+    var n = Number(remaining);
+    if (!isFinite(n) || n <= 0) {
+      hidePlayerPrepOverlay();
+      return;
+    }
+    span.textContent = String(Math.floor(n));
+    overlay.classList.remove('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function clearPlayerPreparation() {
+    while (playerPrepTimeouts.length) {
+      var tm = playerPrepTimeouts.pop();
+      try { clearTimeout(tm); } catch (e) { }
+    }
+    playerPrepToken = 0;
+    hidePlayerPrepOverlay();
+  }
+
+  function resetPlayerCursorToCurrentPosition(playbackSecOpt) {
+    if (!playerOsmd || !playerOsmd.cursor) return;
+    var sec = typeof playbackSecOpt === 'number' && isFinite(playbackSecOpt)
+      ? playbackSecOpt
+      : playerPlayback.positionSec;
+    var displayPos = mapPlayerPlaybackSecToDisplaySec(
+      sec,
+      playerScoreData ? playerScoreData.repeatMap : null
+    );
+    if (playerScoreHasExpandedRepeats()) {
+      playerPlayback.osmdSyncedSteps = null;
+      syncPlayerOsmdCursorToDisplay(displayPos, true);
+      return;
+    }
+    try {
+      playerOsmd.cursor.show();
+      playerOsmd.cursor.reset();
+      var steps = osmdStepsForDisplayCursorIndex(findPlayerDisplayCursorIndexByTime(displayPos));
+      for (var i = 0; i < steps; i++) playerOsmd.cursor.next();
+    } catch (e) { }
+  }
+
+  function findPlaybackRepeatSegmentAt(playbackSec) {
+    var map = playerScoreData && Array.isArray(playerScoreData.repeatMap) ? playerScoreData.repeatMap : [];
+    var t = typeof playbackSec === 'number' && isFinite(playbackSec) ? playbackSec : 0;
+    for (var i = 0; i < map.length; i++) {
+      var r = map[i];
+      if (!r) continue;
+      var start = Number(r.playbackStart);
+      var end = Number(r.playbackEnd);
+      if (isFinite(start) && isFinite(end) && t >= start - 0.0005 && t <= end + 0.0005) return r;
+    }
+    return null;
+  }
+
+  /**
+   * O playback pode expandir retornelas (duplicando eventos no tempo).
+   * O cursor do OSMD segue a partitura renderizada (tempo "visual" sem expansão).
+   * Aqui mapeamos o tempo do playback → tempo de exibição para manter o cursor alinhado.
+   */
+  function mapPlayerPlaybackSecToDisplaySec(playbackSec, repeatMap) {
+    var t = typeof playbackSec === 'number' && isFinite(playbackSec) ? playbackSec : 0;
+    var map = Array.isArray(repeatMap) ? repeatMap : [];
+    if (!map.length) return t;
+
+    for (var i = 0; i < map.length; i++) {
+      var r = map[i];
+      if (!r) continue;
+      var playbackStart = Number(r.playbackStart);
+      var playbackEnd = Number(r.playbackEnd);
+      var displayStart = Number(r.displayStart);
+      if (!isFinite(playbackStart) || !isFinite(playbackEnd) || !isFinite(displayStart)) continue;
+      if (t >= playbackStart - 0.0005 && t <= playbackEnd + 0.0005) {
+        return Math.max(0, displayStart + Math.max(0, t - playbackStart));
+      }
+    }
+
+    return t < 0 ? 0 : t;
+  }
+
+  function schedulePlayerMetronomeClick(startAtCtx, isAccent) {
+    var ctx = getAudioContext();
+    if (!ctx || !playerMetronomeEnabled) return;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    var freq = isAccent ? 1080 : 820;
+    var vol = calmMode ? 0.045 : 0.08;
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, startAtCtx);
+    gain.gain.setValueAtTime(0.0001, startAtCtx);
+    gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.055);
+    osc.connect(gain);
+    connectNodeToOutput(gain, ctx);
+    osc.start(startAtCtx);
+    osc.stop(startAtCtx + 0.07);
+  }
+
+  function schedulePlayerPreparationClick(startAtCtx, isAccent) {
+    var ctx = getAudioContext();
+    if (!ctx || !soundEnabled) return;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    var freq = isAccent ? 1600 : 1250;
+    var vol = calmMode ? 0.07 : 0.12;
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, startAtCtx);
+    gain.gain.setValueAtTime(0.0001, startAtCtx);
+    gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + 0.045);
+    osc.connect(gain);
+    connectNodeToOutput(gain, ctx);
+    osc.start(startAtCtx);
+    osc.stop(startAtCtx + 0.06);
+  }
+
+  /** Um segundo por batida na contagem 4–3–2–1; não segue o BPM da partitura nem o slider de tempo. */
+  function getPlayerPreparationBeatSec() {
+    return 1;
+  }
+
+  function beginPlayerPlaybackNow(ctx, instrument, fallbackMessage) {
+    playerPlayback.isPlaying = true;
+    playerPlayback.lastCursorOsmdResyncTs = 0;
+    playerPlayback.lastPlaybackElapsed = null;
+    playerPlayback.lastDisplayElapsed = null;
+    playerPlayback.osmdSyncedSteps = null;
+    playerPlayback.lastPlaybackRepeatSegment = null;
+    playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+    playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+    playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    playerPlayback.liveEventIndex = -1;
+    playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
+    playerAutoScrollNeedsInitial = true;
+    resetPlayerCursorToCurrentPosition();
+    updatePlayerUiNow(playerPlayback.positionSec);
+    playerTickPlaybackLoop(instrument || null);
+    setMessage(fallbackMessage ? 'Playback em andamento (modo síntese).' : 'Playback em andamento.');
+  }
+
+  function updatePlayerUiNow(nowSec) {
+    var total = (playerScoreData && playerScoreData.totalDurationSec) ? playerScoreData.totalDurationSec : 0;
+    var current = Math.max(0, nowSec != null ? nowSec : playerPlayback.positionSec || 0);
+    var seek = document.getElementById('playerSeek');
+    var lbl = document.getElementById('playerTimeLabel');
+    var playBtn = document.getElementById('btnPlayerPlay');
+    var pauseBtn = document.getElementById('btnPlayerPause');
+    var stopBtn = document.getElementById('btnPlayerStop');
+    var hasScore = !!(playerScoreData && playerScoreData.events && playerScoreData.events.length);
+
+    if (seek) {
+      seek.disabled = !hasScore;
+      var ratio = total > 0 ? Math.max(0, Math.min(1, current / total)) : 0;
+      seek.value = String(Math.round(ratio * 1000));
+    }
+    if (lbl) lbl.textContent = formatPlayerTime(current) + ' / ' + formatPlayerTime(total);
+    window.UiCoreModule.setDisabled(playBtn, !hasScore || playerPlayback.isPlaying);
+    window.UiCoreModule.setDisabled(pauseBtn, !playerPlayback.isPlaying);
+    window.UiCoreModule.setDisabled(stopBtn, !hasScore || (!playerPlayback.isPlaying && current <= 0.01));
+    updatePlayerLiveFeedbackNow(current);
+  }
+
+  function scheduleFallbackPlayerNote(freq, startAtCtx, durationSec) {
+    var ctx = getAudioContext();
+    if (!ctx) return;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    var vol = (calmMode ? 0.12 : 0.23) * INSTRUMENT_OUTPUT_GAIN;
+    if (vol > 0.35) vol = 0.35;
+    var dur = Math.max(0.06, durationSec || 0.16);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, startAtCtx);
+    gain.gain.setValueAtTime(0.0001, startAtCtx);
+    gain.gain.exponentialRampToValueAtTime(vol, startAtCtx + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAtCtx + Math.max(0.03, dur));
+    osc.connect(gain);
+    connectNodeToOutput(gain, ctx);
+    osc.start(startAtCtx);
+    osc.stop(startAtCtx + Math.max(0.05, dur) + 0.02);
+    playerPlayback.activeStops.push(function () {
+      try {
+        var t = ctx.currentTime;
+        gain.gain.cancelScheduledValues(t);
+        gain.gain.setValueAtTime(gain.gain.value, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+        osc.stop(t + 0.06);
+      } catch (e) { }
+    });
+  }
+
+  function schedulePlayerNote(event, startAtCtx, instrument) {
+    if (!event || event.isRest || !event.freq || event.freq <= 0) return;
+    if (playerMutePlaybackEnabled) return;
+    var rate = Math.max(0.4, playerPlaybackRate || 1);
+    var dur = Math.max(0.06, (event.durationSec * 0.96) / rate);
+    if (instrument) {
+      var noteName = freqToMidiNoteName(event.freq);
+      var isVoiceInstrument = currentInstrument && currentInstrument.id === 'voz';
+      var gain = calmMode ? 0.36 : 0.56;
+      if (isVoiceInstrument) gain = calmMode ? 0.02 : 0.035;
+      // Pequena variação de dinâmica para reduzir efeito "machine gun".
+      var humanGain = gain * (0.96 + (Math.random() * 0.08));
+      var note = instrument.play(noteName, startAtCtx, buildSoundfontPlayOptions(dur, humanGain));
+      if (isVoiceInstrument) {
+        var ctxSf = getAudioContext();
+        if (ctxSf) schedulePlayerSungSolfejo(ctxSf, startAtCtx, event.freq, dur, playerPlayToken);
+      }
+      if (note && typeof note.stop === 'function') {
+        playerPlayback.activeStops.push(function (now) {
+          try {
+            note.stop(typeof now === 'number' ? now : getAudioContext().currentTime);
+          } catch (e) { }
+        });
+      }
+      return;
+    }
+    scheduleFallbackPlayerNote(event.freq, startAtCtx, dur);
+  }
+
+  function stopPlayerPlayback(keepPosition) {
+    clearPlayerPreparation();
+    playerPlayToken = 0;
+    if (playerPlayback.rafId) {
+      cancelAnimationFrame(playerPlayback.rafId);
+      playerPlayback.rafId = null;
+    }
+    if (playerPlayback.isPlaying) {
+      try {
         var ctx = getAudioContext();
-        if (!ctx) {
-          stopPlayerPlayback(true);
-          return;
+        if (ctx) {
+          var rate = Math.max(0.4, playerPlaybackRate || 1);
+          playerPlayback.positionSec = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
         }
-        var rate = Math.max(0.4, playerPlaybackRate || 1);
-        var elapsed = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
-        var total = playerScoreData.totalDurationSec || 0;
-        var lookAhead = 0.22 * rate;
+      } catch (e) { }
+    }
+    playerPlayback.isPlaying = false;
+    playerPlayback.lastCursorOsmdResyncTs = 0;
+    playerPlayback.lastPlaybackElapsed = null;
+    playerPlayback.lastDisplayElapsed = null;
+    playerPlayback.osmdSyncedSteps = null;
+    playerPlayback.lastPlaybackRepeatSegment = null;
+    stopAllPlayerNotes();
+    if (!keepPosition) playerPlayback.positionSec = 0;
+    playerAutoScrollLastTs = 0;
+    playerAutoScrollLastSystemTop = null;
+    playerAutoScrollLastCursorLeftInHost = null;
+    playerAutoScrollLastCursorTopDoc = null;
+    playerAutoScrollUserPausedUntil = 0;
+    playerAutoScrollProgrammaticUntil = 0;
+    playerAutoScrollNeedsInitial = false;
+    playerAutoScrollSystemChanges = 0;
+    playerAutoScrollReachedEnd = false;
+    if (!keepPosition && playerScoreData) {
+      playerNoteAnchors = playerNoteAnchors || [];
+    }
+    playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
+    playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
+    playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    playerPlayback.liveEventIndex = -1;
+    if (playerLiveCurrentEventIndex >= 0) {
+      finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
+    }
+    clearPlayerLiveFeedback();
+    resetPlayerCursorToCurrentPosition();
+    updatePlayerUiNow(playerPlayback.positionSec);
+  }
 
-        if (elapsed >= total + 0.03) {
-          stopPlayerPlayback(false);
-          if (playerLoopEnabled && currentMode === 'player') {
-            startPlayerPlayback();
-            setMessage('Loop da partitura reiniciado.');
-            return;
-          }
-          if (currentMode !== 'player') setMessage('Playback concluído.');
-          return;
+  function playerTickPlaybackLoop(instrument) {
+    if (!playerPlayback.isPlaying || !playerScoreData) return;
+    var ctx = getAudioContext();
+    if (!ctx) {
+      stopPlayerPlayback(true);
+      return;
+    }
+    var rate = Math.max(0.4, playerPlaybackRate || 1);
+    var elapsed = Math.max(0, (ctx.currentTime - playerPlayback.startedAtCtx) * rate);
+    var displayElapsed = mapPlayerPlaybackSecToDisplaySec(
+      elapsed,
+      playerScoreData ? playerScoreData.repeatMap : null
+    );
+    var total = playerScoreData.totalDurationSec || 0;
+    var lookAhead = 0.22 * rate;
+    var playbackRepeatSeg = playerScoreHasExpandedRepeats()
+      ? findPlaybackRepeatSegmentAt(elapsed)
+      : null;
+    var cursorDisplayDiscontinuity = false;
+    if (playerPlayback.lastPlaybackElapsed != null && playerPlayback.lastDisplayElapsed != null) {
+      var playbackDelta = elapsed - playerPlayback.lastPlaybackElapsed;
+      var displayDelta = displayElapsed - playerPlayback.lastDisplayElapsed;
+      cursorDisplayDiscontinuity = Math.abs(displayDelta - playbackDelta) > 0.18;
+    }
+    var forceCursorReset = cursorDisplayDiscontinuity;
+    if (playbackRepeatSeg && playerPlayback.lastPlaybackRepeatSegment) {
+      var pSeg = playerPlayback.lastPlaybackRepeatSegment;
+      var cSeg = playbackRepeatSeg;
+      if (Number(cSeg.passNumber) !== Number(pSeg.passNumber)) {
+        forceCursorReset = true;
+      } else if (isFinite(Number(cSeg.xmlMeasureNum)) && isFinite(Number(pSeg.xmlMeasureNum)) &&
+        Number(cSeg.xmlMeasureNum) > Number(pSeg.xmlMeasureNum) + 1) {
+        forceCursorReset = true;
+      }
+    }
+    if (playerPlayback.osmdSyncedSteps != null) {
+      var targetOsmdNow = osmdStepsForDisplayCursorIndex(
+        findPlayerDisplayCursorIndexByTime(displayElapsed)
+      );
+      if (targetOsmdNow < playerPlayback.osmdSyncedSteps) forceCursorReset = true;
+    }
+    playerPlayback.lastPlaybackRepeatSegment = playbackRepeatSeg;
+
+    if (elapsed >= total + 0.03) {
+      stopPlayerPlayback(false);
+      if (playerLoopEnabled && currentMode === 'player') {
+        startPlayerPlayback();
+        setMessage('Loop da partitura reiniciado.');
+        return;
+      }
+      if (currentMode !== 'player') setMessage('Playback concluído.');
+      return;
+    }
+
+    while (playerPlayback.nextEventIndex < playerScoreData.events.length) {
+      var ev = playerScoreData.events[playerPlayback.nextEventIndex];
+      if (!ev || ev.startSec > elapsed + lookAhead) break;
+      if (!ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0 && ev.startSec <= elapsed + 0.005) {
+        playerPlayback.liveEventIndex = playerPlayback.nextEventIndex;
+      }
+      /* Não exigir startSec >= elapsed: com retornelas expandidas ou abas em segundo plano
+       * o RAF pode saltar vários centésimos e silenciar todo o resto da partitura.
+       * «Final» em <rehearsal> não é fim de playback; o áudio deve seguir até o último evento. */
+      var idealWhen = playerPlayback.startedAtCtx + (ev.startSec / rate);
+      var when = idealWhen;
+      try {
+        var nowCtx = ctx.currentTime;
+        if (idealWhen < nowCtx - 0.02) when = nowCtx + 0.002;
+      } catch (eLate) { }
+      schedulePlayerNote(ev, when, instrument);
+      playerPlayback.nextEventIndex += 1;
+    }
+
+    if (playerMetronomeEnabled && playerScoreData.beatEvents && playerScoreData.beatEvents.length) {
+      while (playerPlayback.nextBeatIndex < playerScoreData.beatEvents.length) {
+        var beatEv = playerScoreData.beatEvents[playerPlayback.nextBeatIndex];
+        var beatAt = beatEv ? beatEv.sec : 0;
+        if (beatAt > elapsed + lookAhead) break;
+        if (beatAt >= elapsed - 0.03) {
+          var whenBeat = playerPlayback.startedAtCtx + (beatAt / rate);
+          schedulePlayerMetronomeClick(whenBeat, !!(beatEv && beatEv.accent));
         }
+        playerPlayback.nextBeatIndex += 1;
+      }
+    }
 
-        while (playerPlayback.nextEventIndex < playerScoreData.events.length) {
-          var ev = playerScoreData.events[playerPlayback.nextEventIndex];
-          if (!ev || ev.startSec > elapsed + lookAhead) break;
-          if (!ev.isRest && !ev.isChord && isFinite(ev.freq) && ev.freq > 0 && ev.startSec <= elapsed + 0.005) {
-            playerPlayback.liveEventIndex = playerPlayback.nextEventIndex;
-          }
-          if (ev.startSec >= elapsed - 0.03) {
-            var when = playerPlayback.startedAtCtx + (ev.startSec / rate);
-            schedulePlayerNote(ev, when, instrument);
-          }
-          playerPlayback.nextEventIndex += 1;
-        }
-
-        if (playerMetronomeEnabled && playerScoreData.beatEvents && playerScoreData.beatEvents.length) {
-          while (playerPlayback.nextBeatIndex < playerScoreData.beatEvents.length) {
-            var beatEv = playerScoreData.beatEvents[playerPlayback.nextBeatIndex];
-            var beatAt = beatEv ? beatEv.sec : 0;
-            if (beatAt > elapsed + lookAhead) break;
-            if (beatAt >= elapsed - 0.03) {
-              var whenBeat = playerPlayback.startedAtCtx + (beatAt / rate);
-              schedulePlayerMetronomeClick(whenBeat, !!(beatEv && beatEv.accent));
+    if (playerOsmd && playerOsmd.cursor) {
+      if (playerScoreHasExpandedRepeats()) {
+        syncPlayerOsmdCursorToDisplay(displayElapsed, forceCursorReset);
+        playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(elapsed));
+      } else if (playerScoreData.cursorStarts) {
+        while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
+          playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= elapsed + 0.005) {
+          var cursorStepOk = false;
+          try {
+            playerOsmd.cursor.next();
+            cursorStepOk = true;
+          } catch (eCur) {
+            var rts = Date.now();
+            if (!playerPlayback.lastCursorOsmdResyncTs ||
+              rts - playerPlayback.lastCursorOsmdResyncTs > 160) {
+              playerPlayback.lastCursorOsmdResyncTs = rts;
+              try {
+                playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(elapsed));
+                resetPlayerCursorToCurrentPosition(elapsed);
+              } catch (eRs) {
+                playerPlayback.nextCursorIndex += 1;
+              }
+            } else {
+              playerPlayback.nextCursorIndex += 1;
             }
-            playerPlayback.nextBeatIndex += 1;
+            break;
           }
+          if (cursorStepOk) playerPlayback.nextCursorIndex += 1;
         }
-
-        if (playerOsmd && playerOsmd.cursor && playerScoreData.cursorStarts) {
-          while (playerPlayback.nextCursorIndex < playerScoreData.cursorStarts.length &&
-                 playerScoreData.cursorStarts[playerPlayback.nextCursorIndex] <= elapsed + 0.005) {
-            try { playerOsmd.cursor.next(); } catch (e) { break; }
-            playerPlayback.nextCursorIndex += 1;
-          }
-        }
-
-        playerPlayback.positionSec = elapsed;
-        updatePlayerUiNow(elapsed);
-        autoScrollPlayerFollowingCursor(elapsed);
-        playerPlayback.rafId = requestAnimationFrame(function () {
-          playerTickPlaybackLoop(instrument);
-        });
       }
+    }
 
-      function startPlayerPlayback() {
-        if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) {
-          setMessage('Player: sem notas válidas no MusicXML.');
-          updatePlayerUiNow(0);
-          return;
-        }
-        if (playerPlayback.isPlaying || playerPrepToken) return;
-        var ctx = getAudioContext();
-        if (!ctx) return;
-        if (ctx.state === 'suspended') ctx.resume();
-        var token = Date.now();
-        playerPlayToken = token;
-        var requestedInstrumentId = currentInstrument && currentInstrument.id ? currentInstrument.id : 'violin';
-        loadInstrument(requestedInstrumentId).then(function (instrument) {
-          if (playerPlayToken !== token) return;
-          if (!playerScoreData) return;
-          clearPlayerPreparation();
-          playerPrepToken = token;
-          var prepBeatSec = getPlayerPreparationBeatSec();
-          var prepTotal = 3;
-          var i;
-          for (i = 0; i < prepTotal; i++) {
-            (function (idx) {
-              var tm = setTimeout(function () {
-                if (playerPlayToken !== token || playerPrepToken !== token) return;
-                var remaining = prepTotal - idx;
-                var prepCtx = getAudioContext();
-                if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
-                setMessage('Preparação: ' + remaining + '...');
-              }, Math.round(idx * prepBeatSec * 1000));
-              playerPrepTimeouts.push(tm);
-            })(i);
-          }
-          var startTm = setTimeout(function () {
+    playerPlayback.positionSec = elapsed;
+    playerPlayback.lastPlaybackElapsed = elapsed;
+    playerPlayback.lastDisplayElapsed = displayElapsed;
+    updatePlayerUiNow(elapsed);
+    autoScrollPlayerFollowingCursor(displayElapsed);
+    playerPlayback.rafId = requestAnimationFrame(function () {
+      playerTickPlaybackLoop(instrument);
+    });
+  }
+
+  function startPlayerPlayback() {
+    pauseMsaMediaIfPlaying();
+    if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) {
+      setMessage('Player: sem notas válidas no MusicXML.');
+      updatePlayerUiNow(0);
+      return;
+    }
+    if (playerPlayback.isPlaying || playerPrepToken) return;
+    var ctx = getAudioContext();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    var token = Date.now();
+    playerPlayToken = token;
+    var requestedInstrumentId = currentInstrument && currentInstrument.id ? currentInstrument.id : 'violin';
+    loadInstrument(requestedInstrumentId).then(function (instrument) {
+      if (playerPlayToken !== token) return;
+      if (!playerScoreData) return;
+      clearPlayerPreparation();
+      playerPrepToken = token;
+      var prepBeatSec = getPlayerPreparationBeatSec();
+      var prepTotal = 4;
+      var i;
+      for (i = 0; i < prepTotal; i++) {
+        (function (idx) {
+          var tm = setTimeout(function () {
             if (playerPlayToken !== token || playerPrepToken !== token) return;
-            clearPlayerPreparation();
-            beginPlayerPlaybackNow(ctx, instrument || null, false);
-          }, Math.round(prepTotal * prepBeatSec * 1000));
-          playerPrepTimeouts.push(startTm);
-        }).catch(function () {
-          if (playerPlayToken !== token) return;
-          clearPlayerPreparation();
-          playerPrepToken = token;
-          var prepBeatSec = getPlayerPreparationBeatSec();
-          var prepTotal = 3;
-          var i;
-          for (i = 0; i < prepTotal; i++) {
-            (function (idx) {
-              var tm = setTimeout(function () {
-                if (playerPlayToken !== token || playerPrepToken !== token) return;
-                var remaining = prepTotal - idx;
-                var prepCtx = getAudioContext();
-                if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
-                setMessage('Preparação: ' + remaining + '...');
-              }, Math.round(idx * prepBeatSec * 1000));
-              playerPrepTimeouts.push(tm);
-            })(i);
-          }
-          var startTm = setTimeout(function () {
+            var remaining = prepTotal - idx;
+            var prepCtx = getAudioContext();
+            if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
+            setMessage('Preparação: ' + remaining + '...');
+            showPlayerPrepCount(remaining);
+          }, Math.round(idx * prepBeatSec * 1000));
+          playerPrepTimeouts.push(tm);
+        })(i);
+      }
+      var startTm = setTimeout(function () {
+        if (playerPlayToken !== token || playerPrepToken !== token) return;
+        clearPlayerPreparation();
+        beginPlayerPlaybackNow(ctx, instrument || null, false);
+      }, Math.round(prepTotal * prepBeatSec * 1000));
+      playerPrepTimeouts.push(startTm);
+    }).catch(function () {
+      if (playerPlayToken !== token) return;
+      clearPlayerPreparation();
+      playerPrepToken = token;
+      var prepBeatSec = getPlayerPreparationBeatSec();
+      var prepTotal = 4;
+      var i;
+      for (i = 0; i < prepTotal; i++) {
+        (function (idx) {
+          var tm = setTimeout(function () {
             if (playerPlayToken !== token || playerPrepToken !== token) return;
-            clearPlayerPreparation();
-            beginPlayerPlaybackNow(ctx, null, true);
-          }, Math.round(prepTotal * prepBeatSec * 1000));
-          playerPrepTimeouts.push(startTm);
-        });
+            var remaining = prepTotal - idx;
+            var prepCtx = getAudioContext();
+            if (prepCtx) schedulePlayerPreparationClick(prepCtx.currentTime + 0.01, idx === 0);
+            setMessage('Preparação: ' + remaining + '...');
+            showPlayerPrepCount(remaining);
+          }, Math.round(idx * prepBeatSec * 1000));
+          playerPrepTimeouts.push(tm);
+        })(i);
+      }
+      var startTm = setTimeout(function () {
+        if (playerPlayToken !== token || playerPrepToken !== token) return;
+        clearPlayerPreparation();
+        beginPlayerPlaybackNow(ctx, null, true);
+      }, Math.round(prepTotal * prepBeatSec * 1000));
+      playerPrepTimeouts.push(startTm);
+    });
+  }
+
+  /** Carrega e desenha um MusicXML específico no Player. */
+  function loadPlayerMusicXml(scorePath, titleLabel, forceReload) {
+    window.PlayerOsmdLoadUtils.runLoadPlayerMusicXml(
+      scorePath,
+      titleLabel,
+      forceReload,
+      window.PlayerLoadBindings.getPlayerMusicXmlLoadContext()
+    );
+  }
+
+  function loadPlayerFromCatalogSelection(forceReload) {
+    var resolved = resolvePlayerCurrentSelection();
+    if (!resolved) {
+      syncPlayerHeaderTitle(null, 's');
+      loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', !!forceReload);
+      return;
+    }
+    renderPlayerCatalogControls();
+    var label = String(resolved.item.numero) + ' · ' + (resolved.item.titulo || 'Sem título') + ' · ' + playerVoiceLabel(resolved.voices);
+    loadPlayerMusicXml(resolved.paths && resolved.paths.length ? resolved.paths : resolved.path, label, !!forceReload);
+  }
+
+  // ========== MODOS DE JOGO ==========
+  function setMode(mode) {
+    if (metroIsRunning) stopMetronome();
+    if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
+    if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
+    if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
+    if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
+    if (currentMode === 'msa' && mode !== 'msa') {
+      pauseMsaMediaIfPlaying();
+      revokeMsaMedia();
+      var videoWrap = document.getElementById('msaVideoWrapper');
+      var audioWrap = document.getElementById('msaAudioWrapper');
+      var pdfWrap = document.getElementById('msaPdfWrapper');
+      var quizWrap = document.getElementById('msaQuizWrapper');
+      if (videoWrap) videoWrap.innerHTML = '';
+      if (audioWrap) audioWrap.innerHTML = '';
+      if (pdfWrap) pdfWrap.innerHTML = '';
+      if (quizWrap) quizWrap.innerHTML = '';
+    }
+    currentMode = mode;
+    setMoreMenuOpen(false);
+    setPlayerSpeedPopoverOpen(false);
+    closeSettingsPanel();
+    document.querySelectorAll('.mode-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    var btnMoreMenu = document.getElementById('btnMoreMenu');
+    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'staff');
+    var btnMoreTuner = document.getElementById('btnMoreTuner');
+    var btnMoreMetronome = document.getElementById('btnMoreMetronome');
+    var btnMoreHinos = document.getElementById('btnMoreHinos');
+    var btnMoreMsa = document.getElementById('btnMoreMsa');
+    var btnMoreStaff = document.getElementById('btnMoreStaff');
+    var btnMoreSettings = document.getElementById('btnMoreSettings');
+    if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
+    if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
+    if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
+    if (btnMoreMsa) btnMoreMsa.classList.toggle('active', mode === 'msa');
+    if (btnMoreStaff) btnMoreStaff.classList.toggle('active', mode === 'staff');
+    if (btnMoreSettings) btnMoreSettings.classList.remove('active');
+    clearViolinHighlight();
+    document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+ 
+    var violinSection = document.getElementById('violinSection');
+    var staffSectionEl = document.getElementById('staffSection');
+    var hinosSectionEl = document.getElementById('hinosSection');
+    var tunerSectionEl = document.getElementById('tunerSection');
+    var metroSectionEl = document.getElementById('metroSection');
+    var playerSectionEl = document.getElementById('playerSection');
+    var msaSectionEl = document.getElementById('msaSection');
+    var homeSectionEl = document.getElementById('homeSection');
+    var playerSourceRowEl = document.getElementById('playerSourceRow');
+    var messageBoxEl = document.getElementById('messageBox');
+    if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl && msaSectionEl) {
+      if (homeSectionEl) homeSectionEl.classList.add('hidden');
+      
+      if (mode === 'hinos') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.remove('hidden');
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'msa') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.remove('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'staff') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.remove('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'tuner') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.remove('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'metronome') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.remove('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'player') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.remove('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
+        if (messageBoxEl) messageBoxEl.classList.add('hidden');
+      } else if (mode === 'home') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        if (homeSectionEl) homeSectionEl.classList.remove('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (playerSourceRowEl) playerSourceRowEl.classList.add('hidden');
+        if (messageBoxEl) messageBoxEl.classList.add('hidden');
+      } else {
+        violinSection.classList.remove('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      }
+    }
+    var progressSectionEl = document.getElementById('progressSection');
+    if (progressSectionEl) {
+      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa');
+    }
+
+    if (mode === 'learn') {
+      updateChallengeStats();
+      setMessage('Mantenha o dedo pressionado numa nota para ouvir o som.');
+    } else if (mode === 'challenge') {
+      updateChallengeStats();
+      totalChallenges = 0;
+      score = 0;
+      updateProgress();
+      startChallenge();
+    } else if (mode === 'staff') {
+      resetChallengeSession(true);
+      score = 0;
+      totalChallenges = 0;
+      updateProgress();
+      startStaffRound();
+    } else if (mode === 'tuner') {
+      updateChallengeStats();
+      updateProgress();
+      setMessage('Afinador pronto. Selecione o preset e toque em Iniciar.');
+      if (!tunerRunning) startTuner();
+    } else if (mode === 'metronome') {
+      updateChallengeStats();
+      updateProgress();
+      updateMetronomeModeUI();
+      setMessage('Escolha um ritmo no metrônomo.');
+      if (metroIsRunning) updateMetroButtons();
+    } else if (mode === 'hinos') {
+      updateChallengeStats();
+      if (hinosLastSyncInstrumentId !== currentInstrument.id) {
+        syncHinosAfinaçãoFromInstrument(currentInstrument);
+        hinosLastSyncInstrumentId = currentInstrument.id;
+      } else {
+        setHinosAfinaçãoTab(hinosActiveAfinação);
+      }
+      renderHinosStudentSelect();
+      refreshHinosVoiceButtons();
+      setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
+    } else if (mode === 'msa') {
+      updateChallengeStats();
+      updateProgress();
+      renderMsaFasesGrid();
+      selectMsaFase(msaActiveFase);
+      setMessage('Resumos do MSA: selecione uma das 16 fases abaixo para visualizar.');
+    } else if (mode === 'player') {
+      updateChallengeStats();
+      updateProgress();
+      if (playerLiveListenEnabled && !playerLiveListenRunning) startPlayerLiveListen();
+      syncPlayerLiveScoreUi();
+      ensurePlayerCatalogLoaded(true).then(function () {
+        loadPlayerFromCatalogSelection(false);
+      }).catch(function () {
+        loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', false);
+      });
+    } else if (mode === 'home') {
+      updateChallengeStats();
+      updateProgress();
+      updateHomeUI();
+    }
+    syncPlayerLiveScoreUi();
+    setTimeout(updateBottomNavVisibility, 0);
+  }
+
+  function formatChallengeTime(ms) {
+    var totalSeconds = Math.max(0, Math.floor(ms / 1000));
+    var mm = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+    var ss = String(totalSeconds % 60).padStart(2, '0');
+    return mm + ':' + ss;
+  }
+
+  /** Confetes ao concluir o desafio do pentagrama (20/20). Canvas em tela cheia, sem bloquear cliques. */
+  function launchStaffConfetti() {
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    } catch (e) { }
+    var prev = document.getElementById('confettiCanvas');
+    if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+    if (confettiAnimationId) {
+      cancelAnimationFrame(confettiAnimationId);
+      confettiAnimationId = null;
+    }
+    var canvas = document.createElement('canvas');
+    canvas.id = 'confettiCanvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2500;';
+    document.body.appendChild(canvas);
+    var w = Math.max(1, window.innerWidth);
+    var h = Math.max(1, window.innerHeight);
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    var colors = ['#7d9d7a', '#81c784', '#a5d6a7', '#e8b4bc', '#f5d6a8', '#b3e5fc', '#d1c4e9', '#ffd54f', '#ffcc80', '#ce93d8', '#90caf9'];
+    var count = Math.min(150, Math.max(60, Math.floor(w / 5)));
+    var particles = [];
+    var i;
+    for (i = 0; i < count; i++) {
+      particles.push({
+        x: w * 0.5 + (Math.random() - 0.5) * w * 0.95,
+        y: -40 - Math.random() * h * 0.25,
+        w: 5 + Math.random() * 8,
+        h: 3 + Math.random() * 6,
+        vx: -3 + Math.random() * 6,
+        vy: 2 + Math.random() * 4,
+        rot: Math.random() * Math.PI * 2,
+        vr: -0.2 + Math.random() * 0.4,
+        c: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+    var start = performance.now();
+    var duration = 4200;
+    function frame(now) {
+      var elapsed = now - start;
+      ctx.clearRect(0, 0, w, h);
+      var j;
+      for (j = 0; j < particles.length; j++) {
+        var p = particles[j];
+        p.vy += 0.11;
+        p.vx *= 0.997;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.w * 0.5, -p.h * 0.5, p.w, p.h);
+        ctx.restore();
+      }
+      if (elapsed < duration) {
+        confettiAnimationId = requestAnimationFrame(frame);
+      } else {
+        confettiAnimationId = null;
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      }
+    }
+    confettiAnimationId = requestAnimationFrame(frame);
+  }
+
+  function stopChallengeTimer() {
+    if (challengeTimerInterval) {
+      clearInterval(challengeTimerInterval);
+      challengeTimerInterval = null;
+    }
+  }
+
+  function startChallengeTimer() {
+    challengeStartTs = Date.now();
+    stopChallengeTimer();
+    challengeTimerInterval = setInterval(updateChallengeStats, 250);
+  }
+
+  function getChallengeAttemptKey(noteId, stringKey, position) {
+    return String(noteId || '');
+  }
+
+  function clearChallengeDiscardedCells() {
+    document.querySelectorAll('.note-option-btn.challenge-discarded').forEach(function (cell) {
+      cell.classList.remove('challenge-discarded');
+    });
+  }
+
+  function resetChallengeSession(shouldRestartTimer) {
+    challengeRound = 0;
+    challengeErrors = 0;
+    challengeDiscardedAttempts = {};
+    clearChallengeDiscardedCells();
+    if (shouldRestartTimer) {
+      startChallengeTimer();
+    } else {
+      stopChallengeTimer();
+    }
+    updateChallengeStats();
+  }
+
+  function updateChallengeStats() {
+    var statsEl = document.getElementById('challengeStats');
+    if (!statsEl) return;
+    var isChallengeMode = currentMode === 'staff';
+    statsEl.classList.toggle('hidden', !isChallengeMode);
+    if (!isChallengeMode) return;
+
+    var timerEl = document.getElementById('challengeTimer');
+    var roundEl = document.getElementById('challengeRound');
+    var errorsEl = document.getElementById('challengeErrors');
+    if (timerEl) {
+      var elapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
+      timerEl.textContent = '⏱️ ' + formatChallengeTime(elapsed);
+    }
+    if (roundEl) roundEl.textContent = 'Rodada ' + challengeRound + '/' + CHALLENGE_ROUNDS_LIMIT;
+    if (errorsEl) errorsEl.textContent = '❌ ' + challengeErrors + '/' + CHALLENGE_ERRORS_LIMIT;
+  }
+
+  function startChallenge() {
+    var noteId, freq, nome, stringKey = null, pos = null;
+
+    // Instrumentos de corda: escolhe corda e posição aleatória
+    if (currentInstrument.tipo === 'corda' && FINGERBOARD.length > 0 && CORDAS.length > 0) {
+      pos = Math.floor(Math.random() * FINGERBOARD.length);
+      var s = Math.floor(Math.random() * CORDAS.length);
+      stringKey = CORDAS[s];
+      noteId = FINGERBOARD[pos][s];
+      freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
+    }
+    // Instrumentos de sopro/metal: escolhe nota aleatória
+    else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
+      var idx = Math.floor(Math.random() * currentInstrument.notas.length);
+      noteId = currentInstrument.notas[idx];
+      freq = currentInstrument.freqBoard[idx] ? currentInstrument.freqBoard[idx][0] : NOTAS.find(function (n) { return n.id === noteId; }).freq;
+    }
+    else {
+      // Fallback: escolhe nota aleatória básica
+      var randomNote = NOTAS[Math.floor(Math.random() * NOTAS.length)];
+      noteId = randomNote.id;
+      freq = randomNote.freq;
+    }
+
+    nome = getNoteNameInKey(noteId, currentKey);
+    challengeTarget = { id: noteId, nome: nome, freq: freq, stringKey: stringKey, pos: pos };
+    setMessage('Qual é esta nota? Ouça com atenção.');
+    playNoteSound(challengeTarget.id, challengeTarget.freq);
+    document.getElementById('currentNoteDisplay').textContent = '?';
+    if (challengeTimeout) clearTimeout(challengeTimeout);
+    challengeTimeout = setTimeout(function () {
+      setMessage('Escolha a nota que você ouviu.');
+    }, 1200);
+  }
+
+  /** Chamado ao soltar o botão: para a nota e aplica a lógica do modo (desafio/learn/free). */
+  function onNoteEnd(noteId, freqHz, stringKey, position) {
+    var nota = NOTAS.find(function (n) { return n.id === noteId; });
+    if (!nota) return;
+
+    var nomeNaTonalidade = getNoteNameInKey(noteId, currentKey);
+    if (currentMode === 'learn') {
+      setMessage('Esta é a nota ' + nomeNaTonalidade + '. Mantenha pressionado para ouvir de novo.');
+      speak('Nota ' + nomeNaTonalidade);
+    } else if (currentMode === 'challenge' && challengeTarget) {
+      totalChallenges++;
+      var noteMatch = noteId === challengeTarget.id;
+      var stringMatch = challengeTarget.stringKey ? (stringKey === challengeTarget.stringKey) : true;
+      // Equivalência entre 4º dedo e corda seguinte solta:
+      // Ré(4º dedo na Sol) == Ré(corda Ré solta), etc.
+      var equivalentOpenStringMatch = false;
+      if (
+        currentInstrument &&
+        currentInstrument.tipo === 'corda' &&
+        challengeTarget.stringKey &&
+        typeof challengeTarget.pos === 'number' &&
+        stringKey &&
+        typeof position === 'number'
+      ) {
+        var targetStringIdx = CORDAS.indexOf(challengeTarget.stringKey);
+        var attemptStringIdx = CORDAS.indexOf(stringKey);
+        if (targetStringIdx >= 0 && attemptStringIdx >= 0) {
+          var targetIsFourth = challengeTarget.pos === 4;
+          var targetIsOpen = challengeTarget.pos === 0;
+          var attemptIsOpen = position === 0;
+          var attemptIsFourth = position === 4;
+
+          // alvo no 4º dedo <-> tentativa corda seguinte solta
+          if (targetIsFourth && attemptIsOpen && attemptStringIdx === targetStringIdx + 1) {
+            equivalentOpenStringMatch = true;
+          }
+          // alvo corda solta <-> tentativa no 4º dedo da corda anterior
+          if (targetIsOpen && attemptIsFourth && attemptStringIdx === targetStringIdx - 1) {
+            equivalentOpenStringMatch = true;
+          }
+        }
       }
 
-      /** Carrega e desenha um MusicXML específico no Player. */
-      function loadPlayerMusicXml(scorePath, titleLabel, forceReload) {
-        window.PlayerOsmdLoadUtils.runLoadPlayerMusicXml(
-          scorePath,
-          titleLabel,
-          forceReload,
-          window.PlayerLoadBindings.getPlayerMusicXmlLoadContext()
-        );
+      // No desafio, valida nota + corda, aceitando equivalência 4º dedo <-> corda solta.
+      var isCorrect = noteMatch && (stringMatch || equivalentOpenStringMatch);
+      var targetLabel = buildChallengeTargetLabel(challengeTarget);
+      if (isCorrect) {
+        score++;
+        playGameSfx('correct');
+        document.getElementById('currentNoteDisplay').textContent = targetLabel;
+        showPositiveFeedback();
+        updateProgress();
+        setTimeout(startChallenge, 1800);
+      } else {
+        playGameSfx('wrong');
+        document.getElementById('currentNoteDisplay').textContent = targetLabel;
+        var attemptedLabel = nomeNaTonalidade;
+        if (stringKey) attemptedLabel += ' da corda ' + getNoteNameInKey(stringKey, currentKey);
+        setMessage('Você tocou ' + attemptedLabel + '. A esperada era ' + targetLabel + '. Vamos tentar de novo!');
+        speak('Vamos tentar de novo. A nota era ' + targetLabel);
+        // Mostra qual era a nota esperada no espelho do instrumento (para feedback).
+        highlightViolinCellByTarget(challengeTarget);
+        // Remove o destaque antes do próximo desafio (para não entregar a próxima resposta).
+        setTimeout(function () {
+          clearViolinHighlight();
+          startChallenge();
+        }, 2200);
+      }
+    }
+
+    // Em modos livres, remove destaque ao soltar o botão.
+    // No desafio, o destaque da nota-alvo continua ativo.
+    if (currentMode !== 'challenge') {
+      clearViolinHighlight();
+    }
+  }
+
+  // ========== PENTAGRAMA: DESENHO E LÓGICA DO GAME ==========
+  function initStaff() {
+    var svg = document.getElementById('staffSvg');
+    if (!svg) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    svg.setAttribute('viewBox', '0 0 300 160');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.innerHTML = '';
+
+    for (var i = 0; i < 5; i++) {
+      var y = 70 + i * 12;
+      var line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', '40');
+      line.setAttribute('x2', '280');
+      line.setAttribute('y1', String(y));
+      line.setAttribute('y2', String(y));
+      line.setAttribute('stroke', '#444');
+      line.setAttribute('stroke-width', '2');
+      svg.appendChild(line);
+    }
+
+    staffClefElement = document.createElementNS(NS, 'text');
+    staffClefElement.setAttribute('x', '18');
+    staffClefElement.setAttribute('fill', '#444');
+    svg.appendChild(staffClefElement);
+
+    staffNoteEllipse = document.createElementNS(NS, 'ellipse');
+    staffNoteEllipse.setAttribute('cx', '200');
+    staffNoteEllipse.setAttribute('cy', '100');
+    staffNoteEllipse.setAttribute('rx', '10');
+    staffNoteEllipse.setAttribute('ry', '7');
+    staffNoteEllipse.setAttribute('fill', '#222');
+    svg.appendChild(staffNoteEllipse);
+    updateStaffClefVisual();
+  }
+
+  function updateStaffClefVisual() {
+    if (!staffClefElement) return;
+    var clef = CLAVES.find(function (c) { return c.id === currentClef; }) || CLAVES[0];
+    staffClefElement.textContent = clef.simbolo;
+    staffClefElement.setAttribute('y', clef.y);
+    staffClefElement.setAttribute('x', clef.x);
+    staffClefElement.setAttribute('font-size', clef.fontSize);
+    staffClefElement.setAttribute('font-family', '"Noto Music", serif');
+    staffClefElement.setAttribute('text-anchor', clef.anchor || 'start');
+    staffClefElement.setAttribute('dominant-baseline', clef.baseline || 'alphabetic');
+  }
+
+  function setStaffNote(position) {
+    if (!staffNoteEllipse || !position) return;
+    staffNoteEllipse.setAttribute('cy', String(position.y));
+    staffNoteEllipse.setAttribute('cx', '200');
+
+    var svg = document.getElementById('staffSvg');
+    if (!svg) return;
+
+    // Remove linhas suplementares antigas
+    var old = svg.querySelectorAll('.ledger-line');
+    old.forEach(function (l) { svg.removeChild(l); });
+
+    // Desenha linhas suplementares necessárias (inclusive quando a nota fica entre elas).
+    if (position.ledgerYs && position.ledgerYs.length) {
+      var NS = 'http://www.w3.org/2000/svg';
+      position.ledgerYs.forEach(function (ledgerY) {
+        var line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', '180');
+        line.setAttribute('x2', '220');
+        line.setAttribute('y1', String(ledgerY));
+        line.setAttribute('y2', String(ledgerY));
+        line.setAttribute('stroke', '#444');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('class', 'ledger-line');
+        svg.insertBefore(line, staffNoteEllipse);
+      });
+    }
+  }
+
+  function startStaffRound() {
+    if (!staffNoteEllipse) initStaff();
+    var positions = buildStaffPositionsForClef(currentClef);
+    if (!positions.length) return;
+    staffAnswerLocked = false;
+    challengeDiscardedAttempts = {};
+    clearChallengeDiscardedCells();
+    var index = Math.floor(Math.random() * positions.length);
+    var pos = positions[index];
+    staffModeTarget = { id: pos.noteId, index: index };
+    setStaffNote(pos);
+    document.getElementById('currentNoteDisplay').textContent = '?';
+    setMessage('Qual é esta nota no pentagrama? Toque o nome correto.');
+    playNoteSound(pos.noteId, pos.freq);
+  }
+
+  function handleNoteOptionClick(selectedId, buttonEl) {
+    var nomeSelecionada = getNoteNameInKey(selectedId, currentKey);
+
+    if (currentMode !== 'staff' || !staffModeTarget) {
+      setMessage('Esta é a nota ' + nomeSelecionada + '.');
+      speak('Nota ' + nomeSelecionada);
+      return;
+    }
+
+    if (staffAnswerLocked) {
+      return;
+    }
+
+    if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+      var restartWrapDone = document.getElementById('staffRestartWrap');
+      if (restartWrapDone) restartWrapDone.classList.remove('hidden');
+      setMessage('Desafio do pentagrama concluído. Toque em Reiniciar para jogar novamente.');
+      return;
+    }
+
+    var attemptKey = getChallengeAttemptKey(selectedId);
+    if (challengeDiscardedAttempts[attemptKey]) {
+      setMessage('Você já tentou essa opção nesta rodada. Escolha outra nota.');
+      return;
+    }
+
+    var corretaNome = getNoteNameInKey(staffModeTarget.id, currentKey);
+
+    document.querySelectorAll('.note-option-btn').forEach(function (btn) {
+      btn.classList.remove('correct', 'wrong');
+    });
+
+    if (selectedId === staffModeTarget.id) {
+      staffAnswerLocked = true;
+      score++;
+      challengeRound++;
+      totalChallenges = challengeRound;
+      playGameSfx('correct');
+      buttonEl.classList.add('correct');
+      showPositiveFeedback();
+      updateChallengeStats();
+      updateProgress();
+      if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+        stopChallengeTimer();
+        var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
+        var restartWrap = document.getElementById('staffRestartWrap');
+        if (restartWrap) restartWrap.classList.remove('hidden');
+        launchStaffConfetti();
+        setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
+        speak('Parabéns! Você concluiu o pentagrama.');
+        return;
+      }
+    } else {
+      staffAnswerLocked = true;
+      playGameSfx('wrong');
+      challengeDiscardedAttempts[attemptKey] = true;
+      if (buttonEl) buttonEl.classList.add('challenge-discarded');
+      challengeErrors++;
+      buttonEl.classList.add('wrong');
+      var correctBtn = document.querySelector('.note-option-btn[data-note-id="' + staffModeTarget.id + '"]');
+      if (correctBtn) correctBtn.classList.add('correct');
+      var remainingErrors = Math.max(CHALLENGE_ERRORS_LIMIT - challengeErrors, 0);
+      setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '. Erros restantes: ' + remainingErrors + '.');
+      speak('A nota correta era ' + corretaNome);
+      updateChallengeStats();
+      if (challengeErrors >= CHALLENGE_ERRORS_LIMIT) {
+        stopChallengeTimer();
+        setTimeout(function () {
+          setMessage('Você chegou a 3 erros. A partida do pentagrama foi reiniciada em 1/20.');
+          speak('Partida reiniciada.');
+          resetChallengeSession(true);
+          staffAnswerLocked = false;
+          score = 0;
+          totalChallenges = 0;
+          updateProgress();
+          startStaffRound();
+        }, 900);
+        return;
+      }
+    }
+
+    setTimeout(function () {
+      document.querySelectorAll('.note-option-btn').forEach(function (btn) {
+        btn.classList.remove('correct', 'wrong');
+      });
+      updateProgress();
+      startStaffRound();
+    }, 1800);
+  }
+
+  // ========== PROGRESSO E ESTRELAS ==========
+  function updateProgress() {
+    const progressTotal = currentMode === 'staff' ? CHALLENGE_ROUNDS_LIMIT : Math.max(totalChallenges, 1);
+    const pct = totalChallenges === 0 ? 0 : Math.round((totalChallenges / progressTotal) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    if (currentMode === 'staff') {
+      document.getElementById('progressText').textContent = challengeRound + ' / ' + CHALLENGE_ROUNDS_LIMIT;
+    } else {
+      document.getElementById('progressText').textContent = score + ' / ' + totalChallenges;
+    }
+
+    const stars = document.querySelectorAll('.star');
+    const accuracy = totalChallenges === 0 ? 0 : Math.round((score / totalChallenges) * 100);
+    const level = accuracy >= 90 ? 5 : accuracy >= 70 ? 4 : accuracy >= 50 ? 3 : accuracy >= 30 ? 2 : accuracy >= 10 ? 1 : 0;
+    stars.forEach(function (star, i) {
+      star.classList.toggle('earned', i < level);
+    });
+  }
+
+  // ========== REINICIAR ==========
+  function restart() {
+    stopChallengeTimer();
+    score = 0;
+    totalChallenges = 0;
+    challengeRound = 0;
+    challengeErrors = 0;
+    challengeDiscardedAttempts = {};
+    staffAnswerLocked = false;
+    challengeTarget = null;
+    if (challengeTimeout) clearTimeout(challengeTimeout);
+    updateProgress();
+    updateChallengeStats();
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressText').textContent = '0 / 0';
+    document.querySelectorAll('.star').forEach(function (s) { s.classList.remove('earned'); });
+    setMessage('Pronto para começar de novo! Escolha um modo.');
+    document.getElementById('currentNoteDisplay').textContent = '\u00A0';
+    clearViolinHighlight();
+    clearChallengeDiscardedCells();
+    var staffRestartWrap = document.getElementById('staffRestartWrap');
+    if (staffRestartWrap) staffRestartWrap.classList.add('hidden');
+    if (currentMode === 'challenge') startChallenge();
+    if (currentMode === 'staff') {
+      resetChallengeSession(true);
+      startStaffRound();
+    }
+  }
+
+  // ========== TELA INICIAL (HOME) ==========
+  function updateHomeUI() {
+    var st = getActiveHinosStudent();
+    var homeWelcomeTitle = document.getElementById('homeWelcomeTitle');
+    var homeWelcomeSubtitle = document.getElementById('homeWelcomeSubtitle');
+    var homeStudentProgress = document.getElementById('homeStudentProgress');
+    var homeNoStudent = document.getElementById('homeNoStudent');
+    var homeAvatar = document.getElementById('homeAvatar');
+
+    // Dicas de estudo dinâmicas
+    var DICAS = [
+      'A prática diária de 15 minutos é muito melhor e mais eficiente do que praticar 2 horas apenas no final de semana.',
+      'Solfear a lição ou hino antes de tocar ajuda a fixar o ritmo e a melodia na sua mente.',
+      'Mantenha a postura correta: braço relaxado, coluna reta e instrumento na altura certa para evitar tensões.',
+      'O metrônomo é seu melhor amigo para desenvolver a precisão rítmica. Comece lento e aumente aos poucos.',
+      'A afinação correta depende de uma boa escuta. Treine com o afinador e ajuste a posição dos dedos com atenção.',
+      'O dedilhado correto ajuda na agilidade e na fluidez. Siga as orientações da partitura e do método.',
+      'Selecione a voz que deseja estudar no Player (Soprano, Contralto, Tenor, Baixo) para focar na sua parte.'
+    ];
+    var homeTipText = document.getElementById('homeTipText');
+    if (homeTipText) {
+      var randomIdx = Math.floor(Math.random() * DICAS.length);
+      homeTipText.textContent = DICAS[randomIdx];
+    }
+
+    if (st) {
+      if (homeWelcomeTitle) homeWelcomeTitle.textContent = 'Olá, ' + (st.name || 'Estudante') + '!';
+      
+      var vozName = 'Soprano';
+      var vP = hinosGetStudentVozPrincipal(st);
+      if (vP === 'S') vozName = 'Soprano';
+      else if (vP === 'C') vozName = 'Contralto';
+      else if (vP === 'T') vozName = 'Tenor';
+      else if (vP === 'B') vozName = 'Baixo';
+      
+      if (homeWelcomeSubtitle) {
+        homeWelcomeSubtitle.textContent = 'Estudando Hinário 5 (' + hinosActiveAfinação.toUpperCase() + ') · Voz: ' + vozName;
+      }
+      if (homeAvatar) {
+        var initials = (st.name || 'E').charAt(0).toUpperCase();
+        homeAvatar.textContent = initials;
       }
 
-      function loadPlayerFromCatalogSelection(forceReload) {
-        var resolved = resolvePlayerCurrentSelection();
-        if (!resolved) {
-          syncPlayerHeaderTitle(null, 's');
-          loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', !!forceReload);
-          return;
+      if (homeStudentProgress) homeStudentProgress.classList.remove('hidden');
+      if (homeNoStudent) homeNoStudent.classList.add('hidden');
+
+      var o = countHinosOverview(st, hinosActiveAfinação);
+      var pct = Math.round((o.hinosWithPrimary / HINOS_TOTAL) * 100);
+      var progressTextVozes = document.getElementById('homeProgressVozes');
+      var progressPercent = document.getElementById('homeProgressPercent');
+      var progressFill = document.getElementById('homeProgressFill');
+      var progressAfinacao = document.getElementById('homeProgressAfinacao');
+
+      if (progressTextVozes) progressTextVozes.textContent = 'Hinos aprovados: ' + o.hinosWithPrimary + ' / ' + HINOS_TOTAL;
+      if (progressPercent) progressPercent.textContent = pct + '%';
+      if (progressFill) progressFill.style.width = pct + '%';
+      if (progressAfinacao) {
+        var afinLabel = 'Dó';
+        if (hinosActiveAfinação === 'mib') afinLabel = 'Mib';
+        else if (hinosActiveAfinação === 'sib') afinLabel = 'Sib';
+        progressAfinacao.textContent = 'Ficha: Hinário 5 (' + afinLabel + ')';
+      }
+
+      // Sugestão de estudo inteligente (próximo hino não aprovado)
+      var suggestedKey = null;
+      var suggestedNum = 1;
+      
+      for (var i = 1; i <= HINOS_TOTAL; i++) {
+        var key = String(i);
+        var entry = st.hinos[hinosActiveAfinação][key];
+        var approved = entry && entry[vP];
+        if (!approved) {
+          suggestedKey = key;
+          suggestedNum = i;
+          break;
+        }
+      }
+
+      var homeSuggestedCard = document.getElementById('homeSuggestedCard');
+      var homeSuggestedTitle = document.getElementById('homeSuggestedTitle');
+      var homeSuggestedDesc = document.getElementById('homeSuggestedDesc');
+
+      if (homeSuggestedCard) {
+        if (suggestedKey) {
+          homeSuggestedCard.classList.remove('hidden');
+          if (homeSuggestedTitle) homeSuggestedTitle.textContent = 'Hino ' + suggestedNum;
+          if (homeSuggestedDesc) {
+            homeSuggestedDesc.textContent = 'Este é o próximo hino da sua ficha que ainda não foi marcado como aprovado na voz de ' + vozName + '.';
+          }
+          homeSuggestedCard.dataset.suggestedHino = String(suggestedNum);
+        } else {
+          homeSuggestedCard.classList.remove('hidden');
+          if (homeSuggestedTitle) homeSuggestedTitle.textContent = 'Parabéns! 🎉';
+          if (homeSuggestedDesc) {
+            homeSuggestedDesc.textContent = 'Você concluiu e aprovou todos os 480 hinos na sua voz principal!';
+          }
+          homeSuggestedCard.dataset.suggestedHino = '1';
+        }
+      }
+    } else {
+      if (homeWelcomeTitle) homeWelcomeTitle.textContent = 'Olá, Estudante!';
+      if (homeWelcomeSubtitle) homeWelcomeSubtitle.textContent = 'Bem-vindo ao GEM Tools. Pronto para praticar hoje?';
+      if (homeAvatar) homeAvatar.textContent = '👤';
+      if (homeStudentProgress) homeStudentProgress.classList.add('hidden');
+      if (homeNoStudent) homeNoStudent.classList.remove('hidden');
+      
+      var homeSuggestedCard = document.getElementById('homeSuggestedCard');
+      if (homeSuggestedCard) homeSuggestedCard.classList.add('hidden');
+    }
+  }
+
+  // ========== EVENTOS ==========
+  function bindEvents() {
+    var btnSettingsClose = document.getElementById('btnSettingsClose');
+    if (btnSettingsClose) btnSettingsClose.addEventListener('click', closeSettingsPanel);
+    var settingsModal = document.getElementById('settingsModal');
+    if (settingsModal) {
+      settingsModal.addEventListener('click', function (e) {
+        if (e.target === settingsModal) closeSettingsPanel();
+      });
+    }
+
+    document.querySelectorAll('.instrument-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setInstrument(this.dataset.instrumentId);
+      });
+    });
+
+    document.querySelectorAll('.key-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setKey(this.dataset.keyId);
+      });
+    });
+
+    document.querySelectorAll('.clef-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setClef(this.dataset.clefId);
+      });
+    });
+
+    var btnAbout = document.getElementById('btnAbout');
+    if (btnAbout) btnAbout.addEventListener('click', openAboutModal);
+    var btnThemeCycle = document.getElementById('btnThemeCycle');
+    if (btnThemeCycle) btnThemeCycle.addEventListener('click', cycleThemeMode);
+    var btnAboutClose = document.getElementById('btnAboutClose');
+    if (btnAboutClose) btnAboutClose.addEventListener('click', closeAboutModal);
+    var btnAboutOk = document.getElementById('btnAboutOk');
+    if (btnAboutOk) btnAboutOk.addEventListener('click', closeAboutModal);
+
+    var aboutModal = document.getElementById('aboutModal');
+    if (aboutModal) {
+      aboutModal.addEventListener('click', function (e) {
+        if (e.target === aboutModal) closeAboutModal();
+      });
+    }
+
+    // Espelho: nota toca enquanto o ponteiro/touch estiver pressionado.
+    var board = document.getElementById('violinBoard');
+    function pointerStartOnCell(pointerId, cell) {
+      if (!cell || !cell.dataset.noteId) return;
+      var noteId = cell.dataset.noteId;
+      var freq = cell.dataset.freq ? parseFloat(cell.dataset.freq) : undefined;
+      var stringKey = cell.dataset.stringKey || null;
+      var position = cell.dataset.position != null ? parseInt(cell.dataset.position, 10) : null;
+      var nota = NOTAS.find(function (n) { return n.id === noteId; });
+      if (!nota) return;
+
+      if (activePointerNotes[pointerId]) {
+        var prev = activePointerNotes[pointerId];
+        if (prev.cancelInit) prev.cancelInit();
+        if (prev.stop) prev.stop();
+        if (prev.cell) prev.cell.classList.remove('playing');
+        onNoteEnd(prev.noteId, prev.freq, prev.stringKey, prev.position);
+      }
+
+      var data = { noteId: noteId, freq: freq, stringKey: stringKey, position: position, cell: cell, stop: null, cancelInit: null };
+      data.cancelInit = startNoteSoundForPointer(noteId, freq, function (fn) {
+        data.stop = fn;
+      });
+      activePointerNotes[pointerId] = data;
+
+      if (currentMode === 'challenge') {
+        document.getElementById('currentNoteDisplay').textContent = '?';
+      } else {
+        document.getElementById('currentNoteDisplay').textContent = getNoteNameInKey(noteId, currentKey);
+        clearViolinHighlight();
+        cell.classList.add('highlight');
+      }
+      cell.classList.add('playing');
+    }
+
+    function pointerEnd(pointerId) {
+      var data = activePointerNotes[pointerId];
+      if (!data) return;
+      if (data.cancelInit) data.cancelInit();
+      if (data.stop) data.stop();
+      if (data.cell) data.cell.classList.remove('playing');
+      onNoteEnd(data.noteId, data.freq, data.stringKey, data.position);
+      delete activePointerNotes[pointerId];
+    }
+
+    if (board) {
+      board.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+      board.addEventListener('touchstart', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
+      }, { passive: false });
+      board.addEventListener('touchmove', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
+      }, { passive: false });
+      board.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        var cell = e.target.closest('.finger-cell');
+        if (!cell || !board.contains(cell)) return;
+        e.preventDefault();
+        pointerStartOnCell(e.pointerId, cell);
+        if (cell.setPointerCapture) {
+          try { cell.setPointerCapture(e.pointerId); } catch (err) { }
+        }
+      });
+      board.addEventListener('pointermove', function (e) {
+        if (!activePointerNotes[e.pointerId]) return;
+        var under = document.elementFromPoint(e.clientX, e.clientY);
+        var cell = under ? under.closest('.finger-cell') : null;
+        if (!cell || !board.contains(cell)) return;
+        if (activePointerNotes[e.pointerId].cell === cell) return;
+        pointerStartOnCell(e.pointerId, cell);
+      });
+      board.addEventListener('pointerup', function (e) {
+        pointerEnd(e.pointerId);
+      });
+      board.addEventListener('pointercancel', function (e) {
+        pointerEnd(e.pointerId);
+      });
+      board.addEventListener('pointerleave', function (e) {
+        if (e.pointerType === 'mouse') pointerEnd(e.pointerId);
+      });
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (this.dataset && this.dataset.mode) {
+          setMode(this.dataset.mode);
+        } else if (this.id === 'btnMoreMenu') {
+          var menu = document.getElementById('modeMoreMenu');
+          setMoreMenuOpen(!menu || menu.classList.contains('hidden'));
+        }
+      });
+    });
+    var btnMoreTuner = document.getElementById('btnMoreTuner');
+    if (btnMoreTuner) {
+      btnMoreTuner.addEventListener('click', function () {
+        setMode('tuner');
+      });
+    }
+    var btnMoreMetronome = document.getElementById('btnMoreMetronome');
+    if (btnMoreMetronome) {
+      btnMoreMetronome.addEventListener('click', function () {
+        openMetronomeModal();
+      });
+    }
+    var btnMoreHinos = document.getElementById('btnMoreHinos');
+    if (btnMoreHinos) {
+      btnMoreHinos.addEventListener('click', function () {
+        setMode('hinos');
+      });
+    }
+    var btnMoreMsa = document.getElementById('btnMoreMsa');
+    if (btnMoreMsa) {
+      btnMoreMsa.addEventListener('click', function () {
+        setMode('msa');
+      });
+    }
+    var btnMoreStaff = document.getElementById('btnMoreStaff');
+    if (btnMoreStaff) {
+      btnMoreStaff.addEventListener('click', function () {
+        setMode('staff');
+      });
+    }
+
+    // Ouvintes de eventos da Home (Página Inicial)
+    document.querySelectorAll('.home-shortcut-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var shortcutMode = this.dataset.shortcutMode;
+        if (shortcutMode) {
+          setMode(shortcutMode);
+        }
+      });
+    });
+
+    var btnHomeSelectStudent = document.getElementById('btnHomeSelectStudent');
+    if (btnHomeSelectStudent) {
+      btnHomeSelectStudent.addEventListener('click', function () {
+        setMode('hinos');
+      });
+    }
+
+    var btnHomeCreateStudent = document.getElementById('btnHomeCreateStudent');
+    if (btnHomeCreateStudent) {
+      btnHomeCreateStudent.addEventListener('click', function () {
+        setMode('hinos');
+        setTimeout(function() {
+          var openModalBtn = document.getElementById('hinosOpenNewStudentModal');
+          if (openModalBtn) openModalBtn.click();
+        }, 150);
+      });
+    }
+
+    var btnHomeGoSuggested = document.getElementById('btnHomeGoSuggested');
+    if (btnHomeGoSuggested) {
+      btnHomeGoSuggested.addEventListener('click', function () {
+        var card = document.getElementById('homeSuggestedCard');
+        if (card && card.dataset.suggestedHino) {
+          var hinoNum = parseInt(card.dataset.suggestedHino, 10);
+          var item = getPlayerCatalogItemByNumero(hinoNum);
+          if (item) {
+            playerSelectedItemId = String(item.id || '');
+            playerSelectedHinoNumero = Number(item.numero || 0);
+            var playerSelectHinoInput = document.getElementById('playerSelectHino');
+            if (playerSelectHinoInput) {
+              playerSelectHinoInput.value = String(item.numero) + ' · ' + (item.titulo || 'Sem título');
+              playerSelectHinoInput.dataset.openAll = '0';
+            }
+          } else {
+            playerSelectedItemId = null;
+            playerSelectedHinoNumero = hinoNum;
+            var playerSelectHinoInput = document.getElementById('playerSelectHino');
+            if (playerSelectHinoInput) {
+              playerSelectHinoInput.value = String(hinoNum);
+              playerSelectHinoInput.dataset.openAll = '0';
+            }
+          }
+          setMode('player');
+          renderPlayerCatalogControls();
+          loadPlayerFromCatalogSelection(true);
+        }
+      });
+    }
+    document.querySelectorAll('.msa-tab-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tab = this.getAttribute('data-tab');
+        if (tab) {
+          switchMsaTab(tab);
+        }
+      });
+    });
+    var btnPlayerPlay = document.getElementById('btnPlayerPlay');
+    if (btnPlayerPlay) {
+      btnPlayerPlay.addEventListener('click', function () {
+        startPlayerPlayback();
+      });
+    }
+    var btnPlayerPause = document.getElementById('btnPlayerPause');
+    if (btnPlayerPause) {
+      btnPlayerPause.addEventListener('click', function () {
+        if (!playerPlayback.isPlaying) return;
+        stopPlayerPlayback(true);
+        setMessage('Playback pausado.');
+      });
+    }
+    var btnPlayerStop = document.getElementById('btnPlayerStop');
+    if (btnPlayerStop) {
+      btnPlayerStop.addEventListener('click', function () {
+        stopPlayerPlayback(false);
+        setMessage('Playback parado.');
+      });
+    }
+    var btnPlayerSpeed = document.getElementById('btnPlayerSpeed');
+    var playerSpeedPopover = document.getElementById('playerSpeedPopover');
+    var playerSpeedInput = document.getElementById('playerSpeedInput');
+    var playerSpeedSlider = document.getElementById('playerSpeedSlider');
+    if (btnPlayerSpeed) {
+      btnPlayerSpeed.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var willOpen = !playerSpeedPopover || playerSpeedPopover.classList.contains('hidden');
+        setPlayerSpeedPopoverOpen(willOpen);
+      });
+    }
+    if (playerSpeedPopover) {
+      playerSpeedPopover.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+    }
+    if (playerSpeedInput) {
+      playerSpeedInput.addEventListener('focus', function () {
+        beginPlayerSpeedAdjust();
+      });
+      playerSpeedInput.addEventListener('input', function () {
+        var bpmVal = parseInt(this.value || '0', 10);
+        if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+        previewPlayerSpeedBpm(bpmVal);
+      });
+      playerSpeedInput.addEventListener('change', function () {
+        var bpmVal = parseInt(this.value || '0', 10);
+        endPlayerSpeedAdjust(bpmVal);
+      });
+      playerSpeedInput.addEventListener('blur', function () {
+        if (!playerSpeedAdjusting) return;
+        var bpmVal = parseInt(this.value || '0', 10);
+        if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+        endPlayerSpeedAdjust(bpmVal);
+      });
+    }
+    if (playerSpeedSlider) {
+      playerSpeedSlider.addEventListener('pointerdown', function () {
+        beginPlayerSpeedAdjust();
+      });
+      playerSpeedSlider.addEventListener('mousedown', function () {
+        beginPlayerSpeedAdjust();
+      });
+      playerSpeedSlider.addEventListener('touchstart', function () {
+        beginPlayerSpeedAdjust();
+      }, { passive: true });
+      playerSpeedSlider.addEventListener('input', function () {
+        var bpmVal = parseInt(this.value || '0', 10);
+        if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
+        previewPlayerSpeedBpm(bpmVal);
+      });
+      playerSpeedSlider.addEventListener('change', function () {
+        var bpmVal = parseInt(this.value || '0', 10);
+        endPlayerSpeedAdjust(bpmVal);
+      });
+    }
+    var playerSelectCollection = document.getElementById('playerSelectCollection');
+    if (playerSelectCollection) {
+      playerSelectCollection.addEventListener('change', function () {
+        playerSelectedCollectionId = String(this.value || '');
+        playerSelectedItemId = null;
+        playerSelectedHinoNumero = null;
+        renderPlayerCatalogControls();
+        loadPlayerFromCatalogSelection(true);
+      });
+    }
+    var playerSelectAfinacao = document.getElementById('playerSelectAfinacao');
+    if (playerSelectAfinacao) {
+      playerSelectAfinacao.addEventListener('change', function () {
+        playerSelectedAfinacao = String(this.value || 'do').toLowerCase();
+        renderPlayerCatalogControls();
+        loadPlayerFromCatalogSelection(true);
+      });
+    }
+    var playerSelectHino = document.getElementById('playerSelectHino');
+    var playerHinoSuggestions = document.getElementById('playerHinoSuggestions');
+    var playerHinoPicker = document.getElementById('playerHinoPicker');
+    if (playerSelectHino) {
+      function applyPlayerHinoFromInput() {
+        var typed = String(playerSelectHino.value || '');
+        var parsedNumero = parsePlayerNumeroFromInputValue(typed);
+        if (isFinite(parsedNumero) && parsedNumero > 0) {
+          var found = getPlayerCatalogItemByNumero(parsedNumero);
+          if (found) {
+            playerSelectedItemId = String(found.id || '');
+            playerSelectedHinoNumero = Number(found.numero || parsedNumero);
+          } else {
+            playerSelectedItemId = null;
+            playerSelectedHinoNumero = parsedNumero;
+          }
         }
         renderPlayerCatalogControls();
-        var label = String(resolved.item.numero) + ' · ' + (resolved.item.titulo || 'Sem título') + ' · ' + playerVoiceLabel(resolved.voices);
-        loadPlayerMusicXml(resolved.paths && resolved.paths.length ? resolved.paths : resolved.path, label, !!forceReload);
+        loadPlayerFromCatalogSelection(true);
       }
-
-      // ========== MODOS DE JOGO ==========
-      function setMode(mode) {
-        if (metroIsRunning) stopMetronome();
-        if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
-        if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
-        if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
-        if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
-        currentMode = mode;
-        setMoreMenuOpen(false);
-        setPlayerSpeedPopoverOpen(false);
-        closeSettingsPanel();
-        document.querySelectorAll('.mode-btn').forEach(function (btn) {
-          btn.classList.toggle('active', btn.dataset.mode === mode);
-        });
-        var btnMoreMenu = document.getElementById('btnMoreMenu');
-        if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos');
-        var btnMoreTuner = document.getElementById('btnMoreTuner');
-        var btnMoreMetronome = document.getElementById('btnMoreMetronome');
-        var btnMoreHinos = document.getElementById('btnMoreHinos');
-        var btnMoreSettings = document.getElementById('btnMoreSettings');
-        if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
-        if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
-        if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
-        if (btnMoreSettings) btnMoreSettings.classList.remove('active');
-        clearViolinHighlight();
-        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
-
-        var violinSection = document.getElementById('violinSection');
-        var staffSectionEl = document.getElementById('staffSection');
-        var hinosSectionEl = document.getElementById('hinosSection');
-        var tunerSectionEl = document.getElementById('tunerSection');
-        var metroSectionEl = document.getElementById('metroSection');
-        var playerSectionEl = document.getElementById('playerSection');
-        var playerSourceRowEl = document.getElementById('playerSourceRow');
-        var messageBoxEl = document.getElementById('messageBox');
-        if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl) {
-          if (mode === 'hinos') {
-            violinSection.classList.add('hidden');
-            staffSectionEl.classList.add('hidden');
-            tunerSectionEl.classList.add('hidden');
-            metroSectionEl.classList.add('hidden');
-            playerSectionEl.classList.add('hidden');
-            hinosSectionEl.classList.remove('hidden');
-            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
-          } else if (mode === 'staff') {
-            violinSection.classList.add('hidden');
-            staffSectionEl.classList.remove('hidden');
-            tunerSectionEl.classList.add('hidden');
-            metroSectionEl.classList.add('hidden');
-            playerSectionEl.classList.add('hidden');
-            hinosSectionEl.classList.add('hidden');
-            closeHinosEditorModal();
-            closeHinosNewStudentModal();
-            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
-          } else if (mode === 'tuner') {
-            violinSection.classList.add('hidden');
-            staffSectionEl.classList.add('hidden');
-            tunerSectionEl.classList.remove('hidden');
-            metroSectionEl.classList.add('hidden');
-            playerSectionEl.classList.add('hidden');
-            hinosSectionEl.classList.add('hidden');
-            closeHinosEditorModal();
-            closeHinosNewStudentModal();
-            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
-          } else if (mode === 'metronome') {
-            violinSection.classList.add('hidden');
-            staffSectionEl.classList.add('hidden');
-            tunerSectionEl.classList.add('hidden');
-            metroSectionEl.classList.remove('hidden');
-            playerSectionEl.classList.add('hidden');
-            hinosSectionEl.classList.add('hidden');
-            closeHinosEditorModal();
-            closeHinosNewStudentModal();
-            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
-          } else if (mode === 'player') {
-            violinSection.classList.add('hidden');
-            staffSectionEl.classList.add('hidden');
-            tunerSectionEl.classList.add('hidden');
-            metroSectionEl.classList.add('hidden');
-            playerSectionEl.classList.remove('hidden');
-            hinosSectionEl.classList.add('hidden');
-            closeHinosEditorModal();
-            closeHinosNewStudentModal();
-            if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
-            if (messageBoxEl) messageBoxEl.classList.add('hidden');
-          } else {
-            violinSection.classList.remove('hidden');
-            staffSectionEl.classList.add('hidden');
-            tunerSectionEl.classList.add('hidden');
-            metroSectionEl.classList.add('hidden');
-            playerSectionEl.classList.add('hidden');
-            hinosSectionEl.classList.add('hidden');
-            closeHinosEditorModal();
-            closeHinosNewStudentModal();
-            if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
-            if (messageBoxEl) messageBoxEl.classList.remove('hidden');
-          }
+      playerSelectHino.addEventListener('input', function () {
+        this.dataset.openAll = '0';
+        var parsedNumero = parsePlayerNumeroFromInputValue(this.value);
+        if (isFinite(parsedNumero) && parsedNumero > 0) playerSelectedHinoNumero = parsedNumero;
+        renderPlayerCatalogControls(true);
+        if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
+          playerHinoSuggestions.classList.remove('hidden');
         }
-        var progressSectionEl = document.getElementById('progressSection');
-        if (progressSectionEl) {
-          progressSectionEl.classList.toggle('hidden', mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player');
+      });
+      playerSelectHino.addEventListener('focus', function () {
+        this.dataset.openAll = '1';
+        renderPlayerCatalogControls(true);
+        if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
+          playerHinoSuggestions.classList.remove('hidden');
         }
-
-        if (mode === 'learn') {
-          updateChallengeStats();
-          setMessage('Mantenha o dedo pressionado numa nota para ouvir o som.');
-        } else if (mode === 'challenge') {
-          updateChallengeStats();
-          totalChallenges = 0;
-          score = 0;
-          updateProgress();
-          startChallenge();
-        } else if (mode === 'staff') {
-          resetChallengeSession(true);
-          score = 0;
-          totalChallenges = 0;
-          updateProgress();
-          startStaffRound();
-        } else if (mode === 'tuner') {
-          updateChallengeStats();
-          updateProgress();
-          setMessage('Afinador pronto. Selecione o preset e toque em Iniciar.');
-          if (!tunerRunning) startTuner();
-        } else if (mode === 'metronome') {
-          updateChallengeStats();
-          updateProgress();
-          updateMetronomeModeUI();
-          setMessage('Escolha um ritmo no metrônomo.');
-          if (metroIsRunning) updateMetroButtons();
-        } else if (mode === 'hinos') {
-          updateChallengeStats();
-          if (hinosLastSyncInstrumentId !== currentInstrument.id) {
-            syncHinosAfinaçãoFromInstrument(currentInstrument);
-            hinosLastSyncInstrumentId = currentInstrument.id;
-          } else {
-            setHinosAfinaçãoTab(hinosActiveAfinação);
-          }
-          renderHinosStudentSelect();
-          refreshHinosVoiceButtons();
-          setMessage('Escolha o aluno e a afinação da ficha; toque num hino para marcar as vozes.');
-        } else if (mode === 'player') {
-          updateChallengeStats();
-          updateProgress();
-          if (playerLiveListenEnabled && !playerLiveListenRunning) startPlayerLiveListen();
-          syncPlayerLiveScoreUi();
-          ensurePlayerCatalogLoaded(true).then(function () {
-            loadPlayerFromCatalogSelection(false);
-          }).catch(function () {
-            loadPlayerMusicXml(PLAYER_SCORE_URL, 'Partitura padrão', false);
-          });
-        }
-        syncPlayerLiveScoreUi();
-        setTimeout(updateBottomNavVisibility, 0);
-      }
-
-      function formatChallengeTime(ms) {
-        var totalSeconds = Math.max(0, Math.floor(ms / 1000));
-        var mm = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-        var ss = String(totalSeconds % 60).padStart(2, '0');
-        return mm + ':' + ss;
-      }
-
-      /** Confetes ao concluir o desafio do pentagrama (20/20). Canvas em tela cheia, sem bloquear cliques. */
-      function launchStaffConfetti() {
-        try {
-          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        } catch (e) {}
-        var prev = document.getElementById('confettiCanvas');
-        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
-        if (confettiAnimationId) {
-          cancelAnimationFrame(confettiAnimationId);
-          confettiAnimationId = null;
-        }
-        var canvas = document.createElement('canvas');
-        canvas.id = 'confettiCanvas';
-        canvas.setAttribute('aria-hidden', 'true');
-        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2500;';
-        document.body.appendChild(canvas);
-        var w = Math.max(1, window.innerWidth);
-        var h = Math.max(1, window.innerHeight);
-        canvas.width = w;
-        canvas.height = h;
-        var ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        var colors = ['#7d9d7a', '#81c784', '#a5d6a7', '#e8b4bc', '#f5d6a8', '#b3e5fc', '#d1c4e9', '#ffd54f', '#ffcc80', '#ce93d8', '#90caf9'];
-        var count = Math.min(150, Math.max(60, Math.floor(w / 5)));
-        var particles = [];
-        var i;
-        for (i = 0; i < count; i++) {
-          particles.push({
-            x: w * 0.5 + (Math.random() - 0.5) * w * 0.95,
-            y: -40 - Math.random() * h * 0.25,
-            w: 5 + Math.random() * 8,
-            h: 3 + Math.random() * 6,
-            vx: -3 + Math.random() * 6,
-            vy: 2 + Math.random() * 4,
-            rot: Math.random() * Math.PI * 2,
-            vr: -0.2 + Math.random() * 0.4,
-            c: colors[Math.floor(Math.random() * colors.length)]
-          });
-        }
-        var start = performance.now();
-        var duration = 4200;
-        function frame(now) {
-          var elapsed = now - start;
-          ctx.clearRect(0, 0, w, h);
-          var j;
-          for (j = 0; j < particles.length; j++) {
-            var p = particles[j];
-            p.vy += 0.11;
-            p.vx *= 0.997;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.rot += p.vr;
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rot);
-            ctx.fillStyle = p.c;
-            ctx.fillRect(-p.w * 0.5, -p.h * 0.5, p.w, p.h);
-            ctx.restore();
-          }
-          if (elapsed < duration) {
-            confettiAnimationId = requestAnimationFrame(frame);
-          } else {
-            confettiAnimationId = null;
-            if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
-          }
-        }
-        confettiAnimationId = requestAnimationFrame(frame);
-      }
-
-      function stopChallengeTimer() {
-        if (challengeTimerInterval) {
-          clearInterval(challengeTimerInterval);
-          challengeTimerInterval = null;
-        }
-      }
-
-      function startChallengeTimer() {
-        challengeStartTs = Date.now();
-        stopChallengeTimer();
-        challengeTimerInterval = setInterval(updateChallengeStats, 250);
-      }
-
-      function getChallengeAttemptKey(noteId, stringKey, position) {
-        return String(noteId || '');
-      }
-
-      function clearChallengeDiscardedCells() {
-        document.querySelectorAll('.note-option-btn.challenge-discarded').forEach(function (cell) {
-          cell.classList.remove('challenge-discarded');
-        });
-      }
-
-      function resetChallengeSession(shouldRestartTimer) {
-        challengeRound = 0;
-        challengeErrors = 0;
-        challengeDiscardedAttempts = {};
-        clearChallengeDiscardedCells();
-        if (shouldRestartTimer) {
-          startChallengeTimer();
-        } else {
-          stopChallengeTimer();
-        }
-        updateChallengeStats();
-      }
-
-      function updateChallengeStats() {
-        var statsEl = document.getElementById('challengeStats');
-        if (!statsEl) return;
-        var isChallengeMode = currentMode === 'staff';
-        statsEl.classList.toggle('hidden', !isChallengeMode);
-        if (!isChallengeMode) return;
-
-        var timerEl = document.getElementById('challengeTimer');
-        var roundEl = document.getElementById('challengeRound');
-        var errorsEl = document.getElementById('challengeErrors');
-        if (timerEl) {
-          var elapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
-          timerEl.textContent = '⏱️ ' + formatChallengeTime(elapsed);
-        }
-        if (roundEl) roundEl.textContent = 'Rodada ' + challengeRound + '/' + CHALLENGE_ROUNDS_LIMIT;
-        if (errorsEl) errorsEl.textContent = '❌ ' + challengeErrors + '/' + CHALLENGE_ERRORS_LIMIT;
-      }
-
-      function startChallenge() {
-        var noteId, freq, nome, stringKey = null, pos = null;
-        
-        // Instrumentos de corda: escolhe corda e posição aleatória
-        if (currentInstrument.tipo === 'corda' && FINGERBOARD.length > 0 && CORDAS.length > 0) {
-          pos = Math.floor(Math.random() * FINGERBOARD.length);
-          var s = Math.floor(Math.random() * CORDAS.length);
-          stringKey = CORDAS[s];
-          noteId = FINGERBOARD[pos][s];
-          freq = FREQ_BOARD[pos] ? FREQ_BOARD[pos][s] : undefined;
-        }
-        // Instrumentos de sopro/metal: escolhe nota aleatória
-        else if ((currentInstrument.tipo === 'sopro' || currentInstrument.tipo === 'metal' || currentInstrument.tipo === 'voz') && currentInstrument.notas) {
-          var idx = Math.floor(Math.random() * currentInstrument.notas.length);
-          noteId = currentInstrument.notas[idx];
-          freq = currentInstrument.freqBoard[idx] ? currentInstrument.freqBoard[idx][0] : NOTAS.find(function(n) { return n.id === noteId; }).freq;
-        }
-        else {
-          // Fallback: escolhe nota aleatória básica
-          var randomNote = NOTAS[Math.floor(Math.random() * NOTAS.length)];
-          noteId = randomNote.id;
-          freq = randomNote.freq;
-        }
-        
-        nome = getNoteNameInKey(noteId, currentKey);
-        challengeTarget = { id: noteId, nome: nome, freq: freq, stringKey: stringKey, pos: pos };
-        setMessage('Qual é esta nota? Ouça com atenção.');
-        playNoteSound(challengeTarget.id, challengeTarget.freq);
-        document.getElementById('currentNoteDisplay').textContent = '?';
-        if (challengeTimeout) clearTimeout(challengeTimeout);
-        challengeTimeout = setTimeout(function () {
-          setMessage('Escolha a nota que você ouviu.');
-        }, 1200);
-      }
-
-      /** Chamado ao soltar o botão: para a nota e aplica a lógica do modo (desafio/learn/free). */
-      function onNoteEnd(noteId, freqHz, stringKey, position) {
-        var nota = NOTAS.find(function (n) { return n.id === noteId; });
-        if (!nota) return;
-
-        var nomeNaTonalidade = getNoteNameInKey(noteId, currentKey);
-        if (currentMode === 'learn') {
-          setMessage('Esta é a nota ' + nomeNaTonalidade + '. Mantenha pressionado para ouvir de novo.');
-          speak('Nota ' + nomeNaTonalidade);
-        } else if (currentMode === 'challenge' && challengeTarget) {
-          totalChallenges++;
-          var noteMatch = noteId === challengeTarget.id;
-          var stringMatch = challengeTarget.stringKey ? (stringKey === challengeTarget.stringKey) : true;
-          // Equivalência entre 4º dedo e corda seguinte solta:
-          // Ré(4º dedo na Sol) == Ré(corda Ré solta), etc.
-          var equivalentOpenStringMatch = false;
-          if (
-            currentInstrument &&
-            currentInstrument.tipo === 'corda' &&
-            challengeTarget.stringKey &&
-            typeof challengeTarget.pos === 'number' &&
-            stringKey &&
-            typeof position === 'number'
-          ) {
-            var targetStringIdx = CORDAS.indexOf(challengeTarget.stringKey);
-            var attemptStringIdx = CORDAS.indexOf(stringKey);
-            if (targetStringIdx >= 0 && attemptStringIdx >= 0) {
-              var targetIsFourth = challengeTarget.pos === 4;
-              var targetIsOpen = challengeTarget.pos === 0;
-              var attemptIsOpen = position === 0;
-              var attemptIsFourth = position === 4;
-
-              // alvo no 4º dedo <-> tentativa corda seguinte solta
-              if (targetIsFourth && attemptIsOpen && attemptStringIdx === targetStringIdx + 1) {
-                equivalentOpenStringMatch = true;
-              }
-              // alvo corda solta <-> tentativa no 4º dedo da corda anterior
-              if (targetIsOpen && attemptIsFourth && attemptStringIdx === targetStringIdx - 1) {
-                equivalentOpenStringMatch = true;
-              }
-            }
-          }
-
-          // No desafio, valida nota + corda, aceitando equivalência 4º dedo <-> corda solta.
-          var isCorrect = noteMatch && (stringMatch || equivalentOpenStringMatch);
-          var targetLabel = buildChallengeTargetLabel(challengeTarget);
-          if (isCorrect) {
-            score++;
-            playGameSfx('correct');
-            document.getElementById('currentNoteDisplay').textContent = targetLabel;
-            showPositiveFeedback();
-            updateProgress();
-            setTimeout(startChallenge, 1800);
-          } else {
-            playGameSfx('wrong');
-            document.getElementById('currentNoteDisplay').textContent = targetLabel;
-            var attemptedLabel = nomeNaTonalidade;
-            if (stringKey) attemptedLabel += ' da corda ' + getNoteNameInKey(stringKey, currentKey);
-            setMessage('Você tocou ' + attemptedLabel + '. A esperada era ' + targetLabel + '. Vamos tentar de novo!');
-            speak('Vamos tentar de novo. A nota era ' + targetLabel);
-            // Mostra qual era a nota esperada no espelho do instrumento (para feedback).
-            highlightViolinCellByTarget(challengeTarget);
-            // Remove o destaque antes do próximo desafio (para não entregar a próxima resposta).
-            setTimeout(function () {
-              clearViolinHighlight();
-              startChallenge();
-            }, 2200);
-          }
-        }
-
-        // Em modos livres, remove destaque ao soltar o botão.
-        // No desafio, o destaque da nota-alvo continua ativo.
-        if (currentMode !== 'challenge') {
-          clearViolinHighlight();
-        }
-      }
-
-      // ========== PENTAGRAMA: DESENHO E LÓGICA DO GAME ==========
-      function initStaff() {
-        var svg = document.getElementById('staffSvg');
-        if (!svg) return;
-        var NS = 'http://www.w3.org/2000/svg';
-        svg.setAttribute('viewBox', '0 0 300 160');
-        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-        svg.innerHTML = '';
-
-        for (var i = 0; i < 5; i++) {
-          var y = 70 + i * 12;
-          var line = document.createElementNS(NS, 'line');
-          line.setAttribute('x1', '40');
-          line.setAttribute('x2', '280');
-          line.setAttribute('y1', String(y));
-          line.setAttribute('y2', String(y));
-          line.setAttribute('stroke', '#444');
-          line.setAttribute('stroke-width', '2');
-          svg.appendChild(line);
-        }
-
-        staffClefElement = document.createElementNS(NS, 'text');
-        staffClefElement.setAttribute('x', '18');
-        staffClefElement.setAttribute('fill', '#444');
-        svg.appendChild(staffClefElement);
-
-        staffNoteEllipse = document.createElementNS(NS, 'ellipse');
-        staffNoteEllipse.setAttribute('cx', '200');
-        staffNoteEllipse.setAttribute('cy', '100');
-        staffNoteEllipse.setAttribute('rx', '10');
-        staffNoteEllipse.setAttribute('ry', '7');
-        staffNoteEllipse.setAttribute('fill', '#222');
-        svg.appendChild(staffNoteEllipse);
-        updateStaffClefVisual();
-      }
-
-      function updateStaffClefVisual() {
-        if (!staffClefElement) return;
-        var clef = CLAVES.find(function (c) { return c.id === currentClef; }) || CLAVES[0];
-        staffClefElement.textContent = clef.simbolo;
-        staffClefElement.setAttribute('y', clef.y);
-        staffClefElement.setAttribute('x', clef.x);
-        staffClefElement.setAttribute('font-size', clef.fontSize);
-        staffClefElement.setAttribute('font-family', '"Noto Music", serif');
-        staffClefElement.setAttribute('text-anchor', clef.anchor || 'start');
-        staffClefElement.setAttribute('dominant-baseline', clef.baseline || 'alphabetic');
-      }
-
-      function setStaffNote(position) {
-        if (!staffNoteEllipse || !position) return;
-        staffNoteEllipse.setAttribute('cy', String(position.y));
-        staffNoteEllipse.setAttribute('cx', '200');
-
-        var svg = document.getElementById('staffSvg');
-        if (!svg) return;
-
-        // Remove linhas suplementares antigas
-        var old = svg.querySelectorAll('.ledger-line');
-        old.forEach(function (l) { svg.removeChild(l); });
-
-        // Desenha linhas suplementares necessárias (inclusive quando a nota fica entre elas).
-        if (position.ledgerYs && position.ledgerYs.length) {
-          var NS = 'http://www.w3.org/2000/svg';
-          position.ledgerYs.forEach(function (ledgerY) {
-            var line = document.createElementNS(NS, 'line');
-            line.setAttribute('x1', '180');
-            line.setAttribute('x2', '220');
-            line.setAttribute('y1', String(ledgerY));
-            line.setAttribute('y2', String(ledgerY));
-            line.setAttribute('stroke', '#444');
-            line.setAttribute('stroke-width', '2');
-            line.setAttribute('class', 'ledger-line');
-            svg.insertBefore(line, staffNoteEllipse);
-          });
-        }
-      }
-
-      function startStaffRound() {
-        if (!staffNoteEllipse) initStaff();
-        var positions = buildStaffPositionsForClef(currentClef);
-        if (!positions.length) return;
-        staffAnswerLocked = false;
-        challengeDiscardedAttempts = {};
-        clearChallengeDiscardedCells();
-        var index = Math.floor(Math.random() * positions.length);
-        var pos = positions[index];
-        staffModeTarget = { id: pos.noteId, index: index };
-        setStaffNote(pos);
-        document.getElementById('currentNoteDisplay').textContent = '?';
-        setMessage('Qual é esta nota no pentagrama? Toque o nome correto.');
-        playNoteSound(pos.noteId, pos.freq);
-      }
-
-      function handleNoteOptionClick(selectedId, buttonEl) {
-        var nomeSelecionada = getNoteNameInKey(selectedId, currentKey);
-
-        if (currentMode !== 'staff' || !staffModeTarget) {
-          setMessage('Esta é a nota ' + nomeSelecionada + '.');
-          speak('Nota ' + nomeSelecionada);
-          return;
-        }
-
-        if (staffAnswerLocked) {
-          return;
-        }
-
-        if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
-          var restartWrapDone = document.getElementById('staffRestartWrap');
-          if (restartWrapDone) restartWrapDone.classList.remove('hidden');
-          setMessage('Desafio do pentagrama concluído. Toque em Reiniciar para jogar novamente.');
-          return;
-        }
-
-        var attemptKey = getChallengeAttemptKey(selectedId);
-        if (challengeDiscardedAttempts[attemptKey]) {
-          setMessage('Você já tentou essa opção nesta rodada. Escolha outra nota.');
-          return;
-        }
-
-        var corretaNome = getNoteNameInKey(staffModeTarget.id, currentKey);
-
-        document.querySelectorAll('.note-option-btn').forEach(function (btn) {
-          btn.classList.remove('correct', 'wrong');
-        });
-
-        if (selectedId === staffModeTarget.id) {
-          staffAnswerLocked = true;
-          score++;
-          challengeRound++;
-          totalChallenges = challengeRound;
-          playGameSfx('correct');
-          buttonEl.classList.add('correct');
-          showPositiveFeedback();
-          updateChallengeStats();
-          updateProgress();
-          if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
-            stopChallengeTimer();
-            var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
-            var restartWrap = document.getElementById('staffRestartWrap');
-            if (restartWrap) restartWrap.classList.remove('hidden');
-            launchStaffConfetti();
-            setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
-            speak('Parabéns! Você concluiu o pentagrama.');
-            return;
-          }
-        } else {
-          staffAnswerLocked = true;
-          playGameSfx('wrong');
-          challengeDiscardedAttempts[attemptKey] = true;
-          if (buttonEl) buttonEl.classList.add('challenge-discarded');
-          challengeErrors++;
-          buttonEl.classList.add('wrong');
-          var correctBtn = document.querySelector('.note-option-btn[data-note-id="' + staffModeTarget.id + '"]');
-          if (correctBtn) correctBtn.classList.add('correct');
-          var remainingErrors = Math.max(CHALLENGE_ERRORS_LIMIT - challengeErrors, 0);
-          setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '. Erros restantes: ' + remainingErrors + '.');
-          speak('A nota correta era ' + corretaNome);
-          updateChallengeStats();
-          if (challengeErrors >= CHALLENGE_ERRORS_LIMIT) {
-            stopChallengeTimer();
-            setTimeout(function () {
-              setMessage('Você chegou a 3 erros. A partida do pentagrama foi reiniciada em 1/20.');
-              speak('Partida reiniciada.');
-              resetChallengeSession(true);
-              staffAnswerLocked = false;
-              score = 0;
-              totalChallenges = 0;
-              updateProgress();
-              startStaffRound();
-            }, 900);
-            return;
-          }
-        }
-
+        var self = this;
         setTimeout(function () {
-          document.querySelectorAll('.note-option-btn').forEach(function (btn) {
-            btn.classList.remove('correct', 'wrong');
-          });
-          updateProgress();
-          startStaffRound();
-        }, 1800);
-      }
-
-      // ========== PROGRESSO E ESTRELAS ==========
-      function updateProgress() {
-        const progressTotal = currentMode === 'staff' ? CHALLENGE_ROUNDS_LIMIT : Math.max(totalChallenges, 1);
-        const pct = totalChallenges === 0 ? 0 : Math.round((totalChallenges / progressTotal) * 100);
-        document.getElementById('progressFill').style.width = pct + '%';
-        if (currentMode === 'staff') {
-          document.getElementById('progressText').textContent = challengeRound + ' / ' + CHALLENGE_ROUNDS_LIMIT;
-        } else {
-          document.getElementById('progressText').textContent = score + ' / ' + totalChallenges;
-        }
-
-        const stars = document.querySelectorAll('.star');
-        const accuracy = totalChallenges === 0 ? 0 : Math.round((score / totalChallenges) * 100);
-        const level = accuracy >= 90 ? 5 : accuracy >= 70 ? 4 : accuracy >= 50 ? 3 : accuracy >= 30 ? 2 : accuracy >= 10 ? 1 : 0;
-        stars.forEach(function (star, i) {
-          star.classList.toggle('earned', i < level);
-        });
-      }
-
-      // ========== REINICIAR ==========
-      function restart() {
-        stopChallengeTimer();
-        score = 0;
-        totalChallenges = 0;
-        challengeRound = 0;
-        challengeErrors = 0;
-        challengeDiscardedAttempts = {};
-        staffAnswerLocked = false;
-        challengeTarget = null;
-        if (challengeTimeout) clearTimeout(challengeTimeout);
-        updateProgress();
-        updateChallengeStats();
-        document.getElementById('progressFill').style.width = '0%';
-        document.getElementById('progressText').textContent = '0 / 0';
-        document.querySelectorAll('.star').forEach(function (s) { s.classList.remove('earned'); });
-        setMessage('Pronto para começar de novo! Escolha um modo.');
-        document.getElementById('currentNoteDisplay').textContent = '\u00A0';
-        clearViolinHighlight();
-        clearChallengeDiscardedCells();
-        var staffRestartWrap = document.getElementById('staffRestartWrap');
-        if (staffRestartWrap) staffRestartWrap.classList.add('hidden');
-        if (currentMode === 'challenge') startChallenge();
-        if (currentMode === 'staff') {
-          resetChallengeSession(true);
-          startStaffRound();
-        }
-      }
-
-      // ========== EVENTOS ==========
-      function bindEvents() {
-        var btnSettingsClose = document.getElementById('btnSettingsClose');
-        if (btnSettingsClose) btnSettingsClose.addEventListener('click', closeSettingsPanel);
-        var settingsModal = document.getElementById('settingsModal');
-        if (settingsModal) {
-          settingsModal.addEventListener('click', function (e) {
-            if (e.target === settingsModal) closeSettingsPanel();
-          });
-        }
-
-        document.querySelectorAll('.instrument-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            setInstrument(this.dataset.instrumentId);
-          });
-        });
-
-        document.querySelectorAll('.key-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            setKey(this.dataset.keyId);
-          });
-        });
-
-        document.querySelectorAll('.clef-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            setClef(this.dataset.clefId);
-          });
-        });
-
-        var btnAbout = document.getElementById('btnAbout');
-        if (btnAbout) btnAbout.addEventListener('click', openAboutModal);
-        var btnThemeCycle = document.getElementById('btnThemeCycle');
-        if (btnThemeCycle) btnThemeCycle.addEventListener('click', cycleThemeMode);
-        var btnAboutClose = document.getElementById('btnAboutClose');
-        if (btnAboutClose) btnAboutClose.addEventListener('click', closeAboutModal);
-        var btnAboutOk = document.getElementById('btnAboutOk');
-        if (btnAboutOk) btnAboutOk.addEventListener('click', closeAboutModal);
-
-        var aboutModal = document.getElementById('aboutModal');
-        if (aboutModal) {
-          aboutModal.addEventListener('click', function (e) {
-            if (e.target === aboutModal) closeAboutModal();
-          });
-        }
-
-        // Espelho: nota toca enquanto o ponteiro/touch estiver pressionado.
-        var board = document.getElementById('violinBoard');
-        function pointerStartOnCell(pointerId, cell) {
-          if (!cell || !cell.dataset.noteId) return;
-          var noteId = cell.dataset.noteId;
-          var freq = cell.dataset.freq ? parseFloat(cell.dataset.freq) : undefined;
-          var stringKey = cell.dataset.stringKey || null;
-          var position = cell.dataset.position != null ? parseInt(cell.dataset.position, 10) : null;
-          var nota = NOTAS.find(function (n) { return n.id === noteId; });
-          if (!nota) return;
-
-          if (activePointerNotes[pointerId]) {
-            var prev = activePointerNotes[pointerId];
-            if (prev.cancelInit) prev.cancelInit();
-            if (prev.stop) prev.stop();
-            if (prev.cell) prev.cell.classList.remove('playing');
-            onNoteEnd(prev.noteId, prev.freq, prev.stringKey, prev.position);
-          }
-
-          var data = { noteId: noteId, freq: freq, stringKey: stringKey, position: position, cell: cell, stop: null, cancelInit: null };
-          data.cancelInit = startNoteSoundForPointer(noteId, freq, function (fn) {
-            data.stop = fn;
-          });
-          activePointerNotes[pointerId] = data;
-
-          if (currentMode === 'challenge') {
-            document.getElementById('currentNoteDisplay').textContent = '?';
-          } else {
-            document.getElementById('currentNoteDisplay').textContent = getNoteNameInKey(noteId, currentKey);
-            clearViolinHighlight();
-            cell.classList.add('highlight');
-          }
-          cell.classList.add('playing');
-        }
-
-        function pointerEnd(pointerId) {
-          var data = activePointerNotes[pointerId];
-          if (!data) return;
-          if (data.cancelInit) data.cancelInit();
-          if (data.stop) data.stop();
-          if (data.cell) data.cell.classList.remove('playing');
-          onNoteEnd(data.noteId, data.freq, data.stringKey, data.position);
-          delete activePointerNotes[pointerId];
-        }
-
-        if (board) {
-          board.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-          });
-          board.addEventListener('touchstart', function (e) {
-            if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
-          }, { passive: false });
-          board.addEventListener('touchmove', function (e) {
-            if (e.target && e.target.closest && e.target.closest('.finger-cell')) e.preventDefault();
-          }, { passive: false });
-          board.addEventListener('pointerdown', function (e) {
-            if (e.pointerType === 'mouse' && e.button !== 0) return;
-            var cell = e.target.closest('.finger-cell');
-            if (!cell || !board.contains(cell)) return;
-            e.preventDefault();
-            pointerStartOnCell(e.pointerId, cell);
-            if (cell.setPointerCapture) {
-              try { cell.setPointerCapture(e.pointerId); } catch (err) {}
-            }
-          });
-          board.addEventListener('pointermove', function (e) {
-            if (!activePointerNotes[e.pointerId]) return;
-            var under = document.elementFromPoint(e.clientX, e.clientY);
-            var cell = under ? under.closest('.finger-cell') : null;
-            if (!cell || !board.contains(cell)) return;
-            if (activePointerNotes[e.pointerId].cell === cell) return;
-            pointerStartOnCell(e.pointerId, cell);
-          });
-          board.addEventListener('pointerup', function (e) {
-            pointerEnd(e.pointerId);
-          });
-          board.addEventListener('pointercancel', function (e) {
-            pointerEnd(e.pointerId);
-          });
-          board.addEventListener('pointerleave', function (e) {
-            if (e.pointerType === 'mouse') pointerEnd(e.pointerId);
-          });
-        }
-
-        document.querySelectorAll('.mode-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            if (this.dataset && this.dataset.mode) {
-              setMode(this.dataset.mode);
-            } else if (this.id === 'btnMoreMenu') {
-              var menu = document.getElementById('modeMoreMenu');
-              setMoreMenuOpen(!menu || menu.classList.contains('hidden'));
-            }
-          });
-        });
-        var btnMoreTuner = document.getElementById('btnMoreTuner');
-        if (btnMoreTuner) {
-          btnMoreTuner.addEventListener('click', function () {
-            setMode('tuner');
-          });
-        }
-        var btnMoreMetronome = document.getElementById('btnMoreMetronome');
-        if (btnMoreMetronome) {
-          btnMoreMetronome.addEventListener('click', function () {
-            openMetronomeModal();
-          });
-        }
-        var btnMoreHinos = document.getElementById('btnMoreHinos');
-        if (btnMoreHinos) {
-          btnMoreHinos.addEventListener('click', function () {
-            setMode('hinos');
-          });
-        }
-        var btnPlayerPlay = document.getElementById('btnPlayerPlay');
-        if (btnPlayerPlay) {
-          btnPlayerPlay.addEventListener('click', function () {
-            startPlayerPlayback();
-          });
-        }
-        var btnPlayerPause = document.getElementById('btnPlayerPause');
-        if (btnPlayerPause) {
-          btnPlayerPause.addEventListener('click', function () {
-            if (!playerPlayback.isPlaying) return;
-            stopPlayerPlayback(true);
-            setMessage('Playback pausado.');
-          });
-        }
-        var btnPlayerStop = document.getElementById('btnPlayerStop');
-        if (btnPlayerStop) {
-          btnPlayerStop.addEventListener('click', function () {
-            stopPlayerPlayback(false);
-            setMessage('Playback parado.');
-          });
-        }
-        var btnPlayerSpeed = document.getElementById('btnPlayerSpeed');
-        var playerSpeedPopover = document.getElementById('playerSpeedPopover');
-        var playerSpeedInput = document.getElementById('playerSpeedInput');
-        var playerSpeedSlider = document.getElementById('playerSpeedSlider');
-        if (btnPlayerSpeed) {
-          btnPlayerSpeed.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var willOpen = !playerSpeedPopover || playerSpeedPopover.classList.contains('hidden');
-            setPlayerSpeedPopoverOpen(willOpen);
-          });
-        }
-        if (playerSpeedPopover) {
-          playerSpeedPopover.addEventListener('click', function (e) {
-            e.stopPropagation();
-          });
-        }
-        if (playerSpeedInput) {
-          playerSpeedInput.addEventListener('focus', function () {
-            beginPlayerSpeedAdjust();
-          });
-          playerSpeedInput.addEventListener('input', function () {
-            var bpmVal = parseInt(this.value || '0', 10);
-            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
-            previewPlayerSpeedBpm(bpmVal);
-          });
-          playerSpeedInput.addEventListener('change', function () {
-            var bpmVal = parseInt(this.value || '0', 10);
-            endPlayerSpeedAdjust(bpmVal);
-          });
-          playerSpeedInput.addEventListener('blur', function () {
-            if (!playerSpeedAdjusting) return;
-            var bpmVal = parseInt(this.value || '0', 10);
-            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
-            endPlayerSpeedAdjust(bpmVal);
-          });
-        }
-        if (playerSpeedSlider) {
-          playerSpeedSlider.addEventListener('pointerdown', function () {
-            beginPlayerSpeedAdjust();
-          });
-          playerSpeedSlider.addEventListener('mousedown', function () {
-            beginPlayerSpeedAdjust();
-          });
-          playerSpeedSlider.addEventListener('touchstart', function () {
-            beginPlayerSpeedAdjust();
-          }, { passive: true });
-          playerSpeedSlider.addEventListener('input', function () {
-            var bpmVal = parseInt(this.value || '0', 10);
-            if (!isFinite(bpmVal)) bpmVal = getPlayerSpeedBpm();
-            previewPlayerSpeedBpm(bpmVal);
-          });
-          playerSpeedSlider.addEventListener('change', function () {
-            var bpmVal = parseInt(this.value || '0', 10);
-            endPlayerSpeedAdjust(bpmVal);
-          });
-        }
-        var playerSelectCollection = document.getElementById('playerSelectCollection');
-        if (playerSelectCollection) {
-          playerSelectCollection.addEventListener('change', function () {
-            playerSelectedCollectionId = String(this.value || '');
-            playerSelectedItemId = null;
-            playerSelectedHinoNumero = null;
-            renderPlayerCatalogControls();
-            loadPlayerFromCatalogSelection(true);
-          });
-        }
-        var playerSelectAfinacao = document.getElementById('playerSelectAfinacao');
-        if (playerSelectAfinacao) {
-          playerSelectAfinacao.addEventListener('change', function () {
-            playerSelectedAfinacao = String(this.value || 'do').toLowerCase();
-            renderPlayerCatalogControls();
-            loadPlayerFromCatalogSelection(true);
-          });
-        }
-        var playerSelectHino = document.getElementById('playerSelectHino');
-        var playerHinoSuggestions = document.getElementById('playerHinoSuggestions');
-        var playerHinoPicker = document.getElementById('playerHinoPicker');
-        if (playerSelectHino) {
-          function applyPlayerHinoFromInput() {
-            var typed = String(playerSelectHino.value || '');
-            var parsedNumero = parsePlayerNumeroFromInputValue(typed);
-            if (isFinite(parsedNumero) && parsedNumero > 0) {
-              var found = getPlayerCatalogItemByNumero(parsedNumero);
-              if (found) {
-                playerSelectedItemId = String(found.id || '');
-                playerSelectedHinoNumero = Number(found.numero || parsedNumero);
-              } else {
-                playerSelectedItemId = null;
-                playerSelectedHinoNumero = parsedNumero;
-              }
-            }
-            renderPlayerCatalogControls();
-            loadPlayerFromCatalogSelection(true);
-          }
-          playerSelectHino.addEventListener('input', function () {
-            this.dataset.openAll = '0';
-            var parsedNumero = parsePlayerNumeroFromInputValue(this.value);
-            if (isFinite(parsedNumero) && parsedNumero > 0) playerSelectedHinoNumero = parsedNumero;
-            renderPlayerCatalogControls();
-            if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
-              playerHinoSuggestions.classList.remove('hidden');
-            }
-          });
-          playerSelectHino.addEventListener('focus', function () {
-            this.dataset.openAll = '1';
-            renderPlayerCatalogControls();
-            if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
-              playerHinoSuggestions.classList.remove('hidden');
-            }
-          });
-          playerSelectHino.addEventListener('click', function () {
-            this.dataset.openAll = '1';
-            renderPlayerCatalogControls();
-            if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
-              playerHinoSuggestions.classList.remove('hidden');
-            }
-          });
-          playerSelectHino.addEventListener('change', applyPlayerHinoFromInput);
-          playerSelectHino.addEventListener('keydown', function (e) {
-            if (e.key !== 'Enter') return;
-            e.preventDefault();
-            this.dataset.openAll = '0';
-            applyPlayerHinoFromInput();
-          });
-        }
-        if (playerHinoSuggestions) {
-          playerHinoSuggestions.addEventListener('click', function (e) {
-            var btn = e.target && e.target.closest ? e.target.closest('.player-hino-suggestion') : null;
-            if (!btn) return;
-            var itemId = String(btn.getAttribute('data-item-id') || '');
-            var n = parseInt(btn.getAttribute('data-hino-numero') || '0', 10);
-            if (!itemId && (!isFinite(n) || n <= 0)) return;
-            var item = itemId ? getPlayerCatalogItemById(itemId) : getPlayerCatalogItemByNumero(n);
-            if (item) {
-              playerSelectedItemId = String(item.id || '');
-              playerSelectedHinoNumero = Number(item.numero || 0);
-            } else {
-              playerSelectedItemId = null;
-              playerSelectedHinoNumero = n;
-            }
-            if (item && playerSelectHino) playerSelectHino.value = String(item.numero) + ' · ' + (item.titulo || 'Sem título');
-            if (playerSelectHino) playerSelectHino.dataset.openAll = '0';
-            playerHinoSuggestions.classList.add('hidden');
-            renderPlayerCatalogControls();
-            loadPlayerFromCatalogSelection(true);
-          });
-        }
-        document.addEventListener('click', function (e) {
-          if (!playerHinoPicker || !playerHinoSuggestions) return;
-          if (!playerHinoPicker.contains(e.target)) {
-            playerHinoSuggestions.classList.add('hidden');
-          }
-        });
-        var playerVoiceChecks = document.getElementById('playerVoiceChecks');
-        if (playerVoiceChecks) {
-          playerVoiceChecks.addEventListener('change', function (e) {
-            var target = e && e.target;
-            if (!target || target.type !== 'checkbox') return;
-            var values = [];
-            playerVoiceChecks.querySelectorAll('input[type="checkbox"]:checked').forEach(function (cb) {
-              values.push(String(cb.value || '').toLowerCase());
-            });
-            if (!values.length) {
-              target.checked = true;
-              values = [String(target.value || 's').toLowerCase()];
-            }
-            playerSelectedVoices = values;
-            renderPlayerCatalogControls();
-            loadPlayerFromCatalogSelection(true);
-          });
-        }
-        var playerMetronomeToggle = document.getElementById('playerMetronomeToggle');
-        if (playerMetronomeToggle) {
-          playerMetronomeToggle.addEventListener('click', function () {
-            playerMetronomeEnabled = !playerMetronomeEnabled;
-            syncPlayerLeverUi();
-            setMessage(playerMetronomeEnabled ? 'Metrônomo do player ligado.' : 'Metrônomo do player desligado.');
-          });
-        }
-        var playerAutoScrollToggle = document.getElementById('playerAutoScrollToggle');
-        if (playerAutoScrollToggle) {
-          playerAutoScrollToggle.addEventListener('click', function () {
-            playerAutoScrollEnabled = !playerAutoScrollEnabled;
-            syncPlayerLeverUi();
-            setMessage(playerAutoScrollEnabled ? 'Rolagem automática ligada.' : 'Rolagem automática desligada.');
-          });
-        }
-        var playerLoopToggle = document.getElementById('playerLoopToggle');
-        if (playerLoopToggle) {
-          playerLoopToggle.addEventListener('click', function () {
-            playerLoopEnabled = !playerLoopEnabled;
-            syncPlayerLeverUi();
-            setMessage(playerLoopEnabled ? 'Loop da partitura ligado.' : 'Loop da partitura desligado.');
-          });
-        }
-        var playerColorToggle = document.getElementById('playerColorToggle');
-        if (playerColorToggle) {
-          playerColorToggle.addEventListener('click', function () {
-            playerColorizedNotes = !playerColorizedNotes;
-            syncPlayerLeverUi();
-            loadPlayerFromCatalogSelection(true);
-            setMessage(playerColorizedNotes ? 'Partitura colorida ligada.' : 'Partitura em preto (padrão).');
-          });
-        }
-        var playerNoteNamesToggle = document.getElementById('playerNoteNamesToggle');
-        if (playerNoteNamesToggle) {
-          playerNoteNamesToggle.addEventListener('click', function () {
-            playerNoteNameLabels = !playerNoteNameLabels;
-            syncPlayerLeverUi();
-            if (playerOsmd && playerScoreData) {
-              syncPlayerNoteNameLabelOverlays();
-            }
-            setMessage(
-              playerNoteNameLabels ? 'Nomes nas notas ligados.' : 'Nomes nas notas desligados.'
-            );
-          });
-        }
-        var playerFingeringToggle = document.getElementById('playerFingeringToggle');
-        if (playerFingeringToggle) {
-          playerFingeringToggle.addEventListener('click', function () {
-            playerShowFingering = !playerShowFingering;
-            syncPlayerLeverUi();
-            loadPlayerFromCatalogSelection(true);
-            setMessage(playerShowFingering ? 'Dedilhado ligado.' : 'Dedilhado desligado.');
-          });
-        }
-        var playerLiveListenToggle = document.getElementById('playerLiveListenToggle');
-        if (playerLiveListenToggle) {
-          playerLiveListenToggle.addEventListener('click', function () {
-            playerLiveListenEnabled = !playerLiveListenEnabled;
-            syncPlayerLeverUi();
-            syncPlayerLiveScoreUi();
-            if (playerLiveListenEnabled) {
-              if (currentMode === 'player') startPlayerLiveListen();
-              else setMessage('Leitura ao vivo ligada. Abra o modo Player para iniciar a escuta.');
-            } else {
-              stopPlayerLiveListen();
-              clearPlayerLiveFeedback();
-              resetPlayerLiveScoreTotals();
-              syncPlayerLiveScoreUi();
-              setMessage('Leitura ao vivo desligada.');
-            }
-          });
-        }
-        var playerMutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
-        if (playerMutePlaybackToggle) {
-          playerMutePlaybackToggle.addEventListener('click', function () {
-            playerMutePlaybackEnabled = !playerMutePlaybackEnabled;
-            syncPlayerLeverUi();
-            setMessage(
-              playerMutePlaybackEnabled
-                ? 'Áudio da partitura silenciado no player.'
-                : 'Áudio da partitura reativado no player.'
-            );
-          });
-        }
-        var playerMeasureNumbersToggle = document.getElementById('playerMeasureNumbersToggle');
-        if (playerMeasureNumbersToggle) {
-          playerMeasureNumbersToggle.addEventListener('click', function () {
-            playerShowMeasureNumbers = !playerShowMeasureNumbers;
-            syncPlayerLeverUi();
-            if (playerOsmd && typeof playerOsmd.setOptions === 'function') {
-              try {
-                window.PlayerLoadBindingAccess.applyPlayerOsmdDisplayOptions(playerOsmd);
-                playerOsmd.render();
-                requestAnimationFrame(function () {
-                  resizePlayerOsmdIfActive();
-                  buildPlayerNoteAnchorsFromDom();
-                });
-                setTimeout(buildPlayerNoteAnchorsFromDom, 200);
-              } catch (eMn) {
-                loadPlayerFromCatalogSelection(true);
-              }
-            } else {
-              loadPlayerFromCatalogSelection(true);
-            }
-            setMessage(
-              playerShowMeasureNumbers ? 'Números de compasso visíveis.' : 'Números de compasso ocultos.'
-            );
-          });
-        }
-        var playerSeek = document.getElementById('playerSeek');
-        if (playerSeek) {
-          playerSeek.addEventListener('input', function () {
-            if (!playerScoreData || !playerScoreData.totalDurationSec) return;
-            var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
-            var targetSec = ratio * playerScoreData.totalDurationSec;
-            updatePlayerUiNow(targetSec);
-          });
-          playerSeek.addEventListener('change', function () {
-            if (!playerScoreData || !playerScoreData.totalDurationSec) return;
-            var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
-            var targetSec = ratio * playerScoreData.totalDurationSec;
-            seekPlayerToTime(targetSec, true);
-          });
-        }
-        var playerHost = document.getElementById('playerScoreHost');
-        if (playerHost) {
-          playerHost.addEventListener('click', function (e) {
-            if (currentMode !== 'player' || !playerScoreData) return;
-            var acted = seekPlayerFromClick(e.clientX, e.clientY);
-            if (acted) {
-              setMessage('Posição ajustada na partitura.');
-            }
-          });
-        }
-        var btnPlayerSettings = document.getElementById('btnPlayerSettings');
-        if (btnPlayerSettings) {
-          btnPlayerSettings.addEventListener('click', function () {
-            openSettingsPanel();
-          });
-        }
-        var btnMoreSettings = document.getElementById('btnMoreSettings');
-        if (btnMoreSettings) {
-          btnMoreSettings.addEventListener('click', function () {
-            openSettingsPanel();
-          });
-        }
-        document.addEventListener('click', function (e) {
-          var menu = document.getElementById('modeMoreMenu');
-          var wrap = document.querySelector('.mode-more-wrap');
-          if (!menu || !wrap) return;
-          if (!wrap.contains(e.target)) setMoreMenuOpen(false);
-          var speedWrap = document.getElementById('playerControls');
-          if (!speedWrap || !speedWrap.contains(e.target)) setPlayerSpeedPopoverOpen(false);
-        });
-        function pausePlayerAutoScrollByUser() {
-          if (currentMode !== 'player') return;
-          if (Date.now() < playerAutoScrollProgrammaticUntil) return;
-          playerAutoScrollUserPausedUntil = Date.now() + 2200;
-        }
-        window.addEventListener('wheel', pausePlayerAutoScrollByUser, { passive: true });
-        window.addEventListener('touchmove', pausePlayerAutoScrollByUser, { passive: true });
-        window.addEventListener('keydown', function (e) {
-          var keys = ['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End', ' '];
-          if (keys.indexOf(e.key) >= 0) pausePlayerAutoScrollByUser();
-        });
-        window.addEventListener('keydown', function (e) {
-          var isSpace = e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar';
-          if (!isSpace) return;
-          if (currentMode !== 'player') return;
-          var target = e.target;
-          var tag = target && target.tagName ? String(target.tagName).toUpperCase() : '';
-          var typing = !!(target && (target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'));
-          if (typing) return;
-          if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return;
-          e.preventDefault();
-          if (playerPlayback.isPlaying || playerPrepToken) {
-            stopPlayerPlayback(true);
-            setMessage('Playback pausado.');
-            return;
-          }
-          startPlayerPlayback();
-        });
-
-        var tunerStartBtn = document.getElementById('tunerStartBtn');
-        var tunerStopBtn = document.getElementById('tunerStopBtn');
-        var tunerPresetSel = document.getElementById('tunerInstrumentSelect');
-        if (tunerStartBtn) {
-          tunerStartBtn.addEventListener('click', function () {
-            startTuner();
-          });
-        }
-        if (tunerStopBtn) {
-          tunerStopBtn.addEventListener('click', function () {
-            stopTuner();
-          });
-        }
-        if (tunerPresetSel) {
-          renderTunerPresetDynamicInfo();
-          tunerPresetSel.addEventListener('change', function () {
-            renderTunerPresetDynamicInfo();
-            tunerSmoothedFreq = 0;
-            tunerRawHistory = [];
-            if (!tunerRunning) return;
-            setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
-          });
-        }
-        var tunerMicOpenSettingsBtn = document.getElementById('tunerMicOpenSettingsBtn');
-        var tunerMicInstructionsBtn = document.getElementById('tunerMicInstructionsBtn');
-        var tunerMicHelpOk = document.getElementById('tunerMicHelpOk');
-        var tunerMicHelpCloseX = document.getElementById('tunerMicHelpCloseX');
-        var tunerMicHelpModal = document.getElementById('tunerMicHelpModal');
-        if (tunerMicOpenSettingsBtn) {
-          tunerMicOpenSettingsBtn.addEventListener('click', function () {
-            tryOpenTunerMicrophoneSettings();
-          });
-        }
-        if (tunerMicInstructionsBtn) {
-          tunerMicInstructionsBtn.addEventListener('click', function () {
-            openTunerMicHelpModal();
-          });
-        }
-        if (tunerMicHelpOk) tunerMicHelpOk.addEventListener('click', closeTunerMicHelpModal);
-        if (tunerMicHelpCloseX) tunerMicHelpCloseX.addEventListener('click', closeTunerMicHelpModal);
-        if (tunerMicHelpModal) {
-          tunerMicHelpModal.addEventListener('click', function (e) {
-            if (e.target === tunerMicHelpModal) closeTunerMicHelpModal();
-          });
-        }
-        document.addEventListener('keydown', function (e) {
-          if (e.key !== 'Escape') return;
-          var tm = document.getElementById('tunerMicHelpModal');
-          if (tm && !tm.classList.contains('hidden')) {
-            e.preventDefault();
-            closeTunerMicHelpModal();
-          }
-        });
-        var btnStaffRestart = document.getElementById('btnStaffRestart');
-        if (btnStaffRestart) {
-          btnStaffRestart.addEventListener('click', function () {
-            restart();
-          });
-        }
-        window.addEventListener('resize', function () {
-          drawTunerGauge(tunerLastCents, tunerLastStatus);
-          drawTunerChart();
-        });
-        document.addEventListener('visibilitychange', function () {
-          if (document.visibilityState === 'visible') {
-            requestScreenWakeLock();
-          }
-        });
-        window.addEventListener('beforeunload', function () {
-          stopTuner();
-          releaseScreenWakeLock();
-        });
-
-        bindHinosEvents();
-
-        document.getElementById('btnRepeatInstruction').addEventListener('click', repeatInstruction);
-
-        document.getElementById('btnNarration').addEventListener('click', function () {
-          narrationEnabled = !narrationEnabled;
-          this.textContent = narrationEnabled ? '🗣️ Narração ligada' : '🗣️ Narração';
-          if (narrationEnabled) repeatInstruction();
-        });
-
-        document.getElementById('btnAmbient').addEventListener('click', toggleAmbient);
-
-        document.getElementById('btnCalmMode').addEventListener('click', function () {
-          calmMode = !calmMode;
-          document.body.classList.toggle('calm-mode', calmMode);
-          this.textContent = calmMode ? '🔉 Modo calmo' : '🔊 Modo calmo';
-          if (ambientGain) {
-            const ctx = getAudioContext();
-            ambientGain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 0.3);
-          }
-        });
-
-        document.getElementById('btnSound').addEventListener('click', function () {
-          soundEnabled = !soundEnabled;
-          this.textContent = soundEnabled ? '🔈 Som' : '🔇 Som';
-          if (!soundEnabled && ambientOsc) stopAmbient();
-          if (!soundEnabled && metroIsRunning) stopMetronome();
-          if (soundEnabled && ambientEnabled) startAmbient();
-        });
-
-        var btnFullscreen = document.getElementById('btnFullscreen');
-        if (btnFullscreen) {
-          btnFullscreen.addEventListener('click', toggleFullscreen);
-          document.addEventListener('fullscreenchange', updateFullscreenButton);
-        }
-
-        document.getElementById('btnRestart').addEventListener('click', restart);
-      }
-
-      // ========== INICIALIZAÇÃO ==========
-      function createClefButtons() {
-        var container = document.getElementById('clefTabs');
-        if (!container) return;
-        container.innerHTML = '';
-        CLAVES.forEach(function (clef) {
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'clef-btn du-btn du-btn-outline du-btn-sm' + (clef.id === currentClef ? ' active' : '');
-          btn.dataset.clefId = clef.id;
-          btn.setAttribute('aria-pressed', clef.id === currentClef ? 'true' : 'false');
-          btn.textContent = clef.simbolo + ' ' + clef.nome;
-          container.appendChild(btn);
-        });
-      }
-
-      function setClef(clefId) {
-        var clef = CLAVES.find(function (c) { return c.id === clefId; });
-        if (!clef) return;
-        currentClef = clef.id;
-        document.querySelectorAll('.clef-btn').forEach(function (btn) {
-          var active = btn.dataset.clefId === clefId;
-          btn.classList.toggle('active', active);
-          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-        });
-        updateStaffClefVisual();
-        if (currentMode === 'staff') startStaffRound();
-      }
-
-      // ========== METRÔNOMO ==========
-      function playMetroClick(accent, whenTime) {
-        window.MetronomeUiCore.playMetroClick(accent, whenTime);
-      }
-
-      function renderMetroDots() {
-        window.MetronomeUiCore.renderMetroDots();
-      }
-
-      function highlightMetroBeat(beatIndex) {
-        window.MetronomeUiCore.highlightMetroBeat(beatIndex);
-      }
-
-      /** Disparo visual extra para acessibilidade: flash horizontal sincronizado com cada batida. */
-      function triggerMetroVisualPulse(isAccent) {
-        window.MetronomeUiCore.triggerMetroVisualPulse(isAccent);
-      }
-
-      function stopMetronome() {
-        window.MetronomeUiSchedule.stopMetronome();
-      }
-
-      function metroScheduleLoop() {
-        window.MetronomeUiSchedule.metroScheduleLoop();
-      }
-
-      function startMetronome() {
-        window.MetronomeUiSchedule.startMetronome();
-      }
-
-      function updateMetroButtons() {
-        var btnStop = document.getElementById('btnMetroStop');
-        var btnStart = document.getElementById('btnMetroStart');
-        if (!btnStop || !btnStart) return;
-        btnStop.disabled = !metroIsRunning;
-        btnStart.disabled = metroIsRunning;
-      }
-
-      function setMetroBpm(bpm, restartIfRunning) {
-        var n = parseInt(bpm, 10);
-        if (isNaN(n)) return;
-        metroBpm = Math.max(30, Math.min(220, n));
-        if (metroDom.bpmValueEl) metroDom.bpmValueEl.textContent = String(metroBpm);
-        if (metroDom.bpmLabelEl) metroDom.bpmLabelEl.textContent = window.MetronomeUiCore.tempoLabel(metroBpm);
-        if (metroDom.bpmSliderEl) metroDom.bpmSliderEl.value = String(metroBpm);
-        if (restartIfRunning && metroIsRunning) {
-          stopMetronome();
-          startMetronome();
-        }
-      }
-
-      function setMetroBeatsPerBar(beats, restartIfRunning) {
-        var n = parseInt(beats, 10);
-        if (isNaN(n)) return;
-        metroBeatsPerBar = Math.max(1, Math.min(12, n));
-        if (metroDom.beatsValueEl) metroDom.beatsValueEl.textContent = String(metroBeatsPerBar);
-        var supportedBeats = [2, 3, 4, 6, 9, 12];
-        if (supportedBeats.indexOf(metroBeatsPerBar) === -1 && metroSolfejoMode) {
-          metroSolfejoMode = false;
-          if (metroDom.solfejoModeCheckboxEl) metroDom.solfejoModeCheckboxEl.checked = false;
-          if (metroDom.solfejoWrapEl) metroDom.solfejoWrapEl.classList.add('hidden');
-          if (metroDom.solfejoBaseImgEl) metroDom.solfejoBaseImgEl.removeAttribute('src');
-          if (metroDom.solfejoHandImgEl) metroDom.solfejoHandImgEl.removeAttribute('src');
-        }
-        renderMetroDots();
-        updateMetronomeModeUI();
-        if (restartIfRunning && metroIsRunning) {
-          stopMetronome();
-          startMetronome();
-        } else {
-          highlightMetroBeat(1);
-        }
-      }
-
-      function setMetroSubdivision(subdiv, restartIfRunning) {
-        var n = parseInt(subdiv, 10);
-        if (isNaN(n)) return;
-        // 1,2,3,4
-        if (n < 1 || n > 4) n = 1;
-        metroSubdivision = n;
-        if (restartIfRunning && metroIsRunning) {
-          stopMetronome();
-          startMetronome();
-        }
-      }
-
-      /** Ponte para `metronome-ui-init.js` (estado BPM/batidas fica no IIFE). */
-      window.MetronomeUiBindingAccess = {
-        bootstrapMetroUiDefaults: function () {
-          metroBeatsPerBar = 4;
-          metroSubdivision = 1;
-          metroAccentFirst = false;
-          metroSolfejoMode = false;
-        },
-        syncMetroBpmFromSlider: function () {
-          var d = window.MetroUiRefs;
-          metroBpm = parseInt(d.bpmSliderEl.value, 10) || metroBpm;
-        },
-        refreshMetroBpmLabels: function () {
-          var d = window.MetroUiRefs;
-          if (d.bpmValueEl) d.bpmValueEl.textContent = String(metroBpm);
-          if (d.bpmLabelEl) d.bpmLabelEl.textContent = window.MetronomeUiCore.tempoLabel(metroBpm);
-        },
-        syncMetroCheckboxDom: function () {
-          var d = window.MetroUiRefs;
-          if (d.accentCheckboxEl) d.accentCheckboxEl.checked = metroAccentFirst;
-          if (d.solfejoModeCheckboxEl) d.solfejoModeCheckboxEl.checked = metroSolfejoMode;
-          if (d.solfejoLeftHandCheckboxEl) d.solfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
-        },
-        refreshMetroBeatsValueLabel: function () {
-          var d = window.MetroUiRefs;
-          if (d.beatsValueEl) d.beatsValueEl.textContent = String(metroBeatsPerBar);
-        },
-        runMetroInitialLayoutRefresh: function () {
-          renderMetroDots();
-          highlightMetroBeat(1);
-          updateMetroButtons();
-          updateMetronomeModeUI();
-          updateSolfejoImagesSrc();
-        },
-        invokeSetMetroBpm: function (v, restart) {
-          setMetroBpm(v, restart);
-        },
-        invokeSetMetroBeatsPerBar: function (v, restart) {
-          setMetroBeatsPerBar(v, restart);
-        },
-        invokeSetMetroSubdivision: function (v, restart) {
-          setMetroSubdivision(v, restart);
-        },
-        invokeStopMetronome: function () {
-          window.MetronomeUiSchedule.stopMetronome();
-        },
-        invokeStartMetronome: function () {
-          window.MetronomeUiSchedule.startMetronome();
-        },
-        schedGetIsRunning: function () {
-          return metroIsRunning;
-        },
-        schedSetIsRunning: function (v) {
-          metroIsRunning = v;
-        },
-        schedGetSchedulerId: function () {
-          return metroSchedulerId;
-        },
-        schedSetSchedulerId: function (id) {
-          metroSchedulerId = id;
-        },
-        schedGetNextClickTime: function () {
-          return metroNextClickTime;
-        },
-        schedSetNextClickTime: function (t) {
-          metroNextClickTime = t;
-        },
-        schedGetClickIndexInBar: function () {
-          return metroClickIndexInBar;
-        },
-        schedSetClickIndexInBar: function (n) {
-          metroClickIndexInBar = n;
-        },
-        schedGetSubdivision: function () {
-          return metroSubdivision;
-        },
-        schedGetAudioCtx: function () {
-          return metroAudioCtx;
-        },
-        schedGetSolfejoCurrentFrame: function () {
-          return metroSolfejoCurrentFrame;
-        },
-        schedSetSolfejoCurrentFrame: function (n) {
-          metroSolfejoCurrentFrame = n;
-        },
-        schedClearSolfejoCaches: function () {
-          metroSolfejoFramesCache = {};
-          metroSolfejoFramesPromises = {};
-        },
-        schedClearMetroVisualPulseDom: function () {
-          if (metroDom.visualPulseTimer) clearTimeout(metroDom.visualPulseTimer);
-          metroDom.visualPulseTimer = null;
-          if (metroDom.visualFlashEl) metroDom.visualFlashEl.classList.remove('pulse', 'accent');
-        },
-        schedInvokeCancelSolfejoTween: function () {
-          cancelSolfejoTween();
-        },
-        schedInvokeSetSolfejoHandToFrame: function (n) {
-          setSolfejoHandToFrame(n);
-        },
-        schedInvokeStartSolfejoHandTween: function (to) {
-          startSolfejoHandTween(to);
-        },
-        schedInvokeTriggerSolfejoHandTap: function () {
-          triggerSolfejoHandTap();
-        },
-        schedInvokeHighlightMetroBeat: function (i) {
-          highlightMetroBeat(i);
-        },
-        schedInvokeTriggerMetroVisualPulse: function (a) {
-          triggerMetroVisualPulse(a);
-        },
-        schedInvokePlayMetroClick: function (a, t) {
-          playMetroClick(a, t);
-        },
-        schedInvokeUpdateMetroButtons: function () {
-          updateMetroButtons();
-        },
-        schedInvokeUpdateMetronomeModeUI: function () {
-          updateMetronomeModeUI();
-        },
-        schedInvokeSetMessage: function (t) {
-          setMessage(t);
-        },
-        schedSetSolfejoMode: function (v) {
-          metroSolfejoMode = v;
-        },
-        schedSetSolfejoModeCheckboxChecked: function (checked) {
-          if (metroDom.solfejoModeCheckboxEl) metroDom.solfejoModeCheckboxEl.checked = checked;
-        },
-        schedInvokeEnsureHandTipCalibrated: function () {
-          return ensureHandTipCalibrated();
-        },
-        schedInvokeEnsureSolfejoFramesLoaded: function () {
-          return ensureSolfejoFramesLoaded();
-        },
-        getMetroBpm: function () {
-          return metroBpm;
-        },
-        getMetroBeatsPerBar: function () {
-          return metroBeatsPerBar;
-        },
-        getMetroIsRunning: function () {
-          return metroIsRunning;
-        },
-        getMetroSolfejoMode: function () {
-          return metroSolfejoMode;
-        },
-        getMetroAccentFirst: function () {
-          return metroAccentFirst;
-        },
-        isSoundEnabled: function () {
-          return soundEnabled;
-        },
-        isCalmMode: function () {
-          return calmMode;
-        },
-        ensureMetroAudioCtx: function () {
-          if (!metroAudioCtx) metroAudioCtx = getAudioContext();
-          return metroAudioCtx;
-        },
-        setMetroAccentFirst: function (v) {
-          metroAccentFirst = v;
-        },
-        setMetroSolfejoLeftHand: function (v) {
-          metroSolfejoLeftHand = v;
-        },
-        onSolfejoModeCheckboxChange: function (checkboxEl) {
-          var supportedBeats = [2, 3, 4, 6, 9, 12];
-          if (checkboxEl.checked && supportedBeats.indexOf(metroBeatsPerBar) === -1) {
-            metroSolfejoMode = false;
-            checkboxEl.checked = false;
-            if (metroDom.solfejoBaseImgEl) metroDom.solfejoBaseImgEl.removeAttribute('src');
-            if (metroDom.solfejoHandImgEl) metroDom.solfejoHandImgEl.removeAttribute('src');
-          } else {
-            metroSolfejoMode = !!checkboxEl.checked;
-          }
-          updateMetronomeModeUI();
-          if (metroIsRunning) {
-            stopMetronome();
-            startMetronome();
-          }
-        }
-      };
-
-      function openMetronomeModal() {
-        setMode('metronome');
-      }
-
-      function closeMetronomeModal() {
-        if (metroIsRunning) stopMetronome();
-        setMode('player');
-      }
-
-      function updateMetronomeModeUI() {
-        if (!metroDom.solfejoWrapEl) return;
-        var supportedBeats = [2, 3, 4, 6, 9, 12];
-        var canShowSolfejo = metroSolfejoMode && (supportedBeats.indexOf(metroBeatsPerBar) !== -1);
-        metroDom.solfejoWrapEl.classList.toggle('hidden', !canShowSolfejo);
-        if (canShowSolfejo) updateSolfejoImagesSrc();
-      }
-
-      function getSolfejoSide() {
-        return metroSolfejoLeftHand ? 'esquerda' : 'direita';
-      }
-
-      function updateSolfejoImagesSrc() {
-        if (!metroDom.solfejoBaseImgEl || !metroDom.solfejoHandImgEl) return;
-
-        var supportedBeats = [2, 3, 4, 6, 9, 12];
-        var side = getSolfejoSide();
-        var beatsOk = supportedBeats.indexOf(metroBeatsPerBar) !== -1;
-
-        if (!beatsOk) {
-          metroDom.solfejoBaseImgEl.removeAttribute('src');
-          metroDom.solfejoHandImgEl.removeAttribute('src');
-          return;
-        }
-
-        metroDom.solfejoBaseImgEl.src = './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
-
-        metroDom.solfejoHandImgEl.onload = function () {
-          // Assim que a imagem da mão carregar, reaplica o frame atual
-          // para evitar posição errada por naturalWidth ainda não disponível.
-          setSolfejoHandToFrame(metroSolfejoCurrentFrame);
-        };
-        metroDom.solfejoHandImgEl.src = './imgs/mao-' + side + '.png';
-      }
-
-      function getSolfejoBaseUrl() {
-        // Ex.: ./imgs/movimento-4-direita.png
-        var side = getSolfejoSide();
-        return './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
-      }
-
-      function setSolfejoHandToFrame(frameIndex) {
-        if (!metroDom.solfejoHandImgEl) return;
-        if (!metroDom.solfejoBaseImgEl) return;
-
-        var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
-        if (!frames || !frames.length) return;
-        if (frameIndex < 0) frameIndex = 0;
-        if (frameIndex >= frames.length) frameIndex = frames.length - 1;
-
-        var pos = frames[frameIndex];
-        setSolfejoHandToPosNatural(pos);
-      }
-
-      function setSolfejoHandToPosNatural(pos) {
-        if (!metroDom.solfejoHandImgEl) return;
-        if (!metroDom.solfejoBaseImgEl) return;
-        if (!pos) return;
-        if (!metroDom.solfejoBaseImgEl.complete || !metroDom.solfejoBaseImgEl.naturalWidth) return;
-        if (!metroDom.solfejoHandImgEl.complete || !metroDom.solfejoHandImgEl.naturalWidth) return;
-
-        // pos.x/pos.y está no sistema natural da imagem; vamos converter para display.
-        var rect = metroDom.solfejoBaseImgEl.getBoundingClientRect();
-        var naturalW = metroDom.solfejoBaseImgEl.naturalWidth || 1;
-        var naturalH = metroDom.solfejoBaseImgEl.naturalHeight || 1;
-        var scaleX = rect.width / naturalW;
-        var scaleY = rect.height / naturalH;
-
-        // Faz a mão escalar junto com a imagem do movimento (mantém o mesmo visual ao redimensionar).
-        var baseDisplayW = metroDom.solfejoBaseImgEl.offsetWidth || rect.width || 1;
-        var handDisplayW = baseDisplayW * 0.28; // calibração visual (aprox. 110px quando base ~ 380px)
-        metroDom.solfejoHandImgEl.style.width = handDisplayW + 'px';
-
-        var tip = metroSolfejoHandTipCache[getSolfejoSide()];
-        if (!tip) {
-          // Se ainda não calibramos a ponta, não posiciona (evita ficar "errado").
-          return;
-        }
-
-        var handNaturalW = metroDom.solfejoHandImgEl.naturalWidth || 1;
-        if (!handNaturalW || handNaturalW <= 1) return;
-        var handScale = handDisplayW / handNaturalW;
-        var tipDisplayX = tip.x * handScale;
-        var tipDisplayY = tip.y * handScale;
-
-        var baseX = metroDom.solfejoBaseImgEl.offsetLeft + (pos.x * scaleX);
-        var baseY = metroDom.solfejoBaseImgEl.offsetTop + (pos.y * scaleY);
-
-        // Posiciona a ponta do dedo exatamente na marcação (coord do baseX/baseY).
-        var finalLeft = (baseX - tipDisplayX);
-        var finalTop = (baseY - tipDisplayY);
-        metroDom.solfejoHandImgEl.style.left = finalLeft + 'px';
-        metroDom.solfejoHandImgEl.style.top = finalTop + 'px';
-
-      }
-
-      function cancelSolfejoTween() {
-        if (metroSolfejoTweenRafId) {
-          cancelAnimationFrame(metroSolfejoTweenRafId);
-          metroSolfejoTweenRafId = null;
-        }
-        metroSolfejoTweenFromPos = null;
-        metroSolfejoTweenToPos = null;
-        metroSolfejoTweenFromFrame = 0;
-        metroSolfejoTweenToFrame = 0;
-      }
-
-      function triggerSolfejoHandTap() {
-        if (!metroSolfejoMode) return;
-        if (!metroDom.solfejoHandImgEl) return;
-        metroDom.solfejoHandImgEl.classList.remove('tapping-right', 'tapping-left');
-        // força reflow para reiniciar animação a cada bip
-        void metroDom.solfejoHandImgEl.offsetWidth;
-        if (getSolfejoSide() === 'esquerda') {
-          metroDom.solfejoHandImgEl.classList.add('tapping-left');
-        } else {
-          metroDom.solfejoHandImgEl.classList.add('tapping-right');
-        }
-      }
-
-      function startSolfejoHandTween(toFrameIndex) {
-        if (!metroSolfejoMode) return;
-        if (!metroIsRunning) return;
-        if (!metroDom.solfejoHandImgEl) return;
-        if (!metroDom.solfejoBaseImgEl) return;
-        if (!metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()]) return;
-
-        var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
-        if (!frames || !frames.length) return;
-
-        if (toFrameIndex < 0) toFrameIndex = 0;
-        if (toFrameIndex >= frames.length) toFrameIndex = frames.length - 1;
-
-        var fromIndex = metroSolfejoCurrentFrame;
-        if (fromIndex < 0) fromIndex = 0;
-        if (fromIndex >= frames.length) fromIndex = frames.length - 1;
-
-        // Mapeia batidas (0..N-1) para âncoras dentro da trilha manual (frames).
-        // Isso permite usar pontos extras e percorrer TODOS em loop.
-        var fromFrameForPath = fromIndex;
-        var toFrameForPath = toFrameIndex;
-        if (frames.length > metroBeatsPerBar) {
-          var anchors = [];
-          for (var ai = 0; ai < metroBeatsPerBar; ai++) {
-            var idx = Math.round((ai * frames.length) / metroBeatsPerBar);
-            if (idx >= frames.length) idx = frames.length - 1;
-            anchors.push(idx);
-          }
-          fromFrameForPath = anchors[fromIndex] != null ? anchors[fromIndex] : fromIndex;
-          toFrameForPath = anchors[toFrameIndex] != null ? anchors[toFrameIndex] : toFrameIndex;
-        }
-
-        var fromPos = frames[fromFrameForPath];
-        var toPos = frames[toFrameForPath];
-        if (!fromPos || !toPos) {
-          metroSolfejoCurrentFrame = toFrameIndex;
-          setSolfejoHandToFrame(toFrameIndex);
-          return;
-        }
-
-        // Garante que o tween comece exatamente no ponto anterior (evita desvio
-        // quando a rotina do metronomo agenda múltiplos bips em um mesmo tick).
-        setSolfejoHandToPosNatural(fromPos);
-
-        metroSolfejoCurrentFrame = toFrameIndex;
-
-        metroSolfejoTweenFromPos = fromPos;
-        metroSolfejoTweenToPos = toPos;
-        metroSolfejoTweenFromFrame = fromFrameForPath;
-        metroSolfejoTweenToFrame = toFrameForPath;
-        metroSolfejoTweenStartPerf = performance.now();
-        metroSolfejoTweenDurationMs = (60 / metroBpm) * 1000;
-        if (!metroSolfejoTweenDurationMs || metroSolfejoTweenDurationMs < 50) metroSolfejoTweenDurationMs = 250;
-
-        // Constrói caminho forward cíclico entre from -> to passando por todos os pontos intermediários.
-        var pathPoints = [];
-        var pi = fromFrameForPath;
-        var guard = 0;
-        while (guard < (frames.length + 2)) {
-          pathPoints.push(frames[pi]);
-          if (pi === toFrameForPath) break;
-          pi = (pi + 1) % frames.length;
-          guard++;
-        }
-        if (pathPoints.length < 2) pathPoints = [fromPos, toPos];
-
-        // Pré-cálculo de comprimentos acumulados para interpolar ao longo da polyline.
-        var cumulative = [0];
-        for (var si = 1; si < pathPoints.length; si++) {
-          var pdx = pathPoints[si].x - pathPoints[si - 1].x;
-          var pdy = pathPoints[si].y - pathPoints[si - 1].y;
-          cumulative.push(cumulative[si - 1] + Math.sqrt(pdx * pdx + pdy * pdy));
-        }
-        var totalLen = cumulative[cumulative.length - 1] || 1;
-
-        cancelSolfejoTween();
-
-        function easeInOutCubic(t) {
-          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        function loop(nowPerf) {
-          if (!metroIsRunning || !metroSolfejoMode) return;
-          var elapsed = nowPerf - metroSolfejoTweenStartPerf;
-          var t = elapsed / metroSolfejoTweenDurationMs;
-          if (t >= 1) {
-            metroSolfejoTweenRafId = null;
-            setSolfejoHandToPosNatural(toPos);
-            return;
-          }
-
-          // Movimento contínuo durante toda a batida (sem freeze no ponto).
-          var e = easeInOutCubic(Math.max(0, Math.min(1, t)));
-          // Interpola por comprimento ao longo de todo o caminho.
-          var targetLen = totalLen * e;
-          var seg = 0;
-          while (seg < cumulative.length - 1 && cumulative[seg + 1] < targetLen) seg++;
-          var l0 = cumulative[seg];
-          var l1 = cumulative[seg + 1] || l0;
-          var span = (l1 - l0) || 1;
-          var tt = (targetLen - l0) / span;
-          var p0 = pathPoints[seg];
-          var p1 = pathPoints[seg + 1] || p0;
-          var ix = p0.x + (p1.x - p0.x) * tt;
-          var iy = p0.y + (p1.y - p0.y) * tt;
-          setSolfejoHandToPosNatural({ x: ix, y: iy });
-          metroSolfejoTweenRafId = requestAnimationFrame(loop);
-        }
-
-        metroSolfejoTweenRafId = requestAnimationFrame(loop);
-      }
-
-      function analyzeSolfejoFramesFromImage(imgEl, beatsPerBar) {
-        // Detecta os pontos (preparacao + posicoes) dentro da imagem do movimento.
-        // Resultado: array de tamanho beatsPerBar+1 no sistema natural (naturalWidth/naturalHeight).
-        return new Promise(function (resolve) {
           try {
-            var K = beatsPerBar + 1;
-            var targetW = 260;
-            var scale = targetW / (imgEl.naturalWidth || 1);
-            var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
-
-            var canvas = document.createElement('canvas');
-            canvas.width = targetW;
-            canvas.height = targetH;
-            var ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
-
-            var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            var data = imgData.data;
-
-            // Fundo: média dos cantos (quando tiver pixel não-transparente).
-            function sampleCorner(x, y) {
-              var idx = (y * canvas.width + x) * 4;
-              return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
-            }
-
-            var c1 = sampleCorner(0, 0);
-            var c2 = sampleCorner(canvas.width - 1, 0);
-            var c3 = sampleCorner(0, canvas.height - 1);
-            var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
-
-            var bgR = 0, bgG = 0, bgB = 0, bgCount = 0;
-            [c1, c2, c3, c4].forEach(function (c) {
-              if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
-            });
-            if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
-            else { bgR = 255; bgG = 255; bgB = 255; }
-
-            var candidates = [];
-            var maxPoints = 8500;
-            var step = 2; // performance
-
-            for (var y = 0; y < canvas.height; y += step) {
-              for (var x = 0; x < canvas.width; x += step) {
-                var idx = (y * canvas.width + x) * 4;
-                var a = data[idx + 3];
-                if (a < 30) continue;
-
-                var r = data[idx];
-                var g = data[idx + 1];
-                var b = data[idx + 2];
-
-                var dr = r - bgR;
-                var dg = g - bgG;
-                var db = b - bgB;
-                var dist = Math.sqrt(dr * dr + dg * dg + db * db);
-                if (dist < 70) continue;
-
-                var max = Math.max(r, g, b);
-                var min = Math.min(r, g, b);
-                var sat = max > 0 ? (max - min) / max : 0;
-                var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // 0..255
-
-                if (sat > 0.22 || luma < 90) {
-                  candidates.push({ x: x, y: y, w: dist });
-                  if (candidates.length >= maxPoints) break;
-                }
-              }
-              if (candidates.length >= maxPoints) break;
-            }
-
-            if (!candidates.length || candidates.length < K) {
-              resolve([]);
-              return;
-            }
-
-            // Reduz candidatos (amostragem) para k-means.
-            if (candidates.length > maxPoints) {
-              candidates = candidates.slice(0, maxPoints);
-            }
-
-            // Inicializa centros com os pontos mais "fortes".
-            candidates.sort(function (a, b) { return b.w - a.w; });
-            var centers = [];
-            for (var i = 0; i < K; i++) {
-              centers.push({ x: candidates[Math.floor((i / K) * (candidates.length - 1))].x, y: candidates[Math.floor((i / K) * (candidates.length - 1))].y });
-            }
-
-            var iterations = 8;
-            for (var it = 0; it < iterations; it++) {
-              var sumX = new Array(K).fill(0);
-              var sumY = new Array(K).fill(0);
-              var sumW = new Array(K).fill(0);
-
-              candidates.forEach(function (p) {
-                var best = 0;
-                var bestD = Infinity;
-                for (var c = 0; c < K; c++) {
-                  var dx = p.x - centers[c].x;
-                  var dy = p.y - centers[c].y;
-                  var d2 = dx * dx + dy * dy;
-                  if (d2 < bestD) { bestD = d2; best = c; }
-                }
-                sumX[best] += p.x * p.w;
-                sumY[best] += p.y * p.w;
-                sumW[best] += p.w;
-              });
-
-              for (var c = 0; c < K; c++) {
-                if (sumW[c] > 0) {
-                  centers[c].x = sumX[c] / sumW[c];
-                  centers[c].y = sumY[c] / sumW[c];
-                }
-              }
-            }
-
-            // Escolhe "preparacao" como centro mais ciano/aproximado do eixo central.
-            var prepIndex = 0;
-            var bestPrepScore = -Infinity;
-            for (var c = 0; c < K; c++) {
-              var cx = Math.max(0, Math.min(canvas.width - 1, Math.round(centers[c].x)));
-              var cy = Math.max(0, Math.min(canvas.height - 1, Math.round(centers[c].y)));
-              var ci = (cy * canvas.width + cx) * 4;
-              var r2 = data[ci];
-              var g2 = data[ci + 1];
-              var b2 = data[ci + 2];
-              var score = (g2 + b2) - 2 * r2; // ciano => maior
-              if (score > bestPrepScore) { bestPrepScore = score; prepIndex = c; }
-            }
-
-            var prep = centers[prepIndex];
-            var remaining = centers.filter(function (_, idx) { return idx !== prepIndex; });
-            var ordered = [];
-            var current = { x: prep.x, y: prep.y };
-            for (var i = 0; i < beatsPerBar && remaining.length; i++) {
-              var bestIdx = 0;
-              var bestD = Infinity;
-              for (var j = 0; j < remaining.length; j++) {
-                var dx = remaining[j].x - current.x;
-                var dy = remaining[j].y - current.y;
-                var d2 = dx * dx + dy * dy;
-                if (d2 < bestD) { bestD = d2; bestIdx = j; }
-              }
-              var next = remaining.splice(bestIdx, 1)[0];
-              ordered.push(next);
-              current = next;
-            }
-
-            var sx = (imgEl.naturalWidth || 1) / canvas.width;
-            var sy = (imgEl.naturalHeight || 1) / canvas.height;
-            var frames = [prep].concat(ordered).slice(0, beatsPerBar + 1).map(function (p) {
-              return { x: p.x * sx, y: p.y * sy };
-            });
-
-            resolve(frames);
-          } catch (e) {
-            resolve([]);
-          }
-        });
-      }
-
-      function analyzeSolfejoFramesFromImageV2(imgEl, beatsPerBar, side) {
-        // Mais robusto: detecta componentes conectados (tende a pegar só os "círculos"/marcadores)
-        // e calcula centróides. Depois ordena via caminho mais próximo a partir da preparação.
-        return new Promise(function (resolve) {
-          try {
-            var K = beatsPerBar + 1;
-            var targetW = 260;
-            var scale = targetW / (imgEl.naturalWidth || 1);
-            var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
-
-            var canvas = document.createElement('canvas');
-            canvas.width = targetW;
-            canvas.height = targetH;
-            var ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
-
-            var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            var data = imgData.data;
-
-            function sampleCorner(x, y) {
-              var idx = (y * canvas.width + x) * 4;
-              return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
-            }
-
-            var c1 = sampleCorner(0, 0);
-            var c2 = sampleCorner(canvas.width - 1, 0);
-            var c3 = sampleCorner(0, canvas.height - 1);
-            var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
-
-            var bgR = 255, bgG = 255, bgB = 255, bgCount = 0;
-            [c1, c2, c3, c4].forEach(function (c) {
-              if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
-            });
-            if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
-
-            var W = canvas.width;
-            var H = canvas.height;
-            var N = W * H;
-
-            // Máscara de "pixels de interesse" (marcadores e setas coloridas).
-            var mask = new Uint8Array(N);
-            var alphaThreshold = 40;
-            var satThreshold = 0.25;
-            var distThreshold = 60;
-
-            for (var y = 0; y < H; y++) {
-              for (var x = 0; x < W; x++) {
-                var i = y * W + x;
-                var idx = i * 4;
-                var a = data[idx + 3];
-                if (a < alphaThreshold) continue;
-
-                var r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                var dr = r - bgR, dg = g - bgG, db = b - bgB;
-                var dist = Math.sqrt(dr * dr + dg * dg + db * db);
-                if (dist < distThreshold) continue;
-
-                var max = Math.max(r, g, b);
-                var min = Math.min(r, g, b);
-                var sat = max > 0 ? (max - min) / max : 0;
-                if (sat < satThreshold) continue;
-
-                mask[i] = 1;
-              }
-            }
-
-            var visited = new Uint8Array(N);
-            var components = [];
-            var minArea = Math.round((W * H) * 0.00035); // ajusta sensibilidade
-
-            var qx = new Int32Array(N);
-            var qy = new Int32Array(N);
-
-            for (var yy = 0; yy < H; yy++) {
-              for (var xx = 0; xx < W; xx++) {
-                var start = yy * W + xx;
-                if (!mask[start] || visited[start]) continue;
-
-                // BFS
-                var head = 0, tail = 0;
-                visited[start] = 1;
-                qx[tail] = xx;
-                qy[tail] = yy;
-                tail++;
-
-                var area = 0;
-                var sumX = 0;
-                var sumY = 0;
-                var sumR = 0;
-                var sumG = 0;
-                var sumB = 0;
-
-                while (head < tail) {
-                  var cx = qx[head];
-                  var cy = qy[head];
-                  head++;
-
-                  var ci = cy * W + cx;
-                  area++;
-                  sumX += cx;
-                  sumY += cy;
-
-                  var cidx = ci * 4;
-                  sumR += data[cidx];
-                  sumG += data[cidx + 1];
-                  sumB += data[cidx + 2];
-
-                  // 4-neighbors
-                  if (cx > 0) {
-                    var n = ci - 1;
-                    if (mask[n] && !visited[n]) { visited[n] = 1; qx[tail] = cx - 1; qy[tail] = cy; tail++; }
-                  }
-                  if (cx < W - 1) {
-                    var n2 = ci + 1;
-                    if (mask[n2] && !visited[n2]) { visited[n2] = 1; qx[tail] = cx + 1; qy[tail] = cy; tail++; }
-                  }
-                  if (cy > 0) {
-                    var n3 = ci - W;
-                    if (mask[n3] && !visited[n3]) { visited[n3] = 1; qx[tail] = cx; qy[tail] = cy - 1; tail++; }
-                  }
-                  if (cy < H - 1) {
-                    var n4 = ci + W;
-                    if (mask[n4] && !visited[n4]) { visited[n4] = 1; qx[tail] = cx; qy[tail] = cy + 1; tail++; }
-                  }
-                }
-
-                if (area >= minArea) {
-                  components.push({
-                    x: sumX / area,
-                    y: sumY / area,
-                    area: area,
-                    avgR: sumR / area,
-                    avgG: sumG / area,
-                    avgB: sumB / area
-                  });
-                }
-              }
-            }
-
-            if (!components.length) {
-              resolve([]);
-              return;
-            }
-
-            components.sort(function (a, b2) { return b2.area - a.area; });
-            var chosen = components.slice(0, K);
-            if (chosen.length < K) {
-              resolve([]);
-              return;
-            }
-
-            // Preparacao: ciano (G+B alto, R baixo) e próximo do centro.
-            var centerX = W / 2;
-            var bestPrepIdx = 0;
-            var bestScore = -Infinity;
-            for (var ci2 = 0; ci2 < chosen.length; ci2++) {
-              var c = chosen[ci2];
-              var cyanScore = (c.avgG + c.avgB - 2 * c.avgR) - 0.15 * Math.abs(c.x - centerX);
-              if (cyanScore > bestScore) { bestScore = cyanScore; bestPrepIdx = ci2; }
-            }
-
-            var prep = chosen[bestPrepIdx];
-            var remaining = chosen.filter(function (_, idx) { return idx !== bestPrepIdx; });
-
-            // Ordena pelos ângulos ao redor do centro, começando no ponto 1 (dot mais "baixo" em y).
-            // Isso reduz o erro de mapeamento beatIndex -> posição.
-            var centerX2 = W / 2;
-            var centerY2 = H / 2;
-
-            var startDotIdx = 0;
-            var maxY = -Infinity;
-            for (var sd = 0; sd < remaining.length; sd++) {
-              if (remaining[sd].y > maxY) { maxY = remaining[sd].y; startDotIdx = sd; }
-            }
-            var startDot = remaining[startDotIdx];
-            var startAngle = Math.atan2(startDot.y - centerY2, startDot.x - centerX2);
-            if (startAngle < 0) startAngle += Math.PI * 2;
-
-            var clockwise = (side === 'direita');
-            function normAngle(a) {
-              if (a < 0) a += Math.PI * 2;
-              if (a >= Math.PI * 2) a -= Math.PI * 2;
-              return a;
-            }
-
-            var ordered = remaining.map(function (p) {
-              var ang = Math.atan2(p.y - centerY2, p.x - centerX2);
-              ang = normAngle(ang);
-              var dist = clockwise ? (startAngle - ang) : (ang - startAngle);
-              dist = dist % (Math.PI * 2);
-              if (dist < 0) dist += Math.PI * 2;
-              return { p: p, dist: dist };
-            });
-
-            ordered.sort(function (a, b2) { return a.dist - b2.dist; });
-
-            var sx = (imgEl.naturalWidth || 1) / W;
-            var sy = (imgEl.naturalHeight || 1) / H;
-            var frames = [{ x: prep.x * sx, y: prep.y * sy }];
-            for (var oi2 = 0; oi2 < beatsPerBar; oi2++) {
-              var it = ordered[oi2];
-              if (!it) break;
-              frames.push({ x: it.p.x * sx, y: it.p.y * sy });
-            }
-
-            // Garante tamanho esperado
-            while (frames.length < beatsPerBar + 1) {
-              frames.push({ x: prep.x * sx, y: prep.y * sy });
-            }
-
-            resolve(frames);
-          } catch (e) {
-            resolve([]);
-          }
-        });
-      }
-      function analyzeHandTipFromImage(imgEl) {
-        // Encontra a "ponta" (menor Y) de pixels não-transparentes.
-        // Retorna coordenadas no sistema natural da imagem (top-left = origem).
-        return new Promise(function (resolve) {
-          try {
-            var w = imgEl.naturalWidth || 1;
-            var h = imgEl.naturalHeight || 1;
-            var canvas = document.createElement('canvas');
-            canvas.width = w;
-            canvas.height = h;
-            var ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(imgEl, 0, 0, w, h);
-            var imgData = ctx.getImageData(0, 0, w, h);
-            var data = imgData.data;
-
-            var minY = Infinity;
-            var samples = [];
-            var alphaThreshold = 40;
-
-            for (var y = 0; y < h; y++) {
-              for (var x = 0; x < w; x++) {
-                var idx = (y * w + x) * 4;
-                var a = data[idx + 3];
-                if (a < alphaThreshold) continue;
-                minY = Math.min(minY, y);
-              }
-            }
-            if (minY === Infinity) {
-              resolve({ x: w / 2, y: h / 2 });
-              return;
-            }
-
-            // Media do X onde está a ponta (minY).
-            var sumX = 0;
-            var countX = 0;
-            var yBand = minY + 1; // tolerancia
-            for (var y2 = minY; y2 <= yBand; y2++) {
-              for (var x2 = 0; x2 < w; x2++) {
-                var idx2 = (y2 * w + x2) * 4;
-                var a2 = data[idx2 + 3];
-                if (a2 < alphaThreshold) continue;
-                sumX += x2;
-                countX++;
-              }
-            }
-
-            var tipX = countX > 0 ? (sumX / countX) : (w / 2);
-            resolve({ x: tipX, y: minY });
-          } catch (e) {
-            resolve({ x: (imgEl.naturalWidth || 1) / 2, y: (imgEl.naturalHeight || 1) / 3 });
-          }
-        });
-      }
-
-      function ensureHandTipCalibrated() {
-        if (!metroDom.solfejoHandImgEl) return Promise.resolve();
-        var side = getSolfejoSide();
-        if (metroSolfejoHandTipCache[side]) return Promise.resolve(metroSolfejoHandTipCache[side]);
-        if (metroSolfejoHandTipPromises[side]) return metroSolfejoHandTipPromises[side];
-
-        metroSolfejoHandTipPromises[side] = new Promise(function (resolve) {
-          // Se ainda não carregou, espera o onload.
-          function finish() {
-            analyzeHandTipFromImage(metroDom.solfejoHandImgEl).then(function (tip) {
-              metroSolfejoHandTipCache[side] = tip;
-              resolve(tip);
-            });
-          }
-
-          if (metroDom.solfejoHandImgEl.complete && metroDom.solfejoHandImgEl.naturalWidth > 0) {
-            finish();
-          } else {
-            metroDom.solfejoHandImgEl.onload = function () {
-              finish();
-            };
-            metroDom.solfejoHandImgEl.onerror = function () {
-              metroSolfejoHandTipCache[side] = { x: (metroDom.solfejoHandImgEl.naturalWidth || 1) / 2, y: 0 };
-              resolve(metroSolfejoHandTipCache[side]);
-            };
-          }
-        });
-
-        return metroSolfejoHandTipPromises[side];
-      }
-
-      function getManualSolfejoFrames(beatsPerBar, side, naturalW, naturalH) {
-        var key = beatsPerBar + '-' + side;
-        var points = SOLFEJO_MANUAL_POINTS[key];
-        var minExpected = beatsPerBar;
-        if (!points || points.length === 0) return null;
-
-        var frames = [];
-        for (var i = 0; i < points.length; i++) {
-          var p = points[i];
-          if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') return null;
-          frames.push({
-            x: p.x * naturalW,
-            y: p.y * naturalH
-          });
+            self.select();
+          } catch (eSel) { }
+        }, 0);
+      });
+      playerSelectHino.addEventListener('click', function () {
+        this.dataset.openAll = '1';
+        renderPlayerCatalogControls(true);
+        if (playerHinoSuggestions && playerHinoSuggestions.innerHTML.trim()) {
+          playerHinoSuggestions.classList.remove('hidden');
         }
-
-        // Se vier menos pontos do que o mínimo necessário para o compasso,
-        // completa repetindo o último ponto informado (comportamento previsível no ajuste manual).
-        while (frames.length < minExpected) {
-          var last = frames[frames.length - 1];
-          frames.push({ x: last.x, y: last.y });
+      });
+      playerSelectHino.addEventListener('change', applyPlayerHinoFromInput);
+      playerSelectHino.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        this.dataset.openAll = '0';
+        applyPlayerHinoFromInput();
+      });
+    }
+    if (playerHinoSuggestions) {
+      playerHinoSuggestions.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest('.player-hino-suggestion') : null;
+        if (!btn) return;
+        var itemId = String(btn.getAttribute('data-item-id') || '');
+        var n = parseInt(btn.getAttribute('data-hino-numero') || '0', 10);
+        if (!itemId && (!isFinite(n) || n <= 0)) return;
+        var item = itemId ? getPlayerCatalogItemById(itemId) : getPlayerCatalogItemByNumero(n);
+        if (item) {
+          playerSelectedItemId = String(item.id || '');
+          playerSelectedHinoNumero = Number(item.numero || 0);
+        } else {
+          playerSelectedItemId = null;
+          playerSelectedHinoNumero = n;
         }
-
-        return frames;
+        if (item && playerSelectHino) playerSelectHino.value = String(item.numero) + ' · ' + (item.titulo || 'Sem título');
+        if (playerSelectHino) playerSelectHino.dataset.openAll = '0';
+        playerHinoSuggestions.classList.add('hidden');
+        renderPlayerCatalogControls();
+        loadPlayerFromCatalogSelection(true);
+      });
+    }
+    document.addEventListener('click', function (e) {
+      if (!playerHinoPicker || !playerHinoSuggestions) return;
+      if (!playerHinoPicker.contains(e.target)) {
+        playerHinoSuggestions.classList.add('hidden');
       }
-
-      function ensureSolfejoFramesLoaded() {
-        var key = metroBeatsPerBar + '-' + getSolfejoSide();
-        var minExpectedLen = metroBeatsPerBar;
-        // Sempre recalcula no modo manual para evitar usar trilha antiga em cache
-        // durante calibração (edições frequentes de pontos).
-        delete metroSolfejoFramesCache[key];
-        delete metroSolfejoFramesPromises[key];
-
-        if (metroSolfejoFramesPromises[key]) return metroSolfejoFramesPromises[key];
-
-        var baseSrc = getSolfejoBaseUrl();
-        var handSide = getSolfejoSide();
-        metroDom.solfejoHandImgEl.src = './imgs/mao-' + handSide + '.png';
-        metroDom.solfejoBaseImgEl.src = baseSrc;
-
-        metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
-          metroDom.solfejoBaseImgEl.onload = function () {
-            var manualFrames = getManualSolfejoFrames(
-              metroBeatsPerBar,
-              handSide,
-              (metroDom.solfejoBaseImgEl.naturalWidth || 1),
-              (metroDom.solfejoBaseImgEl.naturalHeight || 1)
-            );
-
-            if (manualFrames && manualFrames.length >= minExpectedLen) {
-              metroSolfejoFramesCache[key] = manualFrames;
-              setSolfejoHandToFrame(metroSolfejoCurrentFrame);
-              resolve(manualFrames);
-              return;
-            }
-
-            // Sem detecção automática: somente pontos manuais.
-            // Se não houver configuração válida, mantém a mão parada no centro.
-            var cxM = (metroDom.solfejoBaseImgEl.naturalWidth || 1) / 2;
-            var cyM = (metroDom.solfejoBaseImgEl.naturalHeight || 1) / 2;
-            var manualFallback = [];
-            for (var mi = 0; mi < minExpectedLen; mi++) manualFallback.push({ x: cxM, y: cyM });
-            metroSolfejoFramesCache[key] = manualFallback;
-            setSolfejoHandToFrame(metroSolfejoCurrentFrame);
-            resolve(manualFallback);
-          };
-          metroDom.solfejoBaseImgEl.onerror = function () {
-            // se não carregar, fallback imediato
-            var cx = (metroDom.solfejoBaseImgEl.naturalWidth || 1) / 2;
-            var cy = (metroDom.solfejoBaseImgEl.naturalHeight || 1) / 2;
-            var frames = [];
-            var minExpectedLen2 = metroBeatsPerBar + 1;
-            for (var i = 0; i < minExpectedLen2; i++) frames.push({ x: cx, y: cy });
-            metroSolfejoFramesCache[key] = frames;
-            resolve(frames);
-          };
+    });
+    var playerVoiceChecks = document.getElementById('playerVoiceChecks');
+    if (playerVoiceChecks) {
+      playerVoiceChecks.addEventListener('change', function (e) {
+        var target = e && e.target;
+        if (!target || target.type !== 'checkbox') return;
+        var values = [];
+        playerVoiceChecks.querySelectorAll('input[type="checkbox"]:checked').forEach(function (cb) {
+          values.push(String(cb.value || '').toLowerCase());
         });
-
-        return metroSolfejoFramesPromises[key];
-      }
-
-      function initMetronomeUI() {
-        window.MetronomeUiInit.initMetronomeUI();
-      }
-
-      // ========== SOBRE ==========
-      function openAboutModal() {
-        return window.UiCoreModule.openAboutModal();
-      }
-
-      function closeAboutModal() {
-        return window.UiCoreModule.closeAboutModal();
-      }
-
-      function createKeyButtons() {
-        var container = document.getElementById('keyTabs');
-        if (!container) return;
-        container.innerHTML = '';
-        TONALIDADES.forEach(function (k) {
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'key-btn du-btn du-btn-outline du-btn-sm' + (k.id === currentKey.id ? ' active' : '');
-          btn.dataset.keyId = k.id;
-          btn.setAttribute('aria-pressed', k.id === currentKey.id ? 'true' : 'false');
-          btn.textContent = k.nome;
-          container.appendChild(btn);
-        });
-      }
-
-      function createNoteButtons() {
-        var container = document.getElementById('noteOptions');
-        if (!container) return;
-        container.innerHTML = '';
-        NOTAS.forEach(function (nota) {
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'note-option-btn du-btn du-btn-outline du-btn-sm';
-          btn.dataset.noteId = nota.id;
-          btn.textContent = nota.nome;
-          btn.addEventListener('click', function () {
-            handleNoteOptionClick(nota.id, btn);
-          });
-          container.appendChild(btn);
-        });
-      }
-
-      function setKey(keyId) {
-        var key = TONALIDADES.find(function (k) { return k.id === keyId; });
-        if (!key) return;
-        currentKey = key;
-        document.querySelectorAll('.key-btn').forEach(function (btn) {
-          var active = btn.dataset.keyId === keyId;
-          btn.classList.toggle('active', active);
-          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-        });
-        updateViolinBoardLabels();
-      }
-
-      function hideSplashScreen() {
-        return window.UiCoreModule.hideSplashScreen();
-      }
-
-      function registerServiceWorkerAutoUpdate() {
-        if (!('serviceWorker' in navigator)) return;
-        var hasReloadedForUpdate = false;
-
-        navigator.serviceWorker.addEventListener('controllerchange', function () {
-          // Evita loop de recarga caso o browser dispare o evento mais de uma vez.
-          if (hasReloadedForUpdate) return;
-          hasReloadedForUpdate = true;
-          window.location.reload();
-        });
-
-        navigator.serviceWorker.register('./sw.js').then(function (registration) {
-          function watchInstallingWorker(worker) {
-            if (!worker) return;
-            worker.addEventListener('statechange', function () {
-              // Se já existia SW controlando, isso é update. Recarrega ao ativar.
-              if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-                if (registration.waiting) {
-                  registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-                } else if (registration.active) {
-                  window.location.reload();
-                }
-              }
-            });
-          }
-
-          if (registration.installing) {
-            watchInstallingWorker(registration.installing);
-          }
-
-          registration.addEventListener('updatefound', function () {
-            watchInstallingWorker(registration.installing);
-          });
-
-          // Força checagem de atualização ao abrir.
-          registration.update().catch(function () {});
-        }).catch(function () {});
-      }
-
-      // ========== MAPA DE MÓDULOS (separação de responsabilidades) ==========
-      /**
-       * Registro central para facilitar manutenção e descoberta de código.
-       * Não altera o fluxo atual; apenas organiza os domínios do app.
-       */
-      var APP_MODULES = {
-        config: {
-          APP_VERSION: APP_VERSION,
-          APP_VERSION_LABEL: APP_VERSION_LABEL,
-          PLAYER_SCORE_URL: PLAYER_SCORE_URL,
-          PLAYER_CATALOG_URL: PLAYER_CATALOG_URL,
-          NOTAS: NOTAS,
-          INSTRUMENTOS: INSTRUMENTOS,
-          TONALIDADES: TONALIDADES,
-          CLAVES: CLAVES
-        },
-        audio: {
-          getAudioContext: getAudioContext,
-          loadInstrument: loadInstrument,
-          playNoteSound: playNoteSound,
-          stopAllPlayerNotes: stopAllPlayerNotes,
-          startAmbient: startAmbient,
-          stopAmbient: stopAmbient
-        },
-        player: {
-          ensurePlayerCatalogLoaded: ensurePlayerCatalogLoaded,
-          loadPlayerFromCatalogSelection: loadPlayerFromCatalogSelection,
-          loadPlayerMusicXml: loadPlayerMusicXml,
-          getPlayerMusicXmlLoadContext: function () {
-            return window.PlayerLoadBindings.getPlayerMusicXmlLoadContext();
-          },
-          startPlayerPlayback: startPlayerPlayback,
-          stopPlayerPlayback: stopPlayerPlayback,
-          seekPlayerToTime: seekPlayerToTime,
-          updatePlayerUiNow: updatePlayerUiNow
-        },
-        tuner: {
-          startTuner: startTuner,
-          stopTuner: stopTuner,
-          drawTunerChart: drawTunerChart,
-          openTunerMicHelpModal: openTunerMicHelpModal,
-          closeTunerMicHelpModal: closeTunerMicHelpModal
-        },
-        metronome: {
-          startMetronome: startMetronome,
-          stopMetronome: stopMetronome,
-          initMetronomeUI: initMetronomeUI
-        },
-        game: {
-          setMode: setMode,
-          updateProgress: updateProgress,
-          restart: restart
-        },
-        ui: {
-          setMessage: setMessage,
-          updateFullscreenButton: updateFullscreenButton,
-          updateBottomNavVisibility: updateBottomNavVisibility,
-          hideSplashScreen: hideSplashScreen
-        },
-        catalog: {
-          normalizePlayerCatalogJson: normalizePlayerCatalogJson,
-          getPlayerCatalogCollections: getPlayerCatalogCollections,
-          getPlayerCatalogItems: getPlayerCatalogItems,
-          getPlayerCatalogItemByNumero: getPlayerCatalogItemByNumero
-        },
-        hinos: {
-          initHinosUI: initHinosUI,
-          bindHinosEvents: bindHinosEvents,
-          curriculumUtils: function () {
-            return window.HinosCurriculumUtils;
-          }
+        if (!values.length) {
+          target.checked = true;
+          values = [String(target.value || 's').toLowerCase()];
         }
-      };
-
-      // Exposição controlada para debug e documentação viva no browser.
-      window.OrquestraApp = window.OrquestraApp || {};
-      window.OrquestraApp.modules = APP_MODULES;
-
-      function init() {
-        var aboutVersionNumber = document.getElementById('aboutVersionNumber');
-        var aboutVersionLabel = document.getElementById('aboutVersion');
-        var splashVersion = document.getElementById('splashVersion');
-        if (aboutVersionNumber) aboutVersionNumber.textContent = APP_VERSION;
-        if (aboutVersionLabel) aboutVersionLabel.textContent = APP_VERSION_LABEL;
-        if (splashVersion) splashVersion.textContent = 'v' + APP_VERSION;
-        initTheme();
-        bootstrapScreenWakeLock();
-        createInstrumentButtons();
-        createKeyButtons();
-        createClefButtons();
-        createViolinBoard();
-        initStaff();
-        createNoteButtons();
-        initMetronomeUI();
-        bindEvents();
-        updatePlayerUiNow(0);
-        syncPlayerSpeedUi();
+        playerSelectedVoices = values;
+        renderPlayerCatalogControls();
+        loadPlayerFromCatalogSelection(true);
+      });
+    }
+    var playerMetronomeToggle = document.getElementById('playerMetronomeToggle');
+    if (playerMetronomeToggle) {
+      playerMetronomeToggle.addEventListener('click', function () {
+        playerMetronomeEnabled = !playerMetronomeEnabled;
+        syncPlayerLeverUi();
+        setMessage(playerMetronomeEnabled ? 'Metrônomo do player ligado.' : 'Metrônomo do player desligado.');
+      });
+    }
+    var playerAutoScrollToggle = document.getElementById('playerAutoScrollToggle');
+    if (playerAutoScrollToggle) {
+      playerAutoScrollToggle.addEventListener('click', function () {
+        playerAutoScrollEnabled = !playerAutoScrollEnabled;
+        syncPlayerLeverUi();
+        setMessage(playerAutoScrollEnabled ? 'Rolagem automática ligada.' : 'Rolagem automática desligada.');
+      });
+    }
+    var playerLoopToggle = document.getElementById('playerLoopToggle');
+    if (playerLoopToggle) {
+      playerLoopToggle.addEventListener('click', function () {
+        playerLoopEnabled = !playerLoopEnabled;
+        syncPlayerLeverUi();
+        setMessage(playerLoopEnabled ? 'Loop da partitura ligado.' : 'Loop da partitura desligado.');
+      });
+    }
+    var playerColorToggle = document.getElementById('playerColorToggle');
+    if (playerColorToggle) {
+      playerColorToggle.addEventListener('click', function () {
+        playerColorizedNotes = !playerColorizedNotes;
+        syncPlayerLeverUi();
+        loadPlayerFromCatalogSelection(true);
+        setMessage(playerColorizedNotes ? 'Partitura colorida ligada.' : 'Partitura em preto (padrão).');
+      });
+    }
+    var playerNoteNamesToggle = document.getElementById('playerNoteNamesToggle');
+    if (playerNoteNamesToggle) {
+      playerNoteNamesToggle.addEventListener('click', function () {
+        playerNoteNameLabels = !playerNoteNameLabels;
+        syncPlayerLeverUi();
+        if (playerOsmd && playerScoreData) {
+          syncPlayerNoteNameLabelOverlays();
+        }
+        setMessage(
+          playerNoteNameLabels ? 'Nomes nas notas ligados.' : 'Nomes nas notas desligados.'
+        );
+      });
+    }
+    var playerFingeringToggle = document.getElementById('playerFingeringToggle');
+    if (playerFingeringToggle) {
+      playerFingeringToggle.addEventListener('click', function () {
+        playerShowFingering = !playerShowFingering;
+        syncPlayerLeverUi();
+        loadPlayerFromCatalogSelection(true);
+        setMessage(playerShowFingering ? 'Dedilhado ligado.' : 'Dedilhado desligado.');
+      });
+    }
+    var playerLiveListenToggle = document.getElementById('playerLiveListenToggle');
+    if (playerLiveListenToggle) {
+      playerLiveListenToggle.addEventListener('click', function () {
+        playerLiveListenEnabled = !playerLiveListenEnabled;
         syncPlayerLeverUi();
         syncPlayerLiveScoreUi();
-        renderPlayerCatalogControls();
-        initHinosUI();
-        updateTunerUINoSignal();
-        drawTunerGauge(0, 'idle');
-        drawTunerChart();
-        setMode(currentMode);
-        updateFullscreenButton();
-        initBottomNavObserver();
-        updateBottomNavVisibility();
-        window.addEventListener('scroll', updateBottomNavVisibility, { passive: true });
-        document.addEventListener('scroll', updateBottomNavVisibility, { passive: true, capture: true });
-        window.addEventListener('resize', function onWindowResizePlayerAndNav() {
-          updateBottomNavVisibility();
-          resizePlayerOsmdIfActive();
-          buildPlayerNoteAnchorsFromDom();
-          playerAutoScrollNeedsInitial = true;
-        });
-        window.addEventListener('orientationchange', function onOrientationChangePlayer() {
-          resizePlayerOsmdIfActive();
-          buildPlayerNoteAnchorsFromDom();
-          playerAutoScrollNeedsInitial = true;
-        });
-        if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
-          window.visualViewport.addEventListener('resize', function onVisualViewportResizePlayer() {
-            playerAutoScrollNeedsInitial = true;
-            updateBottomNavVisibility();
-          });
-          window.visualViewport.addEventListener('scroll', function onVisualViewportScrollNav() {
-            updateBottomNavVisibility();
-          });
+        if (playerLiveListenEnabled) {
+          if (currentMode === 'player') startPlayerLiveListen();
+          else setMessage('Leitura ao vivo ligada. Abra o modo Player para iniciar a escuta.');
+        } else {
+          stopPlayerLiveListen();
+          clearPlayerLiveFeedback();
+          resetPlayerLiveScoreTotals();
+          syncPlayerLiveScoreUi();
+          setMessage('Leitura ao vivo desligada.');
         }
-        // PWA: registra o SW com atualização automática para a versão mais recente.
-        registerServiceWorkerAutoUpdate();
-        if (currentMode !== 'hinos' && currentMode !== 'player') {
-          setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+      });
+    }
+    var playerMutePlaybackToggle = document.getElementById('playerMutePlaybackToggle');
+    if (playerMutePlaybackToggle) {
+      playerMutePlaybackToggle.addEventListener('click', function () {
+        playerMutePlaybackEnabled = !playerMutePlaybackEnabled;
+        syncPlayerLeverUi();
+        setMessage(
+          playerMutePlaybackEnabled
+            ? 'Áudio da partitura silenciado no player.'
+            : 'Áudio da partitura reativado no player.'
+        );
+      });
+    }
+    var playerMeasureNumbersToggle = document.getElementById('playerMeasureNumbersToggle');
+    if (playerMeasureNumbersToggle) {
+      playerMeasureNumbersToggle.addEventListener('click', function () {
+        playerShowMeasureNumbers = !playerShowMeasureNumbers;
+        syncPlayerLeverUi();
+        if (playerOsmd && typeof playerOsmd.setOptions === 'function') {
+          try {
+            window.PlayerLoadBindingAccess.applyPlayerOsmdDisplayOptions(playerOsmd);
+            playerOsmd.render();
+            requestAnimationFrame(function () {
+              resizePlayerOsmdIfActive();
+              buildPlayerNoteAnchorsFromDom();
+            });
+            setTimeout(buildPlayerNoteAnchorsFromDom, 200);
+          } catch (eMn) {
+            loadPlayerFromCatalogSelection(true);
+          }
+        } else {
+          loadPlayerFromCatalogSelection(true);
         }
-        // Pequeno atraso para a transição de entrada ficar suave.
-        setTimeout(hideSplashScreen, 700);
+        setMessage(
+          playerShowMeasureNumbers ? 'Números de compasso visíveis.' : 'Números de compasso ocultos.'
+        );
+      });
+    }
+    var playerSeek = document.getElementById('playerSeek');
+    if (playerSeek) {
+      playerSeek.addEventListener('input', function () {
+        if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+        var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
+        var targetSec = ratio * playerScoreData.totalDurationSec;
+        updatePlayerUiNow(targetSec);
+      });
+      playerSeek.addEventListener('change', function () {
+        if (!playerScoreData || !playerScoreData.totalDurationSec) return;
+        var ratio = Math.max(0, Math.min(1, (parseFloat(this.value) || 0) / 1000));
+        var targetSec = ratio * playerScoreData.totalDurationSec;
+        seekPlayerToTime(targetSec, true);
+      });
+    }
+    var playerHost = document.getElementById('playerScoreHost');
+    if (playerHost) {
+      playerHost.addEventListener('click', function (e) {
+        if (currentMode !== 'player' || !playerScoreData) return;
+        var acted = seekPlayerFromClick(e.clientX, e.clientY);
+        if (acted) {
+          setMessage('Posição ajustada na partitura.');
+        }
+      });
+    }
+    var btnPlayerSettings = document.getElementById('btnPlayerSettings');
+    if (btnPlayerSettings) {
+      btnPlayerSettings.addEventListener('click', function () {
+        openSettingsPanel();
+      });
+    }
+    var btnMoreSettings = document.getElementById('btnMoreSettings');
+    if (btnMoreSettings) {
+      btnMoreSettings.addEventListener('click', function () {
+        openSettingsPanel();
+      });
+    }
+    document.addEventListener('click', function (e) {
+      var menu = document.getElementById('modeMoreMenu');
+      var wrap = document.querySelector('.mode-more-wrap');
+      if (!menu || !wrap) return;
+      if (!wrap.contains(e.target)) setMoreMenuOpen(false);
+      var speedWrap = document.getElementById('playerControls');
+      if (!speedWrap || !speedWrap.contains(e.target)) setPlayerSpeedPopoverOpen(false);
+    });
+    function pausePlayerAutoScrollByUser() {
+      if (currentMode !== 'player') return;
+      if (Date.now() < playerAutoScrollProgrammaticUntil) return;
+      playerAutoScrollUserPausedUntil = Date.now() + 2200;
+    }
+    window.addEventListener('wheel', pausePlayerAutoScrollByUser, { passive: true });
+    window.addEventListener('touchmove', pausePlayerAutoScrollByUser, { passive: true });
+    window.addEventListener('keydown', function (e) {
+      var keys = ['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End', ' '];
+      if (keys.indexOf(e.key) >= 0) pausePlayerAutoScrollByUser();
+    });
+    window.addEventListener('keydown', function (e) {
+      var isSpace = e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar';
+      if (!isSpace) return;
+      if (currentMode !== 'player') return;
+      var target = e.target;
+      var tag = target && target.tagName ? String(target.tagName).toUpperCase() : '';
+      var typing = !!(target && (target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'));
+      if (typing) return;
+      if (!playerScoreData || !playerScoreData.events || !playerScoreData.events.length) return;
+      e.preventDefault();
+      if (playerPlayback.isPlaying || playerPrepToken) {
+        stopPlayerPlayback(true);
+        setMessage('Playback pausado.');
+        return;
+      }
+      startPlayerPlayback();
+    });
+
+    var tunerStartBtn = document.getElementById('tunerStartBtn');
+    var tunerStopBtn = document.getElementById('tunerStopBtn');
+    var tunerPresetSel = document.getElementById('tunerInstrumentSelect');
+    if (tunerStartBtn) {
+      tunerStartBtn.addEventListener('click', function () {
+        startTuner();
+      });
+    }
+    if (tunerStopBtn) {
+      tunerStopBtn.addEventListener('click', function () {
+        stopTuner();
+      });
+    }
+    if (tunerPresetSel) {
+      renderTunerPresetDynamicInfo();
+      tunerPresetSel.addEventListener('change', function () {
+        renderTunerPresetDynamicInfo();
+        tunerSmoothedFreq = 0;
+        tunerRawHistory = [];
+        if (!tunerRunning) return;
+        setMessage('Preset alterado para ' + tunerPresetSel.options[tunerPresetSel.selectedIndex].text + '.');
+      });
+    }
+    var tunerMicOpenSettingsBtn = document.getElementById('tunerMicOpenSettingsBtn');
+    var tunerMicInstructionsBtn = document.getElementById('tunerMicInstructionsBtn');
+    var tunerMicHelpOk = document.getElementById('tunerMicHelpOk');
+    var tunerMicHelpCloseX = document.getElementById('tunerMicHelpCloseX');
+    var tunerMicHelpModal = document.getElementById('tunerMicHelpModal');
+    if (tunerMicOpenSettingsBtn) {
+      tunerMicOpenSettingsBtn.addEventListener('click', function () {
+        tryOpenTunerMicrophoneSettings();
+      });
+    }
+    if (tunerMicInstructionsBtn) {
+      tunerMicInstructionsBtn.addEventListener('click', function () {
+        openTunerMicHelpModal();
+      });
+    }
+    if (tunerMicHelpOk) tunerMicHelpOk.addEventListener('click', closeTunerMicHelpModal);
+    if (tunerMicHelpCloseX) tunerMicHelpCloseX.addEventListener('click', closeTunerMicHelpModal);
+    if (tunerMicHelpModal) {
+      tunerMicHelpModal.addEventListener('click', function (e) {
+        if (e.target === tunerMicHelpModal) closeTunerMicHelpModal();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var tm = document.getElementById('tunerMicHelpModal');
+      if (tm && !tm.classList.contains('hidden')) {
+        e.preventDefault();
+        closeTunerMicHelpModal();
+      }
+    });
+    var btnStaffRestart = document.getElementById('btnStaffRestart');
+    if (btnStaffRestart) {
+      btnStaffRestart.addEventListener('click', function () {
+        restart();
+      });
+    }
+    window.addEventListener('resize', function () {
+      drawTunerGauge(tunerLastCents, tunerLastStatus);
+      drawTunerChart();
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        requestScreenWakeLock();
+      }
+    });
+    window.addEventListener('beforeunload', function () {
+      stopTuner();
+      releaseScreenWakeLock();
+    });
+
+    bindHinosEvents();
+
+    document.getElementById('btnRepeatInstruction').addEventListener('click', repeatInstruction);
+
+    document.getElementById('btnNarration').addEventListener('click', function () {
+      narrationEnabled = !narrationEnabled;
+      this.textContent = narrationEnabled ? '🗣️ Narração ligada' : '🗣️ Narração';
+      if (narrationEnabled) repeatInstruction();
+    });
+
+    document.getElementById('btnAmbient').addEventListener('click', toggleAmbient);
+
+    document.getElementById('btnCalmMode').addEventListener('click', function () {
+      calmMode = !calmMode;
+      document.body.classList.toggle('calm-mode', calmMode);
+      this.textContent = calmMode ? '🔉 Modo calmo' : '🔊 Modo calmo';
+      if (ambientGain) {
+        const ctx = getAudioContext();
+        ambientGain.gain.linearRampToValueAtTime(calmMode ? 0.02 : 0.04, ctx.currentTime + 0.3);
+      }
+    });
+
+    document.getElementById('btnSound').addEventListener('click', function () {
+      soundEnabled = !soundEnabled;
+      this.textContent = soundEnabled ? '🔈 Som' : '🔇 Som';
+      if (!soundEnabled && ambientOsc) stopAmbient();
+      if (!soundEnabled && metroIsRunning) stopMetronome();
+      if (soundEnabled && ambientEnabled) startAmbient();
+    });
+
+    var btnFullscreen = document.getElementById('btnFullscreen');
+    if (btnFullscreen) {
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+      document.addEventListener('fullscreenchange', updateFullscreenButton);
+    }
+
+    document.getElementById('btnRestart').addEventListener('click', restart);
+  }
+
+  // ========== INICIALIZAÇÃO ==========
+  function createClefButtons() {
+    var container = document.getElementById('clefTabs');
+    if (!container) return;
+    container.innerHTML = '';
+    CLAVES.forEach(function (clef) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'clef-btn du-btn du-btn-outline du-btn-sm' + (clef.id === currentClef ? ' active' : '');
+      btn.dataset.clefId = clef.id;
+      btn.setAttribute('aria-pressed', clef.id === currentClef ? 'true' : 'false');
+      btn.textContent = clef.simbolo + ' ' + clef.nome;
+      container.appendChild(btn);
+    });
+  }
+
+  function setClef(clefId) {
+    var clef = CLAVES.find(function (c) { return c.id === clefId; });
+    if (!clef) return;
+    currentClef = clef.id;
+    document.querySelectorAll('.clef-btn').forEach(function (btn) {
+      var active = btn.dataset.clefId === clefId;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    updateStaffClefVisual();
+    if (currentMode === 'staff') startStaffRound();
+  }
+
+  // ========== METRÔNOMO ==========
+  function playMetroClick(accent, whenTime) {
+    window.MetronomeUiCore.playMetroClick(accent, whenTime);
+  }
+
+  function renderMetroDots() {
+    window.MetronomeUiCore.renderMetroDots();
+  }
+
+  function highlightMetroBeat(beatIndex) {
+    window.MetronomeUiCore.highlightMetroBeat(beatIndex);
+  }
+
+  /** Disparo visual extra para acessibilidade: flash horizontal sincronizado com cada batida. */
+  function triggerMetroVisualPulse(isAccent) {
+    window.MetronomeUiCore.triggerMetroVisualPulse(isAccent);
+  }
+
+  function stopMetronome() {
+    window.MetronomeUiSchedule.stopMetronome();
+  }
+
+  function metroScheduleLoop() {
+    window.MetronomeUiSchedule.metroScheduleLoop();
+  }
+
+  function startMetronome() {
+    window.MetronomeUiSchedule.startMetronome();
+  }
+
+  function updateMetroButtons() {
+    var btnStop = document.getElementById('btnMetroStop');
+    var btnStart = document.getElementById('btnMetroStart');
+    if (!btnStop || !btnStart) return;
+    btnStop.disabled = !metroIsRunning;
+    btnStart.disabled = metroIsRunning;
+  }
+
+  function setMetroBpm(bpm, restartIfRunning) {
+    var n = parseInt(bpm, 10);
+    if (isNaN(n)) return;
+    metroBpm = Math.max(30, Math.min(220, n));
+    if (metroDom.bpmValueEl) metroDom.bpmValueEl.textContent = String(metroBpm);
+    if (metroDom.bpmLabelEl) metroDom.bpmLabelEl.textContent = window.MetronomeUiCore.tempoLabel(metroBpm);
+    if (metroDom.bpmSliderEl) metroDom.bpmSliderEl.value = String(metroBpm);
+    if (restartIfRunning && metroIsRunning) {
+      stopMetronome();
+      startMetronome();
+    }
+  }
+
+  function setMetroBeatsPerBar(beats, restartIfRunning) {
+    var n = parseInt(beats, 10);
+    if (isNaN(n)) return;
+    metroBeatsPerBar = Math.max(1, Math.min(12, n));
+    if (metroDom.beatsValueEl) metroDom.beatsValueEl.textContent = String(metroBeatsPerBar);
+    var supportedBeats = [2, 3, 4, 6, 9, 12];
+    if (supportedBeats.indexOf(metroBeatsPerBar) === -1 && metroSolfejoMode) {
+      metroSolfejoMode = false;
+      if (metroDom.solfejoModeCheckboxEl) metroDom.solfejoModeCheckboxEl.checked = false;
+      if (metroDom.solfejoWrapEl) metroDom.solfejoWrapEl.classList.add('hidden');
+      if (metroDom.solfejoBaseImgEl) metroDom.solfejoBaseImgEl.removeAttribute('src');
+      if (metroDom.solfejoHandImgEl) metroDom.solfejoHandImgEl.removeAttribute('src');
+    }
+    renderMetroDots();
+    updateMetronomeModeUI();
+    if (restartIfRunning && metroIsRunning) {
+      stopMetronome();
+      startMetronome();
+    } else {
+      highlightMetroBeat(1);
+    }
+  }
+
+  function setMetroSubdivision(subdiv, restartIfRunning) {
+    var n = parseInt(subdiv, 10);
+    if (isNaN(n)) return;
+    // 1,2,3,4
+    if (n < 1 || n > 4) n = 1;
+    metroSubdivision = n;
+    if (restartIfRunning && metroIsRunning) {
+      stopMetronome();
+      startMetronome();
+    }
+  }
+
+  /** Ponte para `metronome-ui-init.js` (estado BPM/batidas fica no IIFE). */
+  window.MetronomeUiBindingAccess = {
+    bootstrapMetroUiDefaults: function () {
+      metroBeatsPerBar = 4;
+      metroSubdivision = 1;
+      metroAccentFirst = false;
+      metroSolfejoMode = false;
+    },
+    syncMetroBpmFromSlider: function () {
+      var d = window.MetroUiRefs;
+      metroBpm = parseInt(d.bpmSliderEl.value, 10) || metroBpm;
+    },
+    refreshMetroBpmLabels: function () {
+      var d = window.MetroUiRefs;
+      if (d.bpmValueEl) d.bpmValueEl.textContent = String(metroBpm);
+      if (d.bpmLabelEl) d.bpmLabelEl.textContent = window.MetronomeUiCore.tempoLabel(metroBpm);
+    },
+    syncMetroCheckboxDom: function () {
+      var d = window.MetroUiRefs;
+      if (d.accentCheckboxEl) d.accentCheckboxEl.checked = metroAccentFirst;
+      if (d.solfejoModeCheckboxEl) d.solfejoModeCheckboxEl.checked = metroSolfejoMode;
+      if (d.solfejoLeftHandCheckboxEl) d.solfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
+    },
+    refreshMetroBeatsValueLabel: function () {
+      var d = window.MetroUiRefs;
+      if (d.beatsValueEl) d.beatsValueEl.textContent = String(metroBeatsPerBar);
+    },
+    runMetroInitialLayoutRefresh: function () {
+      renderMetroDots();
+      highlightMetroBeat(1);
+      updateMetroButtons();
+      updateMetronomeModeUI();
+      updateSolfejoImagesSrc();
+    },
+    invokeSetMetroBpm: function (v, restart) {
+      setMetroBpm(v, restart);
+    },
+    invokeSetMetroBeatsPerBar: function (v, restart) {
+      setMetroBeatsPerBar(v, restart);
+    },
+    invokeSetMetroSubdivision: function (v, restart) {
+      setMetroSubdivision(v, restart);
+    },
+    invokeStopMetronome: function () {
+      window.MetronomeUiSchedule.stopMetronome();
+    },
+    invokeStartMetronome: function () {
+      window.MetronomeUiSchedule.startMetronome();
+    },
+    schedGetIsRunning: function () {
+      return metroIsRunning;
+    },
+    schedSetIsRunning: function (v) {
+      metroIsRunning = v;
+    },
+    schedGetSchedulerId: function () {
+      return metroSchedulerId;
+    },
+    schedSetSchedulerId: function (id) {
+      metroSchedulerId = id;
+    },
+    schedGetNextClickTime: function () {
+      return metroNextClickTime;
+    },
+    schedSetNextClickTime: function (t) {
+      metroNextClickTime = t;
+    },
+    schedGetClickIndexInBar: function () {
+      return metroClickIndexInBar;
+    },
+    schedSetClickIndexInBar: function (n) {
+      metroClickIndexInBar = n;
+    },
+    schedGetSubdivision: function () {
+      return metroSubdivision;
+    },
+    schedGetAudioCtx: function () {
+      return metroAudioCtx;
+    },
+    schedGetSolfejoCurrentFrame: function () {
+      return metroSolfejoCurrentFrame;
+    },
+    schedSetSolfejoCurrentFrame: function (n) {
+      metroSolfejoCurrentFrame = n;
+    },
+    schedClearSolfejoCaches: function () {
+      metroSolfejoFramesCache = {};
+      metroSolfejoFramesPromises = {};
+    },
+    schedClearMetroVisualPulseDom: function () {
+      if (metroDom.visualPulseTimer) clearTimeout(metroDom.visualPulseTimer);
+      metroDom.visualPulseTimer = null;
+      if (metroDom.visualFlashEl) metroDom.visualFlashEl.classList.remove('pulse', 'accent');
+    },
+    schedInvokeCancelSolfejoTween: function () {
+      cancelSolfejoTween();
+    },
+    schedInvokeSetSolfejoHandToFrame: function (n) {
+      setSolfejoHandToFrame(n);
+    },
+    schedInvokeStartSolfejoHandTween: function (to) {
+      startSolfejoHandTween(to);
+    },
+    schedInvokeTriggerSolfejoHandTap: function () {
+      triggerSolfejoHandTap();
+    },
+    schedInvokeHighlightMetroBeat: function (i) {
+      highlightMetroBeat(i);
+    },
+    schedInvokeTriggerMetroVisualPulse: function (a) {
+      triggerMetroVisualPulse(a);
+    },
+    schedInvokePlayMetroClick: function (a, t) {
+      playMetroClick(a, t);
+    },
+    schedInvokeUpdateMetroButtons: function () {
+      updateMetroButtons();
+    },
+    schedInvokeUpdateMetronomeModeUI: function () {
+      updateMetronomeModeUI();
+    },
+    schedInvokeSetMessage: function (t) {
+      setMessage(t);
+    },
+    schedSetSolfejoMode: function (v) {
+      metroSolfejoMode = v;
+    },
+    schedSetSolfejoModeCheckboxChecked: function (checked) {
+      if (metroDom.solfejoModeCheckboxEl) metroDom.solfejoModeCheckboxEl.checked = checked;
+    },
+    schedInvokeEnsureHandTipCalibrated: function () {
+      return ensureHandTipCalibrated();
+    },
+    schedInvokeEnsureSolfejoFramesLoaded: function () {
+      return ensureSolfejoFramesLoaded();
+    },
+    getMetroBpm: function () {
+      return metroBpm;
+    },
+    getMetroBeatsPerBar: function () {
+      return metroBeatsPerBar;
+    },
+    getMetroIsRunning: function () {
+      return metroIsRunning;
+    },
+    getMetroSolfejoMode: function () {
+      return metroSolfejoMode;
+    },
+    getMetroAccentFirst: function () {
+      return metroAccentFirst;
+    },
+    isSoundEnabled: function () {
+      return soundEnabled;
+    },
+    isCalmMode: function () {
+      return calmMode;
+    },
+    ensureMetroAudioCtx: function () {
+      if (!metroAudioCtx) metroAudioCtx = getAudioContext();
+      return metroAudioCtx;
+    },
+    setMetroAccentFirst: function (v) {
+      metroAccentFirst = v;
+    },
+    setMetroSolfejoLeftHand: function (v) {
+      metroSolfejoLeftHand = v;
+    },
+    onSolfejoModeCheckboxChange: function (checkboxEl) {
+      var supportedBeats = [2, 3, 4, 6, 9, 12];
+      if (checkboxEl.checked && supportedBeats.indexOf(metroBeatsPerBar) === -1) {
+        metroSolfejoMode = false;
+        checkboxEl.checked = false;
+        if (metroDom.solfejoBaseImgEl) metroDom.solfejoBaseImgEl.removeAttribute('src');
+        if (metroDom.solfejoHandImgEl) metroDom.solfejoHandImgEl.removeAttribute('src');
+      } else {
+        metroSolfejoMode = !!checkboxEl.checked;
+      }
+      updateMetronomeModeUI();
+      if (metroIsRunning) {
+        stopMetronome();
+        startMetronome();
+      }
+    }
+  };
+
+  function openMetronomeModal() {
+    setMode('metronome');
+  }
+
+  function pauseMsaMediaIfPlaying() {
+    var videoWrap = document.getElementById('msaVideoWrapper');
+    var audioWrap = document.getElementById('msaAudioWrapper');
+    if (videoWrap) {
+      var video = videoWrap.querySelector('video');
+      if (video && !video.paused) video.pause();
+    }
+    if (audioWrap) {
+      var audio = audioWrap.querySelector('audio');
+      if (audio && !audio.paused) audio.pause();
+    }
+  }
+
+  function renderMsaFasesGrid() {
+    var container = document.getElementById('msaFasesGrid');
+    if (!container) return;
+    container.innerHTML = '';
+    var fases = window.MsaData.getFases();
+
+    for (var fNum = 1; fNum <= 16; fNum++) {
+      var fData = fases[fNum];
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'msa-fase-btn';
+      if (fNum === msaActiveFase) btn.classList.add('active');
+      if (fData && (fData.videoUrl || fData.audioUrl)) btn.classList.add('has-content');
+      btn.setAttribute('data-fase', String(fNum));
+      btn.textContent = String(fNum);
+
+      btn.addEventListener('click', function () {
+        var num = parseInt(this.getAttribute('data-fase'), 10);
+        if (!isNaN(num)) {
+          selectMsaFase(num);
+        }
+      });
+      container.appendChild(btn);
+    }
+  }
+
+  function adjustMsaMediaIframeScale() {
+    // Ajuste do vídeo
+    var videoWrap = document.getElementById('msaVideoWrapper');
+    if (videoWrap) {
+      var iframe = videoWrap.querySelector('iframe');
+      if (iframe) {
+        var containerWidth = videoWrap.getBoundingClientRect().width;
+        if (containerWidth > 0) {
+          var targetHeight = Math.round(containerWidth * 9 / 16);
+          iframe.style.width = '100%';
+          iframe.style.height = targetHeight + 'px';
+          iframe.style.aspectRatio = '16 / 9';
+          iframe.style.transform = '';
+          iframe.style.transformOrigin = '';
+          videoWrap.style.height = 'auto';
+          videoWrap.style.overflow = '';
+        }
+      }
+    }
+
+    // Ajuste do áudio
+    var audioWrap = document.getElementById('msaAudioWrapper');
+    if (audioWrap) {
+      var iframe = audioWrap.querySelector('iframe');
+      if (iframe) {
+        iframe.style.width = '100%';
+        iframe.style.height = '120px';
+        iframe.style.transform = '';
+        iframe.style.transformOrigin = '';
+        audioWrap.style.height = 'auto';
+        audioWrap.style.overflow = '';
+      }
+    }
+  }
+
+  function switchMsaTab(tabName) {
+    activeMsaTab = tabName;
+
+    // Pausa mídias que estejam sendo reproduzidas ao trocar de aba
+    pauseMsaMediaIfPlaying();
+
+    // Atualiza a classe ativa e o atributo aria-selected nos botões das abas
+    document.querySelectorAll('.msa-tab-btn').forEach(function (btn) {
+      var isTarget = btn.getAttribute('data-tab') === tabName;
+      btn.classList.toggle('active', isTarget);
+      btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
+
+    // Atualiza a visibilidade dos contêineres de conteúdo
+    var videoCont = document.getElementById('msaTabVideoContent');
+    var audioCont = document.getElementById('msaTabAudioContent');
+    var pdfCont = document.getElementById('msaTabPdfContent');
+    var quizCont = document.getElementById('msaTabQuizContent');
+
+    if (videoCont) videoCont.classList.toggle('active', tabName === 'video');
+    if (audioCont) audioCont.classList.toggle('active', tabName === 'audio');
+    if (pdfCont) pdfCont.classList.toggle('active', tabName === 'pdf');
+    if (quizCont) quizCont.classList.toggle('active', tabName === 'quiz');
+
+    // Executa a escala dos iframes do Drive caso fiquem visíveis agora
+    if (tabName === 'video' || tabName === 'audio') {
+      setTimeout(adjustMsaMediaIframeScale, 50);
+    }
+  }
+
+  function selectMsaFase(faseNum) {
+    msaActiveFase = faseNum;
+    document.querySelectorAll('.msa-fase-btn').forEach(function (btn) {
+      var btnNum = parseInt(btn.getAttribute('data-fase'), 10);
+      btn.classList.toggle('active', btnNum === faseNum);
+    });
+
+    var fases = window.MsaData.getFases();
+    var fData = fases[faseNum];
+
+    var titleEl = document.getElementById('msaFaseTitle');
+    var descEl = document.getElementById('msaFaseDesc');
+    var videoWrap = document.getElementById('msaVideoWrapper');
+    var audioWrap = document.getElementById('msaAudioWrapper');
+
+    if (titleEl) titleEl.textContent = fData ? fData.titulo : 'Fase ' + faseNum;
+    if (descEl) descEl.textContent = fData ? fData.descricao : 'Resumos em desenvolvimento para esta fase.';
+
+    if (!videoWrap || !audioWrap) return;
+    videoWrap.innerHTML = '';
+    audioWrap.innerHTML = '';
+
+    var hasVideo = !!(fData && fData.videoUrl);
+    var hasAudio = !!(fData && fData.audioUrl);
+    var hasPdf = true;
+    var hasQuiz = !!(fData && fData.quizUrl);
+
+    // Ocultar ou exibir os botões das abas dependendo dos recursos disponíveis
+    var btnVideo = document.querySelector('.msa-tab-btn[data-tab="video"]');
+    var btnAudio = document.querySelector('.msa-tab-btn[data-tab="audio"]');
+    var btnPdf = document.querySelector('.msa-tab-btn[data-tab="pdf"]');
+    var btnQuiz = document.querySelector('.msa-tab-btn[data-tab="quiz"]');
+
+    if (btnVideo) btnVideo.style.display = hasVideo ? '' : 'none';
+    if (btnAudio) btnAudio.style.display = hasAudio ? '' : 'none';
+    if (btnPdf) btnPdf.style.display = hasPdf ? '' : 'none';
+    if (btnQuiz) btnQuiz.style.display = hasQuiz ? '' : 'none';
+
+    // Determinar qual aba ativar por padrão
+    var targetTab = activeMsaTab;
+    if (targetTab === 'video' && !hasVideo) targetTab = 'pdf';
+    if (targetTab === 'audio' && !hasAudio) targetTab = 'pdf';
+    if (targetTab === 'quiz' && !hasQuiz) targetTab = 'pdf';
+    if (targetTab === 'pdf' && !hasPdf) {
+      if (hasVideo) targetTab = 'video';
+      else if (hasAudio) targetTab = 'audio';
+      else if (hasQuiz) targetTab = 'quiz';
+    }
+
+    var isCurrentTabAvailable = (activeMsaTab === 'video' && hasVideo) ||
+                                (activeMsaTab === 'audio' && hasAudio) ||
+                                (activeMsaTab === 'pdf' && hasPdf) ||
+                                (activeMsaTab === 'quiz' && hasQuiz);
+
+    if (!isCurrentTabAvailable) {
+      switchMsaTab(targetTab);
+    } else {
+      switchMsaTab(activeMsaTab);
+    }
+
+    revokeMsaMedia();
+
+    function getGoogleDriveFileId(url) {
+      if (!url) return null;
+      var dMatch = url.match(/\/d\/([a-zA-Z0-9_-]{25,100})/);
+      if (dMatch) return dMatch[1];
+      var idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]{25,100})/);
+      if (idMatch) return idMatch[1];
+      return null;
+    }
+
+    function getGoogleDriveDirectLink(url) {
+      var fileId = getGoogleDriveFileId(url);
+      if (fileId) {
+        return 'https://docs.google.com/uc?export=download&id=' + fileId;
+      }
+      return url;
+    }
+
+    function getDropboxDirectLink(url) {
+      if (!url) return url;
+      if (url.indexOf('dropbox.com') !== -1) {
+        // Se já tiver raw=1, retorna ela mesma
+        if (url.indexOf('raw=1') !== -1) return url;
+        // Substitui dl=0 por raw=1
+        if (url.indexOf('dl=0') !== -1) {
+          return url.replace('dl=0', 'raw=1');
+        }
+        // Se tiver query params, adiciona &raw=1, senão ?raw=1
+        if (url.indexOf('?') !== -1) {
+          return url + '&raw=1';
+        } else {
+          return url + '?raw=1';
+        }
+      }
+      return url;
+    }
+
+    // Vídeo
+    if (hasVideo) {
+      msaVideoAbortController = new AbortController();
+      var isExternalVideo = fData.videoUrl.indexOf('http') === 0;
+      var localVideoUrl = './assets/video/msa_fase' + faseNum + '.mp4';
+      var isGoogleDriveVideo = isExternalVideo && (fData.videoUrl.indexOf('drive.google.com') !== -1 || fData.videoUrl.indexOf('docs.google.com') !== -1);
+
+      function renderVideoPlayer(url) {
+        videoWrap.innerHTML = '';
+
+        if (isGoogleDriveVideo) {
+          var fileId = getGoogleDriveFileId(url);
+          if (fileId) {
+            var iframe = document.createElement('iframe');
+            iframe.className = 'msa-video-player-iframe';
+            iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+            iframe.setAttribute('allow', 'autoplay');
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.style.border = 'none';
+            iframe.style.width = '100%';
+            iframe.style.height = 'auto';
+            iframe.style.aspectRatio = '16 / 9';
+            iframe.style.borderRadius = '8px';
+            videoWrap.appendChild(iframe);
+            setTimeout(adjustMsaMediaIframeScale, 50);
+            return;
+          }
+        }
+
+        var video = document.createElement('video');
+        video.className = 'msa-video-player';
+        video.controls = true;
+        video.src = url;
+        video.style.width = '100%';
+        video.style.height = 'auto';
+        video.style.aspectRatio = '16 / 9';
+        video.style.borderRadius = '8px';
+        video.style.background = '#000000';
+        video.setAttribute('playsinline', 'true');
+        
+        video.addEventListener('play', function () {
+          var audioEl = audioWrap.querySelector('audio');
+          if (audioEl && !audioEl.paused) {
+            audioEl.pause();
+          }
+          if (playerPlayback.isPlaying) {
+            stopPlayerPlayback(true);
+            setMessage('Playback pausado.');
+          }
+        });
+
+        video.addEventListener('error', function () {
+          // Se falhar a URL da nuvem, tenta o fallback local
+          if (url !== localVideoUrl) {
+            videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Nuvem offline. Carregando vídeo local...</p></div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+            fetchLocalVideoBlob();
+          } else {
+            showVideoError();
+          }
+        });
+
+        videoWrap.appendChild(video);
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
+      function fetchLocalVideoBlob() {
+        fetch(localVideoUrl, { signal: msaVideoAbortController.signal })
+          .then(function (resLocal) {
+            if (!resLocal.ok) throw new Error('Falha no fallback local');
+            return resLocal.blob();
+          })
+          .then(function (blob) {
+            videoWrap.innerHTML = '';
+            currentMsaVideoBlobUrl = URL.createObjectURL(blob);
+            renderVideoPlayer(currentMsaVideoBlobUrl);
+          })
+          .catch(function (errLocal) {
+            if (errLocal.name === 'AbortError') return;
+            showVideoError();
+          });
       }
-    })();
+
+      function showVideoError() {
+        videoWrap.innerHTML = '<div class="msa-placeholder-card">' +
+          '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+          '<p><strong>Vídeo não carregado</strong></p>' +
+          '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Verifique sua internet ou salve o arquivo em:</p>' +
+          '<span class="msa-placeholder-path">' + localVideoUrl.replace('./', '') + '</span>' +
+          '</div>';
+        if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+      }
+
+      if (isExternalVideo) {
+        var videoUrlToPlay = getDropboxDirectLink(fData.videoUrl);
+        renderVideoPlayer(videoUrlToPlay);
+      } else {
+        fetchLocalVideoBlob();
+      }
+    } else {
+      videoWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="video-off"></i><p>Vídeo em desenvolvimento para esta fase.</p></div>';
+    }
+
+    // Áudio
+    if (hasAudio) {
+      msaAudioAbortController = new AbortController();
+      var isExternalAudio = fData.audioUrl.indexOf('http') === 0;
+      var audioExt = '.mp3';
+      if (fData.audioUrl && (fData.audioUrl.indexOf('.m4a') !== -1 || fData.audioUrl.toLowerCase().endsWith('.m4a'))) {
+        audioExt = '.m4a';
+      }
+      var localAudioUrl = './assets/audio/msa_fase' + faseNum + audioExt;
+      var isGoogleDriveAudio = isExternalAudio && (fData.audioUrl.indexOf('drive.google.com') !== -1 || fData.audioUrl.indexOf('docs.google.com') !== -1);
+
+      function renderAudioPlayer(url) {
+        audioWrap.innerHTML = '';
+
+        if (isGoogleDriveAudio) {
+          var fileId = getGoogleDriveFileId(url);
+          if (fileId) {
+            var iframe = document.createElement('iframe');
+            iframe.className = 'msa-audio-player-iframe';
+            iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+            iframe.setAttribute('allow', 'autoplay');
+            iframe.style.border = 'none';
+            iframe.style.width = '100%';
+            iframe.style.height = '120px';
+            iframe.style.borderRadius = '8px';
+            audioWrap.appendChild(iframe);
+            setTimeout(adjustMsaMediaIframeScale, 50);
+            return;
+          }
+        }
+
+        var audio = document.createElement('audio');
+        audio.className = 'msa-audio-player';
+        audio.controls = true;
+        audio.src = url;
+        audio.style.width = '100%';
+        audio.style.borderRadius = '8px';
+        
+        audio.addEventListener('play', function () {
+          var videoEl = videoWrap.querySelector('video');
+          if (videoEl && !videoEl.paused) {
+            videoEl.pause();
+          }
+          if (playerPlayback.isPlaying) {
+            stopPlayerPlayback(true);
+            setMessage('Playback pausado.');
+          }
+        });
+
+        audio.addEventListener('error', function () {
+          // Se falhar a URL da nuvem, tenta o fallback local
+          if (url !== localAudioUrl) {
+            audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="loader" class="animate-spin"></i><p style="margin-top:0.25rem;">Nuvem offline. Carregando áudio local...</p></div>';
+            if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+            fetchLocalAudioBlob();
+          } else {
+            showAudioError();
+          }
+        });
+
+        audioWrap.appendChild(audio);
+      }
+
+      function fetchLocalAudioBlob() {
+        fetch(localAudioUrl, { signal: msaAudioAbortController.signal })
+          .then(function (resLocal) {
+            if (!resLocal.ok) throw new Error('Falha no fallback local');
+            return resLocal.blob();
+          })
+          .then(function (blob) {
+            audioWrap.innerHTML = '';
+            currentMsaAudioBlobUrl = URL.createObjectURL(blob);
+            renderAudioPlayer(currentMsaAudioBlobUrl);
+          })
+          .catch(function (errLocal) {
+            if (errLocal.name === 'AbortError') return;
+            showAudioError();
+          });
+      }
+
+      function showAudioError() {
+        audioWrap.innerHTML = '<div class="msa-placeholder-card">' +
+          '<i data-lucide="alert-circle" style="color:var(--warn);"></i>' +
+          '<p><strong>Áudio não carregado</strong></p>' +
+          '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;">Verifique sua internet ou salve o arquivo em:</p>' +
+          '<span class="msa-placeholder-path">' + localAudioUrl.replace('./', '') + '</span>' +
+          '</div>';
+        if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+      }
+
+      if (isExternalAudio) {
+        var audioUrlToPlay = getDropboxDirectLink(fData.audioUrl);
+        renderAudioPlayer(audioUrlToPlay);
+      } else {
+        fetchLocalAudioBlob();
+      }
+    } else {
+      audioWrap.innerHTML = '<div class="msa-placeholder-card"><i data-lucide="headphones"></i><p>Podcast em desenvolvimento para esta fase.</p></div>';
+    }
+
+    // PDF da Fase
+    var pdfWrap = document.getElementById('msaPdfWrapper');
+    if (pdfWrap) {
+      pdfWrap.innerHTML = '';
+      var pdfUrl = './assets/msa_pdf/MSA-' + faseNum + '.pdf';
+
+      var iframe = document.createElement('iframe');
+      iframe.src = pdfUrl;
+      iframe.style.width = '100%';
+      iframe.style.height = '600px';
+      iframe.style.border = 'none';
+      iframe.style.borderRadius = '8px';
+      pdfWrap.appendChild(iframe);
+    }
+
+    // Quiz da Fase
+    var quizWrap = document.getElementById('msaQuizWrapper');
+    var quizCard = document.getElementById('msaQuizCard');
+    if (quizWrap && quizCard) {
+      quizWrap.innerHTML = '';
+      if (fData && fData.quizUrl) {
+        quizCard.style.display = '';
+
+        var link = document.createElement('a');
+        link.className = 'msa-quiz-btn';
+        link.href = fData.quizUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.innerHTML = '<i data-lucide="external-link" style="width: 18px; height: 18px;"></i> Responder Quiz';
+
+        var desc = document.createElement('p');
+        desc.style.fontSize = '0.85rem';
+        desc.style.color = 'var(--text-soft)';
+        desc.style.marginTop = '0.5rem';
+        desc.style.textAlign = 'center';
+        desc.textContent = 'Clique no botão acima para abrir e responder ao quiz em uma nova aba de forma segura!';
+
+        quizWrap.appendChild(link);
+        quizWrap.appendChild(desc);
+      } else {
+        quizCard.style.display = 'none';
+      }
+    }
+
+    if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+  }
+
+  function closeMetronomeModal() {
+    if (metroIsRunning) stopMetronome();
+    setMode('player');
+  }
+
+  function updateMetronomeModeUI() {
+    if (!metroDom.solfejoWrapEl) return;
+    var supportedBeats = [2, 3, 4, 6, 9, 12];
+    var canShowSolfejo = metroSolfejoMode && (supportedBeats.indexOf(metroBeatsPerBar) !== -1);
+    metroDom.solfejoWrapEl.classList.toggle('hidden', !canShowSolfejo);
+    if (canShowSolfejo) updateSolfejoImagesSrc();
+  }
+
+  function getSolfejoSide() {
+    return metroSolfejoLeftHand ? 'esquerda' : 'direita';
+  }
+
+  function updateSolfejoImagesSrc() {
+    if (!metroDom.solfejoBaseImgEl || !metroDom.solfejoHandImgEl) return;
+
+    var supportedBeats = [2, 3, 4, 6, 9, 12];
+    var side = getSolfejoSide();
+    var beatsOk = supportedBeats.indexOf(metroBeatsPerBar) !== -1;
+
+    if (!beatsOk) {
+      metroDom.solfejoBaseImgEl.removeAttribute('src');
+      metroDom.solfejoHandImgEl.removeAttribute('src');
+      return;
+    }
+
+    metroDom.solfejoBaseImgEl.src = './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
+
+    metroDom.solfejoHandImgEl.onload = function () {
+      // Assim que a imagem da mão carregar, reaplica o frame atual
+      // para evitar posição errada por naturalWidth ainda não disponível.
+      setSolfejoHandToFrame(metroSolfejoCurrentFrame);
+    };
+    metroDom.solfejoHandImgEl.src = './imgs/mao-' + side + '.png';
+  }
+
+  function getSolfejoBaseUrl() {
+    // Ex.: ./imgs/movimento-4-direita.png
+    var side = getSolfejoSide();
+    return './imgs/movimento-' + metroBeatsPerBar + '-' + side + '.png';
+  }
+
+  function setSolfejoHandToFrame(frameIndex) {
+    if (!metroDom.solfejoHandImgEl) return;
+    if (!metroDom.solfejoBaseImgEl) return;
+
+    var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
+    if (!frames || !frames.length) return;
+    if (frameIndex < 0) frameIndex = 0;
+    if (frameIndex >= frames.length) frameIndex = frames.length - 1;
+
+    var pos = frames[frameIndex];
+    setSolfejoHandToPosNatural(pos);
+  }
+
+  function setSolfejoHandToPosNatural(pos) {
+    if (!metroDom.solfejoHandImgEl) return;
+    if (!metroDom.solfejoBaseImgEl) return;
+    if (!pos) return;
+    if (!metroDom.solfejoBaseImgEl.complete || !metroDom.solfejoBaseImgEl.naturalWidth) return;
+    if (!metroDom.solfejoHandImgEl.complete || !metroDom.solfejoHandImgEl.naturalWidth) return;
+
+    // pos.x/pos.y está no sistema natural da imagem; vamos converter para display.
+    var rect = metroDom.solfejoBaseImgEl.getBoundingClientRect();
+    var naturalW = metroDom.solfejoBaseImgEl.naturalWidth || 1;
+    var naturalH = metroDom.solfejoBaseImgEl.naturalHeight || 1;
+    var scaleX = rect.width / naturalW;
+    var scaleY = rect.height / naturalH;
+
+    // Faz a mão escalar junto com a imagem do movimento (mantém o mesmo visual ao redimensionar).
+    var baseDisplayW = metroDom.solfejoBaseImgEl.offsetWidth || rect.width || 1;
+    var handDisplayW = baseDisplayW * 0.28; // calibração visual (aprox. 110px quando base ~ 380px)
+    metroDom.solfejoHandImgEl.style.width = handDisplayW + 'px';
+
+    var tip = metroSolfejoHandTipCache[getSolfejoSide()];
+    if (!tip) {
+      // Se ainda não calibramos a ponta, não posiciona (evita ficar "errado").
+      return;
+    }
+
+    var handNaturalW = metroDom.solfejoHandImgEl.naturalWidth || 1;
+    if (!handNaturalW || handNaturalW <= 1) return;
+    var handScale = handDisplayW / handNaturalW;
+    var tipDisplayX = tip.x * handScale;
+    var tipDisplayY = tip.y * handScale;
+
+    var baseX = metroDom.solfejoBaseImgEl.offsetLeft + (pos.x * scaleX);
+    var baseY = metroDom.solfejoBaseImgEl.offsetTop + (pos.y * scaleY);
+
+    // Posiciona a ponta do dedo exatamente na marcação (coord do baseX/baseY).
+    var finalLeft = (baseX - tipDisplayX);
+    var finalTop = (baseY - tipDisplayY);
+    metroDom.solfejoHandImgEl.style.left = finalLeft + 'px';
+    metroDom.solfejoHandImgEl.style.top = finalTop + 'px';
+
+  }
+
+  function cancelSolfejoTween() {
+    if (metroSolfejoTweenRafId) {
+      cancelAnimationFrame(metroSolfejoTweenRafId);
+      metroSolfejoTweenRafId = null;
+    }
+    metroSolfejoTweenFromPos = null;
+    metroSolfejoTweenToPos = null;
+    metroSolfejoTweenFromFrame = 0;
+    metroSolfejoTweenToFrame = 0;
+  }
+
+  function triggerSolfejoHandTap() {
+    if (!metroSolfejoMode) return;
+    if (!metroDom.solfejoHandImgEl) return;
+    metroDom.solfejoHandImgEl.classList.remove('tapping-right', 'tapping-left');
+    // força reflow para reiniciar animação a cada bip
+    void metroDom.solfejoHandImgEl.offsetWidth;
+    if (getSolfejoSide() === 'esquerda') {
+      metroDom.solfejoHandImgEl.classList.add('tapping-left');
+    } else {
+      metroDom.solfejoHandImgEl.classList.add('tapping-right');
+    }
+  }
+
+  function startSolfejoHandTween(toFrameIndex) {
+    if (!metroSolfejoMode) return;
+    if (!metroIsRunning) return;
+    if (!metroDom.solfejoHandImgEl) return;
+    if (!metroDom.solfejoBaseImgEl) return;
+    if (!metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()]) return;
+
+    var frames = metroSolfejoFramesCache[metroBeatsPerBar + '-' + getSolfejoSide()];
+    if (!frames || !frames.length) return;
+
+    if (toFrameIndex < 0) toFrameIndex = 0;
+    if (toFrameIndex >= frames.length) toFrameIndex = frames.length - 1;
+
+    var fromIndex = metroSolfejoCurrentFrame;
+    if (fromIndex < 0) fromIndex = 0;
+    if (fromIndex >= frames.length) fromIndex = frames.length - 1;
+
+    // Mapeia batidas (0..N-1) para âncoras dentro da trilha manual (frames).
+    // Isso permite usar pontos extras e percorrer TODOS em loop.
+    var fromFrameForPath = fromIndex;
+    var toFrameForPath = toFrameIndex;
+    if (frames.length > metroBeatsPerBar) {
+      var anchors = [];
+      for (var ai = 0; ai < metroBeatsPerBar; ai++) {
+        var idx = Math.round((ai * frames.length) / metroBeatsPerBar);
+        if (idx >= frames.length) idx = frames.length - 1;
+        anchors.push(idx);
+      }
+      fromFrameForPath = anchors[fromIndex] != null ? anchors[fromIndex] : fromIndex;
+      toFrameForPath = anchors[toFrameIndex] != null ? anchors[toFrameIndex] : toFrameIndex;
+    }
+
+    var fromPos = frames[fromFrameForPath];
+    var toPos = frames[toFrameForPath];
+    if (!fromPos || !toPos) {
+      metroSolfejoCurrentFrame = toFrameIndex;
+      setSolfejoHandToFrame(toFrameIndex);
+      return;
+    }
+
+    // Garante que o tween comece exatamente no ponto anterior (evita desvio
+    // quando a rotina do metronomo agenda múltiplos bips em um mesmo tick).
+    setSolfejoHandToPosNatural(fromPos);
+
+    metroSolfejoCurrentFrame = toFrameIndex;
+
+    metroSolfejoTweenFromPos = fromPos;
+    metroSolfejoTweenToPos = toPos;
+    metroSolfejoTweenFromFrame = fromFrameForPath;
+    metroSolfejoTweenToFrame = toFrameForPath;
+    metroSolfejoTweenStartPerf = performance.now();
+    metroSolfejoTweenDurationMs = (60 / metroBpm) * 1000;
+    if (!metroSolfejoTweenDurationMs || metroSolfejoTweenDurationMs < 50) metroSolfejoTweenDurationMs = 250;
+
+    // Constrói caminho forward cíclico entre from -> to passando por todos os pontos intermediários.
+    var pathPoints = [];
+    var pi = fromFrameForPath;
+    var guard = 0;
+    while (guard < (frames.length + 2)) {
+      pathPoints.push(frames[pi]);
+      if (pi === toFrameForPath) break;
+      pi = (pi + 1) % frames.length;
+      guard++;
+    }
+    if (pathPoints.length < 2) pathPoints = [fromPos, toPos];
+
+    // Pré-cálculo de comprimentos acumulados para interpolar ao longo da polyline.
+    var cumulative = [0];
+    for (var si = 1; si < pathPoints.length; si++) {
+      var pdx = pathPoints[si].x - pathPoints[si - 1].x;
+      var pdy = pathPoints[si].y - pathPoints[si - 1].y;
+      cumulative.push(cumulative[si - 1] + Math.sqrt(pdx * pdx + pdy * pdy));
+    }
+    var totalLen = cumulative[cumulative.length - 1] || 1;
+
+    cancelSolfejoTween();
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function loop(nowPerf) {
+      if (!metroIsRunning || !metroSolfejoMode) return;
+      var elapsed = nowPerf - metroSolfejoTweenStartPerf;
+      var t = elapsed / metroSolfejoTweenDurationMs;
+      if (t >= 1) {
+        metroSolfejoTweenRafId = null;
+        setSolfejoHandToPosNatural(toPos);
+        return;
+      }
+
+      // Movimento contínuo durante toda a batida (sem freeze no ponto).
+      var e = easeInOutCubic(Math.max(0, Math.min(1, t)));
+      // Interpola por comprimento ao longo de todo o caminho.
+      var targetLen = totalLen * e;
+      var seg = 0;
+      while (seg < cumulative.length - 1 && cumulative[seg + 1] < targetLen) seg++;
+      var l0 = cumulative[seg];
+      var l1 = cumulative[seg + 1] || l0;
+      var span = (l1 - l0) || 1;
+      var tt = (targetLen - l0) / span;
+      var p0 = pathPoints[seg];
+      var p1 = pathPoints[seg + 1] || p0;
+      var ix = p0.x + (p1.x - p0.x) * tt;
+      var iy = p0.y + (p1.y - p0.y) * tt;
+      setSolfejoHandToPosNatural({ x: ix, y: iy });
+      metroSolfejoTweenRafId = requestAnimationFrame(loop);
+    }
+
+    metroSolfejoTweenRafId = requestAnimationFrame(loop);
+  }
+
+  function analyzeSolfejoFramesFromImage(imgEl, beatsPerBar) {
+    // Detecta os pontos (preparacao + posicoes) dentro da imagem do movimento.
+    // Resultado: array de tamanho beatsPerBar+1 no sistema natural (naturalWidth/naturalHeight).
+    return new Promise(function (resolve) {
+      try {
+        var K = beatsPerBar + 1;
+        var targetW = 260;
+        var scale = targetW / (imgEl.naturalWidth || 1);
+        var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
+
+        var canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        var ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imgData.data;
+
+        // Fundo: média dos cantos (quando tiver pixel não-transparente).
+        function sampleCorner(x, y) {
+          var idx = (y * canvas.width + x) * 4;
+          return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
+        }
+
+        var c1 = sampleCorner(0, 0);
+        var c2 = sampleCorner(canvas.width - 1, 0);
+        var c3 = sampleCorner(0, canvas.height - 1);
+        var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
+
+        var bgR = 0, bgG = 0, bgB = 0, bgCount = 0;
+        [c1, c2, c3, c4].forEach(function (c) {
+          if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
+        });
+        if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
+        else { bgR = 255; bgG = 255; bgB = 255; }
+
+        var candidates = [];
+        var maxPoints = 8500;
+        var step = 2; // performance
+
+        for (var y = 0; y < canvas.height; y += step) {
+          for (var x = 0; x < canvas.width; x += step) {
+            var idx = (y * canvas.width + x) * 4;
+            var a = data[idx + 3];
+            if (a < 30) continue;
+
+            var r = data[idx];
+            var g = data[idx + 1];
+            var b = data[idx + 2];
+
+            var dr = r - bgR;
+            var dg = g - bgG;
+            var db = b - bgB;
+            var dist = Math.sqrt(dr * dr + dg * dg + db * db);
+            if (dist < 70) continue;
+
+            var max = Math.max(r, g, b);
+            var min = Math.min(r, g, b);
+            var sat = max > 0 ? (max - min) / max : 0;
+            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // 0..255
+
+            if (sat > 0.22 || luma < 90) {
+              candidates.push({ x: x, y: y, w: dist });
+              if (candidates.length >= maxPoints) break;
+            }
+          }
+          if (candidates.length >= maxPoints) break;
+        }
+
+        if (!candidates.length || candidates.length < K) {
+          resolve([]);
+          return;
+        }
+
+        // Reduz candidatos (amostragem) para k-means.
+        if (candidates.length > maxPoints) {
+          candidates = candidates.slice(0, maxPoints);
+        }
+
+        // Inicializa centros com os pontos mais "fortes".
+        candidates.sort(function (a, b) { return b.w - a.w; });
+        var centers = [];
+        for (var i = 0; i < K; i++) {
+          centers.push({ x: candidates[Math.floor((i / K) * (candidates.length - 1))].x, y: candidates[Math.floor((i / K) * (candidates.length - 1))].y });
+        }
+
+        var iterations = 8;
+        for (var it = 0; it < iterations; it++) {
+          var sumX = new Array(K).fill(0);
+          var sumY = new Array(K).fill(0);
+          var sumW = new Array(K).fill(0);
+
+          candidates.forEach(function (p) {
+            var best = 0;
+            var bestD = Infinity;
+            for (var c = 0; c < K; c++) {
+              var dx = p.x - centers[c].x;
+              var dy = p.y - centers[c].y;
+              var d2 = dx * dx + dy * dy;
+              if (d2 < bestD) { bestD = d2; best = c; }
+            }
+            sumX[best] += p.x * p.w;
+            sumY[best] += p.y * p.w;
+            sumW[best] += p.w;
+          });
+
+          for (var c = 0; c < K; c++) {
+            if (sumW[c] > 0) {
+              centers[c].x = sumX[c] / sumW[c];
+              centers[c].y = sumY[c] / sumW[c];
+            }
+          }
+        }
+
+        // Escolhe "preparacao" como centro mais ciano/aproximado do eixo central.
+        var prepIndex = 0;
+        var bestPrepScore = -Infinity;
+        for (var c = 0; c < K; c++) {
+          var cx = Math.max(0, Math.min(canvas.width - 1, Math.round(centers[c].x)));
+          var cy = Math.max(0, Math.min(canvas.height - 1, Math.round(centers[c].y)));
+          var ci = (cy * canvas.width + cx) * 4;
+          var r2 = data[ci];
+          var g2 = data[ci + 1];
+          var b2 = data[ci + 2];
+          var score = (g2 + b2) - 2 * r2; // ciano => maior
+          if (score > bestPrepScore) { bestPrepScore = score; prepIndex = c; }
+        }
+
+        var prep = centers[prepIndex];
+        var remaining = centers.filter(function (_, idx) { return idx !== prepIndex; });
+        var ordered = [];
+        var current = { x: prep.x, y: prep.y };
+        for (var i = 0; i < beatsPerBar && remaining.length; i++) {
+          var bestIdx = 0;
+          var bestD = Infinity;
+          for (var j = 0; j < remaining.length; j++) {
+            var dx = remaining[j].x - current.x;
+            var dy = remaining[j].y - current.y;
+            var d2 = dx * dx + dy * dy;
+            if (d2 < bestD) { bestD = d2; bestIdx = j; }
+          }
+          var next = remaining.splice(bestIdx, 1)[0];
+          ordered.push(next);
+          current = next;
+        }
+
+        var sx = (imgEl.naturalWidth || 1) / canvas.width;
+        var sy = (imgEl.naturalHeight || 1) / canvas.height;
+        var frames = [prep].concat(ordered).slice(0, beatsPerBar + 1).map(function (p) {
+          return { x: p.x * sx, y: p.y * sy };
+        });
+
+        resolve(frames);
+      } catch (e) {
+        resolve([]);
+      }
+    });
+  }
+
+  function analyzeSolfejoFramesFromImageV2(imgEl, beatsPerBar, side) {
+    // Mais robusto: detecta componentes conectados (tende a pegar só os "círculos"/marcadores)
+    // e calcula centróides. Depois ordena via caminho mais próximo a partir da preparação.
+    return new Promise(function (resolve) {
+      try {
+        var K = beatsPerBar + 1;
+        var targetW = 260;
+        var scale = targetW / (imgEl.naturalWidth || 1);
+        var targetH = Math.max(1, Math.round((imgEl.naturalHeight || 1) * scale));
+
+        var canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        var ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imgData.data;
+
+        function sampleCorner(x, y) {
+          var idx = (y * canvas.width + x) * 4;
+          return { r: data[idx], g: data[idx + 1], b: data[idx + 2], a: data[idx + 3] };
+        }
+
+        var c1 = sampleCorner(0, 0);
+        var c2 = sampleCorner(canvas.width - 1, 0);
+        var c3 = sampleCorner(0, canvas.height - 1);
+        var c4 = sampleCorner(canvas.width - 1, canvas.height - 1);
+
+        var bgR = 255, bgG = 255, bgB = 255, bgCount = 0;
+        [c1, c2, c3, c4].forEach(function (c) {
+          if (c.a > 10) { bgR += c.r; bgG += c.g; bgB += c.b; bgCount++; }
+        });
+        if (bgCount > 0) { bgR /= bgCount; bgG /= bgCount; bgB /= bgCount; }
+
+        var W = canvas.width;
+        var H = canvas.height;
+        var N = W * H;
+
+        // Máscara de "pixels de interesse" (marcadores e setas coloridas).
+        var mask = new Uint8Array(N);
+        var alphaThreshold = 40;
+        var satThreshold = 0.25;
+        var distThreshold = 60;
+
+        for (var y = 0; y < H; y++) {
+          for (var x = 0; x < W; x++) {
+            var i = y * W + x;
+            var idx = i * 4;
+            var a = data[idx + 3];
+            if (a < alphaThreshold) continue;
+
+            var r = data[idx], g = data[idx + 1], b = data[idx + 2];
+            var dr = r - bgR, dg = g - bgG, db = b - bgB;
+            var dist = Math.sqrt(dr * dr + dg * dg + db * db);
+            if (dist < distThreshold) continue;
+
+            var max = Math.max(r, g, b);
+            var min = Math.min(r, g, b);
+            var sat = max > 0 ? (max - min) / max : 0;
+            if (sat < satThreshold) continue;
+
+            mask[i] = 1;
+          }
+        }
+
+        var visited = new Uint8Array(N);
+        var components = [];
+        var minArea = Math.round((W * H) * 0.00035); // ajusta sensibilidade
+
+        var qx = new Int32Array(N);
+        var qy = new Int32Array(N);
+
+        for (var yy = 0; yy < H; yy++) {
+          for (var xx = 0; xx < W; xx++) {
+            var start = yy * W + xx;
+            if (!mask[start] || visited[start]) continue;
+
+            // BFS
+            var head = 0, tail = 0;
+            visited[start] = 1;
+            qx[tail] = xx;
+            qy[tail] = yy;
+            tail++;
+
+            var area = 0;
+            var sumX = 0;
+            var sumY = 0;
+            var sumR = 0;
+            var sumG = 0;
+            var sumB = 0;
+
+            while (head < tail) {
+              var cx = qx[head];
+              var cy = qy[head];
+              head++;
+
+              var ci = cy * W + cx;
+              area++;
+              sumX += cx;
+              sumY += cy;
+
+              var cidx = ci * 4;
+              sumR += data[cidx];
+              sumG += data[cidx + 1];
+              sumB += data[cidx + 2];
+
+              // 4-neighbors
+              if (cx > 0) {
+                var n = ci - 1;
+                if (mask[n] && !visited[n]) { visited[n] = 1; qx[tail] = cx - 1; qy[tail] = cy; tail++; }
+              }
+              if (cx < W - 1) {
+                var n2 = ci + 1;
+                if (mask[n2] && !visited[n2]) { visited[n2] = 1; qx[tail] = cx + 1; qy[tail] = cy; tail++; }
+              }
+              if (cy > 0) {
+                var n3 = ci - W;
+                if (mask[n3] && !visited[n3]) { visited[n3] = 1; qx[tail] = cx; qy[tail] = cy - 1; tail++; }
+              }
+              if (cy < H - 1) {
+                var n4 = ci + W;
+                if (mask[n4] && !visited[n4]) { visited[n4] = 1; qx[tail] = cx; qy[tail] = cy + 1; tail++; }
+              }
+            }
+
+            if (area >= minArea) {
+              components.push({
+                x: sumX / area,
+                y: sumY / area,
+                area: area,
+                avgR: sumR / area,
+                avgG: sumG / area,
+                avgB: sumB / area
+              });
+            }
+          }
+        }
+
+        if (!components.length) {
+          resolve([]);
+          return;
+        }
+
+        components.sort(function (a, b2) { return b2.area - a.area; });
+        var chosen = components.slice(0, K);
+        if (chosen.length < K) {
+          resolve([]);
+          return;
+        }
+
+        // Preparacao: ciano (G+B alto, R baixo) e próximo do centro.
+        var centerX = W / 2;
+        var bestPrepIdx = 0;
+        var bestScore = -Infinity;
+        for (var ci2 = 0; ci2 < chosen.length; ci2++) {
+          var c = chosen[ci2];
+          var cyanScore = (c.avgG + c.avgB - 2 * c.avgR) - 0.15 * Math.abs(c.x - centerX);
+          if (cyanScore > bestScore) { bestScore = cyanScore; bestPrepIdx = ci2; }
+        }
+
+        var prep = chosen[bestPrepIdx];
+        var remaining = chosen.filter(function (_, idx) { return idx !== bestPrepIdx; });
+
+        // Ordena pelos ângulos ao redor do centro, começando no ponto 1 (dot mais "baixo" em y).
+        // Isso reduz o erro de mapeamento beatIndex -> posição.
+        var centerX2 = W / 2;
+        var centerY2 = H / 2;
+
+        var startDotIdx = 0;
+        var maxY = -Infinity;
+        for (var sd = 0; sd < remaining.length; sd++) {
+          if (remaining[sd].y > maxY) { maxY = remaining[sd].y; startDotIdx = sd; }
+        }
+        var startDot = remaining[startDotIdx];
+        var startAngle = Math.atan2(startDot.y - centerY2, startDot.x - centerX2);
+        if (startAngle < 0) startAngle += Math.PI * 2;
+
+        var clockwise = (side === 'direita');
+        function normAngle(a) {
+          if (a < 0) a += Math.PI * 2;
+          if (a >= Math.PI * 2) a -= Math.PI * 2;
+          return a;
+        }
+
+        var ordered = remaining.map(function (p) {
+          var ang = Math.atan2(p.y - centerY2, p.x - centerX2);
+          ang = normAngle(ang);
+          var dist = clockwise ? (startAngle - ang) : (ang - startAngle);
+          dist = dist % (Math.PI * 2);
+          if (dist < 0) dist += Math.PI * 2;
+          return { p: p, dist: dist };
+        });
+
+        ordered.sort(function (a, b2) { return a.dist - b2.dist; });
+
+        var sx = (imgEl.naturalWidth || 1) / W;
+        var sy = (imgEl.naturalHeight || 1) / H;
+        var frames = [{ x: prep.x * sx, y: prep.y * sy }];
+        for (var oi2 = 0; oi2 < beatsPerBar; oi2++) {
+          var it = ordered[oi2];
+          if (!it) break;
+          frames.push({ x: it.p.x * sx, y: it.p.y * sy });
+        }
+
+        // Garante tamanho esperado
+        while (frames.length < beatsPerBar + 1) {
+          frames.push({ x: prep.x * sx, y: prep.y * sy });
+        }
+
+        resolve(frames);
+      } catch (e) {
+        resolve([]);
+      }
+    });
+  }
+  function analyzeHandTipFromImage(imgEl) {
+    // Encontra a "ponta" (menor Y) de pixels não-transparentes.
+    // Retorna coordenadas no sistema natural da imagem (top-left = origem).
+    return new Promise(function (resolve) {
+      try {
+        var w = imgEl.naturalWidth || 1;
+        var h = imgEl.naturalHeight || 1;
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(imgEl, 0, 0, w, h);
+        var imgData = ctx.getImageData(0, 0, w, h);
+        var data = imgData.data;
+
+        var minY = Infinity;
+        var samples = [];
+        var alphaThreshold = 40;
+
+        for (var y = 0; y < h; y++) {
+          for (var x = 0; x < w; x++) {
+            var idx = (y * w + x) * 4;
+            var a = data[idx + 3];
+            if (a < alphaThreshold) continue;
+            minY = Math.min(minY, y);
+          }
+        }
+        if (minY === Infinity) {
+          resolve({ x: w / 2, y: h / 2 });
+          return;
+        }
+
+        // Media do X onde está a ponta (minY).
+        var sumX = 0;
+        var countX = 0;
+        var yBand = minY + 1; // tolerancia
+        for (var y2 = minY; y2 <= yBand; y2++) {
+          for (var x2 = 0; x2 < w; x2++) {
+            var idx2 = (y2 * w + x2) * 4;
+            var a2 = data[idx2 + 3];
+            if (a2 < alphaThreshold) continue;
+            sumX += x2;
+            countX++;
+          }
+        }
+
+        var tipX = countX > 0 ? (sumX / countX) : (w / 2);
+        resolve({ x: tipX, y: minY });
+      } catch (e) {
+        resolve({ x: (imgEl.naturalWidth || 1) / 2, y: (imgEl.naturalHeight || 1) / 3 });
+      }
+    });
+  }
+
+  function ensureHandTipCalibrated() {
+    if (!metroDom.solfejoHandImgEl) return Promise.resolve();
+    var side = getSolfejoSide();
+    if (metroSolfejoHandTipCache[side]) return Promise.resolve(metroSolfejoHandTipCache[side]);
+    if (metroSolfejoHandTipPromises[side]) return metroSolfejoHandTipPromises[side];
+
+    metroSolfejoHandTipPromises[side] = new Promise(function (resolve) {
+      // Se ainda não carregou, espera o onload.
+      function finish() {
+        analyzeHandTipFromImage(metroDom.solfejoHandImgEl).then(function (tip) {
+          metroSolfejoHandTipCache[side] = tip;
+          resolve(tip);
+        });
+      }
+
+      if (metroDom.solfejoHandImgEl.complete && metroDom.solfejoHandImgEl.naturalWidth > 0) {
+        finish();
+      } else {
+        metroDom.solfejoHandImgEl.onload = function () {
+          finish();
+        };
+        metroDom.solfejoHandImgEl.onerror = function () {
+          metroSolfejoHandTipCache[side] = { x: (metroDom.solfejoHandImgEl.naturalWidth || 1) / 2, y: 0 };
+          resolve(metroSolfejoHandTipCache[side]);
+        };
+      }
+    });
+
+    return metroSolfejoHandTipPromises[side];
+  }
+
+  function getManualSolfejoFrames(beatsPerBar, side, naturalW, naturalH) {
+    var key = beatsPerBar + '-' + side;
+    var points = SOLFEJO_MANUAL_POINTS[key];
+    var minExpected = beatsPerBar;
+    if (!points || points.length === 0) return null;
+
+    var frames = [];
+    for (var i = 0; i < points.length; i++) {
+      var p = points[i];
+      if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') return null;
+      frames.push({
+        x: p.x * naturalW,
+        y: p.y * naturalH
+      });
+    }
+
+    // Se vier menos pontos do que o mínimo necessário para o compasso,
+    // completa repetindo o último ponto informado (comportamento previsível no ajuste manual).
+    while (frames.length < minExpected) {
+      var last = frames[frames.length - 1];
+      frames.push({ x: last.x, y: last.y });
+    }
+
+    return frames;
+  }
+
+  function ensureSolfejoFramesLoaded() {
+    var key = metroBeatsPerBar + '-' + getSolfejoSide();
+    var minExpectedLen = metroBeatsPerBar;
+    // Sempre recalcula no modo manual para evitar usar trilha antiga em cache
+    // durante calibração (edições frequentes de pontos).
+    delete metroSolfejoFramesCache[key];
+    delete metroSolfejoFramesPromises[key];
+
+    if (metroSolfejoFramesPromises[key]) return metroSolfejoFramesPromises[key];
+
+    var baseSrc = getSolfejoBaseUrl();
+    var handSide = getSolfejoSide();
+    metroDom.solfejoHandImgEl.src = './imgs/mao-' + handSide + '.png';
+    metroDom.solfejoBaseImgEl.src = baseSrc;
+
+    metroSolfejoFramesPromises[key] = new Promise(function (resolve) {
+      metroDom.solfejoBaseImgEl.onload = function () {
+        var manualFrames = getManualSolfejoFrames(
+          metroBeatsPerBar,
+          handSide,
+          (metroDom.solfejoBaseImgEl.naturalWidth || 1),
+          (metroDom.solfejoBaseImgEl.naturalHeight || 1)
+        );
+
+        if (manualFrames && manualFrames.length >= minExpectedLen) {
+          metroSolfejoFramesCache[key] = manualFrames;
+          setSolfejoHandToFrame(metroSolfejoCurrentFrame);
+          resolve(manualFrames);
+          return;
+        }
+
+        // Sem detecção automática: somente pontos manuais.
+        // Se não houver configuração válida, mantém a mão parada no centro.
+        var cxM = (metroDom.solfejoBaseImgEl.naturalWidth || 1) / 2;
+        var cyM = (metroDom.solfejoBaseImgEl.naturalHeight || 1) / 2;
+        var manualFallback = [];
+        for (var mi = 0; mi < minExpectedLen; mi++) manualFallback.push({ x: cxM, y: cyM });
+        metroSolfejoFramesCache[key] = manualFallback;
+        setSolfejoHandToFrame(metroSolfejoCurrentFrame);
+        resolve(manualFallback);
+      };
+      metroDom.solfejoBaseImgEl.onerror = function () {
+        // se não carregar, fallback imediato
+        var cx = (metroDom.solfejoBaseImgEl.naturalWidth || 1) / 2;
+        var cy = (metroDom.solfejoBaseImgEl.naturalHeight || 1) / 2;
+        var frames = [];
+        var minExpectedLen2 = metroBeatsPerBar + 1;
+        for (var i = 0; i < minExpectedLen2; i++) frames.push({ x: cx, y: cy });
+        metroSolfejoFramesCache[key] = frames;
+        resolve(frames);
+      };
+    });
+
+    return metroSolfejoFramesPromises[key];
+  }
+
+  function initMetronomeUI() {
+    window.MetronomeUiInit.initMetronomeUI();
+  }
+
+  // ========== SOBRE ==========
+  function openAboutModal() {
+    return window.UiCoreModule.openAboutModal();
+  }
+
+  function closeAboutModal() {
+    return window.UiCoreModule.closeAboutModal();
+  }
+
+  function createKeyButtons() {
+    var container = document.getElementById('keyTabs');
+    if (!container) return;
+    container.innerHTML = '';
+    TONALIDADES.forEach(function (k) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'key-btn du-btn du-btn-outline du-btn-sm' + (k.id === currentKey.id ? ' active' : '');
+      btn.dataset.keyId = k.id;
+      btn.setAttribute('aria-pressed', k.id === currentKey.id ? 'true' : 'false');
+      btn.textContent = k.nome;
+      container.appendChild(btn);
+    });
+  }
+
+  function createNoteButtons() {
+    var container = document.getElementById('noteOptions');
+    if (!container) return;
+    container.innerHTML = '';
+    NOTAS.forEach(function (nota) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'note-option-btn du-btn du-btn-outline du-btn-sm';
+      btn.dataset.noteId = nota.id;
+      btn.textContent = nota.nome;
+      btn.addEventListener('click', function () {
+        handleNoteOptionClick(nota.id, btn);
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function setKey(keyId) {
+    var key = TONALIDADES.find(function (k) { return k.id === keyId; });
+    if (!key) return;
+    currentKey = key;
+    document.querySelectorAll('.key-btn').forEach(function (btn) {
+      var active = btn.dataset.keyId === keyId;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    updateViolinBoardLabels();
+  }
+
+  function hideSplashScreen() {
+    return window.UiCoreModule.hideSplashScreen();
+  }
+
+  function registerServiceWorkerAutoUpdate() {
+    if (!('serviceWorker' in navigator)) return;
+    var hasReloadedForUpdate = false;
+
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      // Evita loop de recarga caso o browser dispare o evento mais de uma vez.
+      if (hasReloadedForUpdate) return;
+      hasReloadedForUpdate = true;
+      window.location.reload();
+    });
+
+    navigator.serviceWorker.register('./sw.js').then(function (registration) {
+      function watchInstallingWorker(worker) {
+        if (!worker) return;
+        worker.addEventListener('statechange', function () {
+          // Se já existia SW controlando, isso é update. Recarrega ao ativar.
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+            if (registration.waiting) {
+              registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            } else if (registration.active) {
+              window.location.reload();
+            }
+          }
+        });
+      }
+
+      if (registration.installing) {
+        watchInstallingWorker(registration.installing);
+      }
+
+      registration.addEventListener('updatefound', function () {
+        watchInstallingWorker(registration.installing);
+      });
+
+      // Força checagem de atualização ao abrir.
+      registration.update().catch(function () { });
+    }).catch(function () { });
+  }
+
+  // ========== MAPA DE MÓDULOS (separação de responsabilidades) ==========
+  /**
+   * Registro central para facilitar manutenção e descoberta de código.
+   * Não altera o fluxo atual; apenas organiza os domínios do app.
+   */
+  var APP_MODULES = {
+    config: {
+      APP_VERSION: APP_VERSION,
+      APP_VERSION_LABEL: APP_VERSION_LABEL,
+      PLAYER_SCORE_URL: PLAYER_SCORE_URL,
+      PLAYER_CATALOG_URL: PLAYER_CATALOG_URL,
+      NOTAS: NOTAS,
+      INSTRUMENTOS: INSTRUMENTOS,
+      TONALIDADES: TONALIDADES,
+      CLAVES: CLAVES
+    },
+    audio: {
+      getAudioContext: getAudioContext,
+      loadInstrument: loadInstrument,
+      playNoteSound: playNoteSound,
+      stopAllPlayerNotes: stopAllPlayerNotes,
+      startAmbient: startAmbient,
+      stopAmbient: stopAmbient
+    },
+    player: {
+      ensurePlayerCatalogLoaded: ensurePlayerCatalogLoaded,
+      loadPlayerFromCatalogSelection: loadPlayerFromCatalogSelection,
+      loadPlayerMusicXml: loadPlayerMusicXml,
+      getPlayerMusicXmlLoadContext: function () {
+        return window.PlayerLoadBindings.getPlayerMusicXmlLoadContext();
+      },
+      startPlayerPlayback: startPlayerPlayback,
+      stopPlayerPlayback: stopPlayerPlayback,
+      seekPlayerToTime: seekPlayerToTime,
+      updatePlayerUiNow: updatePlayerUiNow
+    },
+    tuner: {
+      startTuner: startTuner,
+      stopTuner: stopTuner,
+      drawTunerChart: drawTunerChart,
+      openTunerMicHelpModal: openTunerMicHelpModal,
+      closeTunerMicHelpModal: closeTunerMicHelpModal
+    },
+    metronome: {
+      startMetronome: startMetronome,
+      stopMetronome: stopMetronome,
+      initMetronomeUI: initMetronomeUI
+    },
+    game: {
+      setMode: setMode,
+      updateProgress: updateProgress,
+      restart: restart
+    },
+    ui: {
+      setMessage: setMessage,
+      updateFullscreenButton: updateFullscreenButton,
+      updateBottomNavVisibility: updateBottomNavVisibility,
+      hideSplashScreen: hideSplashScreen
+    },
+    catalog: {
+      normalizePlayerCatalogJson: normalizePlayerCatalogJson,
+      getPlayerCatalogCollections: getPlayerCatalogCollections,
+      getPlayerCatalogItems: getPlayerCatalogItems,
+      getPlayerCatalogItemByNumero: getPlayerCatalogItemByNumero
+    },
+    hinos: {
+      initHinosUI: initHinosUI,
+      bindHinosEvents: bindHinosEvents,
+      curriculumUtils: function () {
+        return window.HinosCurriculumUtils;
+      }
+    }
+  };
+
+  // Exposição controlada para debug e documentação viva no browser.
+  window.OrquestraApp = window.OrquestraApp || {};
+  window.OrquestraApp.modules = APP_MODULES;
+
+  function init() {
+    var aboutVersionNumber = document.getElementById('aboutVersionNumber');
+    var aboutVersionLabel = document.getElementById('aboutVersion');
+    var splashVersion = document.getElementById('splashVersion');
+    if (aboutVersionNumber) aboutVersionNumber.textContent = APP_VERSION;
+    if (aboutVersionLabel) aboutVersionLabel.textContent = APP_VERSION_LABEL;
+    if (splashVersion) splashVersion.textContent = 'v' + APP_VERSION;
+    initTheme();
+    bootstrapScreenWakeLock();
+    createInstrumentButtons();
+    createKeyButtons();
+    createClefButtons();
+    createViolinBoard();
+    initStaff();
+    createNoteButtons();
+    initMetronomeUI();
+    bindEvents();
+    updatePlayerUiNow(0);
+    syncPlayerSpeedUi();
+    syncPlayerLeverUi();
+    syncPlayerLiveScoreUi();
+    renderPlayerCatalogControls();
+    initHinosUI();
+    updateTunerUINoSignal();
+    drawTunerGauge(0, 'idle');
+    drawTunerChart();
+    setMode(currentMode);
+    updateFullscreenButton();
+    initBottomNavObserver();
+    updateBottomNavVisibility();
+    window.addEventListener('scroll', updateBottomNavVisibility, { passive: true });
+    document.addEventListener('scroll', updateBottomNavVisibility, { passive: true, capture: true });
+    window.addEventListener('resize', function onWindowResizePlayerAndNav() {
+      updateBottomNavVisibility();
+      resizePlayerOsmdIfActive();
+      buildPlayerNoteAnchorsFromDom();
+      playerAutoScrollNeedsInitial = true;
+      adjustMsaMediaIframeScale();
+    });
+    window.addEventListener('orientationchange', function onOrientationChangePlayer() {
+      resizePlayerOsmdIfActive();
+      buildPlayerNoteAnchorsFromDom();
+      playerAutoScrollNeedsInitial = true;
+    });
+    if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
+      window.visualViewport.addEventListener('resize', function onVisualViewportResizePlayer() {
+        playerAutoScrollNeedsInitial = true;
+        updateBottomNavVisibility();
+      });
+      window.visualViewport.addEventListener('scroll', function onVisualViewportScrollNav() {
+        updateBottomNavVisibility();
+      });
+    }
+    // PWA: registra o SW com atualização automática para a versão mais recente.
+    registerServiceWorkerAutoUpdate();
+    if (currentMode !== 'hinos' && currentMode !== 'player') {
+      setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
+    }
+    // Pequeno atraso para a transição de entrada ficar suave.
+    setTimeout(hideSplashScreen, 700);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
