@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.12';
+  const APP_VERSION = '1.3.13';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -2096,14 +2096,13 @@
     },
     clarinete: {
       filters: [
-        { type: 'highpass', frequency: 120, Q: 0.7 },
-        { type: 'peaking', frequency: 380, gain: 1.6, Q: 0.9 },
-        { type: 'peaking', frequency: 1500, gain: -1.6, Q: 1.1 },
-        { type: 'peaking', frequency: 3200, gain: 1.4, Q: 0.9 },
-        { type: 'highshelf', frequency: 8500, gain: -1.4 }
+        { type: 'highpass', frequency: 150, Q: 0.7 },
+        { type: 'peaking', frequency: 400, gain: 2.5, Q: 0.8 },   // Encorpa a ressonância chalumeau de madeira
+        { type: 'peaking', frequency: 1500, gain: -1.8, Q: 1.0 }, // Suaviza de forma sutil a aspereza média
+        { type: 'highshelf', frequency: 6500, gain: -2.5 }        // Suaviza levemente a sibilância extrema acima de 6.5kHz
       ],
       saturation: 0,
-      outGain: 1.0
+      outGain: 1.12
     },
     oboe: {
       filters: [
@@ -2502,7 +2501,7 @@
     });
   }
 
-  /** Opções de reprodução para deixar o timbre menos "seco". */
+  /** Opções de reprodução para deixar o timbre natural da soundfont. */
   function buildSoundfontPlayOptions(durationSec, gainValue) {
     var profile = getCurrentInstrumentTimbreProfile();
     var g =
@@ -2510,17 +2509,11 @@
       INSTRUMENT_OUTPUT_GAIN *
       (profile.gainMul || 1);
     if (g > 0.82) g = 0.82;
-    var attack = profile.attack || 0.01;
-    var release = profile.release || 0.34;
-    if (durationSec < 0.2) {
-      attack = Math.min(attack, 0.008);
-      release = Math.min(release, 0.2);
-    }
     return {
       duration: durationSec,
       gain: g,
-      attack: attack,
-      release: release
+      attack: typeof profile.attack === 'number' ? profile.attack : 0.02,
+      release: typeof profile.release === 'number' ? profile.release : 0.4
     };
   }
 
@@ -2549,8 +2542,9 @@
       return instrumentLoadPromises[instrumentId];
     }
 
+    var soundfontUrl = inst.soundfontUrl || 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/';
     instrumentLoadPromises[instrumentId] = Soundfont.instrument(ctx, inst.soundfont, {
-      from: 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/',
+      from: soundfontUrl,
       destination: getInstrumentShapingDestination(ctx, instrumentId) || ensureAudioOutputBus(ctx) || ctx.destination
     }).then(function (loadedInst) {
       return loadedInst;
@@ -5666,7 +5660,22 @@
     if (!titleEl) return;
     var col = getCurrentPlayerCollection();
     var colName = col && col.nome ? String(col.nome) : 'Coleção';
-    titleEl.textContent = window.PlayerViewUtils.buildHeaderTitle(colName, item, voice);
+    var baseTitle = window.PlayerViewUtils.buildHeaderTitle(colName, item, voice);
+
+    var inst = currentInstrument;
+    if (inst && inst.nome) {
+      var instText = inst.nome + (inst.emoji ? (' ' + inst.emoji) : '');
+      var parts = baseTitle.split(' · ');
+      if (parts.length >= 4) {
+        // Insere o instrumento com emoji antes da voz (posição 3)
+        parts.splice(3, 0, instText);
+        titleEl.textContent = parts.join(' · ');
+      } else {
+        titleEl.textContent = baseTitle + ' · ' + instText;
+      }
+    } else {
+      titleEl.textContent = baseTitle;
+    }
   }
 
   function normalizePlayerSelectedVoices(availableVoices) {
@@ -5739,7 +5748,10 @@
       return;
     }
 
-    var afinacoes = window.PlayerFilterUtils.getAfinacoes(items);
+    var currentCollection = getCurrentPlayerCollection();
+    var afinacoes = (currentCollection && currentCollection.filtros && currentCollection.filtros.afinacoes)
+      ? currentCollection.filtros.afinacoes
+      : window.PlayerFilterUtils.getAfinacoes(items);
     if (afinacoes.indexOf(playerSelectedAfinacao) === -1) playerSelectedAfinacao = afinacoes[0];
 
     var afinOptionsHtml = afinacoes.map(function (a) {

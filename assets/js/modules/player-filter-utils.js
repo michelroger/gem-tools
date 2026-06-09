@@ -56,10 +56,35 @@
   function resolveSelectedItem(filteredItems, selectedNumero, selectedItemId) {
     var items = filteredItems || [];
     if (!items.length) return { numero: 0, itemId: '' };
-    var hasNumero = items.some(function (it) { return Number(it && it.numero) === Number(selectedNumero); });
-    if (hasNumero) {
-      return { numero: Number(selectedNumero || 0), itemId: String(selectedItemId || '') };
+
+    // 1. Verifica se o item com o ID anterior existe na lista filtrada atual
+    var foundById = null;
+    for (var i = 0; i < items.length; i++) {
+      if (String(items[i].id || '') === String(selectedItemId || '')) {
+        foundById = items[i];
+        break;
+      }
     }
+
+    if (foundById) {
+      return { numero: Number(foundById.numero), itemId: String(foundById.id) };
+    }
+
+    // 2. Se o ID anterior não está na nova lista (ex: trocou de afinação de Do para Sib),
+    // tenta encontrar o mesmo número de exercício na lista filtrada
+    var foundByNumero = null;
+    for (var i = 0; i < items.length; i++) {
+      if (Number(items[i].numero) === Number(selectedNumero)) {
+        foundByNumero = items[i];
+        break;
+      }
+    }
+
+    if (foundByNumero) {
+      return { numero: Number(foundByNumero.numero), itemId: String(foundByNumero.id) };
+    }
+
+    // 3. Fallback: retorna o primeiro item da lista filtrada
     return {
       numero: Number((items[0] && items[0].numero) || 0),
       itemId: String((items[0] && items[0].id) || '')

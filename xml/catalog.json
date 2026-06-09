@@ -13470,7 +13470,8 @@
       "ordem": 3,
       "filtros": {
         "afinacoes": [
-          "do"
+          "do",
+          "sib"
         ],
         "vozes": [
           "s",
@@ -18519,6 +18520,2246 @@
               "b": "xml/colecoes/metodo-inclusivo-ccb/do/violoncelo/180- Ação de graças darei_b.musicxml"
             }
           }
+        },
+        {
+          "numero": 1,
+          "titulo": "Nossa primeira nota MI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/01 Nossa primeira nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-1"
+        },
+        {
+          "numero": 2,
+          "titulo": "Nossa segunda nota FA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/02 Nossa segunda nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-2"
+        },
+        {
+          "numero": 3,
+          "titulo": "Três é demais",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/03 Três é demais.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-3"
+        },
+        {
+          "numero": 4,
+          "titulo": "Quatro seguidas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/04 Quatro seguidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-4"
+        },
+        {
+          "numero": 5,
+          "titulo": "Uma dupla engraçada",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/05 Uma dupla engraçada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-5"
+        },
+        {
+          "numero": 6,
+          "titulo": "Sam do skate",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/06 Sam do skate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-6"
+        },
+        {
+          "numero": 7,
+          "titulo": "Atenção nessa nota",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/07 Atenção nessa nota.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-7"
+        },
+        {
+          "numero": 8,
+          "titulo": "Continue soprando",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/08 Continue soprando.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-8"
+        },
+        {
+          "numero": 9,
+          "titulo": "Nossa terceira nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/09 Nossa terceira nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-9"
+        },
+        {
+          "numero": 10,
+          "titulo": "Preguiçoso no sofá",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/10 Preguiçoso no sofá.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-10"
+        },
+        {
+          "numero": 11,
+          "titulo": "Cachorrinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/11 Cachorrinho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-11"
+        },
+        {
+          "numero": 12,
+          "titulo": "Nossa quarta nota RÉ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/12 Nossa quarta nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-12"
+        },
+        {
+          "numero": 13,
+          "titulo": "Maçã para o professor",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/13 Maçã para o professor.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-13"
+        },
+        {
+          "numero": 14,
+          "titulo": "Nossa quinta nota DÓ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/14 Nossa quinta nota DÓ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-14"
+        },
+        {
+          "numero": 15,
+          "titulo": "Carros de bate bate",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/15 Carros de bate bate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-15"
+        },
+        {
+          "numero": 16,
+          "titulo": "Mínimas acontecem",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/16 Mínimas acontecem.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-16"
+        },
+        {
+          "numero": 17,
+          "titulo": "Pães doces",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/17 Pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-17"
+        },
+        {
+          "numero": 18,
+          "titulo": "Saltando a montanha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/18 Saltando a montanha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-18"
+        },
+        {
+          "numero": 19,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/19 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-19"
+        },
+        {
+          "numero": 20,
+          "titulo": "Semínimas com pausas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/20 Semínimas com pausas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-20"
+        },
+        {
+          "numero": 21,
+          "titulo": "Gira o dado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/21 Gira o dado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-21"
+        },
+        {
+          "numero": 22,
+          "titulo": "Mínimas repetidas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/22 Mínimas repetidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-22"
+        },
+        {
+          "numero": 23,
+          "titulo": "Uma nova nota SI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/23 Uma nova nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-23"
+        },
+        {
+          "numero": 24,
+          "titulo": "Sem incomodar",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/24 Sem incomodar .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-24"
+        },
+        {
+          "numero": 25,
+          "titulo": "Golpe da língua",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/25 Golpe da língua .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-25"
+        },
+        {
+          "numero": 26,
+          "titulo": "Conhecer colcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/26 Conhecer colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-26"
+        },
+        {
+          "numero": 27,
+          "titulo": "Yankee Doodle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/27 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-27"
+        },
+        {
+          "numero": 28,
+          "titulo": "Cruzeiro no Caribe",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/28 Cruzeiro no Caribe.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-28"
+        },
+        {
+          "numero": 29,
+          "titulo": "Casa no sítio",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/29 Casa no sítio .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-29"
+        },
+        {
+          "numero": 30,
+          "titulo": "Deslizando em colcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/30 Deslizando em colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-30"
+        },
+        {
+          "numero": 31,
+          "titulo": "A canção do repolho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/31 A canção do repolho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-31"
+        },
+        {
+          "numero": 32,
+          "titulo": "Conhecendo a nota LA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/32 Conhecendo a nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-32"
+        },
+        {
+          "numero": 33,
+          "titulo": "O velho MacDonald",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/33 O velho MacDonald .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-33"
+        },
+        {
+          "numero": 34,
+          "titulo": "Fogo brilhante",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/34 Fogo brilhante.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-34"
+        },
+        {
+          "numero": 35,
+          "titulo": "Ponte de Londres",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/35 Ponte de Londres.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-35"
+        },
+        {
+          "numero": 36,
+          "titulo": "Rosas do Sul",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/36 Rosas do Sul.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-36"
+        },
+        {
+          "numero": 37,
+          "titulo": "Encantador de notas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/37 Encantador de notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-37"
+        },
+        {
+          "numero": 38,
+          "titulo": "Cabelos dourados",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/38 Cabelos dourados.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-38"
+        },
+        {
+          "numero": 39,
+          "titulo": "Brilha, brilha, estrelinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/39 Brilha, brilha, estrelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-39"
+        },
+        {
+          "numero": 40,
+          "titulo": "Hino a alegria",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/40 Hino a alegria.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-40"
+        },
+        {
+          "numero": 41,
+          "titulo": "Nova nota, o SIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/41 Nova nota, o SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-41"
+        },
+        {
+          "numero": 42,
+          "titulo": "Yankee Doodle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/42 Yankee Doodle .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-42"
+        },
+        {
+          "numero": 43,
+          "titulo": "Cabana na floresta",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/43 Cabana na floresta.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-43"
+        },
+        {
+          "numero": 44,
+          "titulo": "Cópia perfeita",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/44 Cópia perfeita.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-44"
+        },
+        {
+          "numero": 45,
+          "titulo": "Polly Wolly",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/45 Polly Wolly.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-45"
+        },
+        {
+          "numero": 46,
+          "titulo": "Nova nota FA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/46 Nova nota FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-46"
+        },
+        {
+          "numero": 47,
+          "titulo": "Maria tinha um cordeirinho (1)",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/47 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-47"
+        },
+        {
+          "numero": 48,
+          "titulo": "Ó vinde criancinhas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/48 Ó vinde criancinhas - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/48 Ó vinde criancinhas - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-48"
+        },
+        {
+          "numero": 49,
+          "titulo": "A esperança",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/49 A esperança .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-49"
+        },
+        {
+          "numero": 50,
+          "titulo": "Insultos escorregadios",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/50 Insultos escorregadios.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-50"
+        },
+        {
+          "numero": 51,
+          "titulo": "Você está dormindo_",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/51 Você está dormindo_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-51"
+        },
+        {
+          "numero": 52,
+          "titulo": "Mais colcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/52 Mais colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-52"
+        },
+        {
+          "numero": 53,
+          "titulo": "Pra frente e pra trás",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/53 Pra frente e pra trás.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-53"
+        },
+        {
+          "numero": 54,
+          "titulo": "Ponto de aumento",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/54 Ponto de aumento.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-54"
+        },
+        {
+          "numero": 55,
+          "titulo": "América",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/55 América.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-55"
+        },
+        {
+          "numero": 56,
+          "titulo": "Falta técnica",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/56 Falta técnica.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-56"
+        },
+        {
+          "numero": 57,
+          "titulo": "Ritmo misturado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/57 Ritmo misturado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-57"
+        },
+        {
+          "numero": 58,
+          "titulo": "Outro SIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/58 Outro SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-58"
+        },
+        {
+          "numero": 59,
+          "titulo": "Mais pães doce",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/59 Mais pães doce.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-59"
+        },
+        {
+          "numero": 60,
+          "titulo": "É natural ( Bequadro)",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/60 É natural ( Bequadro).musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-60"
+        },
+        {
+          "numero": 61,
+          "titulo": "Lute e vença",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/61 Lute e vença.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-61"
+        },
+        {
+          "numero": 62,
+          "titulo": "Minuet",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/62 Minuet.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-62"
+        },
+        {
+          "numero": 63,
+          "titulo": "Rúben e Raquel",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/63 Rúben e Raquel.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-63"
+        },
+        {
+          "numero": 64,
+          "titulo": "Quando amor é gentil",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/64 Quando amor é gentil.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-64"
+        },
+        {
+          "numero": 65,
+          "titulo": "Chapéu mexicano",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/65 Chapéu mexicano .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-65"
+        },
+        {
+          "numero": 66,
+          "titulo": "Blues dues",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/66 Blues dues.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-66"
+        },
+        {
+          "numero": 67,
+          "titulo": "Respiração profunda",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/67 Respiração profunda.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-67"
+        },
+        {
+          "numero": 68,
+          "titulo": "Quando todos marcham",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/68 Quando todos marcham.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-68"
+        },
+        {
+          "numero": 69,
+          "titulo": "Abertura de flechas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/69 Abertura de flechas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-69"
+        },
+        {
+          "numero": 70,
+          "titulo": "Esse velho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/70 Esse velho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-70"
+        },
+        {
+          "numero": 71,
+          "titulo": "Nova nota DO#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/71 Nova nota DO#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-71"
+        },
+        {
+          "numero": 72,
+          "titulo": "Cantando docemente",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/72 Cantando docemente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-72"
+        },
+        {
+          "numero": 73,
+          "titulo": "Truque de ritmos",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/73 Truque de ritmos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-73"
+        },
+        {
+          "numero": 74,
+          "titulo": "Nova nota LA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/74 Nova nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-74"
+        },
+        {
+          "numero": 75,
+          "titulo": "Bye baby",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/75 Bye baby.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-75"
+        },
+        {
+          "numero": 76,
+          "titulo": "Mostrar a Melodia",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/76 Mostrar a Melodia .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-76"
+        },
+        {
+          "numero": 77,
+          "titulo": "Nova nota SOL#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/77 Nova nota SOL#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-77"
+        },
+        {
+          "numero": 78,
+          "titulo": "Barcarolle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/78 Barcarolle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-78"
+        },
+        {
+          "numero": 79,
+          "titulo": "Nova nota DO",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/79 Nova nota DO.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-79"
+        },
+        {
+          "numero": 80,
+          "titulo": "Lembrando as notas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/80 Lembrando as notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-80"
+        },
+        {
+          "numero": 81,
+          "titulo": "Nova nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/81 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-81"
+        },
+        {
+          "numero": 82,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/82 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-82"
+        },
+        {
+          "numero": 83,
+          "titulo": "Nova nota FA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/83 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-83"
+        },
+        {
+          "numero": 84,
+          "titulo": "Fogo que brilha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/84 Fogo que brilha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-84"
+        },
+        {
+          "numero": 85,
+          "titulo": "Ponte de Londres",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/85 Ponte de Londres.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-85"
+        },
+        {
+          "numero": 86,
+          "titulo": "Hino a alegria",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/86 Hino a alegria .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-86"
+        },
+        {
+          "numero": 87,
+          "titulo": "Nova nota RÉ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/87 Nova nota RÉ .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-87"
+        },
+        {
+          "numero": 88,
+          "titulo": "Nova nota MI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/88 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-88"
+        },
+        {
+          "numero": 89,
+          "titulo": "Nova nota FA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/89 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-89"
+        },
+        {
+          "numero": 90,
+          "titulo": "Aumento de Sol a Ré",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/90 Aumento de Sol a Ré.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-90"
+        },
+        {
+          "numero": 91,
+          "titulo": "Aumento de Fá a Dó",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/91 Aumento de Fá a Dó.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-91"
+        },
+        {
+          "numero": 92,
+          "titulo": "Nova nota MI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/92 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-92"
+        },
+        {
+          "numero": 93,
+          "titulo": "Aumento de Mi a Si",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/93 Aumento de Mi a Si.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-93"
+        },
+        {
+          "numero": 94,
+          "titulo": "Passeio na nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/94 Passeio na nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-94"
+        },
+        {
+          "numero": 95,
+          "titulo": "Terras distantes",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/95 Terras distantes.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-95"
+        },
+        {
+          "numero": 96,
+          "titulo": "Aumento de Lá a Mi",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/96 Aumento de Lá a Mi.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-96"
+        },
+        {
+          "numero": 97,
+          "titulo": "Aumento de Si a Fa",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/97 Aumento de Si a Fa.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-97"
+        },
+        {
+          "numero": 98,
+          "titulo": "Indo embora",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/98 Indo embora.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-98"
+        },
+        {
+          "numero": 99,
+          "titulo": "Descendo a escada",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/99 Descendo a escada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-99"
+        },
+        {
+          "numero": 100,
+          "titulo": "Desce a escada ligeiro",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/100 Desce a escada ligeiro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-100"
+        },
+        {
+          "numero": 101,
+          "titulo": "Descendo mais rápido",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/101 Descendo mais rápido .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-101"
+        },
+        {
+          "numero": 102,
+          "titulo": "Escala DÓ maior",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/102 Escala DÓ maior.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-102"
+        },
+        {
+          "numero": 103,
+          "titulo": "Can Can",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/103 Can Can.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-103"
+        },
+        {
+          "numero": 104,
+          "titulo": "Alecrim dourado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/104 Alecrim dourado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-104"
+        },
+        {
+          "numero": 105,
+          "titulo": "Melody Anacreon in H - JS Smith",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/105 Melody Anacreon in H - JS Smith.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-105"
+        },
+        {
+          "numero": 106,
+          "titulo": "Escala de Fá Maior - SIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/106 Escala de Fá Maior - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-106"
+        },
+        {
+          "numero": 107,
+          "titulo": "Lá Bamba",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/107 Lá Bamba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-107"
+        },
+        {
+          "numero": 108,
+          "titulo": "Simples presente",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/108 Simples presente .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-108"
+        },
+        {
+          "numero": 109,
+          "titulo": "Amazing Grace",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/109 Amazing Grace.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-109"
+        },
+        {
+          "numero": 110,
+          "titulo": "Patrulha americana",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/110 Patrulha americana .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-110"
+        },
+        {
+          "numero": 111,
+          "titulo": "Escala de SOL maior - FA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/111 Escala de SOL maior - FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-111"
+        },
+        {
+          "numero": 112,
+          "titulo": "A dona aranha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/112 A dona aranha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-112"
+        },
+        {
+          "numero": 113,
+          "titulo": "A barata",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/113 A barata.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-113"
+        },
+        {
+          "numero": 114,
+          "titulo": "Escala SIb maior - SIb _ MIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/114 Escala SIb maior - SIb _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-114"
+        },
+        {
+          "numero": 115,
+          "titulo": "Tema J.G Burt",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/115 Tema J.G Burt - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/115 Tema J.G Burt - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-115"
+        },
+        {
+          "numero": 116,
+          "titulo": "Escala de RÉ maior - Fa# _ Do#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/116 Escala de RÉ maior - Fa# _ Do#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-116"
+        },
+        {
+          "numero": 117,
+          "titulo": "Fui ao mercado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/117 Fui ao mercado .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-117"
+        },
+        {
+          "numero": 118,
+          "titulo": "A janelinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/118 A janelinha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-118"
+        },
+        {
+          "numero": 119,
+          "titulo": "Escala MIb maior - SIb _ MIb _ LAb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/119 Escala MIb maior - SIb _ MIb _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-119"
+        },
+        {
+          "numero": 120,
+          "titulo": "Tema P.P. Bliss",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/120 Tema P.P. Bliss - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/120 Tema P.P. Bliss - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-120"
+        },
+        {
+          "numero": 121,
+          "titulo": "Escala LA maior - Fa# _ Do# _ Sol#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/121 Escala LA maior - Fa# _ Do# _ Sol#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-121"
+        },
+        {
+          "numero": 122,
+          "titulo": "Minuet 1 - JS Bach",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/122 Minuet 1 - JS Bach .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-122"
+        },
+        {
+          "numero": 123,
+          "titulo": "Amigos para sempre",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/123 Amigos para sempre.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-123"
+        },
+        {
+          "numero": 124,
+          "titulo": "Escala de Mi Maior - Fa# _ Do# _ Sol# _ Ré#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/124 Escala de Mi Maior - Fa# _ Do# _ Sol# _ Ré#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-124"
+        },
+        {
+          "numero": 125,
+          "titulo": "Hino 441 Eu sou um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/125 Hino 441 Eu sou um cordeirinho - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/125 Hino 441 Eu sou um cordeirinho - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-125"
+        },
+        {
+          "numero": 126,
+          "titulo": "Escala de Si maior - Fa# _ Do# _ Sol# _ La#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/126 Escala de Si maior - Fa# _ Do# _ Sol# _ La#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-126"
+        },
+        {
+          "numero": 127,
+          "titulo": "Nova nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/127 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-127"
+        },
+        {
+          "numero": 128,
+          "titulo": "Go Tell Aunt Rhody",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/128 Go Tell Aunt Rhody.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-128"
+        },
+        {
+          "numero": 129,
+          "titulo": "Perpetual Motion",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/129 Perpetual Motion.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-129"
+        },
+        {
+          "numero": 130,
+          "titulo": "Allegro",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/130 Allegro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-130"
+        },
+        {
+          "numero": 131,
+          "titulo": "Conheça as tercinas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/131 Conheça as tercinas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-131"
+        },
+        {
+          "numero": 132,
+          "titulo": "Aprendendo pontuadas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/132 Aprendendo pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-132"
+        },
+        {
+          "numero": 133,
+          "titulo": "Pula pula pipoquinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/133 Pula pula pipoquinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-133"
+        },
+        {
+          "numero": 134,
+          "titulo": "Nova nota Sol#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/134 Nova nota Sol#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-134"
+        },
+        {
+          "numero": 135,
+          "titulo": "Long, long ago",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/135 Long, long ago.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-135"
+        },
+        {
+          "numero": 136,
+          "titulo": "Brilha brilha estrelinha com colcheias, tercinas e pontuadas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/136 Brilha brilha estrelinha com colcheias, tercinas e pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-136"
+        },
+        {
+          "numero": 137,
+          "titulo": "Oh when the saints",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/137 Oh when the saints.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-137"
+        },
+        {
+          "numero": 138,
+          "titulo": "Saudade",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/138 Saudade - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/138 Saudade - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-138"
+        },
+        {
+          "numero": 139,
+          "titulo": "Toda a glória a Jesus",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/139 Toda a glória a Jesus - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/139 Toda a glória a Jesus - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-139"
+        },
+        {
+          "numero": 140,
+          "titulo": "Ação de graças darei",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "clarinete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/140 Ação de graças darei - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/clarineta/140 Ação de graças darei - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-clarinete-140"
         }
       ]
     }
