@@ -13471,7 +13471,8 @@
       "filtros": {
         "afinacoes": [
           "do",
-          "sib"
+          "sib",
+          "mib"
         ],
         "vozes": [
           "s",
