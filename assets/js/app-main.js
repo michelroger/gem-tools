@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.14';
+  const APP_VERSION = '1.3.21';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -396,6 +396,10 @@
   var audioOutputBusCtx = null;
   var audioReverbImpulse = null;
   var audioReverbImpulseCtx = null;
+  var audioRealReverbBuffer = null;
+  var activeConvolverNode = null;
+  var activeConvolverNodeCtx = null;
+  var shapingInputToInstrumentId = new Map();
   /** Cadeias de EQ/saturação por instrumento ligadas ao barramento mestre. */
   var instrumentShapingChains = {};
   var instrumentShapingChainsCtx = null;
@@ -1953,9 +1957,144 @@
   const NOTE_SEMITONE = { do: 0, re: 2, mi: 4, fa: 5, sol: 7, la: 9, si: 11 };
 
   // ========== INICIALIZAÇÃO DO ÁUDIO ==========
+  var nativeCreateBufferSource = null;
+  function setupBufferSourceInterceptor() {
+    if (nativeCreateBufferSource) return;
+    
+    nativeCreateBufferSource = AudioContext.prototype.createBufferSource;
+    AudioContext.prototype.createBufferSource = function() {
+      var sourceNode = nativeCreateBufferSource.apply(this, arguments);
+      var ctx = this;
+      
+      var nativeConnect = sourceNode.connect;
+      sourceNode.connect = function(destination) {
+        var res = nativeConnect.apply(this, arguments);
+        
+        try {
+          if (destination && shapingInputToInstrumentId && shapingInputToInstrumentId.has(destination)) {
+            var instrumentId = shapingInputToInstrumentId.get(destination);
+            applyVibratoToSource(sourceNode, ctx, instrumentId);
+            applyLoopingToSource(sourceNode, ctx, instrumentId);
+          }
+        } catch (e) {
+          console.warn('Erro ao aplicar vibrato ou looping ao source node:', e);
+        }
+        
+        return res;
+      };
+      
+      return sourceNode;
+    };
+  }
+
+  function applyLoopingToSource(sourceNode, ctx, instrumentId) {
+    if (!sourceNode || !sourceNode.buffer) return;
+    var duration = sourceNode.buffer.duration;
+    if (duration <= 0.6) return;
+    
+    var startRatio = 0.35;
+    var endRatio = 0.75;
+    
+    if (instrumentId === 'violoncelo' || instrumentId === 'contrabaixo') {
+      startRatio = 0.40;
+      endRatio = 0.82;
+    } else if (instrumentId === 'violino' || instrumentId === 'viola') {
+      startRatio = 0.35;
+      endRatio = 0.80;
+    } else if (instrumentId === 'saxofone' || instrumentId === 'clarinete' || instrumentId === 'flauta') {
+      startRatio = 0.30;
+      endRatio = 0.75;
+    }
+    
+    try {
+      sourceNode.loop = true;
+      sourceNode.loopStart = duration * startRatio;
+      sourceNode.loopEnd = duration * endRatio;
+    } catch (err) {
+      console.warn('Erro ao configurar looping no source node:', err);
+    }
+  }
+
+  var VIBRATO_CONFIGS = {
+    violino: { speed: 6.0, depth: 0.018, delay: 0.20, ramp: 0.30 },
+    viola: { speed: 5.6, depth: 0.016, delay: 0.22, ramp: 0.32 },
+    violoncelo: { speed: 5.4, depth: 0.019, delay: 0.25, ramp: 0.35 },
+    contrabaixo: { speed: 4.8, depth: 0.012, delay: 0.30, ramp: 0.40 },
+    flauta: { speed: 5.6, depth: 0.014, delay: 0.18, ramp: 0.22 },
+    clarinete: { speed: 5.2, depth: 0.005, delay: 0.20, ramp: 0.25 },
+    saxofone: { speed: 5.5, depth: 0.015, delay: 0.18, ramp: 0.25 },
+    oboe: { speed: 5.6, depth: 0.015, delay: 0.18, ramp: 0.25 },
+    fagote: { speed: 5.0, depth: 0.012, delay: 0.22, ramp: 0.30 },
+    trompete: { speed: 4.8, depth: 0.004, delay: 0.35, ramp: 0.40 },
+    trompa: { speed: 4.5, depth: 0.004, delay: 0.40, ramp: 0.40 },
+    trombone: { speed: 4.5, depth: 0.004, delay: 0.40, ramp: 0.40 },
+    voz: { speed: 5.6, depth: 0.016, delay: 0.15, ramp: 0.30 }
+  };
+
+  function applyVibratoToSource(sourceNode, ctx, instrumentId) {
+    var config = VIBRATO_CONFIGS[instrumentId];
+    if (!config || !config.depth || config.depth <= 0) return;
+    
+    var now = ctx.currentTime;
+    
+    var lfo = ctx.createOscillator();
+    lfo.frequency.value = config.speed || 5.5;
+    
+    var lfoGain = ctx.createGain();
+    lfoGain.gain.setValueAtTime(0, now);
+    
+    var delayTime = config.delay || 0;
+    var rampTime = config.ramp || 0;
+    
+    if (delayTime > 0) {
+      lfoGain.gain.setValueAtTime(0, now + delayTime);
+    }
+    lfoGain.gain.linearRampToValueAtTime(config.depth, now + delayTime + rampTime);
+    
+    lfo.connect(lfoGain);
+    lfoGain.connect(sourceNode.playbackRate);
+    
+    lfo.start(now);
+    
+    sourceNode.addEventListener('ended', function() {
+      try {
+        lfo.stop();
+        lfo.disconnect();
+        lfoGain.disconnect();
+      } catch (e) {}
+    });
+  }
+
+  function loadRealReverbImpulse(ctx) {
+    if (!ctx || audioRealReverbBuffer) return;
+    
+    var irUrl = './assets/audio/musikvereinsaal.wav';
+    fetch(irUrl)
+      .then(function(response) {
+        if (!response.ok) throw new Error('Status HTTP ' + response.status);
+        return response.arrayBuffer();
+      })
+      .then(function(arrayBuffer) {
+        return ctx.decodeAudioData(arrayBuffer);
+      })
+      .then(function(audioBuffer) {
+        audioRealReverbBuffer = audioBuffer;
+        console.log('Impulse Response real da Musikvereinsaal carregado e decodificado.');
+        if (activeConvolverNode && activeConvolverNodeCtx === ctx) {
+          activeConvolverNode.buffer = audioBuffer;
+          console.log('Nó convolver de áudio atualizado para o reverb real.');
+        }
+      })
+      .catch(function(err) {
+        console.warn('Não foi possível obter o reverb real da Musikvereinsaal. Usando sintético:', err);
+      });
+  }
+
   function getAudioContext() {
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      setupBufferSourceInterceptor();
+      loadRealReverbImpulse(audioCtx);
     }
     return audioCtx;
   }
@@ -2011,21 +2150,25 @@
       highShelf.gain.value = -1.6;
 
       var compressor = ctx.createDynamicsCompressor();
-      compressor.threshold.value = -18;
-      compressor.knee.value = 18;
-      compressor.ratio.value = 2.4;
-      compressor.attack.value = 0.01;
-      compressor.release.value = 0.22;
+      compressor.threshold.value = -24;
+      compressor.knee.value = 12;
+      compressor.ratio.value = 4.0;
+      compressor.attack.value = 0.005;
+      compressor.release.value = 0.25;
 
       var limiter = ctx.createGain();
       limiter.gain.value = calmMode ? 0.92 : 0.98;
       var dryGain = ctx.createGain();
-      dryGain.gain.value = calmMode ? 0.88 : 0.84;
+      dryGain.gain.value = calmMode ? 0.68 : 0.62;
       var wetGain = ctx.createGain();
-      wetGain.gain.value = calmMode ? 0.1 : 0.16;
+      wetGain.gain.value = calmMode ? 0.38 : 0.48;
       var convolver = ctx.createConvolver();
       convolver.normalize = true;
-      convolver.buffer = getReverbImpulse(ctx);
+      convolver.buffer = audioRealReverbBuffer || getReverbImpulse(ctx);
+      activeConvolverNode = convolver;
+      activeConvolverNodeCtx = ctx;
+      
+      loadRealReverbImpulse(ctx);
 
       input.connect(lowShelf);
       lowShelf.connect(highShelf);
@@ -2066,46 +2209,46 @@
     violino: {
       filters: [
         { type: 'highpass', frequency: 140, Q: 0.7 },
-        { type: 'peaking', frequency: 260, gain: 1.6, Q: 0.9 },
-        { type: 'peaking', frequency: 1100, gain: -2.0, Q: 1.2 },
-        { type: 'peaking', frequency: 3400, gain: 2.0, Q: 0.9 },
-        { type: 'highshelf', frequency: 9000, gain: -2.0 }
+        { type: 'peaking', frequency: 250, gain: 3.0, Q: 0.85 },   // Encorpa a ressonância de madeira
+        { type: 'peaking', frequency: 1100, gain: -2.0, Q: 1.2 },  // Remove aspereza
+        { type: 'peaking', frequency: 3000, gain: -4.0, Q: 1.1 },  // Corta estridência digital estridente
+        { type: 'highshelf', frequency: 5500, gain: -5.0 }         // Deixa o som aveludado de orquestra
       ],
-      saturation: 0,
-      outGain: 1.0
+      saturation: 0.10, // Simula a fricção física do arco nas cordas
+      outGain: 1.05
     },
     viola: {
       filters: [
         { type: 'highpass', frequency: 110, Q: 0.7 },
-        { type: 'peaking', frequency: 220, gain: 1.8, Q: 0.9 },
+        { type: 'peaking', frequency: 200, gain: 3.2, Q: 0.85 },
         { type: 'peaking', frequency: 950, gain: -1.8, Q: 1.2 },
-        { type: 'peaking', frequency: 2800, gain: 1.6, Q: 0.9 },
-        { type: 'highshelf', frequency: 8500, gain: -2.4 }
+        { type: 'peaking', frequency: 2800, gain: -3.5, Q: 1.1 },
+        { type: 'highshelf', frequency: 5200, gain: -5.0 }
       ],
-      saturation: 0,
-      outGain: 1.0
+      saturation: 0.10,
+      outGain: 1.05
     },
     violoncelo: {
       filters: [
         { type: 'highpass', frequency: 55, Q: 0.7 },
-        { type: 'peaking', frequency: 160, gain: 0.8, Q: 0.9 },
-        { type: 'peaking', frequency: 900, gain: 0.6, Q: 1.0 },
-        { type: 'peaking', frequency: 2200, gain: 0.8, Q: 0.9 },
-        { type: 'highshelf', frequency: 8500, gain: -1.4 }
+        { type: 'peaking', frequency: 150, gain: 3.0, Q: 0.85 },
+        { type: 'peaking', frequency: 900, gain: -1.0, Q: 1.0 },
+        { type: 'peaking', frequency: 2200, gain: -3.0, Q: 1.1 },
+        { type: 'highshelf', frequency: 5000, gain: -4.5 }
       ],
-      saturation: 0,
-      outGain: 1.0
+      saturation: 0.08,
+      outGain: 1.08
     },
     contrabaixo: {
       filters: [
         { type: 'highpass', frequency: 32, Q: 0.7 },
-        { type: 'peaking', frequency: 90, gain: 1.0, Q: 0.9 },
+        { type: 'peaking', frequency: 90, gain: 1.8, Q: 0.9 },
         { type: 'peaking', frequency: 700, gain: 0.5, Q: 1.0 },
-        { type: 'peaking', frequency: 1700, gain: 0.6, Q: 0.9 },
-        { type: 'highshelf', frequency: 7500, gain: -1.8 }
+        { type: 'peaking', frequency: 1700, gain: -2.0, Q: 1.0 },
+        { type: 'highshelf', frequency: 6000, gain: -3.0 }
       ],
-      saturation: 0,
-      outGain: 1.0
+      saturation: 0.05,
+      outGain: 1.05
     },
     flauta: {
       filters: [
@@ -2120,12 +2263,22 @@
     clarinete: {
       filters: [
         { type: 'highpass', frequency: 150, Q: 0.7 },
-        { type: 'peaking', frequency: 400, gain: 2.5, Q: 0.8 },   // Encorpa a ressonância chalumeau de madeira
-        { type: 'peaking', frequency: 1500, gain: -1.8, Q: 1.0 }, // Suaviza de forma sutil a aspereza média
-        { type: 'highshelf', frequency: 6500, gain: -2.5 }        // Suaviza levemente a sibilância extrema acima de 6.5kHz
+        { type: 'peaking', frequency: 400, gain: 2.5, Q: 0.8 },
+        { type: 'peaking', frequency: 1500, gain: -1.8, Q: 1.0 },
+        { type: 'highshelf', frequency: 6500, gain: -2.5 }
       ],
       saturation: 0,
       outGain: 1.12
+    },
+    saxofone: {
+      filters: [
+        { type: 'highpass', frequency: 120, Q: 0.7 },
+        { type: 'peaking', frequency: 380, gain: 3.5, Q: 0.85 },   // Encorpa a ressonância de palheta de metal
+        { type: 'peaking', frequency: 2200, gain: -3.5, Q: 1.1 },  // Corta a aspereza digital
+        { type: 'highshelf', frequency: 6500, gain: -3.0 }         // Suaviza o sopro estridente
+      ],
+      saturation: 0.12, // Aquece a saturação harmônica da palheta do sax
+      outGain: 1.08
     },
     oboe: {
       filters: [
@@ -2252,6 +2405,7 @@
     if (instrumentShapingChainsCtx !== ctx) {
       instrumentShapingChains = {};
       instrumentShapingChainsCtx = ctx;
+      if (shapingInputToInstrumentId) shapingInputToInstrumentId.clear();
     }
     var chain = instrumentShapingChains[instrumentId];
     if (!chain) {
@@ -2261,6 +2415,9 @@
         catch (e) { chain = null; }
       }
       if (chain) instrumentShapingChains[instrumentId] = chain;
+    }
+    if (chain && shapingInputToInstrumentId) {
+      shapingInputToInstrumentId.set(chain.input, instrumentId);
     }
     return chain ? chain.input : (bus || ctx.destination);
   }
@@ -2274,6 +2431,7 @@
     if (inst === 'flauta') return { attack: 0.013, release: 0.32, gainMul: 0.95 };
     if (inst === 'clarinete') return { attack: 0.016, release: 0.38, gainMul: 0.96 };
     if (inst === 'oboe') return { attack: 0.014, release: 0.36, gainMul: 0.93 };
+    if (inst === 'saxofone') return { attack: 0.018, release: 0.35, gainMul: 1.02 };
     if (inst === 'fagote') return { attack: 0.017, release: 0.40, gainMul: 0.97 };
     if (inst === 'trompete') return { attack: 0.011, release: 0.30, gainMul: 0.90 };
     if (inst === 'trompa') return { attack: 0.015, release: 0.38, gainMul: 0.94 };
@@ -2284,8 +2442,57 @@
 
   /** Converte frequência (Hz) em nome da nota MIDI (ex.: 440 -> 'A4'). */
   function freqToMidiNoteName(freq) {
-    var midi = Math.round(69 + 12 * Math.log2(freq / 440));
+    var midiOrig = Math.round(69 + 12 * Math.log2(freq / 440));
+    var midi = Math.max(0, Math.min(127, midiOrig));
+    
+    var instId = currentInstrument && currentInstrument.id ? String(currentInstrument.id) : '';
+    
+    // 1. Transposição Física de Afinação para Instrumentos Transpositores
+    // Instrumentos transpositores lêem a partitura escrita de forma transposta.
+    // Para que soem no tom real correto do hino (som de concerto):
+    if (instId === 'saxofone') {
+      midi = midiOrig - 9; // Sax Alto em Mib soa 9 semitons abaixo da nota escrita (uma sexta maior abaixo)
+    } else if (instId === 'clarinete' || instId === 'trompete') {
+      midi = midiOrig - 2; // Clarinete e Trompete em Sib soam 2 semitons abaixo da nota escrita (uma segunda maior abaixo)
+    } else if (instId === 'trompa') {
+      midi = midiOrig - 7; // Trompa em Fá soa 7 semitons abaixo da nota escrita (uma quinta justa abaixo)
+    }
+    
+    // 2. Transposição de Oitava para Viola e Instrumentos Graves
+    else if (instId === 'viola') {
+      if (midiOrig > 59) { // Acima de B3 (a partir de C4), transpõe 1 oitava abaixo para soar no registro contralto encorpado (C3 a B4)
+        midi = midiOrig - 12;
+      }
+    } else if (instId === 'violoncelo') {
+      if (midiOrig > 72) { // Acima de C5, transpõe 2 oitavas para a tessitura confortável do cello
+        midi = midiOrig - 24;
+      } else if (midiOrig > 60) { // Acima de C4, transpõe 1 oitava
+        midi = midiOrig - 12;
+      }
+    } else if (instId === 'contrabaixo') {
+      if (midiOrig > 72) { // Acima de C5, transpõe 3 oitavas
+        midi = midiOrig - 36;
+      } else if (midiOrig > 60) { // Acima de C4, transpõe 2 oitavas
+        midi = midiOrig - 24;
+      } else if (midiOrig > 48) { // Acima de C3, transpõe 1 oitava
+        midi = midiOrig - 12;
+      }
+    } else if (instId === 'trombone') {
+      if (midiOrig > 72) {
+        midi = midiOrig - 24;
+      } else if (midiOrig > 60) {
+        midi = midiOrig - 12;
+      }
+    } else if (instId === 'fagote') {
+      if (midiOrig > 72) {
+        midi = midiOrig - 24;
+      } else if (midiOrig > 60) {
+        midi = midiOrig - 12;
+      }
+    }
+    
     midi = Math.max(0, Math.min(127, midi));
+    
     var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     return names[midi % 12] + Math.floor(midi / 12);
   }
@@ -3219,7 +3426,7 @@
     }
     if (currentMode === 'player') {
       renderPlayerCatalogControls();
-      loadPlayerSelectionFromCatalog(false).catch(function () { });
+      loadPlayerFromCatalogSelection(false);
     }
   }
 
