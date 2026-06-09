@@ -203,6 +203,7 @@
   function defaultAfinaçãoForInstrument(inst) {
     if (!inst) return 'do';
     if (inst.id === 'clarinete') return 'sib';
+    if (inst.id === 'saxofone') return 'mib';
     if (inst.tipo === 'corda') return 'do';
     if (inst.tipo === 'metal') return 'sib';
     if (inst.tipo === 'sopro') return 'mib';

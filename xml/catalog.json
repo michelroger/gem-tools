@@ -20760,6 +20760,2214 @@
             }
           },
           "id": "metodo-clarinete-140"
+        },
+        {
+          "numero": 1,
+          "titulo": "Nossa primeira nota SI",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/01 Nossa primeira nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-1"
+        },
+        {
+          "numero": 2,
+          "titulo": "Nossa segunda nota DO",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/02 Nossa segunda nota DO.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-2"
+        },
+        {
+          "numero": 3,
+          "titulo": "Três é demais",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/03 Três é demais.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-3"
+        },
+        {
+          "numero": 4,
+          "titulo": "Quatro seguidas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/04 Quatro seguidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-4"
+        },
+        {
+          "numero": 5,
+          "titulo": "Uma dupla engraçada",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/05 Uma dupla engraçada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-5"
+        },
+        {
+          "numero": 6,
+          "titulo": "Sam do skate",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/06 Sam do skate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-6"
+        },
+        {
+          "numero": 7,
+          "titulo": "Atenção nessa nota",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/07 Atenção nessa nota.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-7"
+        },
+        {
+          "numero": 8,
+          "titulo": "Continue soprando",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/08 Continue soprando.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-8"
+        },
+        {
+          "numero": 9,
+          "titulo": "Nossa terceira nota RÉ",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/09 Nossa terceira nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-9"
+        },
+        {
+          "numero": 10,
+          "titulo": "Preguiçoso no sofá",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/10 Preguiçoso no sofá.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-10"
+        },
+        {
+          "numero": 11,
+          "titulo": "Cachorrinho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/11 Cachorrinho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-11"
+        },
+        {
+          "numero": 12,
+          "titulo": "Nossa quarta nota LA",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/12 Nossa quarta nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-12"
+        },
+        {
+          "numero": 13,
+          "titulo": "Maçã para o professor",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/13 Maçã para o professor .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-13"
+        },
+        {
+          "numero": 14,
+          "titulo": "Nossa quinta nota SOL",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/14 Nossa quinta nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-14"
+        },
+        {
+          "numero": 15,
+          "titulo": "Carros de bate bate",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/15 Carros de bate bate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-15"
+        },
+        {
+          "numero": 16,
+          "titulo": "Mínimas acontecem",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/16 Mínimas acontecem .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-16"
+        },
+        {
+          "numero": 17,
+          "titulo": "Pães doces",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/17 Pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-17"
+        },
+        {
+          "numero": 18,
+          "titulo": "Saltando a montanha",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/18 Saltando a montanha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-18"
+        },
+        {
+          "numero": 19,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/19 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-19"
+        },
+        {
+          "numero": 20,
+          "titulo": "Semínimas com pausas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/20 Semínimas com pausas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-20"
+        },
+        {
+          "numero": 21,
+          "titulo": "Gira o dado",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/21 Gira o dado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-21"
+        },
+        {
+          "numero": 22,
+          "titulo": "Mínimas repetidas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/22 Mínimas repetidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-22"
+        },
+        {
+          "numero": 23,
+          "titulo": "Uma nova nota FA# e SOLb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/23 Uma nova nota FA# e SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-23"
+        },
+        {
+          "numero": 24,
+          "titulo": "Sem incomodar",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/24 Sem incomodar.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-24"
+        },
+        {
+          "numero": 25,
+          "titulo": "Golpe da língua",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/25 Golpe da língua .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-25"
+        },
+        {
+          "numero": 26,
+          "titulo": "Conhecer colcheias",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/26 Conhecer colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-26"
+        },
+        {
+          "numero": 27,
+          "titulo": "Yankee Doodle",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/27 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-27"
+        },
+        {
+          "numero": 28,
+          "titulo": "Nova nota MI",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/28 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-28"
+        },
+        {
+          "numero": 29,
+          "titulo": "Cruzeiro do Caribe",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/29 Cruzeiro do Caribe .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-29"
+        },
+        {
+          "numero": 30,
+          "titulo": "Casa no sítio",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/30 Casa no sítio .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-30"
+        },
+        {
+          "numero": 31,
+          "titulo": "Deslizando em colcheias",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/31 Deslizando em colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-31"
+        },
+        {
+          "numero": 32,
+          "titulo": "Canção do repolho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/32 Canção do repolho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-32"
+        },
+        {
+          "numero": 33,
+          "titulo": "O velho MacDonald",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/33 O velho MacDonald .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-33"
+        },
+        {
+          "numero": 34,
+          "titulo": "Fogo brilhante",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/34 Fogo brilhante .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-34"
+        },
+        {
+          "numero": 35,
+          "titulo": "Ponte de Londres",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/35 Ponte de Londres .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-35"
+        },
+        {
+          "numero": 36,
+          "titulo": "Rosas do Sul",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/36 Rosas do Sul .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-36"
+        },
+        {
+          "numero": 37,
+          "titulo": "Encantador de notas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/37 Encantador de notas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-37"
+        },
+        {
+          "numero": 38,
+          "titulo": "Cabelos dourados",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/38 Cabelos dourados .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-38"
+        },
+        {
+          "numero": 39,
+          "titulo": "Brilha brilha estrelinha",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/39 Brilha brilha estrelinha .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-39"
+        },
+        {
+          "numero": 40,
+          "titulo": "Hino a alegria",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/40 Hino a alegria .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-40"
+        },
+        {
+          "numero": 41,
+          "titulo": "Nova nota FA",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/41 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-41"
+        },
+        {
+          "numero": 42,
+          "titulo": "Yankee Doodle",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/42 Yankee Doodle .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-42"
+        },
+        {
+          "numero": 43,
+          "titulo": "Cabana na floresta",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/43 Cabana na floresta .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-43"
+        },
+        {
+          "numero": 44,
+          "titulo": "Cópia perfeita",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/44 Cópia perfeita .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-44"
+        },
+        {
+          "numero": 45,
+          "titulo": "Polly Wolly",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/45 Polly Wolly .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-45"
+        },
+        {
+          "numero": 46,
+          "titulo": "Nova nota DO# RÉb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/46 Nova nota DO# RÉb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-46"
+        },
+        {
+          "numero": 47,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/47 Maria tinha um cordeirinho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-47"
+        },
+        {
+          "numero": 49,
+          "titulo": "A esperança",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/49 A esperança .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-49"
+        },
+        {
+          "numero": 50,
+          "titulo": "Insultos escorregadios",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/50 Insultos escorregadios .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-50"
+        },
+        {
+          "numero": 51,
+          "titulo": "Você está dormindo_",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/51 Você está dormindo_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-51"
+        },
+        {
+          "numero": 52,
+          "titulo": "Mais colcheias",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/52 Mais colcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-52"
+        },
+        {
+          "numero": 53,
+          "titulo": "Pra frente e pra trás",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/53 Pra frente e pra trás .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-53"
+        },
+        {
+          "numero": 54,
+          "titulo": "Ponto de aumento",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/54 Ponto de aumento .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-54"
+        },
+        {
+          "numero": 55,
+          "titulo": "América",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/55 América .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-55"
+        },
+        {
+          "numero": 56,
+          "titulo": "Falta técnica",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/56 Falta técnica .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-56"
+        },
+        {
+          "numero": 57,
+          "titulo": "Ritmo misturado",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/57 Ritmo misturado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-57"
+        },
+        {
+          "numero": 59,
+          "titulo": "Mais pães doces",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/59 Mais pães doces .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-59"
+        },
+        {
+          "numero": 60,
+          "titulo": "É natural (Bequadro)",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/60 É natural (Bequadro).musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-60"
+        },
+        {
+          "numero": 61,
+          "titulo": "Lute e vença",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/61 Lute e vença .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-61"
+        },
+        {
+          "numero": 62,
+          "titulo": "Minuet",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/62 Minuet .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-62"
+        },
+        {
+          "numero": 63,
+          "titulo": "Rúben e Raquel",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/63 Rúben e Raquel .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-63"
+        },
+        {
+          "numero": 64,
+          "titulo": "Quando o amor é gentil",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/64 Quando o amor é gentil .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-64"
+        },
+        {
+          "numero": 65,
+          "titulo": "Chapéu mexicano",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/65 Chapéu mexicano .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-65"
+        },
+        {
+          "numero": 66,
+          "titulo": "Blues dues",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/66 Blues dues .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-66"
+        },
+        {
+          "numero": 67,
+          "titulo": "Respiração profunda",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/67 Respiração profunda .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-67"
+        },
+        {
+          "numero": 68,
+          "titulo": "Quando todos marcham",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/68 Quando todos marcham .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-68"
+        },
+        {
+          "numero": 69,
+          "titulo": "Abertura de flechas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/69 Abertura de flechas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-69"
+        },
+        {
+          "numero": 70,
+          "titulo": "Esse velho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/70 Esse velho .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-70"
+        },
+        {
+          "numero": 71,
+          "titulo": "Nova nota SOL# - LAb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/71 Nova nota SOL# - LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-71"
+        },
+        {
+          "numero": 72,
+          "titulo": "Cantando docemente",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/72 Cantando docemente .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-72"
+        },
+        {
+          "numero": 73,
+          "titulo": "Truque de ritmos",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/73 Truque de ritmos .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-73"
+        },
+        {
+          "numero": 74,
+          "titulo": "Nova nota MI",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/74 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-74"
+        },
+        {
+          "numero": 75,
+          "titulo": "Bye baby",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/75 Bye baby .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-75"
+        },
+        {
+          "numero": 76,
+          "titulo": "Mostrar a Melodia",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/76 Mostrar a Melodia .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-76"
+        },
+        {
+          "numero": 77,
+          "titulo": "Nova nota RÉ# - MIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/77 Nova nota RÉ# - MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-77"
+        },
+        {
+          "numero": 78,
+          "titulo": "Barcarolle",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/78 Barcarolle .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-78"
+        },
+        {
+          "numero": 79,
+          "titulo": "Nova nota SOL",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/79 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-79"
+        },
+        {
+          "numero": 80,
+          "titulo": "Lembrando as notas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/80 Lembrando as notas .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-80"
+        },
+        {
+          "numero": 81,
+          "titulo": "Nova nota LA# - SIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/81 Nova nota LA# - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-81"
+        },
+        {
+          "numero": 82,
+          "titulo": "Exercícios com ligaduras",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/82 Exercícios com ligaduras .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-82"
+        },
+        {
+          "numero": 83,
+          "titulo": "Nova nota FA# - SOLb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/83 Nova nota FA# - SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-83"
+        },
+        {
+          "numero": 84,
+          "titulo": "Ligaduras maiores",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/84 Ligaduras maiores.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-84"
+        },
+        {
+          "numero": 85,
+          "titulo": "Nova nota SOL# _ LAb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/85 Nova nota SOL# _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-85"
+        },
+        {
+          "numero": 86,
+          "titulo": "Can Can",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/86 Can Can .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-86"
+        },
+        {
+          "numero": 87,
+          "titulo": "Nova nota LA",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/87 Nova nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-87"
+        },
+        {
+          "numero": 88,
+          "titulo": "Nova nota LA# - SIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/88 Nova nota LA# - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-88"
+        },
+        {
+          "numero": 89,
+          "titulo": "La Bamba",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/89 La Bamba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-89"
+        },
+        {
+          "numero": 90,
+          "titulo": "Nova nota SI",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/90 Nova nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-90"
+        },
+        {
+          "numero": 91,
+          "titulo": "Simples presente",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/91 Simples presente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-91"
+        },
+        {
+          "numero": 92,
+          "titulo": "Nova nota DÓ",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/92 Nova nota DÓ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-92"
+        },
+        {
+          "numero": 93,
+          "titulo": "Amazing Grace",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/93 Amazing Grace.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-93"
+        },
+        {
+          "numero": 94,
+          "titulo": "Escala de Dó maior",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/94 Escala de Dó maior.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-94"
+        },
+        {
+          "numero": 95,
+          "titulo": "Tema de G.W. Warren",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/95 Tema de G.W. Warren - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/95 Tema de G.W. Warren - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-95"
+        },
+        {
+          "numero": 96,
+          "titulo": "Escala de Sol maior - FA#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/96 Escala de Sol maior - FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-96"
+        },
+        {
+          "numero": 97,
+          "titulo": "Nova nota RÉ",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/97 Nova nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-97"
+        },
+        {
+          "numero": 98,
+          "titulo": "Melody Anacreon in H - JS Smith",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/98 Melody Anacreon in H - JS Smith.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-98"
+        },
+        {
+          "numero": 99,
+          "titulo": "Escala de FA maior - SIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/99 Escala de FA maior - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-99"
+        },
+        {
+          "numero": 100,
+          "titulo": "Tema J.G Burt",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/100 Tema J.G Burt - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/100 Tema J.G Burt - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-100"
+        },
+        {
+          "numero": 101,
+          "titulo": "Nova nota DO# - RÉb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/101 Nova nota DO# - RÉb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-101"
+        },
+        {
+          "numero": 102,
+          "titulo": "Escala de RÉ maior - FA# _ DO#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/102 Escala de RÉ maior - FA# _ DO#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-102"
+        },
+        {
+          "numero": 103,
+          "titulo": "A barata",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/103 A barata.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-103"
+        },
+        {
+          "numero": 104,
+          "titulo": "A dona aranha",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/104 A dona aranha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-104"
+        },
+        {
+          "numero": 105,
+          "titulo": "Escala Sib maior - SIb _ MIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/105 Escala Sib maior - SIb _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-105"
+        },
+        {
+          "numero": 106,
+          "titulo": "Tema P.P. Bliss",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/106 Tema P.P. Bliss - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/106 Tema P.P. Bliss - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-106"
+        },
+        {
+          "numero": 107,
+          "titulo": "Escala de LA maior - FA# _ DO# _ SOL#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/107 Escala de LA maior - FA# _ DO# _ SOL#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-107"
+        },
+        {
+          "numero": 108,
+          "titulo": "A janelinha",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/108 A janelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-108"
+        },
+        {
+          "numero": 109,
+          "titulo": "Fui ao mercado",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/109 Fui ao mercado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-109"
+        },
+        {
+          "numero": 110,
+          "titulo": "Escala de MI maior - FA#_DO#_SOL#_RE#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/110 Escala de MI maior - FA#_DO#_SOL#_RE#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-110"
+        },
+        {
+          "numero": 111,
+          "titulo": "Minuet 1 - JS Bach",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/111 Minuet 1 - JS Bach.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-111"
+        },
+        {
+          "numero": 112,
+          "titulo": "Amigos para sempre",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/112 Amigos para sempre.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-112"
+        },
+        {
+          "numero": 113,
+          "titulo": "Escala de SI maior - FA#_DO#_SOL#_RE#_LA#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/113 Escala de SI maior - FA#_DO#_SOL#_RE#_LA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-113"
+        },
+        {
+          "numero": 114,
+          "titulo": "Andantino",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/114 Andantino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-114"
+        },
+        {
+          "numero": 115,
+          "titulo": "Hino 441 Eu sou um cordeirinho",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/115 Hino 441 Eu sou um cordeirinho - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/115 Hino 441 Eu sou um cordeirinho - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-115"
+        },
+        {
+          "numero": 116,
+          "titulo": "Escala de FA# maior - FA#_DO#_SOL#_RÉ#_LA#_MI#",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/116 Escala de FA# maior - FA#_DO#_SOL#_RÉ#_LA#_MI#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-116"
+        },
+        {
+          "numero": 117,
+          "titulo": "Nova nota RE# _ MIb",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/117 Nova nota RE# _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-117"
+        },
+        {
+          "numero": 118,
+          "titulo": "Go Tell Aunt Rhody",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/118 Go Tell Aunt Rhody.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-118"
+        },
+        {
+          "numero": 119,
+          "titulo": "Perpetual Motion",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/119 Perpetual Motion.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-119"
+        },
+        {
+          "numero": 120,
+          "titulo": "Allegro",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/120 Allegro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-120"
+        },
+        {
+          "numero": 121,
+          "titulo": "As semicolcheias",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/121 As semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-121"
+        },
+        {
+          "numero": 122,
+          "titulo": "Escala em DÓ com semicolcheias",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/122 Escala em DÓ com semicolcheias .musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-122"
+        },
+        {
+          "numero": 123,
+          "titulo": "Conheça as tercinas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/123 Conheça as tercinas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-123"
+        },
+        {
+          "numero": 124,
+          "titulo": "Aprendendo pontuadas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/124 Aprendendo pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-124"
+        },
+        {
+          "numero": 125,
+          "titulo": "Pula pula pipoquinha",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/125 Pula pula pipoquinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-125"
+        },
+        {
+          "numero": 126,
+          "titulo": "Long, long ago",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/126 Long, long ago.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-126"
+        },
+        {
+          "numero": 127,
+          "titulo": "Brilha brilha estrelinha com colcheias, tercinas e pontuadas",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/127 Brilha brilha estrelinha com colcheias, tercinas e pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-127"
+        },
+        {
+          "numero": 128,
+          "titulo": "Oh when the saints",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/128 Oh when the saints.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-128"
+        },
+        {
+          "numero": 129,
+          "titulo": "Um binário",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/129 Um binário.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-129"
+        },
+        {
+          "numero": 130,
+          "titulo": "Um ternário em quatro",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/130 Um ternário em quatro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-130"
+        },
+        {
+          "numero": 131,
+          "titulo": "Theme from new world sinphony",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/131 Theme from new world sinphony.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-131"
+        },
+        {
+          "numero": 132,
+          "titulo": "Day 0",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/132 Day 0.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-132"
+        },
+        {
+          "numero": 133,
+          "titulo": "Binário composto 6_4",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/133 Binário composto 6_4.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-133"
+        },
+        {
+          "numero": 134,
+          "titulo": "Binário composto 6_8",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/134 Binário composto 6_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-134"
+        },
+        {
+          "numero": 135,
+          "titulo": "Um ternário composto 9_8",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/135 Um ternário composto 9_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-135"
+        },
+        {
+          "numero": 136,
+          "titulo": "Um quaternário composto",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/136 Um quaternário composto.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-136"
+        },
+        {
+          "numero": 137,
+          "titulo": "Patrulha americana",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/137 Patrulha americana.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-137"
+        },
+        {
+          "numero": 138,
+          "titulo": "Saudade",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/138 Saudade - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/138 Saudade - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-138"
+        },
+        {
+          "numero": 139,
+          "titulo": "Toda a glória a Jesus",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/139 Toda a glória a Jesus - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/139 Toda a glória a Jesus - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-139"
+        },
+        {
+          "numero": 140,
+          "titulo": "Ação de graças darei",
+          "afinacao": "mib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "saxofone": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/140 Ação de graças darei - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/mib/saxofone/140 Ação de graças darei - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          },
+          "id": "metodo-saxofone-140"
         }
       ]
     }

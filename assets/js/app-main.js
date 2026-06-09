@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.13';
+  const APP_VERSION = '1.3.14';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -138,6 +138,28 @@
         sol: 'polegar + E12',
         la: 'polegar + E1',
         si: 'polegar + chave A'
+      },
+      freqBoard: [
+        [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
+      ]
+    },
+    {
+      id: 'saxofone',
+      nome: 'Saxofone Alto',
+      emoji: '🎷',
+      tipo: 'sopro',
+      soundfont: 'alto_sax',
+      descricao: 'Dedilhado de saxofone alto — Dó a Si',
+      dedilhado: 'teclas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'E123 | D123 + chave C',
+        re: 'E123 | D123',
+        mi: 'E123 | D12',
+        fa: 'E123 | D1',
+        sol: 'E123',
+        la: 'E12',
+        si: 'E1'
       },
       freqBoard: [
         [261.63], [293.66], [329.63], [349.23], [392.00], [440.00], [493.88]
@@ -607,6 +629,7 @@
     contrabaixo: ['E1', 'A1', 'D2', 'G2'],
     flauta: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
     clarinete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
+    saxofone: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
     oboe: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
     fagote: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
     trompete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
