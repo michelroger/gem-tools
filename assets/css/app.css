@@ -1209,9 +1209,13 @@
       font-size: 0.85em;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 850px) {
       .player-source-row {
         grid-template-columns: 1fr;
+      }
+
+      #playerStudentControlsContainer {
+        grid-column: span 1 !important;
       }
 
       .player-transport {
