@@ -608,13 +608,13 @@
 
     /* Painel de controle do aluno no player */
     .player-student-controls-row {
-      margin-top: 0.45rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 10px;
+      height: 42px;
+      box-sizing: border-box;
+      padding: 0 0.75rem;
+      border-radius: 12px;
       border: 1px solid rgba(79, 124, 255, 0.18);
       background: rgba(79, 124, 255, 0.03);
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem;

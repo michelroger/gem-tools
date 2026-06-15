@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.28';
+  const APP_VERSION = '1.3.29';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -1719,18 +1719,18 @@
   }
 
   function syncPlayerStudentControls() {
-    var row = document.getElementById('playerStudentControlsRow');
-    if (!row) return;
+    var container = document.getElementById('playerStudentControlsContainer');
+    if (!container) return;
     
     var st = getActiveHinosStudent();
     if (!st) {
-      row.style.setProperty('display', 'none', 'important');
-      row.classList.add('hidden');
+      container.style.setProperty('display', 'none', 'important');
+      container.classList.add('hidden');
       return;
     }
     
-    row.style.removeProperty('display');
-    row.classList.remove('hidden');
+    container.style.removeProperty('display');
+    container.classList.remove('hidden');
     
     var nameEl = document.getElementById('playerActiveStudentName');
     var btnApprove = document.getElementById('btnPlayerApproveItem');
