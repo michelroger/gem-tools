@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.24';
+  const APP_VERSION = '1.3.25';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -853,9 +853,11 @@
     var next = document.getElementById('hinosNext');
     var lbl = document.getElementById('hinosDetailLabel');
     var hinoRow = document.querySelector('.hinos-hino-row');
+    var clearBtn = document.getElementById('hinosClearHino');
     
     if (hinosControlMode === 'metodo') {
       if (hinoRow) hinoRow.style.display = 'none';
+      if (clearBtn) clearBtn.style.display = 'none';
       var item = window.PlayerCatalogModule.getItemById(playerCatalog, 'metodo-inclusivo-ccb', metodoSelectedItemId);
       if (item) {
         var num = item.numero || '';
@@ -867,6 +869,7 @@
     }
     
     if (hinoRow) hinoRow.style.display = '';
+    if (clearBtn) clearBtn.style.display = '';
     var ton = '';
     var qk = hinosIsCoroKey(hinosSelectedKey) ? hinosSelectedKey : String(clampHinoNum(hinosSelectedKey));
     var cel = document.querySelector('.hinos-cell[data-hinos-key="' + qk + '"]');
@@ -1411,13 +1414,7 @@
     ensurePlayerCatalogLoaded().then(function () {
       var lessons = getMetodoLessonsForCurrentInstrument();
       ensureMetodoFasePanels(lessons);
-      updateMetodoOverviewBars();
-      updateMetodoFaseGridCellClasses();
-      
-      // Marcar a célula atual no grid do método
-      document.querySelectorAll('#metodoFaseContainer .hinos-cell').forEach(function (el) {
-        el.classList.toggle('current', el.getAttribute('data-metodo-item-id') === metodoSelectedItemId);
-      });
+      refreshMetodoVoiceButtonsCore();
     });
   }
 
