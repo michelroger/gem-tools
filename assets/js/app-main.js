@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.22';
+  const APP_VERSION = '1.3.23';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -5993,6 +5993,26 @@
 
     var hinosFiltrados = window.PlayerFilterUtils.filterByAfinacao(items, playerSelectedAfinacao);
     if (!hinosFiltrados.length) hinosFiltrados = items.slice();
+
+    // Se for o método inclusivo (coleção do tipo 'apostila'), 
+    // filtramos os itens para mostrar apenas aqueles específicos para o instrumento selecionado.
+    if (currentCollection && currentCollection.tipo === 'apostila' && currentInstrument) {
+      // Mapeamento especial para violino (cuja chave no catálogo é 'violin' e o id no app é 'violino')
+      var instKeyInCatalog = currentInstrument.id === 'violino' ? 'violin' : currentInstrument.id;
+      
+      var instrumentSpecificItems = hinosFiltrados.filter(function (item) {
+        return item.arquivosPorInstrumento && 
+               item.arquivosPorInstrumento[instKeyInCatalog] && 
+               (item.arquivosPorInstrumento[instKeyInCatalog].s || 
+                item.arquivosPorInstrumento[instKeyInCatalog].c || 
+                item.arquivosPorInstrumento[instKeyInCatalog].t || 
+                item.arquivosPorInstrumento[instKeyInCatalog].b);
+      });
+      
+      if (instrumentSpecificItems.length > 0) {
+        hinosFiltrados = instrumentSpecificItems;
+      }
+    }
 
     var forceShowAll = selHino.dataset.openAll === '1';
     var rawHinoInput = String(selHino.value || '');

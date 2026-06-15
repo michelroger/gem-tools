@@ -1,6 +1,9 @@
 /**
- * Atualiza xml/catalog.json na coleção metodo-inclusivo-ccb:
- * adiciona arquivosPorInstrumento.flauta a partir dos .musicxml em do/flauta.
+ * Atualiza xml/catalog.json:
+ * 1. Limpa os itens de flauta antigos (id metodo-flauta-X) na coleção 'metodo-inclusivo-ccb'.
+ * 2. Limpa qualquer propriedade 'flauta' residual nos itens de corda originais.
+ * 3. Cria os itens de flauta separados (afinação 'do') a partir dos arquivos XML da flauta.
+ * 4. Insere esses novos itens diretamente no array 'items' da coleção principal 'metodo-inclusivo-ccb'.
  */
 import fs from 'fs';
 import path from 'path';
@@ -34,40 +37,72 @@ function parseVoice(voiceStr) {
   return 's';
 }
 
-function indexFlautaFiles() {
+function buildFlautaItems() {
   if (!fs.existsSync(flautaDir)) {
     console.error(`Erro: Diretório da flauta não encontrado: ${flautaDir}`);
-    return new Map();
+    return [];
   }
 
-  /** @type {Map<number, { s: string, c: string, t: string, b: string }>} */
-  const byNum = new Map();
-  const names = fs.readdirSync(flautaDir, { withFileTypes: true });
+  const files = fs.readdirSync(flautaDir);
+  /** @type {Map<number, { title: string, voices: Record<string, string> }>} */
+  const itemsMap = new Map();
 
-  for (const ent of names) {
-    if (!ent.isFile() || !ent.name.toLowerCase().endsWith('.musicxml')) continue;
-    const filename = ent.name;
-    const m = filename.match(PREFIX_RE);
-    if (!m) {
+  for (const filename of files) {
+    if (!filename.toLowerCase().endsWith('.musicxml')) continue;
+
+    // Identifica e remove o número do exercício e a extensão do nome
+    const numMatch = filename.match(PREFIX_RE);
+    if (!numMatch) {
       console.warn(`Aviso: Arquivo não segue o padrão de numeração: ${filename}`);
       continue;
     }
-    const num = parseInt(m[1], 10);
-    if (!Number.isFinite(num)) continue;
 
+    const num = parseInt(numMatch[1], 10);
+    let rest = numMatch[2].trim();
+
+    // Identifica e remove o sufixo de voz, se houver
     let voice = 's';
-    const rest = m[2];
-    const vm = rest.match(VOICE_RE);
-    if (vm) {
-      voice = parseVoice(vm[1]);
+    const voiceMatch = rest.match(VOICE_RE);
+    if (voiceMatch) {
+      voice = parseVoice(voiceMatch[1]);
+      rest = rest.substring(0, voiceMatch.index).trim();
     }
 
-    const rel = `xml/colecoes/metodo-inclusivo-ccb/do/flauta/${filename}`;
-    if (!byNum.has(num)) byNum.set(num, emptyVoices());
-    const slot = byNum.get(num);
-    slot[voice] = rel;
+    const relPath = `xml/colecoes/metodo-inclusivo-ccb/do/flauta/${filename}`;
+
+    if (!itemsMap.has(num)) {
+      itemsMap.set(num, {
+        title: rest || `Exercício ${num}`,
+        voices: emptyVoices()
+      });
+    }
+
+    const itemData = itemsMap.get(num);
+    itemData.voices[voice] = relPath;
+    
+    // Se encontramos uma versão com título mais descritivo, atualiza
+    if (rest && rest.length > itemData.title.length) {
+      itemData.title = rest;
+    }
   }
-  return byNum;
+
+  const sortedNumbers = Array.from(itemsMap.keys()).sort((a, b) => a - b);
+  const items = sortedNumbers.map((num) => {
+    const data = itemsMap.get(num);
+    return {
+      id: `metodo-flauta-${num}`,
+      numero: num,
+      titulo: data.title,
+      afinacao: 'do',
+      compasso: '',
+      bpm: 0,
+      arquivosPorInstrumento: {
+        flauta: data.voices
+      }
+    };
+  });
+
+  return items;
 }
 
 function main() {
@@ -78,47 +113,57 @@ function main() {
 
   const raw = fs.readFileSync(catalogPath, 'utf8');
   const data = JSON.parse(raw);
+
   if (!data.colecoes || !Array.isArray(data.colecoes)) {
-    throw new Error('catalog.json: sem colecoes[]');
+    console.error('Erro: Estrutura inválida em catalog.json (colecoes ausente ou inválido)');
+    return;
   }
 
-  const col = data.colecoes.find((c) => c && c.id === 'metodo-inclusivo-ccb');
-  if (!col || !Array.isArray(col.items)) {
-    throw new Error('Coleção metodo-inclusivo-ccb não encontrada');
+  // Encontrar a coleção principal
+  const mainCol = data.colecoes.find((c) => c && c.id === 'metodo-inclusivo-ccb');
+  if (!mainCol) {
+    console.error('Erro: Coleção principal metodo-inclusivo-ccb não encontrada!');
+    return;
   }
 
-  const byNum = indexFlautaFiles();
-  let added = 0;
-  let empty = 0;
+  if (!Array.isArray(mainCol.items)) {
+    mainCol.items = [];
+  }
 
-  for (const item of col.items) {
-    // Apenas adicionar a flauta para itens de afinação 'do'
-    if (item.afinacao !== 'do') continue;
+  // 1. Limpar os itens de flauta antigos (metodo-flauta-X)
+  const beforeCount = mainCol.items.length;
+  mainCol.items = mainCol.items.filter((item) => item && !String(item.id || '').startsWith('metodo-flauta-'));
+  const clearedFlautaCount = beforeCount - mainCol.items.length;
+  console.log(`Limpou ${clearedFlautaCount} itens antigos de flauta da coleção.`);
 
-    const n = Number(item.numero);
-    if (!Number.isFinite(n)) continue;
-
-    if (!item.arquivosPorInstrumento || typeof item.arquivosPorInstrumento !== 'object') {
-      item.arquivosPorInstrumento = {};
-    }
-
-    const v = byNum.get(n) || emptyVoices();
-    const hasAny = v.s || v.c || v.t || v.b;
-
-    item.arquivosPorInstrumento.flauta = { s: v.s || '', c: v.c || '', t: v.t || '', b: v.b || '' };
-
-    if (hasAny) {
-      added++;
-    } else {
-      empty++;
+  // 2. Limpar qualquer propriedade 'flauta' residual nos itens de cordas que sobraram
+  let cleanedResidual = 0;
+  for (const item of mainCol.items) {
+    if (item.arquivosPorInstrumento && item.arquivosPorInstrumento.flauta) {
+      delete item.arquivosPorInstrumento.flauta;
+      cleanedResidual++;
     }
   }
+  if (cleanedResidual > 0) {
+    console.log(`Limpou chave 'flauta' residual em ${cleanedResidual} itens de cordas.`);
+  }
 
-  // Escrever de volta no catalog.json
+  // 3. Gerar os novos itens de flauta separados
+  const flautaItems = buildFlautaItems();
+  console.log(`Gerados ${flautaItems.length} novos itens para a Flauta (Do).`);
+
+  if (flautaItems.length === 0) {
+    console.error('Nenhum item da flauta foi processado. Abortando escrita.');
+    return;
+  }
+
+  // 4. Integrar os itens na coleção metodo-inclusivo-ccb
+  mainCol.items.push(...flautaItems);
+  console.log(`Coleção metodo-inclusivo-ccb agora possui um total de ${mainCol.items.length} itens.`);
+
+  // Escreve de volta no catalog.json
   fs.writeFileSync(catalogPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
-  console.log(
-    `OK: ${col.items.length} itens no catálogo; flauta adicionada em: ${added} itens de afinação 'do'; flauta vazia (sem match na pasta): ${empty}`
-  );
+  console.log('Arquivo xml/catalog.json atualizado com sucesso!');
 }
 
 main();
