@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.25';
+  const APP_VERSION = '1.3.26';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -1715,6 +1715,83 @@
     document.querySelectorAll('#metodoFaseContainer .hinos-cell').forEach(function (el) {
       el.classList.toggle('current', el.getAttribute('data-metodo-item-id') === metodoSelectedItemId);
     });
+    syncPlayerStudentControls();
+  }
+
+  function syncPlayerStudentControls() {
+    var row = document.getElementById('playerStudentControlsRow');
+    if (!row) return;
+    
+    var st = getActiveHinosStudent();
+    if (!st) {
+      row.style.setProperty('display', 'none', 'important');
+      row.classList.add('hidden');
+      return;
+    }
+    
+    row.style.removeProperty('display');
+    row.classList.remove('hidden');
+    
+    var nameEl = document.getElementById('playerActiveStudentName');
+    var btnApprove = document.getElementById('btnPlayerApproveItem');
+    var btnStudy = document.getElementById('btnPlayerStudyItem');
+    
+    var vP = hinosGetStudentVozPrincipal(st);
+    var vName = vP === 'S' ? 'Soprano' : vP === 'C' ? 'Contralto' : vP === 'T' ? 'Tenor' : 'Baixo';
+    if (nameEl) nameEl.textContent = (st.name || 'Aluno') + ' (' + vName + ')';
+    
+    var isApproved = false;
+    var isStudy = false;
+    
+    var colId = playerSelectedCollectionId;
+    var inst = currentInstrument;
+    var instKey = inst ? inst.id : '';
+    
+    if (colId === 'metodo-inclusivo-ccb' && instKey) {
+      var itemId = playerSelectedItemId;
+      var ent = (st.estudos && st.estudos[colId] && st.estudos[colId][instKey])
+        ? st.estudos[colId][instKey][itemId]
+        : null;
+      isApproved = !!(ent && ent.aprovada);
+      isStudy = !!(ent && ent.estudar);
+    } else if (colId === 'hinario5-ccb') {
+      var qk = String(playerSelectedHinoNumero);
+      var item = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+      if (item && item.categoria === 'coro') {
+        qk = 'coro-' + item.numero;
+      }
+      var ent = (st.hinos && st.hinos[playerSelectedAfinacao])
+        ? st.hinos[playerSelectedAfinacao][qk]
+        : null;
+      isApproved = !!(ent && ent[vP]);
+      isStudy = !!(ent && ent.E);
+    }
+    
+    if (btnApprove) {
+      if (isApproved) {
+        btnApprove.className = 'du-btn du-btn-sm du-btn-success text-white';
+        btnApprove.textContent = 'Aprovada ✓';
+      } else {
+        btnApprove.className = 'du-btn du-btn-sm du-btn-outline du-btn-secondary';
+        btnApprove.textContent = 'Marcar Aprovada';
+      }
+    }
+    
+    if (btnStudy) {
+      if (isStudy) {
+        btnStudy.className = 'du-btn du-btn-sm text-black';
+        btnStudy.style.backgroundColor = 'var(--re)';
+        btnStudy.style.borderColor = 'var(--re)';
+        btnStudy.textContent = 'Estudando';
+      } else {
+        btnStudy.className = 'du-btn du-btn-sm du-btn-outline';
+        btnStudy.style.removeProperty('background-color');
+        btnStudy.style.removeProperty('border-color');
+        btnStudy.style.color = 'var(--re)';
+        btnStudy.style.borderColor = 'var(--re)';
+        btnStudy.textContent = 'Marcar Estudar';
+      }
+    }
   }
 
   function initMetodoControlUI() {
@@ -1819,6 +1896,7 @@
     document.querySelectorAll('.hinos-cell').forEach(function (el) {
       el.classList.toggle('current', el.getAttribute('data-hinos-key') === hinosSelectedKey);
     });
+    syncPlayerStudentControls();
   }
 
   function refreshHinosVoiceButtons() {
@@ -6542,6 +6620,7 @@
     });
 
     syncPlayerHeaderTitle(currentItem, playerSelectedVoices);
+    syncPlayerStudentControls();
   }
 
   function ensurePlayerCatalogLoaded(forceReload) {
@@ -7431,6 +7510,7 @@
         closeHinosNewStudentModal();
         if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
         if (messageBoxEl) messageBoxEl.classList.add('hidden');
+        syncPlayerStudentControls();
       } else if (mode === 'home') {
         violinSection.classList.add('hidden');
         staffSectionEl.classList.add('hidden');
@@ -8837,6 +8917,121 @@
     }
 
     document.getElementById('btnRestart').addEventListener('click', restart);
+
+    var btnPlayerApprove = document.getElementById('btnPlayerApproveItem');
+    if (btnPlayerApprove) {
+      btnPlayerApprove.addEventListener('click', function () {
+        var st = getActiveHinosStudent();
+        if (!st) return;
+        
+        var colId = playerSelectedCollectionId;
+        var inst = currentInstrument;
+        var instKey = inst ? inst.id : '';
+        
+        if (colId === 'metodo-inclusivo-ccb' && instKey) {
+          var itemId = playerSelectedItemId;
+          if (!st.estudos) st.estudos = {};
+          if (!st.estudos[colId]) st.estudos[colId] = {};
+          if (!st.estudos[colId][instKey]) st.estudos[colId][instKey] = {};
+          if (!st.estudos[colId][instKey][itemId]) {
+            st.estudos[colId][instKey][itemId] = { aprovada: false, estudar: false, S: false, C: false, T: false, B: false };
+          }
+          
+          var ent = st.estudos[colId][instKey][itemId];
+          var item = getPlayerCatalogItemById(itemId);
+          var voices = getPlayerAvailableVoices(item);
+          
+          if (voices.length === 1) {
+            ent.aprovada = !ent.aprovada;
+          } else {
+            var vP = hinosGetStudentVozPrincipal(st);
+            var targetVoice = vP;
+            var voicesLower = voices.map(function(v) { return v.toLowerCase(); });
+            if (voicesLower.indexOf(vP.toLowerCase()) === -1) {
+              targetVoice = voices[0].toUpperCase();
+            }
+            ent[targetVoice] = !ent[targetVoice];
+            
+            var anyVoiceOn = false;
+            voices.forEach(function (vc) {
+              var vKey = vc.toUpperCase();
+              if (ent[vKey]) anyVoiceOn = true;
+            });
+            ent.aprovada = anyVoiceOn;
+          }
+          
+          saveHinosState();
+          syncPlayerStudentControls();
+          refreshHinosVoiceButtons();
+        } else if (colId === 'hinario5-ccb') {
+          var qk = String(playerSelectedHinoNumero);
+          var item = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+          if (item && item.categoria === 'coro') {
+            qk = 'coro-' + item.numero;
+          }
+          
+          ensureStudentHinosShape(st);
+          if (!st.hinos[playerSelectedAfinacao][qk]) {
+            st.hinos[playerSelectedAfinacao][qk] = { S: false, C: false, T: false, B: false, E: false };
+          }
+          
+          var vP = hinosGetStudentVozPrincipal(st);
+          var cur = !!st.hinos[playerSelectedAfinacao][qk][vP];
+          st.hinos[playerSelectedAfinacao][qk][vP] = !cur;
+          
+          saveHinosState();
+          syncPlayerStudentControls();
+          refreshHinosVoiceButtons();
+        }
+      });
+    }
+
+    var btnPlayerStudy = document.getElementById('btnPlayerStudyItem');
+    if (btnPlayerStudy) {
+      btnPlayerStudy.addEventListener('click', function () {
+        var st = getActiveHinosStudent();
+        if (!st) return;
+        
+        var colId = playerSelectedCollectionId;
+        var inst = currentInstrument;
+        var instKey = inst ? inst.id : '';
+        
+        if (colId === 'metodo-inclusivo-ccb' && instKey) {
+          var itemId = playerSelectedItemId;
+          if (!st.estudos) st.estudos = {};
+          if (!st.estudos[colId]) st.estudos[colId] = {};
+          if (!st.estudos[colId][instKey]) st.estudos[colId][instKey] = {};
+          if (!st.estudos[colId][instKey][itemId]) {
+            st.estudos[colId][instKey][itemId] = { aprovada: false, estudar: false, S: false, C: false, T: false, B: false };
+          }
+          
+          var ent = st.estudos[colId][instKey][itemId];
+          ent.estudar = !ent.estudar;
+          
+          saveHinosState();
+          syncPlayerStudentControls();
+          refreshHinosVoiceButtons();
+        } else if (colId === 'hinario5-ccb') {
+          var qk = String(playerSelectedHinoNumero);
+          var item = getPlayerCatalogItemById(playerSelectedItemId) || getPlayerCatalogItemByNumero(playerSelectedHinoNumero);
+          if (item && item.categoria === 'coro') {
+            qk = 'coro-' + item.numero;
+          }
+          
+          ensureStudentHinosShape(st);
+          if (!st.hinos[playerSelectedAfinacao][qk]) {
+            st.hinos[playerSelectedAfinacao][qk] = { S: false, C: false, T: false, B: false, E: false };
+          }
+          
+          var cur = !!st.hinos[playerSelectedAfinacao][qk].E;
+          st.hinos[playerSelectedAfinacao][qk].E = !cur;
+          
+          saveHinosState();
+          syncPlayerStudentControls();
+          refreshHinosVoiceButtons();
+        }
+      });
+    }
   }
 
   // ========== INICIALIZAÇÃO ==========
