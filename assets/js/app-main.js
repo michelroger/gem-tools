@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.26';
+  const APP_VERSION = '1.3.27';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -1769,27 +1769,27 @@
     
     if (btnApprove) {
       if (isApproved) {
-        btnApprove.className = 'du-btn du-btn-sm du-btn-success text-white';
+        btnApprove.className = 'player-student-btn approve-btn on';
         btnApprove.textContent = 'Aprovada ✓';
       } else {
-        btnApprove.className = 'du-btn du-btn-sm du-btn-outline du-btn-secondary';
-        btnApprove.textContent = 'Marcar Aprovada';
+        btnApprove.className = 'player-student-btn approve-btn';
+        btnApprove.textContent = 'Aprovar';
       }
     }
     
     if (btnStudy) {
       if (isStudy) {
-        btnStudy.className = 'du-btn du-btn-sm text-black';
-        btnStudy.style.backgroundColor = 'var(--re)';
-        btnStudy.style.borderColor = 'var(--re)';
-        btnStudy.textContent = 'Estudando';
-      } else {
-        btnStudy.className = 'du-btn du-btn-sm du-btn-outline';
+        btnStudy.className = 'player-student-btn study-btn on';
         btnStudy.style.removeProperty('background-color');
         btnStudy.style.removeProperty('border-color');
-        btnStudy.style.color = 'var(--re)';
-        btnStudy.style.borderColor = 'var(--re)';
-        btnStudy.textContent = 'Marcar Estudar';
+        btnStudy.style.removeProperty('color');
+        btnStudy.textContent = 'Estudando';
+      } else {
+        btnStudy.className = 'player-student-btn study-btn';
+        btnStudy.style.removeProperty('background-color');
+        btnStudy.style.removeProperty('border-color');
+        btnStudy.style.removeProperty('color');
+        btnStudy.textContent = 'Estudar';
       }
     }
   }

@@ -606,6 +606,87 @@
       outline: none;
     }
 
+    /* Painel de controle do aluno no player */
+    .player-student-controls-row {
+      margin-top: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 124, 255, 0.22);
+      background: rgba(79, 124, 255, 0.04);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .player-student-controls-row.hidden {
+      display: none !important;
+    }
+
+    .player-student-name-wrapper {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .player-student-name-wrapper span {
+      color: var(--accent);
+    }
+
+    .player-student-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .player-student-btn {
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--accent);
+      background: var(--card);
+      color: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.82rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+    }
+
+    .player-student-btn:hover {
+      transform: translateY(-0.5px);
+    }
+
+    .player-student-btn:active {
+      transform: translateY(0.5px);
+    }
+
+    .player-student-btn.approve-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .player-student-btn.approve-btn.on {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    .player-student-btn.study-btn {
+      border-color: var(--re);
+      color: var(--re);
+    }
+
+    .player-student-btn.study-btn.on {
+      background: var(--re);
+      border-color: var(--re);
+      color: #1a1a1a;
+    }
+
     .player-ctl-btn {
       display: inline-flex;
       align-items: center;
