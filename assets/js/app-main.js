@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.23';
+  const APP_VERSION = '1.3.24';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -433,7 +433,7 @@
   var playerShowFingering = false;
   var playerLiveListenEnabled = false;
   var playerMutePlaybackEnabled = false;
-  var playerShowMeasureNumbers = true;
+  var playerShowMeasureNumbers = false;
   var playerLiveListenRunning = false;
   var playerLiveListenStream = null;
   var playerLiveListenSource = null;
