@@ -183,6 +183,7 @@
       if (!st.hinos[k] || typeof st.hinos[k] !== 'object') st.hinos[k] = {};
     });
     if (!st.vozPrincipal || voices.indexOf(st.vozPrincipal) === -1) st.vozPrincipal = 'S';
+    if (!st.estudos || typeof st.estudos !== 'object') st.estudos = {};
   }
 
   function cloneStudent(st, voices) {
@@ -210,6 +211,38 @@
     return 'do';
   }
 
+  function countMetodoOverview(st, colecaoId, instrumentoId, items) {
+    var total = items.length;
+    var done = 0;
+    var colecaoEstudos = (st && st.estudos && st.estudos[colecaoId]) ? st.estudos[colecaoId] : {};
+    var instEstudos = colecaoEstudos[instrumentoId] || {};
+    items.forEach(function (item) {
+      var ent = instEstudos[item.id];
+      if (ent && ent.aprovada) done++;
+    });
+    return {
+      total: total,
+      done: done,
+      pct: total ? Math.round((done / total) * 100) : 0
+    };
+  }
+
+  function countMetodoPhaseProgress(st, colecaoId, instrumentoId, phaseItems) {
+    var total = phaseItems.length;
+    var done = 0;
+    var colecaoEstudos = (st && st.estudos && st.estudos[colecaoId]) ? st.estudos[colecaoId] : {};
+    var instEstudos = colecaoEstudos[instrumentoId] || {};
+    phaseItems.forEach(function (item) {
+      var ent = instEstudos[item.id];
+      if (ent && ent.aprovada) done++;
+    });
+    return {
+      total: total,
+      done: done,
+      pct: total ? Math.round((done / total) * 100) : 0
+    };
+  }
+
   window.HinosCurriculumUtils = {
     buildFallbackCurriculum: buildFallbackCurriculum,
     isCoroKey: isCoroKey,
@@ -225,7 +258,10 @@
     parseBackupJson: parseBackupJson,
     ensureStudentShape: ensureStudentShape,
     cloneStudent: cloneStudent,
+    closeStudent: cloneStudent, // mantem retrocompatibilidade se houver
     clampHinoNumber: clampHinoNumber,
-    defaultAfinaçãoForInstrument: defaultAfinaçãoForInstrument
+    defaultAfinaçãoForInstrument: defaultAfinaçãoForInstrument,
+    countMetodoOverview: countMetodoOverview,
+    countMetodoPhaseProgress: countMetodoPhaseProgress
   };
 })();
