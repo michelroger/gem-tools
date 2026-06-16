@@ -900,6 +900,34 @@
       </div>
     </div>
 
+    <!-- Modal de Senha do Professor -->
+    <div class="metronome-modal hidden" id="hinosTeacherPasswordModal" role="dialog" aria-modal="true" aria-labelledby="hinosTeacherPasswordTitle" style="z-index: 1010;">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl" style="max-width: 400px; width: 95%; display: flex; flex-direction: column;">
+        <button type="button" class="metronome-close" id="hinosTeacherPasswordClose" aria-label="Fechar"><i data-lucide="x"></i></button>
+        
+        <h2 class="hinos-new-student-title" id="hinosTeacherPasswordTitle" style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem;">
+          <i data-lucide="key-round" style="color: var(--primary);"></i> Área do Professor
+        </h2>
+        <p class="hinos-new-student-hint" style="margin-bottom: 1rem;">Digite a Senha Master do Professor para acessar o painel.</p>
+        
+        <form id="hinosTeacherPasswordForm" onsubmit="return false;">
+          <div class="hinos-field" style="margin-bottom: 1.5rem;">
+            <label class="hinos-field-label" for="hinosTeacherPasswordInput">Senha Master</label>
+            <input type="password" id="hinosTeacherPasswordInput" class="hinos-input" placeholder="Digite a senha..." required />
+          </div>
+          
+          <div class="hinos-new-student-actions" style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 0.5rem;">
+            <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnTeacherPasswordCancel">
+              <span>Cancelar</span>
+            </button>
+            <button type="submit" class="du-btn du-btn-primary du-btn-sm" id="btnTeacherPasswordConfirm">
+              <span>Confirmar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Área do Professor (Modal) -->
     <div class="metronome-modal hidden" id="hinosTeacherDashboardModal" role="dialog" aria-modal="true" aria-labelledby="hinosTeacherTitle" style="z-index: 1000;">
       <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl" style="max-width: 600px; width: 95%; max-height: 85vh; display: flex; flex-direction: column;">

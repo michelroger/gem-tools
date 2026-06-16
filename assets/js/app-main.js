@@ -2321,6 +2321,59 @@
     }
   }
 
+  function askTeacherPassword() {
+    return new Promise(function (resolve) {
+      var modal = document.getElementById('hinosTeacherPasswordModal');
+      var input = document.getElementById('hinosTeacherPasswordInput');
+      var form = document.getElementById('hinosTeacherPasswordForm');
+      var btnCloseX = document.getElementById('hinosTeacherPasswordClose');
+      var btnCancel = document.getElementById('btnTeacherPasswordCancel');
+
+      if (!modal || !input || !form) {
+        resolve(null);
+        return;
+      }
+
+      input.value = '';
+      modal.classList.remove('hidden');
+      setTimeout(function () {
+        input.focus();
+      }, 50);
+
+      function cleanup() {
+        modal.classList.add('hidden');
+        form.removeEventListener('submit', onSubmit);
+        if (btnCloseX) btnCloseX.removeEventListener('click', onCancel);
+        if (btnCancel) btnCancel.removeEventListener('click', onCancel);
+        modal.removeEventListener('click', onModalClick);
+      }
+
+      function onSubmit(e) {
+        e.preventDefault();
+        var val = input.value;
+        cleanup();
+        resolve(val);
+      }
+
+      function onCancel() {
+        cleanup();
+        resolve(null);
+      }
+
+      function onModalClick(e) {
+        if (e.target === modal) {
+          cleanup();
+          resolve(null);
+        }
+      }
+
+      form.addEventListener('submit', onSubmit);
+      if (btnCloseX) btnCloseX.addEventListener('click', onCancel);
+      if (btnCancel) btnCancel.addEventListener('click', onCancel);
+      modal.addEventListener('click', onModalClick);
+    });
+  }
+
   async function openTeacherDashboard(skipPrompt) {
     if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) {
       setMessage('Sincronização em nuvem inativa.');
@@ -2334,7 +2387,7 @@
     }
 
     if (!skipPrompt) {
-      var pwd = prompt('Digite a Senha Master do Professor:');
+      var pwd = await askTeacherPassword();
       if (pwd === null) return;
       var hash = await hashTeacherPassword(pwd);
       if (hash !== correctHash) {
