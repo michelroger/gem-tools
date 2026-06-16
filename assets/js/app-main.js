@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.36';
+  const APP_VERSION = '1.3.37';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -376,6 +376,9 @@
   let challengeStartTs = 0;
   let challengeTimerInterval = null;
   let confettiAnimationId = null;
+  let staffGameScore = 0;
+  let staffGameCombo = 1;
+  let staffGameLives = 3;
   let challengeDiscardedAttempts = {};
   let score = 0;
   let totalChallenges = 0;
@@ -2217,7 +2220,58 @@
       }
     }
 
-    // 3. Top 5 Hinos
+    // 3. Ranking dos Melhores Leitores (Leaderboard do Jogo)
+    var dashLeaderboardList = document.getElementById('dashLeaderboardList');
+    if (dashLeaderboardList) {
+      var rankedStudents = hinosAllCloudStudents.slice().filter(function (st) {
+        return st.progressSummary && typeof st.progressSummary.staffHighScore === 'number' && st.progressSummary.staffHighScore > 0;
+      });
+
+      rankedStudents.sort(function (a, b) {
+        return b.progressSummary.staffHighScore - a.progressSummary.staffHighScore;
+      });
+
+      if (rankedStudents.length === 0) {
+        dashLeaderboardList.innerHTML = '<div style="text-align: center; color: var(--text-soft); padding: 0.5rem;">Nenhum recorde registrado ainda. Os alunos precisam concluir uma rodada do Pentagrama para pontuar!</div>';
+      } else {
+        dashLeaderboardList.innerHTML = '';
+        rankedStudents.slice(0, 10).forEach(function (st, idx) {
+          var medalColor = '#6b7280';
+          var medalIcon = 'award';
+          
+          if (idx === 0) {
+            medalColor = '#f59e0b';
+            medalIcon = 'trophy';
+          } else if (idx === 1) {
+            medalColor = '#94a3b8';
+            medalIcon = 'award';
+          } else if (idx === 2) {
+            medalColor = '#b45309';
+            medalIcon = 'award';
+          }
+
+          var row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justify = 'space-between';
+          row.style.alignItems = 'center';
+          row.style.padding = '0.35rem 0.5rem';
+          row.style.background = idx % 2 === 0 ? 'rgba(0,0,0,0.02)' : 'transparent';
+          row.style.borderRadius = '4px';
+          row.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-weight: 800; color: ${medalColor}; display: inline-flex; align-items: center;">
+                <i data-lucide="${medalIcon}" style="width: 14px; height: 14px; margin-right: 2px; color: ${medalColor};"></i> #${idx + 1}
+              </span>
+              <span style="font-weight: 600; color: var(--text);">${st.name}</span>
+            </div>
+            <div style="font-weight: 800; color: var(--primary);">${st.progressSummary.staffHighScore} pts</div>
+          `;
+          dashLeaderboardList.appendChild(row);
+        });
+      }
+    }
+
+    // 4. Top 5 Hinos
     var hymns = metricsData.hymns || {};
     var hymnsList = [];
     for (var key in hymns) {
@@ -2242,7 +2296,7 @@
       }
     }
 
-    // 4. Top 5 Lições
+    // 5. Top 5 Lições
     var lessons = metricsData.lessons || {};
     var lessonsList = [];
     for (var key in lessons) {
@@ -8204,6 +8258,16 @@
         closeHinosEditorModal();
         closeHinosNewStudentModal();
         if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+
+        staffGameScore = 0;
+        staffGameCombo = 1;
+        staffGameLives = 3;
+        var livesEl = document.getElementById('staffGameLives');
+        if (livesEl) livesEl.textContent = '❤️❤️❤️';
+        var scoreEl = document.getElementById('staffGameScore');
+        if (scoreEl) scoreEl.textContent = '0';
+        var comboDisplay = document.getElementById('staffGameComboDisplay');
+        if (comboDisplay) comboDisplay.classList.add('hidden');
       } else if (mode === 'tuner') {
         violinSection.classList.add('hidden');
         staffSectionEl.classList.add('hidden');
@@ -8681,10 +8745,10 @@
       return;
     }
 
-    if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
+    if (staffGameLives <= 0 || challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
       var restartWrapDone = document.getElementById('staffRestartWrap');
       if (restartWrapDone) restartWrapDone.classList.remove('hidden');
-      setMessage('Desafio do pentagrama concluído. Toque em Reiniciar para jogar novamente.');
+      setMessage('Jogo concluído! Toque em Jogar novamente para recomeçar.');
       return;
     }
 
@@ -8702,21 +8766,58 @@
 
     if (selectedId === staffModeTarget.id) {
       staffAnswerLocked = true;
+      
+      // Ganha pontos baseando-se no tempo (resposta rápida ganha mais!)
+      var secondsElapsed = (Date.now() - challengeStartTs) / 1000;
+      var pointsEarned = Math.max(10, Math.round(100 - secondsElapsed * 8)); // mínimo 10 pts, máximo 100 pts
+      pointsEarned = pointsEarned * staffGameCombo; // multiplica pelo combo!
+      staffGameScore += pointsEarned;
+      
       score++;
       challengeRound++;
       totalChallenges = challengeRound;
       playGameSfx('correct');
       buttonEl.classList.add('correct');
+      
+      // Atualiza combo
+      staffGameCombo++;
+      var comboEl = document.getElementById('staffGameCombo');
+      var comboDisplay = document.getElementById('staffGameComboDisplay');
+      if (comboEl) comboEl.textContent = String(staffGameCombo);
+      if (comboDisplay && staffGameCombo > 1) comboDisplay.classList.remove('hidden');
+
+      var scoreEl = document.getElementById('staffGameScore');
+      if (scoreEl) scoreEl.textContent = String(staffGameScore);
+
       showPositiveFeedback();
       updateChallengeStats();
       updateProgress();
+
       if (challengeRound >= CHALLENGE_ROUNDS_LIMIT) {
         stopChallengeTimer();
         var finalElapsed = challengeStartTs ? (Date.now() - challengeStartTs) : 0;
         var restartWrap = document.getElementById('staffRestartWrap');
         if (restartWrap) restartWrap.classList.remove('hidden');
         launchStaffConfetti();
-        setMessage('Parabéns! Você concluiu 20/20 no pentagrama em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
+        
+        // Verifica recorde pessoal
+        var st = getActiveHinosStudent();
+        var isNewRecord = false;
+        if (st) {
+          if (!st.progressSummary) st.progressSummary = {};
+          var oldRecord = st.progressSummary.staffHighScore || 0;
+          if (staffGameScore > oldRecord) {
+            st.progressSummary.staffHighScore = staffGameScore;
+            saveHinosState();
+            isNewRecord = true;
+          }
+        }
+
+        if (isNewRecord) {
+          setMessage('Parabéns! Novo Recorde: ' + staffGameScore + ' pontos! Concluído em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s). 🎉');
+        } else {
+          setMessage('Parabéns! Você concluiu com ' + staffGameScore + ' pontos em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
+        }
         speak('Parabéns! Você concluiu o pentagrama.');
         return;
       }
@@ -8729,23 +8830,55 @@
       buttonEl.classList.add('wrong');
       var correctBtn = document.querySelector('.note-option-btn[data-note-id="' + staffModeTarget.id + '"]');
       if (correctBtn) correctBtn.classList.add('correct');
-      var remainingErrors = Math.max(CHALLENGE_ERRORS_LIMIT - challengeErrors, 0);
-      setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '. Erros restantes: ' + remainingErrors + '.');
-      speak('A nota correta era ' + corretaNome);
+      
+      // Reseta combo
+      staffGameCombo = 1;
+      var comboDisplay = document.getElementById('staffGameComboDisplay');
+      if (comboDisplay) comboDisplay.classList.add('hidden');
+
+      // Perde vida
+      staffGameLives--;
+      var livesEl = document.getElementById('staffGameLives');
+      if (livesEl) {
+        var hearts = '';
+        for (var i = 0; i < staffGameLives; i++) hearts += '❤️';
+        if (hearts === '') hearts = '💀 GAME OVER';
+        livesEl.textContent = hearts;
+      }
+
       updateChallengeStats();
-      if (challengeErrors >= CHALLENGE_ERRORS_LIMIT) {
+
+      if (staffGameLives <= 0) {
         stopChallengeTimer();
+        
+        // Verifica recorde mesmo no Game Over
+        var st = getActiveHinosStudent();
+        var isNewRecord = false;
+        if (st) {
+          if (!st.progressSummary) st.progressSummary = {};
+          var oldRecord = st.progressSummary.staffHighScore || 0;
+          if (staffGameScore > oldRecord) {
+            st.progressSummary.staffHighScore = staffGameScore;
+            saveHinosState();
+            isNewRecord = true;
+          }
+        }
+
         setTimeout(function () {
-          setMessage('Você chegou a 3 erros. A partida do pentagrama foi reiniciada em 1/20.');
-          speak('Partida reiniciada.');
-          resetChallengeSession(true);
-          staffAnswerLocked = false;
-          score = 0;
-          totalChallenges = 0;
-          updateProgress();
-          startStaffRound();
+          var restartWrap = document.getElementById('staffRestartWrap');
+          if (restartWrap) restartWrap.classList.remove('hidden');
+          if (isNewRecord) {
+            setMessage('Game Over! Suas vidas acabaram. Novo Recorde: ' + staffGameScore + ' pontos! 🎉');
+          } else {
+            var oldHigh = (st && st.progressSummary) ? (st.progressSummary.staffHighScore || 0) : 0;
+            setMessage('Game Over! Suas vidas acabaram. Você fez ' + staffGameScore + ' pontos. Recorde: ' + oldHigh + ' pts.');
+          }
+          speak('Fim de jogo.');
         }, 900);
         return;
+      } else {
+        setMessage('Você escolheu ' + nomeSelecionada + '. A nota correta era ' + corretaNome + '.');
+        speak('A nota correta era ' + corretaNome);
       }
     }
 
@@ -8784,6 +8917,17 @@
     totalChallenges = 0;
     challengeRound = 0;
     challengeErrors = 0;
+    staffGameScore = 0;
+    staffGameCombo = 1;
+    staffGameLives = 3;
+
+    var livesEl = document.getElementById('staffGameLives');
+    if (livesEl) livesEl.textContent = '❤️❤️❤️';
+    var scoreEl = document.getElementById('staffGameScore');
+    if (scoreEl) scoreEl.textContent = '0';
+    var comboDisplay = document.getElementById('staffGameComboDisplay');
+    if (comboDisplay) comboDisplay.classList.add('hidden');
+
     challengeDiscardedAttempts = {};
     staffAnswerLocked = false;
     challengeTarget = null;

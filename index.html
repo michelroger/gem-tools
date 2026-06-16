@@ -63,11 +63,11 @@
   <!-- Utilitarios de metronomo MusicXML (usado pelo parse MusicXML do player) -->
   <script src="./assets/js/modules/metronome-utils.js"></script>
   <!-- Rotulos, bolhas, flash e clique de audio do metronomo -->
-  <script src="./assets/js/modules/metronome-ui-core.js?v=1.3.36"></script>
+  <script src="./assets/js/modules/metronome-ui-core.js?v=1.3.37"></script>
   <!-- Scheduler start/stop/loop do metronomo -->
-  <script src="./assets/js/modules/metronome-scheduler.js?v=1.3.36"></script>
+  <script src="./assets/js/modules/metronome-scheduler.js?v=1.3.37"></script>
   <!-- Init/listeners do metronomo (usa window.MetroUiRefs e MetronomeUiBindingAccess) -->
-  <script src="./assets/js/modules/metronome-ui-init.js?v=1.3.36"></script>
+  <script src="./assets/js/modules/metronome-ui-init.js?v=1.3.37"></script>
   <!-- Utilitarios de transformacao e parse MusicXML do player -->
   <script src="./assets/js/modules/player-musicxml-utils.js"></script>
   <!-- Utilitarios de merge de partes MusicXML -->
@@ -319,7 +319,16 @@
     </div>
 
     <div class="staff-section hidden du-card border border-base-300 bg-base-100 shadow-sm" id="staffSection">
-      <p class="violin-title">Pentagrama — descubra a nota</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+        <p class="violin-title" style="margin: 0; font-size: 1rem; font-weight: bold; display: flex; align-items: center; gap: 0.35rem;">
+          <i data-lucide="music-4" style="color: var(--primary); width: 18px; height: 18px;"></i> Jogo do Pentagrama
+        </p>
+        <div id="staffGameStats" style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; font-weight: bold;">
+          <span id="staffGameScoreDisplay" style="color: var(--primary);">⭐ Pontos: <span id="staffGameScore">0</span></span>
+          <span id="staffGameComboDisplay" class="hidden" style="color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 0.1rem 0.35rem; border-radius: 4px;">Combo x<span id="staffGameCombo">1</span></span>
+          <span id="staffGameLives" style="color: #ef4444; letter-spacing: 2px;">❤️❤️❤️</span>
+        </div>
+      </div>
       <svg id="staffSvg" class="staff-svg" role="img" aria-label="Pentagrama com uma nota"></svg>
       <div class="note-options" id="noteOptions" aria-label="Opções de notas">
         <!-- Botões Dó a Si (preenchidos via JS) -->
@@ -1051,6 +1060,16 @@
             </div>
           </div>
 
+          <!-- Ranking do Jogo de Notas -->
+          <div class="du-card bg-base-200 p-3 mb-4" style="border-radius: 8px; border: 1px solid rgba(0,0,0,0.05);">
+            <h3 style="font-size: 0.85rem; font-weight: bold; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.35rem; color: var(--text);">
+              <i data-lucide="trophy" style="width: 14px; height: 14px; color: #f59e0b;"></i> Melhores Leitores (Ranking do Jogo)
+            </h3>
+            <div id="dashLeaderboardList" style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem;">
+              <div style="text-align: center; color: var(--text-soft);">Carregando ranking...</div>
+            </div>
+          </div>
+
           <!-- Top Hinos / Lições -->
           <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
             <!-- Top Hinos -->
@@ -1301,9 +1320,9 @@
   <!-- Firebase SDK compatível e scripts de sincronização -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="./assets/js/modules/firebase-config.js?v=1.3.36"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=1.3.36"></script>
-  <script src="./assets/js/app-main.js?v=1.3.36"></script>
+  <script src="./assets/js/modules/firebase-config.js?v=1.3.37"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=1.3.37"></script>
+  <script src="./assets/js/app-main.js?v=1.3.37"></script>
 
 </body>
 
