@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.38';
+  const APP_VERSION = '1.3.39';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8975,28 +8975,28 @@
       listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando recordes...</td></tr>';
     }
 
-    if (hinosAllCloudStudents && hinosAllCloudStudents.length > 0) {
-      renderStaffLeaderboard(hinosAllCloudStudents);
-    } else {
-      if (window.FirebaseSync && typeof window.FirebaseSync.fetchAllStudents === 'function') {
-        window.FirebaseSync.fetchAllStudents(function (err, list) {
-          if (err) {
+    if (window.FirebaseSync && typeof window.FirebaseSync.fetchAllStudents === 'function') {
+      window.FirebaseSync.fetchAllStudents(function (list, err) {
+        if (list === null) {
+          if (hinosAllCloudStudents && hinosAllCloudStudents.length > 0) {
+            renderStaffLeaderboard(hinosAllCloudStudents);
+          } else {
             if (listBody) {
               listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: #ef4444;">Erro ao carregar dados.</td></tr>';
             }
-            return;
           }
-          hinosAllCloudStudents = list || [];
-          renderStaffLeaderboard(hinosAllCloudStudents);
-        });
+          return;
+        }
+        hinosAllCloudStudents = list || [];
+        renderStaffLeaderboard(hinosAllCloudStudents);
+      });
+    } else {
+      var localStudent = getActiveHinosStudent();
+      if (localStudent) {
+        renderStaffLeaderboard([localStudent]);
       } else {
-        var localStudent = getActiveHinosStudent();
-        if (localStudent) {
-          renderStaffLeaderboard([localStudent]);
-        } else {
-          if (listBody) {
-            listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum recorde registrado ainda.</td></tr>';
-          }
+        if (listBody) {
+          listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum recorde registrado ainda.</td></tr>';
         }
       }
     }
