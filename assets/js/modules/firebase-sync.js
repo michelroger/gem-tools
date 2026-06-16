@@ -8,6 +8,7 @@
   var db = null;
   var isInitialized = false;
   var activeListenerUnsubscribe = null;
+  var activeListenerSyncCode = null;
 
   // Verifica se as credenciais configuradas são válidas (não são os placeholders)
   function isValidConfig(cfg) {
@@ -202,15 +203,22 @@
 
     // Escuta alterações do aluno em tempo real para sincronização entre aparelhos
     listenToStudent: function (syncCode, onUpdateCallback) {
+      if (!this.isActive() || !syncCode || !onUpdateCallback) return;
+
+      var code = syncCode.toUpperCase().trim();
+
+      // Se já estivermos escutando o mesmo código, não recria o listener
+      if (activeListenerUnsubscribe && activeListenerSyncCode === code) {
+        return;
+      }
+
       // Cancela o ouvinte anterior se houver
       if (activeListenerUnsubscribe) {
         activeListenerUnsubscribe();
         activeListenerUnsubscribe = null;
       }
 
-      if (!this.isActive() || !syncCode || !onUpdateCallback) return;
-
-      var code = syncCode.toUpperCase().trim();
+      activeListenerSyncCode = code;
 
       try {
         activeListenerUnsubscribe = db.collection('students').doc(code).onSnapshot(function (doc) {
@@ -222,9 +230,11 @@
           }
         }, function (err) {
           console.error('Erro no listener em tempo real do Firestore:', err);
+          activeListenerSyncCode = null;
         });
       } catch (e) {
         console.error('Falha ao registrar listener:', e);
+        activeListenerSyncCode = null;
       }
     },
 
@@ -234,6 +244,7 @@
         activeListenerUnsubscribe();
         activeListenerUnsubscribe = null;
       }
+      activeListenerSyncCode = null;
     },
 
     // Incrementa contagem de uso de uma funcionalidade específica (métrica)
