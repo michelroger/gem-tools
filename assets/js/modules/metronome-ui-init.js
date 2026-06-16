@@ -14,6 +14,7 @@
     d.bpmLabelEl = document.getElementById('metroBpmLabel');
     d.bpmSliderEl = document.getElementById('metroBpmSlider');
     d.accentCheckboxEl = document.getElementById('chkMetroAccent');
+    d.vibrateCheckboxEl = document.getElementById('chkMetroVibrate');
     d.beatsValueEl = document.getElementById('metroBeatsValue');
     d.subdivRowEl = document.getElementById('metroSubdivRow');
     d.solfejoWrapEl = document.getElementById('metroSolfejoWrap');
@@ -69,6 +70,12 @@
     if (d.accentCheckboxEl) {
       d.accentCheckboxEl.addEventListener('change', function () {
         a.setMetroAccentFirst(!!this.checked);
+      });
+    }
+
+    if (d.vibrateCheckboxEl) {
+      d.vibrateCheckboxEl.addEventListener('change', function () {
+        a.setMetroVibrate(!!this.checked);
       });
     }
 

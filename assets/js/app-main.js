@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.35';
+  const APP_VERSION = '1.3.36';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -581,6 +581,7 @@
     bpmLabelEl: null,
     bpmSliderEl: null,
     accentCheckboxEl: null,
+    vibrateCheckboxEl: null,
     beatsValueEl: null,
     subdivRowEl: null,
     solfejoWrapEl: null,
@@ -602,6 +603,7 @@
   let metroBeatsPerBar = 4;
   let metroSubdivision = 1; // cliques por batida
   let metroAccentFirst = false;
+  let metroVibrate = false;
   let metroSolfejoMode = false;
   let metroSolfejoLeftHand = false;
 
@@ -9881,6 +9883,7 @@
       metroBeatsPerBar = 4;
       metroSubdivision = 1;
       metroAccentFirst = false;
+      metroVibrate = false;
       metroSolfejoMode = false;
     },
     syncMetroBpmFromSlider: function () {
@@ -9895,6 +9898,7 @@
     syncMetroCheckboxDom: function () {
       var d = window.MetroUiRefs;
       if (d.accentCheckboxEl) d.accentCheckboxEl.checked = metroAccentFirst;
+      if (d.vibrateCheckboxEl) d.vibrateCheckboxEl.checked = metroVibrate;
       if (d.solfejoModeCheckboxEl) d.solfejoModeCheckboxEl.checked = metroSolfejoMode;
       if (d.solfejoLeftHandCheckboxEl) d.solfejoLeftHandCheckboxEl.checked = metroSolfejoLeftHand;
     },
@@ -10038,6 +10042,12 @@
     },
     setMetroAccentFirst: function (v) {
       metroAccentFirst = v;
+    },
+    setMetroVibrate: function (v) {
+      metroVibrate = v;
+    },
+    getMetroVibrate: function () {
+      return metroVibrate;
     },
     setMetroSolfejoLeftHand: function (v) {
       metroSolfejoLeftHand = v;

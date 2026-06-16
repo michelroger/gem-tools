@@ -23,6 +23,16 @@
       if (isBeatStart) {
         a.schedInvokeHighlightMetroBeat(beatIndex);
         a.schedInvokeTriggerMetroVisualPulse(isAccent);
+
+        // Vibração sensorial (Haptic Feedback)
+        if (a.getMetroVibrate && a.getMetroVibrate() && typeof navigator !== 'undefined' && navigator.vibrate) {
+          if (isAccent) {
+            navigator.vibrate(85); // Vibração forte no tempo 1
+          } else {
+            navigator.vibrate(35); // Vibração suave nos tempos fracos
+          }
+        }
+
         if (a.getMetroSolfejoMode()) {
           a.schedInvokeTriggerSolfejoHandTap();
           var currentBeatFrame = beatIndex - 1;
