@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.30';
+  const APP_VERSION = '1.3.31';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -1250,9 +1250,24 @@
     }
   }
 
-  function saveHinosState() {
+  function saveHinosState(skipFirebaseUpload) {
     try {
       localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
+      
+      // Envia para o Firebase se o aluno ativo estiver sincronizado
+      if (!skipFirebaseUpload && !hinosRemoteUpdating && typeof window.FirebaseSync !== 'undefined' && window.FirebaseSync.isActive()) {
+        var st = getActiveHinosStudent();
+        if (st && st.syncCode) {
+          updateSyncStatusBadge('Salvando...', st.syncCode);
+          window.FirebaseSync.uploadStudent(st, function (success) {
+            if (success) {
+              updateSyncStatusBadge('Sincronizado', st.syncCode);
+            } else {
+              updateSyncStatusBadge('Erro ao sincronizar', st.syncCode);
+            }
+          });
+        }
+      }
     } catch (err) { }
   }
 
@@ -1408,6 +1423,10 @@
       saveHinosState();
     }
     syncHinosActiveStudentVozUI();
+    // Inicia ou para o ouvinte do Firestore conforme o aluno ativo selecionado
+    if (typeof syncActiveStudentFirebaseListener === 'function') {
+      syncActiveStudentFirebaseListener();
+    }
   }
 
   function refreshMetodoControl() {
@@ -2034,6 +2053,455 @@
     window.HinosEvents.bindHinosEvents();
   }
 
+  // ========== INTEGRACAO FIREBASE SYNC E METRICAS ==========
+  var hinosRemoteUpdating = false;
+
+  function onStudentRemoteUpdate(remoteData) {
+    if (!remoteData) return;
+    var st = getActiveHinosStudent();
+    if (!st || st.syncCode !== remoteData.syncCode) return;
+
+    // Se os dados locais forem idênticos, ignora
+    if (JSON.stringify(st) === JSON.stringify(remoteData)) return;
+
+    hinosRemoteUpdating = true;
+    try {
+      var idx = hinosState.students.findIndex(function (s) { return s.id === remoteData.id; });
+      if (idx >= 0) {
+        hinosState.students[idx] = remoteData;
+        saveHinosState(true); // salva no localStorage, mas pula upload para evitar loops
+
+        // Atualiza a tela
+        renderHinosStudentSelect();
+        syncHinosActiveStudentVozUI();
+        refreshHinosVoiceButtons();
+        updateHinosFaseGridCellClasses();
+        updateMetodoFaseGridCellClasses();
+        updateMetodoOverviewBars();
+        
+        // Mantém a visualização dos dados sincronizados
+        updateSyncStatusBadge('Sincronizado', remoteData.syncCode);
+      }
+    } finally {
+      hinosRemoteUpdating = false;
+    }
+  }
+
+  function syncActiveStudentFirebaseListener() {
+    if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) return;
+
+    window.FirebaseSync.stopListening();
+    var st = getActiveHinosStudent();
+    if (st && st.syncCode) {
+      updateSyncStatusBadge('Sincronizado', st.syncCode);
+      window.FirebaseSync.listenToStudent(st.syncCode, onStudentRemoteUpdate);
+    } else {
+      updateSyncStatusBadge('Não Sincronizado', null);
+    }
+  }
+
+  function updateSyncStatusBadge(status, code) {
+    var panel = document.getElementById('hinosCloudSyncPanel');
+    var badge = document.getElementById('hinosSyncStatusBadge');
+    var codeWrap = document.getElementById('hinosSyncCodeDisplayWrap');
+    var codeText = document.getElementById('hinosSyncCodeText');
+    var actBtn = document.getElementById('btnActivateCloudSync');
+
+    if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) {
+      if (panel) panel.classList.add('hidden');
+      return;
+    }
+
+    if (panel) panel.classList.remove('hidden');
+
+    if (badge) {
+      badge.textContent = status;
+      if (status === 'Sincronizado') {
+        badge.style.background = '#d1fae5'; // verde suave
+        badge.style.color = '#065f46';
+      } else if (status === 'Salvando...') {
+        badge.style.background = '#fef3c7'; // amarelo suave
+        badge.style.color = '#92400e';
+      } else {
+        badge.style.background = 'rgba(0,0,0,0.05)';
+        badge.style.color = 'var(--text-soft)';
+      }
+    }
+
+    if (code) {
+      if (codeText) codeText.textContent = code;
+      if (codeWrap) codeWrap.classList.remove('hidden');
+      if (actBtn) actBtn.classList.add('hidden');
+    } else {
+      if (codeWrap) codeWrap.classList.add('hidden');
+      if (actBtn) actBtn.classList.remove('hidden');
+    }
+  }
+
+  var hinosAllCloudStudents = [];
+
+  function renderTeacherStudentList(list) {
+    var body = document.getElementById('hinosTeacherStudentListBody');
+    if (!body) return;
+    
+    if (list === null) {
+      body.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: #ef4444;">Erro ao carregar alunos. Tente novamente.</td></tr>';
+      return;
+    }
+    
+    hinosAllCloudStudents = list;
+    filterAndDrawTeacherStudentList();
+  }
+
+  function filterAndDrawTeacherStudentList() {
+    var body = document.getElementById('hinosTeacherStudentListBody');
+    var inp = document.getElementById('hinosTeacherSearchInput');
+    if (!body) return;
+    
+    var filterText = inp ? inp.value.trim().toLowerCase() : '';
+    var filtered = hinosAllCloudStudents.filter(function (st) {
+      var name = (st.name || '').toLowerCase();
+      var code = (st.syncCode || '').toLowerCase();
+      return name.indexOf(filterText) !== -1 || code.indexOf(filterText) !== -1;
+    });
+
+    if (filtered.length === 0) {
+      body.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum aluno encontrado.</td></tr>';
+      return;
+    }
+
+    body.innerHTML = '';
+    filtered.forEach(function (st) {
+      var tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+      
+      var tdName = document.createElement('td');
+      tdName.style.padding = '0.5rem';
+      var dName = document.createElement('div');
+      dName.style.fontWeight = 'bold';
+      dName.style.color = 'var(--text)';
+      dName.textContent = st.name || 'Sem nome';
+      var dMeta = document.createElement('div');
+      dMeta.style.fontSize = '0.75rem';
+      dMeta.style.color = 'var(--text-soft)';
+      dMeta.textContent = 'Disp: ' + (st.deviceInfo || 'Desconhecido') + ' | Acesso: ' + (st.lastActiveFormatted || 'Sem data');
+      tdName.appendChild(dName);
+      tdName.appendChild(dMeta);
+      
+      var tdProg = document.createElement('td');
+      tdProg.style.padding = '0.5rem';
+      tdProg.style.textAlign = 'center';
+      tdProg.style.color = 'var(--text)';
+      var sum = st.progressSummary || { hinosAprovados: 0, licoesAprovadas: 0 };
+      tdProg.textContent = 'Hinos: ' + sum.hinosAprovados + ' | Lições: ' + sum.licoesAprovadas;
+      
+      var tdAction = document.createElement('td');
+      tdAction.style.padding = '0.5rem';
+      tdAction.style.textAlign = 'center';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'du-btn du-btn-primary du-btn-xs';
+      btn.textContent = 'Entrar';
+      btn.addEventListener('click', function () {
+        enterStudentImpersonation(st);
+      });
+      tdAction.appendChild(btn);
+      
+      tr.appendChild(tdName);
+      tr.appendChild(tdProg);
+      tr.appendChild(tdAction);
+      body.appendChild(tr);
+    });
+  }
+
+  function enterStudentImpersonation(remoteStudent) {
+    if (!remoteStudent || !remoteStudent.id) return;
+    
+    if (!window.hinosImpersonatedMode) {
+      try {
+        localStorage.setItem('gem-tools-teacher-backup', JSON.stringify(hinosState));
+      } catch (e) {
+        setMessage('Erro ao iniciar simulação: armazenamento cheio.');
+        return;
+      }
+    }
+    
+    window.hinosImpersonatedMode = true;
+    
+    hinosState = {
+      version: 1,
+      students: [remoteStudent],
+      activeStudentId: remoteStudent.id
+    };
+    
+    try {
+      localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
+    } catch (e) {}
+
+    var modal = document.getElementById('hinosTeacherDashboardModal');
+    if (modal) modal.classList.add('hidden');
+
+    var banner = document.getElementById('hinosImpersonationBanner');
+    var sName = document.getElementById('hinosImpersonatedStudentName');
+    if (banner) {
+      banner.style.display = 'flex';
+      banner.classList.remove('hidden');
+    }
+    if (sName) {
+      sName.textContent = remoteStudent.name || 'Aluno';
+    }
+    
+    document.body.style.paddingTop = '38px';
+
+    renderHinosStudentSelect();
+    syncHinosActiveStudentVozUI();
+    refreshHinosVoiceButtons();
+    updateHinosFaseGridCellClasses();
+    updateMetodoFaseGridCellClasses();
+    updateMetodoOverviewBars();
+
+    syncActiveStudentFirebaseListener();
+    setMessage('Simulando perfil de: ' + (remoteStudent.name || 'Aluno'));
+  }
+
+  function exitStudentImpersonation() {
+    window.hinosImpersonatedMode = false;
+    
+    try {
+      var backup = localStorage.getItem('gem-tools-teacher-backup');
+      if (backup) {
+        hinosState = JSON.parse(backup);
+        localStorage.removeItem('gem-tools-teacher-backup');
+      } else {
+        hinosState = { version: 1, students: [], activeStudentId: null };
+      }
+      localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
+    } catch (e) {
+      hinosState = { version: 1, students: [], activeStudentId: null };
+    }
+
+    var banner = document.getElementById('hinosImpersonationBanner');
+    if (banner) {
+      banner.style.display = 'none';
+      banner.classList.add('hidden');
+    }
+    document.body.style.paddingTop = '0px';
+
+    renderHinosStudentSelect();
+    syncHinosActiveStudentVozUI();
+    refreshHinosVoiceButtons();
+    updateHinosFaseGridCellClasses();
+    updateMetodoFaseGridCellClasses();
+    updateMetodoOverviewBars();
+
+    syncActiveStudentFirebaseListener();
+    setMessage('Você saiu da simulação. Dados originais restaurados.');
+    
+    openTeacherDashboard(true);
+  }
+
+  async function hashTeacherPassword(password) {
+    if (typeof crypto === 'undefined' || !crypto.subtle) {
+      // Fallback simples caso não esteja em contexto seguro (HTTPS)
+      var hash = 0;
+      for (var i = 0; i < password.length; i++) {
+        var char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return 'fallback_' + hash;
+    }
+    try {
+      var msgBuffer = new TextEncoder().encode(password);
+      var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      var hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+    } catch (e) {
+      return '';
+    }
+  }
+
+  async function openTeacherDashboard(skipPrompt) {
+    if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) {
+      setMessage('Sincronização em nuvem inativa.');
+      return;
+    }
+
+    var correctHash = window.firebaseConfig.teacherPasswordHash || '';
+    if (!correctHash) {
+      setMessage('Modo professor não habilitado nas configurações do Firebase.');
+      return;
+    }
+
+    if (!skipPrompt) {
+      var pwd = prompt('Digite a Senha Master do Professor:');
+      if (pwd === null) return;
+      var hash = await hashTeacherPassword(pwd);
+      if (hash !== correctHash) {
+        alert('Senha master do professor incorreta.');
+        return;
+      }
+    }
+
+    var modal = document.getElementById('hinosTeacherDashboardModal');
+    if (modal) modal.classList.remove('hidden');
+
+    var listBody = document.getElementById('hinosTeacherStudentListBody');
+    if (listBody) {
+      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando alunos da nuvem...</td></tr>';
+    }
+    
+    var searchInp = document.getElementById('hinosTeacherSearchInput');
+    if (searchInp) searchInp.value = '';
+
+    window.FirebaseSync.fetchAllStudents(renderTeacherStudentList);
+  }
+
+  function initFirebaseSyncUI() {
+    if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) {
+      return;
+    }
+
+    var connArea = document.getElementById('hinosCloudSyncConnectionArea');
+    if (connArea) connArea.classList.remove('hidden');
+
+    // Mostra a Área do Professor se houver senha configurada
+    var teacherRow = document.getElementById('hinosTeacherModePanelRow');
+    if (teacherRow && window.firebaseConfig.teacherPasswordHash) {
+      teacherRow.classList.remove('hidden');
+    }
+
+    var btnOpenTeacher = document.getElementById('btnOpenTeacherDashboard');
+    if (btnOpenTeacher) {
+      btnOpenTeacher.addEventListener('click', function () {
+        openTeacherDashboard();
+      });
+    }
+
+    var btnExitImp = document.getElementById('btnExitImpersonation');
+    if (btnExitImp) {
+      btnExitImp.addEventListener('click', function () {
+        exitStudentImpersonation();
+      });
+    }
+
+    var modalTeacher = document.getElementById('hinosTeacherDashboardModal');
+    var btnCloseTeacherX = document.getElementById('hinosTeacherClose');
+    var btnCloseTeacherBtn = document.getElementById('btnTeacherDashboardClose');
+
+    function closeTeacherDashboard() {
+      if (modalTeacher) modalTeacher.classList.add('hidden');
+    }
+
+    if (btnCloseTeacherX) btnCloseTeacherX.addEventListener('click', closeTeacherDashboard);
+    if (btnCloseTeacherBtn) btnCloseTeacherBtn.addEventListener('click', closeTeacherDashboard);
+    if (modalTeacher) {
+      modalTeacher.addEventListener('click', function (e) {
+        if (e.target === modalTeacher) closeTeacherDashboard();
+      });
+    }
+
+    var searchInp = document.getElementById('hinosTeacherSearchInput');
+    if (searchInp) {
+      searchInp.addEventListener('input', function () {
+        filterAndDrawTeacherStudentList();
+      });
+    }
+
+    var btnAct = document.getElementById('btnActivateCloudSync');
+    if (btnAct) {
+      btnAct.addEventListener('click', function () {
+        var st = getActiveHinosStudent();
+        if (!st) {
+          setMessage('Nenhum aluno ativo para sincronizar.');
+          return;
+        }
+        if (st.syncCode) {
+          setMessage('Aluno já está sincronizado.');
+          return;
+        }
+
+        var code = window.FirebaseSync.generateSyncCode();
+        st.syncCode = code;
+        saveHinosState();
+        setMessage('Sincronização em nuvem ativada! Código: ' + code);
+      });
+    }
+
+    var btnCopy = document.getElementById('btnCopySyncCode');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', function () {
+        var codeText = document.getElementById('hinosSyncCodeText');
+        var code = codeText ? codeText.textContent : '';
+        if (code && code !== '------') {
+          navigator.clipboard.writeText(code).then(function () {
+            setMessage('Código copiado para a área de transferência: ' + code);
+          }).catch(function () {
+            setMessage('Código do aluno: ' + code);
+          });
+        }
+      });
+    }
+
+    var btnConn = document.getElementById('btnConnectCloudStudent');
+    if (btnConn) {
+      btnConn.addEventListener('click', function () {
+        var inp = document.getElementById('hinosSyncCodeInput');
+        var code = inp ? inp.value.trim().toUpperCase() : '';
+        if (!code || code.length !== 6) {
+          setMessage('Digite um código de 6 dígitos válido.');
+          return;
+        }
+
+        setMessage('Conectando aluno...');
+        window.FirebaseSync.downloadStudent(code, function (remoteStudent, error) {
+          if (remoteStudent && remoteStudent.id) {
+            var idx = hinosState.students.findIndex(function (s) { return s.id === remoteStudent.id; });
+            if (idx >= 0) {
+              hinosState.students[idx] = remoteStudent;
+            } else {
+              hinosState.students.push(remoteStudent);
+            }
+            hinosState.activeStudentId = remoteStudent.id;
+            saveHinosState(true);
+
+            if (inp) inp.value = '';
+            closeHinosNewStudentModal();
+            renderHinosStudentSelect();
+            syncHinosActiveStudentVozUI();
+            refreshHinosVoiceButtons();
+            updateHinosFaseGridCellClasses();
+            updateMetodoFaseGridCellClasses();
+            updateMetodoOverviewBars();
+            
+            syncActiveStudentFirebaseListener();
+            setMessage('Perfil conectado com sucesso: ' + remoteStudent.name);
+          } else {
+            setMessage('Erro ao conectar: ' + (error || 'código inválido.'));
+          }
+        });
+      });
+    }
+
+    syncActiveStudentFirebaseListener();
+
+    // Se a página foi recarregada enquanto simulava o acesso
+    if (localStorage.getItem('gem-tools-teacher-backup')) {
+      window.hinosImpersonatedMode = true;
+      var banner = document.getElementById('hinosImpersonationBanner');
+      var sName = document.getElementById('hinosImpersonatedStudentName');
+      if (banner) {
+        banner.style.display = 'flex';
+        banner.classList.remove('hidden');
+      }
+      var st = getActiveHinosStudent();
+      if (sName && st) {
+        sName.textContent = st.name || 'Aluno';
+      }
+      document.body.style.paddingTop = '38px';
+    }
+  }
+
   function initHinosUI() {
     loadHinosState();
     renderHinosStudentSelect();
@@ -2041,6 +2509,7 @@
     hinosLastSyncInstrumentId = currentInstrument.id;
     initMetodoControlUI();
     refreshHinosVoiceButtons();
+    initFirebaseSyncUI();
   }
 
   /** Ponte para `hinos-events.js` (handlers permanecem no escopo do app). */
@@ -2050,6 +2519,9 @@
       saveHinosState();
       syncHinosActiveStudentVozUI();
       refreshHinosVoiceButtons();
+      if (typeof syncActiveStudentFirebaseListener === 'function') {
+        syncActiveStudentFirebaseListener();
+      }
     },
     onActiveStudentVozChange: function (value) {
       var st = getActiveHinosStudent();
@@ -7298,6 +7770,14 @@
   }
 
   function startPlayerPlayback() {
+    // Registra métrica de reprodução do item
+    if (typeof window.FirebaseSync !== 'undefined' && window.FirebaseSync.isActive()) {
+      var activeItemId = playerSelectedItemId || playerSelectedHinoNumero;
+      if (activeItemId) {
+        window.FirebaseSync.logItemPlay(activeItemId, playerSelectedCollectionId);
+      }
+    }
+
     pauseMsaMediaIfPlaying();
     if (!playerScoreData || !playerScoreData.events || playerScoreData.events.length === 0) {
       setMessage('Player: sem notas válidas no MusicXML.');
@@ -7409,6 +7889,10 @@
       if (quizWrap) quizWrap.innerHTML = '';
     }
     currentMode = mode;
+    // Registra métrica de funcionalidade acessada
+    if (typeof window.FirebaseSync !== 'undefined' && window.FirebaseSync.isActive()) {
+      window.FirebaseSync.logFeatureUse(mode);
+    }
     setMoreMenuOpen(false);
     setPlayerSpeedPopoverOpen(false);
     closeSettingsPanel();

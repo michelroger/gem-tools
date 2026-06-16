@@ -1,5 +1,5 @@
 /* PWA service worker (simples) */
-const CACHE_VERSION = 'v1.3.30';
+const CACHE_VERSION = 'v1.3.31';
 const CACHE_NAME = 'gem-tools-' + CACHE_VERSION;
 
 // Arquivos que fazem sentido precachear (single-file app).
@@ -12,6 +12,8 @@ const PRECACHE_URLS = [
   './assets/css/app.css',
   './assets/js/app-main.js',
   './assets/js/modules/msa-data.js',
+  './assets/js/modules/firebase-config.js',
+  './assets/js/modules/firebase-sync.js',
   './xml/colecoes/hinario5-ccb/do/violino/441_s.musicxml',
   './assets/audio/musikvereinsaal.wav',
   './icon-192.png',
