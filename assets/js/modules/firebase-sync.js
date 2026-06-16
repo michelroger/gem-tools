@@ -309,6 +309,32 @@
           console.error('Erro ao buscar alunos para o Modo Professor:', err);
           if (callback) callback(null, err.message || 'Erro de conexão.');
         });
+    },
+
+    // Busca os dados das coleções de métricas
+    fetchMetrics: function (callback) {
+      if (!this.isActive()) {
+        if (callback) callback(null, 'Serviço desativado');
+        return;
+      }
+
+      var metricsData = {
+        features: {},
+        hymns: {},
+        lessons: {}
+      };
+
+      db.collection('metrics').get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            metricsData[doc.id] = doc.data() || {};
+          });
+          if (callback) callback(metricsData);
+        })
+        .catch(function (err) {
+          console.error('Erro ao buscar métricas:', err);
+          if (callback) callback(null, err.message || 'Erro ao carregar.');
+        });
     }
   };
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.34';
+  const APP_VERSION = '1.3.35';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -2150,7 +2150,124 @@
     }
     
     hinosAllCloudStudents = list;
+
+    var countEl = document.getElementById('teacherStudentCount');
+    if (countEl) countEl.textContent = list.length;
+    var dashTotalEl = document.getElementById('dashTotalStudents');
+    if (dashTotalEl) dashTotalEl.textContent = list.length;
+
     filterAndDrawTeacherStudentList();
+  }
+
+  function renderTeacherDashboardMetrics(metricsData) {
+    if (!metricsData) return;
+
+    // 1. Total de Alunos
+    var totalStudents = hinosAllCloudStudents.length;
+    var dashTotalStudents = document.getElementById('dashTotalStudents');
+    if (dashTotalStudents) dashTotalStudents.textContent = totalStudents;
+
+    // 2. Uso por Funcionalidade
+    var features = metricsData.features || {};
+    var totalFeatureClicks = 0;
+    var featuresList = [];
+    for (var key in features) {
+      var count = features[key] || 0;
+      totalFeatureClicks += count;
+      featuresList.push({ name: key, count: count });
+    }
+
+    var dashTotalFeatures = document.getElementById('dashTotalFeatures');
+    if (dashTotalFeatures) dashTotalFeatures.textContent = totalFeatureClicks;
+
+    featuresList.sort(function (a, b) { return b.count - a.count; });
+
+    var dashFeatureList = document.getElementById('dashFeatureList');
+    if (dashFeatureList) {
+      if (featuresList.length === 0) {
+        dashFeatureList.innerHTML = '<div style="text-align: center; color: var(--text-soft);">Nenhum uso registrado.</div>';
+      } else {
+        dashFeatureList.innerHTML = '';
+        featuresList.forEach(function (item) {
+          var pct = totalFeatureClicks > 0 ? Math.round((item.count / totalFeatureClicks) * 100) : 0;
+          
+          var friendlyName = item.name;
+          if (item.name === 'player') friendlyName = 'Player de Partituras';
+          else if (item.name === 'tuner') friendlyName = 'Afinador';
+          else if (item.name === 'metronome') friendlyName = 'Metrônomo';
+          else if (item.name === 'learn') friendlyName = 'Aprender (Espelho)';
+          else if (item.name === 'msa') friendlyName = 'MSA com IA';
+          else if (item.name === 'challenge') friendlyName = 'Jogos e Desafios';
+
+          var row = document.createElement('div');
+          row.style.marginBottom = '0.25rem';
+          row.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.15rem; font-weight: 500;">
+              <span>${friendlyName}</span>
+              <span style="color: var(--text-soft);">${item.count} vezes (${pct}%)</span>
+            </div>
+            <div class="hinos-prog-track" style="height: 6px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden;">
+              <div class="hinos-prog-fill" style="width: ${pct}%; height: 100%; background: var(--primary); border-radius: 4px;"></div>
+            </div>
+          `;
+          dashFeatureList.appendChild(row);
+        });
+      }
+    }
+
+    // 3. Top 5 Hinos
+    var hymns = metricsData.hymns || {};
+    var hymnsList = [];
+    for (var key in hymns) {
+      hymnsList.push({ number: key.replace(/_/g, '.'), count: hymns[key] || 0 });
+    }
+    hymnsList.sort(function (a, b) { return b.count - a.count; });
+    var topHymns = hymnsList.slice(0, 5);
+
+    var dashTopHymns = document.getElementById('dashTopHymns');
+    if (dashTopHymns) {
+      if (topHymns.length === 0) {
+        dashTopHymns.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Nenhum hino tocado ainda.</li>';
+      } else {
+        dashTopHymns.innerHTML = '';
+        topHymns.forEach(function (h) {
+          var li = document.createElement('li');
+          li.style.marginBottom = '0.25rem';
+          li.style.color = 'var(--text)';
+          li.innerHTML = `<strong>Hino ${h.number}</strong>: <span style="color: var(--text-soft);">${h.count} execuções</span>`;
+          dashTopHymns.appendChild(li);
+        });
+      }
+    }
+
+    // 4. Top 5 Lições
+    var lessons = metricsData.lessons || {};
+    var lessonsList = [];
+    for (var key in lessons) {
+      var cleanName = key.replace(/_/g, ' ').replace(/Licao/g, 'Lição');
+      lessonsList.push({ name: cleanName, count: lessons[key] || 0 });
+    }
+    lessonsList.sort(function (a, b) { return b.count - a.count; });
+    var topLessons = lessonsList.slice(0, 5);
+
+    var dashTopLessons = document.getElementById('dashTopLessons');
+    if (dashTopLessons) {
+      if (topLessons.length === 0) {
+        dashTopLessons.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Nenhuma lição executada ainda.</li>';
+      } else {
+        dashTopLessons.innerHTML = '';
+        topLessons.forEach(function (l) {
+          var li = document.createElement('li');
+          li.style.marginBottom = '0.25rem';
+          li.style.color = 'var(--text)';
+          li.innerHTML = `<strong>${l.name}</strong>: <span style="color: var(--text-soft);">${l.count} execuções</span>`;
+          dashTopLessons.appendChild(li);
+        });
+      }
+    }
+    
+    // Atualiza ícones lucide dinâmicos se necessário
+    if (window.gemRefreshLucide) window.gemRefreshLucide();
   }
 
   function filterAndDrawTeacherStudentList() {
@@ -2442,8 +2559,80 @@
     var btnCloseTeacherX = document.getElementById('hinosTeacherClose');
     var btnCloseTeacherBtn = document.getElementById('btnTeacherDashboardClose');
 
+    var btnTabStudents = document.getElementById('btnTeacherTabStudents');
+    var btnTabMetrics = document.getElementById('btnTeacherTabMetrics');
+    var secStudents = document.getElementById('sectionTeacherStudents');
+    var secMetrics = document.getElementById('sectionTeacherMetrics');
+
+    function switchTeacherTab(tabName) {
+      if (tabName === 'students') {
+        if (btnTabStudents) btnTabStudents.classList.add('du-tab-active');
+        if (btnTabStudents) {
+          btnTabStudents.classList.remove('text-base-content/60');
+          btnTabStudents.classList.remove('hover:text-base-content');
+        }
+        if (btnTabMetrics) btnTabMetrics.classList.remove('du-tab-active');
+        if (btnTabMetrics) {
+          btnTabMetrics.classList.add('text-base-content/60');
+          btnTabMetrics.classList.add('hover:text-base-content');
+        }
+        if (secStudents) {
+          secStudents.classList.remove('hidden');
+          secStudents.style.display = 'flex';
+        }
+        if (secMetrics) {
+          secMetrics.classList.add('hidden');
+          secMetrics.style.display = 'none';
+        }
+      } else if (tabName === 'metrics') {
+        if (btnTabMetrics) btnTabMetrics.classList.add('du-tab-active');
+        if (btnTabMetrics) {
+          btnTabMetrics.classList.remove('text-base-content/60');
+          btnTabMetrics.classList.remove('hover:text-base-content');
+        }
+        if (btnTabStudents) btnTabStudents.classList.remove('du-tab-active');
+        if (btnTabStudents) {
+          btnTabStudents.classList.add('text-base-content/60');
+          btnTabStudents.classList.add('hover:text-base-content');
+        }
+        if (secMetrics) {
+          secMetrics.classList.remove('hidden');
+          secMetrics.style.display = 'flex';
+        }
+        if (secStudents) {
+          secStudents.classList.add('hidden');
+          secStudents.style.display = 'none';
+        }
+        
+        if (window.FirebaseSync && typeof window.FirebaseSync.fetchMetrics === 'function') {
+          var dashFeatureList = document.getElementById('dashFeatureList');
+          var dashTopHymns = document.getElementById('dashTopHymns');
+          var dashTopLessons = document.getElementById('dashTopLessons');
+          
+          if (dashFeatureList) dashFeatureList.innerHTML = '<div style="text-align: center; color: var(--text-soft);">Carregando métricas...</div>';
+          if (dashTopHymns) dashTopHymns.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
+          if (dashTopLessons) dashTopLessons.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
+
+          window.FirebaseSync.fetchMetrics(renderTeacherDashboardMetrics);
+        }
+      }
+    }
+
+    if (btnTabStudents) {
+      btnTabStudents.addEventListener('click', function () {
+        switchTeacherTab('students');
+      });
+    }
+
+    if (btnTabMetrics) {
+      btnTabMetrics.addEventListener('click', function () {
+        switchTeacherTab('metrics');
+      });
+    }
+
     function closeTeacherDashboard() {
       if (modalTeacher) modalTeacher.classList.add('hidden');
+      switchTeacherTab('students');
     }
 
     if (btnCloseTeacherX) btnCloseTeacherX.addEventListener('click', closeTeacherDashboard);
