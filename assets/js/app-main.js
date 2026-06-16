@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.37';
+  const APP_VERSION = '1.3.38';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8802,19 +8802,34 @@
         
         // Verifica recorde pessoal
         var st = getActiveHinosStudent();
-        var isNewRecord = false;
+        var isNewRecordScore = false;
+        var isNewRecordTime = false;
         if (st) {
           if (!st.progressSummary) st.progressSummary = {};
+          
           var oldRecord = st.progressSummary.staffHighScore || 0;
           if (staffGameScore > oldRecord) {
             st.progressSummary.staffHighScore = staffGameScore;
+            isNewRecordScore = true;
+          }
+
+          var oldBestTime = st.progressSummary.staffBestTime || 0;
+          if (finalElapsed > 0 && (oldBestTime === 0 || finalElapsed < oldBestTime)) {
+            st.progressSummary.staffBestTime = finalElapsed;
+            isNewRecordTime = true;
+          }
+
+          if (isNewRecordScore || isNewRecordTime) {
             saveHinosState();
-            isNewRecord = true;
           }
         }
 
-        if (isNewRecord) {
-          setMessage('Parabéns! Novo Recorde: ' + staffGameScore + ' pontos! Concluído em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s). 🎉');
+        if (isNewRecordScore && isNewRecordTime) {
+          setMessage('Parabéns! Novo Recorde de Pontos (' + staffGameScore + ' pts) e de Tempo (' + formatChallengeTime(finalElapsed) + ')! 🎉');
+        } else if (isNewRecordScore) {
+          setMessage('Parabéns! Novo Recorde de Pontos: ' + staffGameScore + ' pontos! Concluído em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s). 🎉');
+        } else if (isNewRecordTime) {
+          setMessage('Parabéns! Novo Recorde de Tempo: ' + formatChallengeTime(finalElapsed) + '! Você concluiu com ' + staffGameScore + ' pontos. 🎉');
         } else {
           setMessage('Parabéns! Você concluiu com ' + staffGameScore + ' pontos em ' + formatChallengeTime(finalElapsed) + ' com ' + challengeErrors + ' erro(s).');
         }
@@ -8948,6 +8963,103 @@
       resetChallengeSession(true);
       startStaffRound();
     }
+  }
+
+  function openStaffLeaderboardModal() {
+    var modal = document.getElementById('staffLeaderboardModal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+
+    var listBody = document.getElementById('staffLeaderboardListBody');
+    if (listBody) {
+      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando recordes...</td></tr>';
+    }
+
+    if (hinosAllCloudStudents && hinosAllCloudStudents.length > 0) {
+      renderStaffLeaderboard(hinosAllCloudStudents);
+    } else {
+      if (window.FirebaseSync && typeof window.FirebaseSync.fetchAllStudents === 'function') {
+        window.FirebaseSync.fetchAllStudents(function (err, list) {
+          if (err) {
+            if (listBody) {
+              listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: #ef4444;">Erro ao carregar dados.</td></tr>';
+            }
+            return;
+          }
+          hinosAllCloudStudents = list || [];
+          renderStaffLeaderboard(hinosAllCloudStudents);
+        });
+      } else {
+        var localStudent = getActiveHinosStudent();
+        if (localStudent) {
+          renderStaffLeaderboard([localStudent]);
+        } else {
+          if (listBody) {
+            listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum recorde registrado ainda.</td></tr>';
+          }
+        }
+      }
+    }
+  }
+
+  function renderStaffLeaderboard(list) {
+    var listBody = document.getElementById('staffLeaderboardListBody');
+    if (!listBody) return;
+
+    if (!list || list.length === 0) {
+      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum recorde registrado ainda.</td></tr>';
+      return;
+    }
+
+    var ranked = list.filter(function (st) {
+      return st.progressSummary && typeof st.progressSummary.staffBestTime === 'number' && st.progressSummary.staffBestTime > 0;
+    });
+
+    ranked.sort(function (a, b) {
+      return a.progressSummary.staffBestTime - b.progressSummary.staffBestTime;
+    });
+
+    if (ranked.length === 0) {
+      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum recorde registrado ainda. Conclua 20 rodadas no Pentagrama para pontuar!</td></tr>';
+      return;
+    }
+
+    listBody.innerHTML = '';
+    var activeStudent = getActiveHinosStudent();
+
+    ranked.slice(0, 10).forEach(function (st, idx) {
+      var pos = idx + 1;
+      var isCurrent = activeStudent && activeStudent.code === st.code;
+
+      var row = document.createElement('tr');
+      if (isCurrent) {
+        row.style.background = 'rgba(245, 158, 11, 0.15)';
+        row.style.fontWeight = 'bold';
+        row.style.borderLeft = '3px solid #f59e0b';
+      } else {
+        row.style.borderBottom = '1px solid rgba(0, 0, 0, 0.05)';
+      }
+
+      var medal = '';
+      if (pos === 1) medal = '🥇 ';
+      else if (pos === 2) medal = '🥈 ';
+      else if (pos === 3) medal = '🥉 ';
+      else medal = pos + 'º';
+
+      var displayTime = formatChallengeTime(st.progressSummary.staffBestTime);
+
+      row.innerHTML = `
+        <td style="padding: 0.5rem; color: var(--text);">${medal}</td>
+        <td style="padding: 0.5rem; color: var(--text);">${st.name} ${isCurrent ? ' (Você)' : ''}</td>
+        <td style="padding: 0.5rem; color: var(--text); text-align: right; font-family: monospace;">${displayTime}</td>
+      `;
+      listBody.appendChild(row);
+    });
+  }
+
+  function closeStaffLeaderboardModal() {
+    var modal = document.getElementById('staffLeaderboardModal');
+    if (modal) modal.classList.add('hidden');
   }
 
   // ========== TELA INICIAL (HOME) ==========
@@ -9103,6 +9215,19 @@
     if (aboutModal) {
       aboutModal.addEventListener('click', function (e) {
         if (e.target === aboutModal) closeAboutModal();
+      });
+    }
+
+    var btnOpenStaffLeaderboard = document.getElementById('btnOpenStaffLeaderboard');
+    if (btnOpenStaffLeaderboard) btnOpenStaffLeaderboard.addEventListener('click', openStaffLeaderboardModal);
+    var staffLeaderboardClose = document.getElementById('staffLeaderboardClose');
+    if (staffLeaderboardClose) staffLeaderboardClose.addEventListener('click', closeStaffLeaderboardModal);
+    var btnStaffLeaderboardClose = document.getElementById('btnStaffLeaderboardClose');
+    if (btnStaffLeaderboardClose) btnStaffLeaderboardClose.addEventListener('click', closeStaffLeaderboardModal);
+    var staffLeaderboardModal = document.getElementById('staffLeaderboardModal');
+    if (staffLeaderboardModal) {
+      staffLeaderboardModal.addEventListener('click', function (e) {
+        if (e.target === staffLeaderboardModal) closeStaffLeaderboardModal();
       });
     }
 

@@ -63,11 +63,11 @@
   <!-- Utilitarios de metronomo MusicXML (usado pelo parse MusicXML do player) -->
   <script src="./assets/js/modules/metronome-utils.js"></script>
   <!-- Rotulos, bolhas, flash e clique de audio do metronomo -->
-  <script src="./assets/js/modules/metronome-ui-core.js?v=1.3.37"></script>
+  <script src="./assets/js/modules/metronome-ui-core.js?v=1.3.38"></script>
   <!-- Scheduler start/stop/loop do metronomo -->
-  <script src="./assets/js/modules/metronome-scheduler.js?v=1.3.37"></script>
+  <script src="./assets/js/modules/metronome-scheduler.js?v=1.3.38"></script>
   <!-- Init/listeners do metronomo (usa window.MetroUiRefs e MetronomeUiBindingAccess) -->
-  <script src="./assets/js/modules/metronome-ui-init.js?v=1.3.37"></script>
+  <script src="./assets/js/modules/metronome-ui-init.js?v=1.3.38"></script>
   <!-- Utilitarios de transformacao e parse MusicXML do player -->
   <script src="./assets/js/modules/player-musicxml-utils.js"></script>
   <!-- Utilitarios de merge de partes MusicXML -->
@@ -320,9 +320,14 @@
 
     <div class="staff-section hidden du-card border border-base-300 bg-base-100 shadow-sm" id="staffSection">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
-        <p class="violin-title" style="margin: 0; font-size: 1rem; font-weight: bold; display: flex; align-items: center; gap: 0.35rem;">
-          <i data-lucide="music-4" style="color: var(--primary); width: 18px; height: 18px;"></i> Jogo do Pentagrama
-        </p>
+        <div style="display: flex; align-items: center; gap: 0.35rem;">
+          <p class="violin-title" style="margin: 0; font-size: 1rem; font-weight: bold; display: flex; align-items: center; gap: 0.35rem;">
+            <i data-lucide="music-4" style="color: var(--primary); width: 18px; height: 18px;"></i> Jogo do Pentagrama
+          </p>
+          <button type="button" id="btnOpenStaffLeaderboard" class="du-btn du-btn-ghost du-btn-xs" style="padding: 0 0.35rem; height: 24px; min-height: 0; display: inline-flex; align-items: center; gap: 0.25rem; font-weight: bold;" title="Ver os 10 melhores tempos">
+            <i data-lucide="trophy" style="width: 14px; height: 14px; color: #f59e0b;"></i> Ranking
+          </button>
+        </div>
         <div id="staffGameStats" style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; font-weight: bold;">
           <span id="staffGameScoreDisplay" style="color: var(--primary);">⭐ Pontos: <span id="staffGameScore">0</span></span>
           <span id="staffGameComboDisplay" class="hidden" style="color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 0.1rem 0.35rem; border-radius: 4px;">Combo x<span id="staffGameCombo">1</span></span>
@@ -1103,6 +1108,41 @@
       </div>
     </div>
 
+    <!-- Modal do Leaderboard do Pentagrama (Alunos) -->
+    <div class="metronome-modal hidden" id="staffLeaderboardModal" role="dialog" aria-modal="true" aria-labelledby="staffLeaderboardTitle" style="z-index: 1010;">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl" style="max-width: 400px; width: 95%; display: flex; flex-direction: column;">
+        <button type="button" class="metronome-close" id="staffLeaderboardClose" aria-label="Fechar"><i data-lucide="x"></i></button>
+        
+        <h2 class="hinos-new-student-title" id="staffLeaderboardTitle" style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem;">
+          <i data-lucide="trophy" style="color: #f59e0b;"></i> Top 10 - Recordes de Tempo
+        </h2>
+        <p class="hinos-new-student-hint" style="margin-bottom: 1rem;">Alunos mais rápidos a concluir 20/20 no Pentagrama.</p>
+        
+        <div style="flex: 1; overflow-y: auto; max-height: 50vh; margin-bottom: 1rem;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.05); font-weight: bold;">
+                <th style="padding: 0.5rem; color: var(--text);">Posição</th>
+                <th style="padding: 0.5rem; color: var(--text);">Aluno</th>
+                <th style="padding: 0.5rem; color: var(--text); text-align: right;">Tempo</th>
+              </tr>
+            </thead>
+            <tbody id="staffLeaderboardListBody">
+              <tr>
+                <td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando recordes...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="hinos-new-student-actions" style="margin-top: auto; padding-top: 0.5rem; display: flex; justify-content: flex-end;">
+          <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnStaffLeaderboardClose">
+            <span>Fechar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="metronome-modal hidden" id="hinosEditorModal" role="dialog" aria-modal="true"
       aria-labelledby="hinosDetailLabel">
       <div class="metronome-card hinos-editor-card du-card border border-base-300 bg-base-100 shadow-xl">
@@ -1320,9 +1360,9 @@
   <!-- Firebase SDK compatível e scripts de sincronização -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="./assets/js/modules/firebase-config.js?v=1.3.37"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=1.3.37"></script>
-  <script src="./assets/js/app-main.js?v=1.3.37"></script>
+  <script src="./assets/js/modules/firebase-config.js?v=1.3.38"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=1.3.38"></script>
+  <script src="./assets/js/app-main.js?v=1.3.38"></script>
 
 </body>
 
