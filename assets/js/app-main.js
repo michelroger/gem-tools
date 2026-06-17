@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.41';
+  const APP_VERSION = '1.3.42';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -379,6 +379,16 @@
   let staffGameScore = 0;
   let staffGameCombo = 1;
   let staffGameLives = 3;
+  let staffRushActive = false;
+  let staffRushAnimationId = null;
+  let staffRushNotes = [];
+  let staffRushScore = 0;
+  let staffRushCombo = 1;
+  let staffRushLives = 3;
+  let staffRushSpeed = 1.5;
+  let staffRushLastSpawnTime = 0;
+  let staffRushSpawnInterval = 2500;
+  let staffRushPositions = [];
   let challengeDiscardedAttempts = {};
   let score = 0;
   let totalChallenges = 0;
@@ -8171,6 +8181,7 @@
   function setMode(mode) {
     if (metroIsRunning) stopMetronome();
     if (currentMode === 'staff' && mode !== 'staff') stopChallengeTimer();
+    if (currentMode === 'staff-rush' && mode !== 'staff-rush') stopStaffRushGame();
     if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
     if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
     if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
@@ -8198,24 +8209,27 @@
       btn.classList.toggle('active', btn.dataset.mode === mode);
     });
     var btnMoreMenu = document.getElementById('btnMoreMenu');
-    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'staff');
+    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'staff' || mode === 'staff-rush');
     var btnMoreTuner = document.getElementById('btnMoreTuner');
     var btnMoreMetronome = document.getElementById('btnMoreMetronome');
     var btnMoreHinos = document.getElementById('btnMoreHinos');
     var btnMoreMsa = document.getElementById('btnMoreMsa');
     var btnMoreStaff = document.getElementById('btnMoreStaff');
+    var btnMoreStaffRush = document.getElementById('btnMoreStaffRush');
     var btnMoreSettings = document.getElementById('btnMoreSettings');
     if (btnMoreTuner) btnMoreTuner.classList.toggle('active', mode === 'tuner');
     if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
     if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
     if (btnMoreMsa) btnMoreMsa.classList.toggle('active', mode === 'msa');
     if (btnMoreStaff) btnMoreStaff.classList.toggle('active', mode === 'staff');
+    if (btnMoreStaffRush) btnMoreStaffRush.classList.toggle('active', mode === 'staff-rush');
     if (btnMoreSettings) btnMoreSettings.classList.remove('active');
     clearViolinHighlight();
     document.getElementById('currentNoteDisplay').textContent = '\u00A0';
  
     var violinSection = document.getElementById('violinSection');
     var staffSectionEl = document.getElementById('staffSection');
+    var staffRushSectionEl = document.getElementById('staffRushSection');
     var hinosSectionEl = document.getElementById('hinosSection');
     var tunerSectionEl = document.getElementById('tunerSection');
     var metroSectionEl = document.getElementById('metroSection');
@@ -8226,6 +8240,7 @@
     var messageBoxEl = document.getElementById('messageBox');
     if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl && msaSectionEl) {
       if (homeSectionEl) homeSectionEl.classList.add('hidden');
+      if (staffRushSectionEl) staffRushSectionEl.classList.add('hidden');
       
       if (mode === 'hinos') {
         violinSection.classList.add('hidden');
@@ -8303,6 +8318,23 @@
         if (playerSourceRowEl) playerSourceRowEl.classList.remove('hidden');
         if (messageBoxEl) messageBoxEl.classList.add('hidden');
         syncPlayerStudentControls();
+      } else if (mode === 'staff-rush') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        if (staffRushSectionEl) staffRushSectionEl.classList.remove('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+        
+        // Inicializa o jogo do Staff Rush
+        if (typeof initStaffRushGame === 'function') {
+          initStaffRushGame();
+        }
       } else if (mode === 'home') {
         violinSection.classList.add('hidden');
         staffSectionEl.classList.add('hidden');
@@ -8332,7 +8364,7 @@
     }
     var progressSectionEl = document.getElementById('progressSection');
     if (progressSectionEl) {
-      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa');
+      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa' || mode === 'staff-rush');
     }
 
     if (mode === 'learn') {
@@ -9065,6 +9097,404 @@
     if (modal) modal.classList.add('hidden');
   }
 
+  // ========== STAFF RUSH (CORRIDA DE NOTAS) LOGIC ==========
+  function initStaffRushGame() {
+    staffRushActive = false;
+    if (staffRushAnimationId) {
+      cancelAnimationFrame(staffRushAnimationId);
+      staffRushAnimationId = null;
+    }
+    staffRushNotes = [];
+    staffRushScore = 0;
+    staffRushCombo = 1;
+    staffRushLives = 3;
+    staffRushSpeed = 1.5;
+    staffRushSpawnInterval = 2500;
+    staffRushLastSpawnTime = 0;
+
+    // Atualiza estatísticas na UI
+    var scoreEl = document.getElementById('staffRushScore');
+    if (scoreEl) scoreEl.textContent = '0';
+    var comboEl = document.getElementById('staffRushCombo');
+    if (comboEl) comboEl.textContent = '1';
+    var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+    if (comboDisplay) comboDisplay.classList.add('hidden');
+    var speedEl = document.getElementById('staffRushSpeed');
+    if (speedEl) speedEl.textContent = '1.0';
+    var livesEl = document.getElementById('staffRushGameLives');
+    if (livesEl) livesEl.textContent = '❤️❤️❤️';
+
+    // Cria os botões de notas
+    createStaffRushNoteButtons();
+
+    // Desenha pauta base no SVG
+    var svg = document.getElementById('staffRushSvg');
+    if (!svg) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    svg.setAttribute('viewBox', '0 0 400 160');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.innerHTML = '';
+
+    // Linhas suplementares de fundo do pentagrama
+    for (var i = 0; i < 5; i++) {
+      var y = 70 + i * 12;
+      var line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', '10');
+      line.setAttribute('x2', '390');
+      line.setAttribute('y1', String(y));
+      line.setAttribute('y2', String(y));
+      line.setAttribute('stroke', 'rgba(0,0,0,0.15)');
+      line.setAttribute('stroke-width', '2');
+      svg.appendChild(line);
+    }
+
+    // Alvo vertical (Hit Line Target) no x = 60
+    var targetLine = document.createElementNS(NS, 'line');
+    targetLine.setAttribute('x1', '60');
+    targetLine.setAttribute('x2', '60');
+    targetLine.setAttribute('y1', '25');
+    targetLine.setAttribute('y2', '145');
+    targetLine.setAttribute('stroke', '#f59e0b');
+    targetLine.setAttribute('stroke-width', '2.5');
+    targetLine.setAttribute('stroke-dasharray', '4,4');
+    targetLine.setAttribute('opacity', '0.8');
+    svg.appendChild(targetLine);
+
+    // Círculo alvo decorativo no centro da pauta (y = 94) para dar feedback visual de batida
+    var targetCircle = document.createElementNS(NS, 'circle');
+    targetCircle.setAttribute('cx', '60');
+    targetCircle.setAttribute('cy', '94');
+    targetCircle.setAttribute('r', '14');
+    targetCircle.setAttribute('fill', 'none');
+    targetCircle.setAttribute('stroke', '#f59e0b');
+    targetCircle.setAttribute('stroke-width', '2');
+    targetCircle.setAttribute('opacity', '0.5');
+    svg.appendChild(targetCircle);
+
+    // Clave de Sol ou Fá
+    var clef = CLAVES.find(function (c) { return c.id === currentClef; }) || CLAVES[0];
+    var clefText = document.createElementNS(NS, 'text');
+    clefText.setAttribute('x', '16');
+    clefText.setAttribute('y', clef.y);
+    clefText.setAttribute('fill', '#444');
+    clefText.setAttribute('font-size', clef.fontSize);
+    clefText.setAttribute('font-family', '"Noto Music", serif');
+    clefText.setAttribute('text-anchor', clef.anchor || 'start');
+    clefText.setAttribute('dominant-baseline', clef.baseline || 'alphabetic');
+    clefText.textContent = clef.simbolo;
+    svg.appendChild(clefText);
+
+    // Grupo onde as notas serão anexadas
+    var notesGroup = document.createElementNS(NS, 'g');
+    notesGroup.setAttribute('id', 'staffRushNotesGroup');
+    svg.appendChild(notesGroup);
+
+    // Configura overlay
+    var overlay = document.getElementById('staffRushScreenOverlay');
+    var overlayTitle = document.getElementById('staffRushOverlayTitle');
+    var overlayText = document.getElementById('staffRushOverlayText');
+    var startBtn = document.getElementById('btnStaffRushStart');
+    if (overlay) overlay.style.display = 'flex';
+    if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
+    if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo círculo alvo!';
+    if (startBtn) startBtn.textContent = 'Iniciar Corrida';
+  }
+
+  function createStaffRushNoteButtons() {
+    var container = document.getElementById('staffRushNoteOptions');
+    if (!container) return;
+    container.innerHTML = '';
+    NOTAS.forEach(function (nota) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'note-option-btn du-btn du-btn-outline du-btn-sm';
+      btn.dataset.noteId = nota.id;
+      btn.textContent = nota.nome;
+      btn.addEventListener('click', function () {
+        checkStaffRushAnswer(nota.id, btn);
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function startStaffRushGame() {
+    var overlay = document.getElementById('staffRushScreenOverlay');
+    if (overlay) overlay.style.display = 'none';
+
+    staffRushActive = true;
+    staffRushNotes = [];
+    staffRushScore = 0;
+    staffRushCombo = 1;
+    staffRushLives = 3;
+    staffRushSpeed = 1.5;
+    staffRushSpawnInterval = 2500;
+    staffRushLastSpawnTime = Date.now() - 1500; // spawna a primeira nota mais rápido
+
+    staffRushPositions = buildStaffPositionsForClef(currentClef);
+
+    var notesGroup = document.getElementById('staffRushNotesGroup');
+    if (notesGroup) notesGroup.innerHTML = '';
+
+    // Inicia loop de animação
+    if (staffRushAnimationId) cancelAnimationFrame(staffRushAnimationId);
+    staffRushAnimationId = requestAnimationFrame(startStaffRushLoop);
+  }
+
+  function startStaffRushLoop() {
+    if (!staffRushActive) return;
+
+    updateStaffRushPhysics();
+
+    if (Date.now() - staffRushLastSpawnTime >= staffRushSpawnInterval) {
+      spawnStaffRushNote();
+      staffRushLastSpawnTime = Date.now();
+    }
+
+    staffRushAnimationId = requestAnimationFrame(startStaffRushLoop);
+  }
+
+  function spawnStaffRushNote() {
+    if (!staffRushPositions || !staffRushPositions.length) return;
+    var notesGroup = document.getElementById('staffRushNotesGroup');
+    if (!notesGroup) return;
+
+    var NS = 'http://www.w3.org/2000/svg';
+    var index = Math.floor(Math.random() * staffRushPositions.length);
+    var pos = staffRushPositions[index];
+
+    // Cria os elementos visuais da nota
+    var noteGroup = document.createElementNS(NS, 'g');
+    
+    // Linhas suplementares (ledger lines) se houver
+    var ledgerLinesElements = [];
+    if (pos.ledgerYs && pos.ledgerYs.length) {
+      pos.ledgerYs.forEach(function (ledgerY) {
+        var line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', '395');
+        line.setAttribute('x2', '425');
+        line.setAttribute('y1', String(ledgerY));
+        line.setAttribute('y2', String(ledgerY));
+        line.setAttribute('stroke', '#444');
+        line.setAttribute('stroke-width', '2');
+        noteGroup.appendChild(line);
+        ledgerLinesElements.push(line);
+      });
+    }
+
+    // Cabeça da nota (elipse)
+    var ellipse = document.createElementNS(NS, 'ellipse');
+    ellipse.setAttribute('cx', '410');
+    ellipse.setAttribute('cy', String(pos.y));
+    ellipse.setAttribute('rx', '10');
+    ellipse.setAttribute('ry', '7');
+    ellipse.setAttribute('fill', '#222');
+    noteGroup.appendChild(ellipse);
+
+    notesGroup.appendChild(noteGroup);
+
+    // Adiciona ao array de controle das notas ativas
+    staffRushNotes.push({
+      id: Math.random().toString(36).substr(2, 9),
+      noteId: pos.noteId,
+      y: pos.y,
+      freq: pos.freq,
+      x: 410,
+      group: noteGroup,
+      ellipse: ellipse,
+      ledgerLines: ledgerLinesElements,
+      checked: false
+    });
+  }
+
+  function updateStaffRushPhysics() {
+    var notesGroup = document.getElementById('staffRushNotesGroup');
+    var toRemove = [];
+
+    staffRushNotes.forEach(function (nota) {
+      // Anda com a nota para a esquerda
+      nota.x -= staffRushSpeed;
+
+      // Atualiza coordenadas no SVG
+      nota.ellipse.setAttribute('cx', String(nota.x));
+      if (nota.ledgerLines && nota.ledgerLines.length) {
+        nota.ledgerLines.forEach(function (line) {
+          line.setAttribute('x1', String(nota.x - 15));
+          line.setAttribute('x2', String(nota.x + 15));
+        });
+      }
+
+      // Se a nota passou do limite sem resposta (Miss!)
+      if (nota.x < 35 && !nota.checked) {
+        nota.checked = true;
+        
+        // Pinta a nota de vermelho para indicar erro
+        nota.ellipse.setAttribute('fill', '#ef4444');
+
+        // Efeito de fade out
+        nota.group.setAttribute('opacity', '0.5');
+        setTimeout(function() {
+          if (nota.group && nota.group.parentNode) {
+            nota.group.parentNode.removeChild(nota.group);
+          }
+        }, 300);
+
+        // Desconta vida e reseta combo
+        staffRushLives--;
+        staffRushCombo = 1;
+        playGameSfx('wrong');
+
+        var livesEl = document.getElementById('staffRushGameLives');
+        if (livesEl) {
+          var hearts = '';
+          for (var i = 0; i < staffRushLives; i++) hearts += '❤️';
+          if (hearts === '') hearts = '💀 GAME OVER';
+          livesEl.textContent = hearts;
+        }
+
+        var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+        if (comboDisplay) comboDisplay.classList.add('hidden');
+
+        if (staffRushLives <= 0) {
+          handleStaffRushGameOver();
+        }
+
+        toRemove.push(nota.id);
+      }
+    });
+
+    // Filtra e limpa notas removidas
+    if (toRemove.length > 0) {
+      staffRushNotes = staffRushNotes.filter(function (n) {
+        return toRemove.indexOf(n.id) === -1;
+      });
+    }
+  }
+
+  function checkStaffRushAnswer(selectedId, buttonEl) {
+    if (!staffRushActive || staffRushLives <= 0) return;
+
+    // Pega a nota ativa mais antiga (mais à esquerda) que ainda não foi checada e está na área jogável
+    var activeNotes = staffRushNotes.filter(function (n) {
+      return !n.checked && n.x > 35;
+    });
+
+    if (activeNotes.length === 0) return;
+
+    // A nota mais próxima do alvo
+    activeNotes.sort(function (a, b) { return a.x - b.x; });
+    var targetNote = activeNotes[0];
+
+    var dist = Math.abs(targetNote.x - 60);
+
+    // Tolerância de distância para acerto é 20 pixels
+    if (targetNote.noteId === selectedId && dist <= 20) {
+      // HIT!
+      targetNote.checked = true;
+
+      // Pinta a nota de verde e remove com pequeno delay
+      targetNote.ellipse.setAttribute('fill', '#10b981');
+      targetNote.group.setAttribute('opacity', '0');
+      playNoteSound(targetNote.noteId, targetNote.freq);
+
+      setTimeout(function() {
+        if (targetNote.group && targetNote.group.parentNode) {
+          targetNote.group.parentNode.removeChild(targetNote.group);
+        }
+      }, 150);
+
+      // Calcula pontos baseados na proximidade
+      var accuracyPoints = Math.max(10, Math.round(100 - dist * 3.5));
+      var points = accuracyPoints * staffRushCombo;
+      staffRushScore += points;
+
+      var scoreEl = document.getElementById('staffRushScore');
+      if (scoreEl) scoreEl.textContent = String(staffRushScore);
+
+      // Incrementa combo
+      staffRushCombo++;
+      var comboEl = document.getElementById('staffRushCombo');
+      var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+      if (comboEl) comboEl.textContent = String(staffRushCombo);
+      if (comboDisplay && staffRushCombo > 1) comboDisplay.classList.remove('hidden');
+
+      // Aumenta a velocidade progressivamente
+      var speedMultiplier = 1.0 + (staffRushCombo * 0.03);
+      staffRushSpeed = Math.min(4.5, 1.5 * speedMultiplier);
+      var speedEl = document.getElementById('staffRushSpeed');
+      if (speedEl) speedEl.textContent = (1.0 + (staffRushCombo * 0.05)).toFixed(1);
+
+      // Diminui o intervalo de nascimento das notas
+      staffRushSpawnInterval = Math.max(900, 2500 - staffRushCombo * 35);
+
+      // Efeito de pulso no botão
+      if (buttonEl) {
+        buttonEl.classList.add('correct');
+        setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
+      }
+    } else {
+      // ERRO (Nota errada ou fora do tempo)
+      staffRushCombo = 1;
+      var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+      if (comboDisplay) comboDisplay.classList.add('hidden');
+      playGameSfx('wrong');
+
+      if (buttonEl) {
+        buttonEl.classList.add('wrong');
+        setTimeout(function() { buttonEl.classList.remove('wrong'); }, 150);
+      }
+    }
+  }
+
+  function stopStaffRushGame() {
+    staffRushActive = false;
+    if (staffRushAnimationId) {
+      cancelAnimationFrame(staffRushAnimationId);
+      staffRushAnimationId = null;
+    }
+    var notesGroup = document.getElementById('staffRushNotesGroup');
+    if (notesGroup) notesGroup.innerHTML = '';
+    staffRushNotes = [];
+  }
+
+  function handleStaffRushGameOver() {
+    stopStaffRushGame();
+
+    var overlay = document.getElementById('staffRushScreenOverlay');
+    var overlayTitle = document.getElementById('staffRushOverlayTitle');
+    var overlayText = document.getElementById('staffRushOverlayText');
+    var startBtn = document.getElementById('btnStaffRushStart');
+
+    if (overlay) overlay.style.display = 'flex';
+    if (overlayTitle) overlayTitle.textContent = 'Fim de Jogo! 💀';
+    
+    // Verifica recorde pessoal do aluno
+    var st = getActiveHinosStudent();
+    var isNewRecord = false;
+    if (st) {
+      if (!st.progressSummary) st.progressSummary = {};
+      var oldRecord = st.progressSummary.staffRushHighScore || 0;
+      if (staffRushScore > oldRecord) {
+        st.progressSummary.staffRushHighScore = staffRushScore;
+        saveHinosState();
+        isNewRecord = true;
+      }
+    }
+
+    var recordMsg = '';
+    if (isNewRecord) {
+      recordMsg = ' 🎉 NOVO RECORDE!';
+    } else {
+      var personalBest = (st && st.progressSummary) ? (st.progressSummary.staffRushHighScore || 0) : 0;
+      recordMsg = ' (Recorde: ' + personalBest + ' pts)';
+    }
+
+    if (overlayText) {
+      overlayText.innerHTML = 'Sua pontuação final:<br><strong style="font-size: 1.3rem; color: var(--primary);">' + staffRushScore + ' pontos</strong>' + recordMsg;
+    }
+    if (startBtn) startBtn.textContent = 'Jogar Novamente';
+    speak('Fim de jogo.');
+  }
+
   // ========== TELA INICIAL (HOME) ==========
   function updateHomeUI() {
     var st = getActiveHinosStudent();
@@ -9356,6 +9786,18 @@
     if (btnMoreStaff) {
       btnMoreStaff.addEventListener('click', function () {
         setMode('staff');
+      });
+    }
+    var btnMoreStaffRush = document.getElementById('btnMoreStaffRush');
+    if (btnMoreStaffRush) {
+      btnMoreStaffRush.addEventListener('click', function () {
+        setMode('staff-rush');
+      });
+    }
+    var btnStaffRushStart = document.getElementById('btnStaffRushStart');
+    if (btnStaffRushStart) {
+      btnStaffRushStart.addEventListener('click', function () {
+        startStaffRushGame();
       });
     }
 
@@ -11770,6 +12212,7 @@
     createViolinBoard();
     initStaff();
     createNoteButtons();
+    createStaffRushNoteButtons();
     initMetronomeUI();
     bindEvents();
     updatePlayerUiNow(0);
