@@ -118,9 +118,13 @@
       });
     }
 
+    var existingSummary = (student && student.progressSummary) ? student.progressSummary : {};
+
     return {
       hinosAprovados: hinosCount,
-      licoesAprovadas: estudosCount
+      licoesAprovadas: estudosCount,
+      staffHighScore: typeof existingSummary.staffHighScore === 'number' ? existingSummary.staffHighScore : 0,
+      staffBestTime: typeof existingSummary.staffBestTime === 'number' ? existingSummary.staffBestTime : 0
     };
   }
 

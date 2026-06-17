@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.40';
+  const APP_VERSION = '1.3.41';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -8974,6 +8974,9 @@
     if (listBody) {
       listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando recordes...</td></tr>';
     }
+
+    // Garante o envio do progresso do aluno ativo antes de buscar o ranking
+    saveHinosState();
 
     if (window.FirebaseSync && typeof window.FirebaseSync.fetchAllStudents === 'function') {
       window.FirebaseSync.fetchAllStudents(function (list, err) {
