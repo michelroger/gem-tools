@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.53';
+  const APP_VERSION = '1.3.54';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -395,6 +395,8 @@
   let staffRushStartTime = 0; // timestamp de início do playback
   let staffRushHinoActiveNote = null; // nota longa atualmente sendo segurada
   let staffRushHinoDuration = 0; // duração total em segundos do hino ativo
+  let staffRushHinoTotalNotes = 0; // total de notas lidas do XML do hino
+  let staffRushHinoHitNotes = 0; // total de notas acertadas (perfeitas + parciais)
   let challengeDiscardedAttempts = {};
   let score = 0;
   let totalChallenges = 0;
@@ -9109,6 +9111,49 @@
     if (modal) modal.classList.add('hidden');
   }
 
+  function isStaffRushHinoUnlocked(hinoNum, student) {
+    if (hinoNum === 1) return true; // Hino 1 sempre desbloqueado
+    if (!student) return false;
+    student.staffRushHinosProgress = student.staffRushHinosProgress || {};
+    var hinoKey = String(hinoNum);
+    var prog = student.staffRushHinosProgress[hinoKey];
+    return !!(prog && prog.unlocked);
+  }
+
+  function updateStaffRushHinoSelectorUI() {
+    var label = document.getElementById('staffRushHinoLabel');
+    var btnPrev = document.getElementById('btnStaffRushHinoPrev');
+    var btnNext = document.getElementById('btnStaffRushHinoNext');
+    var tabHino = document.getElementById('tabStaffRushHino');
+    if (!label || !btnPrev || !btnNext) return;
+
+    var st = getActiveHinosStudent();
+    
+    // Atualiza label
+    var info = 'Hino ' + staffRushHinoNumber + ' Soprano';
+    if (st && st.staffRushHinosProgress) {
+      var prog = st.staffRushHinosProgress[String(staffRushHinoNumber)];
+      if (prog && prog.bestPercent > 0) {
+        info += ' (' + prog.bestPercent + '% acertos)';
+      } else if (staffRushHinoNumber === 1) {
+        info += ' (Novo)';
+      }
+    }
+    label.textContent = info;
+
+    // Atualiza aba
+    if (tabHino) {
+      tabHino.textContent = 'Modo Hino ' + staffRushHinoNumber + ' Soprano';
+    }
+
+    // Atualiza botão anterior
+    btnPrev.disabled = (staffRushHinoNumber <= 1);
+
+    // Atualiza botão próximo
+    var nextUnlocked = isStaffRushHinoUnlocked(staffRushHinoNumber + 1, st);
+    btnNext.disabled = (staffRushHinoNumber >= HINOS_TOTAL || !nextUnlocked);
+  }
+
   // ========== STAFF RUSH (CORRIDA DE NOTAS) LOGIC ==========
   function initStaffRushGame() {
     staffRushActive = false;
@@ -9210,9 +9255,20 @@
     var overlayText = document.getElementById('staffRushOverlayText');
     var startBtn = document.getElementById('btnStaffRushStart');
     if (overlay) overlay.style.display = 'flex';
-    if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
-    if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo retângulo alvo!';
     if (startBtn) startBtn.textContent = 'Iniciar Corrida';
+
+    // Restaura exibição correta do seletor baseado no modo ativo
+    var hinoControls = document.getElementById('staffRushHinoControls');
+    if (staffRushPlayMode === 'hino') {
+      if (overlayTitle) overlayTitle.textContent = 'Modo Hino ' + staffRushHinoNumber + ' (Guitar Hero)';
+      if (overlayText) overlayText.textContent = 'Toque e SEGURE o botão da nota correspondente pelo tempo de duração dela à medida que ela passar pelo alvo!';
+      if (hinoControls) hinoControls.style.display = 'flex';
+      updateStaffRushHinoSelectorUI();
+    } else {
+      if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
+      if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo retângulo alvo!';
+      if (hinoControls) hinoControls.style.display = 'none';
+    }
   }
 
   function createStaffRushNoteButtons() {
@@ -9245,6 +9301,9 @@
       };
       btn.addEventListener('pointerup', endHold);
       btn.addEventListener('pointerleave', endHold);
+      btn.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
 
       container.appendChild(btn);
     });
@@ -9317,6 +9376,8 @@
         // Filtra pausas
         var events = parsed.events.filter(function (ev) { return !ev.isRest; });
         staffRushHinoDuration = parsed.totalDurationSec || 0;
+        staffRushHinoTotalNotes = events.length;
+        staffRushHinoHitNotes = 0;
         
         staffRushPositions = buildStaffPositionsForClef(currentClef);
         
@@ -9582,6 +9643,7 @@
           if (heldDuration >= nota.durationSec) {
             nota.isBeingHeld = false;
             nota.checked = true;
+            staffRushHinoHitNotes++;
             stopNoteSound();
 
             nota.ellipse.setAttribute('fill', '#10b981'); // verde
@@ -9849,6 +9911,7 @@
         } else {
           // Nota curta, acerto imediato
           targetNote.checked = true;
+          staffRushHinoHitNotes++;
           targetNote.ellipse.setAttribute('fill', '#10b981'); // verde
           targetNote.group.setAttribute('opacity', '0');
           playNoteSound(targetNote.noteId, targetNote.freq, true);
@@ -9908,6 +9971,7 @@
 
       note.isBeingHeld = false;
       note.checked = true;
+      staffRushHinoHitNotes++;
 
       var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
       var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
@@ -9992,36 +10056,106 @@
     var startBtn = document.getElementById('btnStaffRushStart');
 
     if (overlay) overlay.style.display = 'flex';
-    if (overlayTitle) overlayTitle.textContent = 'Fim de Jogo! 💀';
-    
-    // Verifica recorde pessoal do aluno baseado no modo de jogo
+
     var st = getActiveHinosStudent();
-    var isNewRecord = false;
-    var recordKey = staffRushPlayMode === 'hino' ? 'staffRushHinoHighScore' : 'staffRushHighScore';
     
-    if (st) {
-      if (!st.progressSummary) st.progressSummary = {};
-      var oldRecord = st.progressSummary[recordKey] || 0;
-      if (staffRushScore > oldRecord) {
-        st.progressSummary[recordKey] = staffRushScore;
+    if (staffRushPlayMode === 'hino') {
+      // Calcula taxa de acerto no Modo Hino
+      var total = staffRushHinoTotalNotes || 1;
+      var hits = staffRushHinoHitNotes || 0;
+      var pct = Math.round((hits / total) * 100);
+
+      // Salva progresso no estudante ativo
+      var isUnlockedNext = false;
+      if (st) {
+        st.staffRushHinosProgress = st.staffRushHinosProgress || {};
+        var hinoKey = String(staffRushHinoNumber);
+        var oldProg = st.staffRushHinosProgress[hinoKey] || { highScore: 0, bestPercent: 0, unlocked: true };
+        
+        var newBestPercent = Math.max(pct, oldProg.bestPercent || 0);
+        var newHighScore = Math.max(staffRushScore, oldProg.highScore || 0);
+
+        st.staffRushHinosProgress[hinoKey] = {
+          highScore: newHighScore,
+          bestPercent: newBestPercent,
+          unlocked: true
+        };
+
+        // Verifica se alcançou os 80% para desbloquear o próximo hino
+        if (pct >= 80 && staffRushHinoNumber < HINOS_TOTAL) {
+          var nextHinoKey = String(staffRushHinoNumber + 1);
+          var nextProg = st.staffRushHinosProgress[nextHinoKey] || { highScore: 0, bestPercent: 0, unlocked: false };
+          if (!nextProg.unlocked) {
+            nextProg.unlocked = true;
+            st.staffRushHinosProgress[nextHinoKey] = nextProg;
+            isUnlockedNext = true;
+          }
+        }
+        
         saveHinosState();
-        isNewRecord = true;
       }
-    }
 
-    var recordMsg = '';
-    if (isNewRecord) {
-      recordMsg = ' 🎉 NOVO RECORDE!';
+      // Rótulos do fim do jogo no Modo Hino
+      if (overlayTitle) {
+        if (pct >= 80) {
+          overlayTitle.textContent = 'Hino Concluído! 🎉';
+        } else {
+          overlayTitle.textContent = 'Hino Terminado!';
+        }
+      }
+
+      var msg = 'Sua pontuação: <strong style="font-size: 1.1rem; color: var(--primary);">' + staffRushScore + ' pts</strong><br>';
+      msg += 'Taxa de acertos: <strong style="font-size: 1.15rem; color: ' + (pct >= 80 ? 'var(--success)' : 'var(--warn)') + ';">' + pct + '%</strong> (Mínimo: 80%)<br>';
+      
+      if (pct >= 80) {
+        if (isUnlockedNext) {
+          msg += '<strong style="color: var(--success); font-size: 0.9rem;">Fase concluída! Hino ' + (staffRushHinoNumber + 1) + ' Desbloqueado! 🔓</strong>';
+        } else if (staffRushHinoNumber === HINOS_TOTAL) {
+          msg += '<strong style="color: var(--success); font-size: 0.95rem;">🎉 PARABÉNS! Você concluiu o último hino!</strong>';
+        } else {
+          msg += '<strong style="color: var(--success); font-size: 0.9rem;">Você já liberou o próximo hino! Continue praticando.</strong>';
+        }
+      } else {
+        msg += '<strong style="color: var(--warn); font-size: 0.85rem;">Toque pelo menos 80% das notas para desbloquear a próxima fase!</strong>';
+      }
+
+      if (overlayText) overlayText.innerHTML = msg;
+      if (startBtn) startBtn.textContent = 'Jogar Novamente';
+
+      speak(pct >= 80 ? 'Parabéns, fase concluída.' : 'Hino concluído, tente novamente.');
+      
+      // Atualiza o seletor no overlay para habilitar ou refletir novos recordes
+      updateStaffRushHinoSelectorUI();
+      
     } else {
-      var personalBest = (st && st.progressSummary) ? (st.progressSummary[recordKey] || 0) : 0;
-      recordMsg = ' (Recorde: ' + personalBest + ' pts)';
-    }
+      // Modo Arcade clássico
+      if (overlayTitle) overlayTitle.textContent = 'Fim de Jogo! 💀';
+      
+      var isNewRecord = false;
+      if (st) {
+        if (!st.progressSummary) st.progressSummary = {};
+        var oldRecord = st.progressSummary.staffRushHighScore || 0;
+        if (staffRushScore > oldRecord) {
+          st.progressSummary.staffRushHighScore = staffRushScore;
+          saveHinosState();
+          isNewRecord = true;
+        }
+      }
 
-    if (overlayText) {
-      overlayText.innerHTML = 'Sua pontuação final:<br><strong style="font-size: 1.3rem; color: var(--primary);">' + staffRushScore + ' pontos</strong>' + recordMsg;
+      var recordMsg = '';
+      if (isNewRecord) {
+        recordMsg = ' 🎉 NOVO RECORDE!';
+      } else {
+        var personalBest = (st && st.progressSummary) ? (st.progressSummary.staffRushHighScore || 0) : 0;
+        recordMsg = ' (Recorde: ' + personalBest + ' pts)';
+      }
+
+      if (overlayText) {
+        overlayText.innerHTML = 'Sua pontuação final:<br><strong style="font-size: 1.3rem; color: var(--primary);">' + staffRushScore + ' pontos</strong>' + recordMsg;
+      }
+      if (startBtn) startBtn.textContent = 'Jogar Novamente';
+      speak('Fim de jogo.');
     }
-    if (startBtn) startBtn.textContent = 'Jogar Novamente';
-    speak('Fim de jogo.');
   }
 
   // ========== TELA INICIAL (HOME) ==========
@@ -10344,6 +10478,7 @@
           var overlayTitle = document.getElementById('staffRushOverlayTitle');
           var overlayText = document.getElementById('staffRushOverlayText');
           var badge = document.getElementById('staffRushCurrentModeBadge');
+          var hinoControls = document.getElementById('staffRushHinoControls');
 
           if (staffRushPlayMode === 'arcade') {
             if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
@@ -10353,16 +10488,50 @@
               badge.className = 'du-badge du-badge-neutral du-badge-sm ml-2';
               badge.style.marginLeft = '0.5rem';
             }
+            if (hinoControls) hinoControls.style.display = 'none';
           } else {
-            if (overlayTitle) overlayTitle.textContent = 'Modo Hino 1 (Guitar Hero)';
+            if (overlayTitle) overlayTitle.textContent = 'Modo Hino ' + staffRushHinoNumber + ' (Guitar Hero)';
             if (overlayText) overlayText.textContent = 'Toque e SEGURE o botão da nota correspondente pelo tempo de duração dela à medida que ela passar pelo alvo!';
             if (badge) {
               badge.textContent = 'Modo Hino';
               badge.className = 'du-badge du-badge-primary du-badge-sm ml-2';
               badge.style.marginLeft = '0.5rem';
             }
+            if (hinoControls) hinoControls.style.display = 'flex';
+            updateStaffRushHinoSelectorUI();
           }
         });
+      });
+    }
+
+    // Ouvintes de cliques para navegação de fases (hinos) no Staff Rush
+    var btnPrev = document.getElementById('btnStaffRushHinoPrev');
+    var btnNext = document.getElementById('btnStaffRushHinoNext');
+    if (btnPrev) {
+      btnPrev.addEventListener('click', function () {
+        if (staffRushHinoNumber > 1) {
+          staffRushHinoNumber--;
+          updateStaffRushHinoSelectorUI();
+          var overlayTitle = document.getElementById('staffRushOverlayTitle');
+          if (overlayTitle) {
+            overlayTitle.textContent = 'Modo Hino ' + staffRushHinoNumber + ' (Guitar Hero)';
+          }
+        }
+      });
+    }
+    if (btnNext) {
+      btnNext.addEventListener('click', function () {
+        if (staffRushHinoNumber < HINOS_TOTAL) {
+          var st = getActiveHinosStudent();
+          if (isStaffRushHinoUnlocked(staffRushHinoNumber + 1, st)) {
+            staffRushHinoNumber++;
+            updateStaffRushHinoSelectorUI();
+            var overlayTitle = document.getElementById('staffRushOverlayTitle');
+            if (overlayTitle) {
+              overlayTitle.textContent = 'Modo Hino ' + staffRushHinoNumber + ' (Guitar Hero)';
+            }
+          }
+        }
       });
     }
 
