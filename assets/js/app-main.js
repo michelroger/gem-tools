@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.51';
+  const APP_VERSION = '1.3.52';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9968,8 +9968,6 @@
           buttonEl.classList.add('correct');
           setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
         }
-      }
-    }
       }
     }
   }
