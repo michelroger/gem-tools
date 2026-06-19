@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.54';
+  const APP_VERSION = '1.3.55';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9606,7 +9606,7 @@
     var toRemove = [];
     var PixelsPerSecond = 80;
     var delayOffset = 3.0; // 3 segundos de preparação para começar a vir as notas
-    var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade para ser mais lento e fácil de testar
+    var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
 
     if (staffRushPlayMode === 'hino') {
       var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
@@ -9877,7 +9877,7 @@
   function onStaffRushHinoPointerDown(selectedId, buttonEl) {
     if (!staffRushActive || staffRushLives <= 0) return;
 
-    var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
+    var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
     var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
     var activeNotes = staffRushNotes.filter(function (n) {
       return !n.checked && n.x > 70;
@@ -9973,7 +9973,7 @@
       note.checked = true;
       staffRushHinoHitNotes++;
 
-      var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
+      var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
       var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
       var heldDuration = musicElapsed - note.hitStartTime;
       var minRequired = note.durationSec * 0.40; // Exige pelo menos 40% do tempo
