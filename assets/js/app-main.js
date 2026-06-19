@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.55';
+  const APP_VERSION = '1.3.56';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9272,16 +9272,25 @@
   }
 
   function createStaffRushNoteButtons() {
-    var container = document.getElementById('staffRushNoteOptions');
-    if (!container) return;
-    container.innerHTML = '';
-    NOTAS.forEach(function (nota) {
+    var containerLeft = document.getElementById('staffRushNoteOptionsLeft');
+    var containerRight = document.getElementById('staffRushNoteOptionsRight');
+    if (!containerLeft || !containerRight) return;
+    containerLeft.innerHTML = '';
+    containerRight.innerHTML = '';
+
+    NOTAS.forEach(function (nota, idx) {
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'note-option-btn du-btn du-btn-outline du-btn-sm select-none';
       btn.dataset.noteId = nota.id;
       btn.textContent = nota.nome;
       btn.style.touchAction = 'none'; // Evita zoom/scroll no touch do celular
+      btn.style.width = '100%';
+      btn.style.minWidth = '0'; // essencial para flex/grid
+
+      if (nota.id === 'si') {
+        btn.style.gridColumn = 'span 2';
+      }
 
       // Usando pointerdown para clique responsivo e imediato em ambos os modos
       btn.addEventListener('pointerdown', function (e) {
@@ -9305,7 +9314,11 @@
         e.preventDefault();
       });
 
-      container.appendChild(btn);
+      if (idx < 4) {
+        containerLeft.appendChild(btn);
+      } else {
+        containerRight.appendChild(btn);
+      }
     });
   }
 
