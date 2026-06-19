@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.42';
+  const APP_VERSION = '1.3.46';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9148,28 +9148,31 @@
       svg.appendChild(line);
     }
 
-    // Alvo vertical (Hit Line Target) no x = 60
-    var targetLine = document.createElementNS(NS, 'line');
-    targetLine.setAttribute('x1', '60');
-    targetLine.setAttribute('x2', '60');
-    targetLine.setAttribute('y1', '25');
-    targetLine.setAttribute('y2', '145');
-    targetLine.setAttribute('stroke', '#f59e0b');
-    targetLine.setAttribute('stroke-width', '2.5');
-    targetLine.setAttribute('stroke-dasharray', '4,4');
-    targetLine.setAttribute('opacity', '0.8');
-    svg.appendChild(targetLine);
+    // Alvo vertical (Hit Zone) centralizado no x = 110
+    var targetRect = document.createElementNS(NS, 'rect');
+    targetRect.setAttribute('x', '86');
+    targetRect.setAttribute('y', '25');
+    targetRect.setAttribute('width', '48');
+    targetRect.setAttribute('height', '120');
+    targetRect.setAttribute('rx', '8');
+    targetRect.setAttribute('ry', '8');
+    targetRect.setAttribute('fill', 'rgba(245, 158, 11, 0.08)');
+    targetRect.setAttribute('stroke', '#f59e0b');
+    targetRect.setAttribute('stroke-width', '2');
+    targetRect.setAttribute('opacity', '0.85');
+    svg.appendChild(targetRect);
 
-    // Círculo alvo decorativo no centro da pauta (y = 94) para dar feedback visual de batida
-    var targetCircle = document.createElementNS(NS, 'circle');
-    targetCircle.setAttribute('cx', '60');
-    targetCircle.setAttribute('cy', '94');
-    targetCircle.setAttribute('r', '14');
-    targetCircle.setAttribute('fill', 'none');
-    targetCircle.setAttribute('stroke', '#f59e0b');
-    targetCircle.setAttribute('stroke-width', '2');
-    targetCircle.setAttribute('opacity', '0.5');
-    svg.appendChild(targetCircle);
+    // Linha de centro pontilhada bem sutil
+    var targetCenterLine = document.createElementNS(NS, 'line');
+    targetCenterLine.setAttribute('x1', '110');
+    targetCenterLine.setAttribute('x2', '110');
+    targetCenterLine.setAttribute('y1', '25');
+    targetCenterLine.setAttribute('y2', '145');
+    targetCenterLine.setAttribute('stroke', '#f59e0b');
+    targetCenterLine.setAttribute('stroke-width', '1');
+    targetCenterLine.setAttribute('stroke-dasharray', '3,3');
+    targetCenterLine.setAttribute('opacity', '0.5');
+    svg.appendChild(targetCenterLine);
 
     // Clave de Sol ou Fá
     var clef = CLAVES.find(function (c) { return c.id === currentClef; }) || CLAVES[0];
@@ -9196,7 +9199,7 @@
     var startBtn = document.getElementById('btnStaffRushStart');
     if (overlay) overlay.style.display = 'flex';
     if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
-    if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo círculo alvo!';
+    if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo retângulo alvo!';
     if (startBtn) startBtn.textContent = 'Iniciar Corrida';
   }
 
@@ -9281,14 +9284,36 @@
       });
     }
 
+    // Define se a nota contém uma vida (recuperação) - 15% de chance
+    var temVida = Math.random() < 0.15;
+    var heartText = null;
+
     // Cabeça da nota (elipse)
     var ellipse = document.createElementNS(NS, 'ellipse');
     ellipse.setAttribute('cx', '410');
     ellipse.setAttribute('cy', String(pos.y));
     ellipse.setAttribute('rx', '10');
     ellipse.setAttribute('ry', '7');
-    ellipse.setAttribute('fill', '#222');
+    
+    if (temVida) {
+      ellipse.setAttribute('fill', '#ec4899'); // rosa pink para a nota de vida
+      ellipse.setAttribute('stroke', '#db2777');
+      ellipse.setAttribute('stroke-width', '1.5');
+    } else {
+      ellipse.setAttribute('fill', '#222');
+    }
     noteGroup.appendChild(ellipse);
+
+    if (temVida) {
+      heartText = document.createElementNS(NS, 'text');
+      heartText.setAttribute('x', '410');
+      heartText.setAttribute('y', String(pos.y - 10)); // desenhado logo acima da elipse da nota
+      heartText.setAttribute('font-size', '12');
+      heartText.setAttribute('font-family', 'sans-serif');
+      heartText.setAttribute('text-anchor', 'middle');
+      heartText.textContent = '❤️';
+      noteGroup.appendChild(heartText);
+    }
 
     notesGroup.appendChild(noteGroup);
 
@@ -9302,7 +9327,9 @@
       group: noteGroup,
       ellipse: ellipse,
       ledgerLines: ledgerLinesElements,
-      checked: false
+      checked: false,
+      temVida: temVida,
+      heartText: heartText
     });
   }
 
@@ -9322,9 +9349,12 @@
           line.setAttribute('x2', String(nota.x + 15));
         });
       }
+      if (nota.heartText) {
+        nota.heartText.setAttribute('x', String(nota.x));
+      }
 
       // Se a nota passou do limite sem resposta (Miss!)
-      if (nota.x < 35 && !nota.checked) {
+      if (nota.x < 70 && !nota.checked) {
         nota.checked = true;
         
         // Pinta a nota de vermelho para indicar erro
@@ -9375,7 +9405,7 @@
 
     // Pega a nota ativa mais antiga (mais à esquerda) que ainda não foi checada e está na área jogável
     var activeNotes = staffRushNotes.filter(function (n) {
-      return !n.checked && n.x > 35;
+      return !n.checked && n.x > 70;
     });
 
     if (activeNotes.length === 0) return;
@@ -9384,10 +9414,10 @@
     activeNotes.sort(function (a, b) { return a.x - b.x; });
     var targetNote = activeNotes[0];
 
-    var dist = Math.abs(targetNote.x - 60);
+    var dist = Math.abs(targetNote.x - 110);
 
-    // Tolerância de distância para acerto é 20 pixels
-    if (targetNote.noteId === selectedId && dist <= 20) {
+    // Tolerância de distância para acerto é 35 pixels
+    if (targetNote.noteId === selectedId && dist <= 35) {
       // HIT!
       targetNote.checked = true;
 
@@ -9395,6 +9425,18 @@
       targetNote.ellipse.setAttribute('fill', '#10b981');
       targetNote.group.setAttribute('opacity', '0');
       playNoteSound(targetNote.noteId, targetNote.freq);
+
+      // Se for uma nota de vida e o jogador tiver menos de 3 vidas, recupera uma
+      if (targetNote.temVida && staffRushLives < 3) {
+        staffRushLives++;
+        playGameSfx('correct'); // Toca o som festivo de acerto/recuperação
+        var livesEl = document.getElementById('staffRushGameLives');
+        if (livesEl) {
+          var hearts = '';
+          for (var i = 0; i < staffRushLives; i++) hearts += '❤️';
+          livesEl.textContent = hearts;
+        }
+      }
 
       setTimeout(function() {
         if (targetNote.group && targetNote.group.parentNode) {
@@ -9416,15 +9458,16 @@
       var comboDisplay = document.getElementById('staffRushGameComboDisplay');
       if (comboEl) comboEl.textContent = String(staffRushCombo);
       if (comboDisplay && staffRushCombo > 1) comboDisplay.classList.remove('hidden');
-
-      // Aumenta a velocidade progressivamente
-      var speedMultiplier = 1.0 + (staffRushCombo * 0.03);
-      staffRushSpeed = Math.min(4.5, 1.5 * speedMultiplier);
+      // Aumenta a velocidade de forma acumulativa e irreversível
+      staffRushSpeed = Math.min(4.5, staffRushSpeed + 0.05);
       var speedEl = document.getElementById('staffRushSpeed');
-      if (speedEl) speedEl.textContent = (1.0 + (staffRushCombo * 0.05)).toFixed(1);
+      if (speedEl) {
+        var displaySpeed = (staffRushSpeed / 1.5).toFixed(1);
+        speedEl.textContent = displaySpeed;
+      }
 
-      // Diminui o intervalo de nascimento das notas
-      staffRushSpawnInterval = Math.max(900, 2500 - staffRushCombo * 35);
+      // Diminui o intervalo de nascimento das notas de forma acumulativa
+      staffRushSpawnInterval = Math.max(900, staffRushSpawnInterval - 45);
 
       // Efeito de pulso no botão
       if (buttonEl) {
