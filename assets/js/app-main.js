@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.47';
+  const APP_VERSION = '1.3.48';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9516,19 +9516,21 @@
     var notesGroup = document.getElementById('staffRushNotesGroup');
     var toRemove = [];
     var PixelsPerSecond = 80;
+    var delayOffset = 3.0; // 3 segundos de preparação para começar a vir as notas
+    var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade para ser mais lento e fácil de testar
 
     if (staffRushPlayMode === 'hino') {
-      var musicElapsed = (Date.now() - staffRushStartTime) / 1000;
+      var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
 
       // Verifica fim do hino
-      if (musicElapsed > staffRushHinoDuration + 3) {
+      if (musicElapsed > staffRushHinoDuration + delayOffset + 3) {
         handleStaffRushGameOver();
         return;
       }
 
       staffRushNotes.forEach(function (nota) {
-        // Calcula a posição x com base no tempo de início
-        nota.x = 110 + (nota.startSec - musicElapsed) * PixelsPerSecond;
+        // Calcula a posição x com base no tempo de início + offset de delay inicial
+        nota.x = 110 + ((nota.startSec + delayOffset) - musicElapsed) * PixelsPerSecond;
 
         // Se a nota está sendo segurada, a cabeça fica fixa em x=110 e o rastro encolhe
         if (nota.isBeingHeld) {
@@ -9764,7 +9766,8 @@
   function onStaffRushHinoPointerDown(selectedId, buttonEl) {
     if (!staffRushActive || staffRushLives <= 0) return;
 
-    var musicElapsed = (Date.now() - staffRushStartTime) / 1000;
+    var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
+    var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
     var activeNotes = staffRushNotes.filter(function (n) {
       return !n.checked && n.x > 70;
     });
@@ -9848,7 +9851,8 @@
         note.isBeingHeld = false;
         note.checked = true;
 
-        var musicElapsed = (Date.now() - staffRushStartTime) / 1000;
+        var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
+        var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
         var heldDuration = musicElapsed - note.hitStartTime;
         var minRequired = note.durationSec * 0.70; // Exige pelo menos 70% do tempo
 
