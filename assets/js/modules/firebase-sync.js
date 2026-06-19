@@ -125,7 +125,8 @@
       licoesAprovadas: estudosCount,
       staffHighScore: typeof existingSummary.staffHighScore === 'number' ? existingSummary.staffHighScore : 0,
       staffBestTime: typeof existingSummary.staffBestTime === 'number' ? existingSummary.staffBestTime : 0,
-      staffRushHighScore: typeof existingSummary.staffRushHighScore === 'number' ? existingSummary.staffRushHighScore : 0
+      staffRushHighScore: typeof existingSummary.staffRushHighScore === 'number' ? existingSummary.staffRushHighScore : 0,
+      staffRushHinoHighScore: typeof existingSummary.staffRushHinoHighScore === 'number' ? existingSummary.staffRushHinoHighScore : 0
     };
   }
 
