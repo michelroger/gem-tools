@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.48';
+  const APP_VERSION = '1.3.50';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -4177,13 +4177,15 @@
    * Inicia a nota em modo sustentado: toca enquanto não chamar stopNoteSound().
    * Usado quando o botão fica pressionado.
    */
-  function startNoteSound(noteId, freqHz) {
+  function startNoteSound(noteId, freqHz, bypassKey) {
     if (!soundEnabled) return;
     stopNoteSound();
     var nota = NOTAS.find(function (n) { return n.id === noteId; });
     if (!nota) return;
     var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-    freq = getFreqInKey(noteId, freq, currentKey);
+    if (!bypassKey) {
+      freq = getFreqInKey(noteId, freq, currentKey);
+    }
 
     var ctx = getAudioContext();
     if (ctx.state === 'suspended') ctx.resume();
@@ -4236,12 +4238,14 @@
   }
 
   /** Inicia nota sustentada por ponteiro (suporta múltiplos toques). */
-  function startNoteSoundForPointer(noteId, freqHz, onReady) {
+  function startNoteSoundForPointer(noteId, freqHz, onReady, bypassKey) {
     if (!soundEnabled) return function () { };
     var nota = NOTAS.find(function (n) { return n.id === noteId; });
     if (!nota) return function () { };
     var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-    freq = getFreqInKey(noteId, freq, currentKey);
+    if (!bypassKey) {
+      freq = getFreqInKey(noteId, freq, currentKey);
+    }
     var ctx = getAudioContext();
     if (ctx.state === 'suspended') ctx.resume();
 
@@ -4316,12 +4320,14 @@
   /**
    * Toca a nota por tempo fixo (usado no modo Desafio quando o jogo toca a nota).
    */
-  function playNoteSound(noteId, freqHz) {
+  function playNoteSound(noteId, freqHz, bypassKey) {
     if (!soundEnabled) return;
     var nota = NOTAS.find(function (n) { return n.id === noteId; });
     if (!nota) return;
     var freq = (freqHz != null && freqHz > 0) ? freqHz : nota.freq;
-    freq = getFreqInKey(noteId, freq, currentKey);
+    if (!bypassKey) {
+      freq = getFreqInKey(noteId, freq, currentKey);
+    }
 
     var ctx = getAudioContext();
     if (ctx.state === 'suspended') ctx.resume();
@@ -9374,7 +9380,7 @@
             id: Math.random().toString(36).substr(2, 9),
             noteId: pos.noteId,
             y: pos.y,
-            freq: pos.freq,
+            freq: ev.freq,
             startSec: ev.startSec,
             durationSec: ev.durationSec,
             x: 410,
@@ -9405,9 +9411,31 @@
       });
   }
 
+  function getNaturalMidiForMapping(midi) {
+    var noteNum = midi % 12;
+    var octave = Math.floor(midi / 12) - 1;
+    var mapping = {
+      0: 0,   // C
+      1: 0,   // C# -> C
+      2: 2,   // D
+      3: 4,   // Eb -> E
+      4: 4,   // E
+      5: 5,   // F
+      6: 5,   // F# -> F
+      7: 7,   // G
+      8: 7,   // G# -> G
+      9: 9,   // A
+      10: 11, // Bb -> B
+      11: 11  // B
+    };
+    var naturalNoteNum = mapping[noteNum];
+    return (octave + 1) * 12 + naturalNoteNum;
+  }
+
   function findStaffPositionForMidi(midi) {
     if (!staffRushPositions || !staffRushPositions.length) return null;
-    var freq = window.StaffMathUtils.midiToFreq(midi);
+    var mappedMidi = getNaturalMidiForMapping(midi);
+    var freq = window.StaffMathUtils.midiToFreq(mappedMidi);
     var closest = null;
     var minDiff = Infinity;
     staffRushPositions.forEach(function (pos) {
@@ -9587,7 +9615,7 @@
           }, 300);
 
           // Desconta vida e reseta combo
-          staffRushLives--;
+          // staffRushLives--; // Comentado para Vida Infinita de testes
           staffRushCombo = 1;
           playGameSfx('wrong');
 
@@ -9643,7 +9671,7 @@
           }, 300);
 
           // Desconta vida e reseta combo
-          staffRushLives--;
+          // staffRushLives--; // Comentado para Vida Infinita de testes
           staffRushCombo = 1;
           playGameSfx('wrong');
 
@@ -9691,8 +9719,8 @@
 
     var dist = Math.abs(targetNote.x - 110);
 
-    // Tolerância de distância para acerto é 35 pixels
-    if (targetNote.noteId === selectedId && dist <= 35) {
+    // Tolerância de distância para acerto é 40 pixels
+    if (targetNote.noteId === selectedId && dist <= 40) {
       // HIT!
       targetNote.checked = true;
 
@@ -9774,69 +9802,78 @@
 
     if (activeNotes.length === 0) return;
 
-    // A nota mais próxima do alvo
+    // A nota mais próxima do alvo que não está sendo segurada atualmente
     activeNotes.sort(function (a, b) { return a.x - b.x; });
-    var targetNote = activeNotes[0];
+    var targetNote = activeNotes.find(function (n) { return !n.isBeingHeld; });
+    if (!targetNote) return;
 
     var dist = Math.abs(targetNote.x - 110);
 
-    // Tolerância de distância para acerto é 35 pixels
-    if (targetNote.noteId === selectedId && dist <= 35) {
-      if (targetNote.isLong) {
-        // Se for nota longa, inicia a sustentação (hold)
-        targetNote.hitStartTime = musicElapsed;
-        targetNote.isBeingHeld = true;
-        staffRushHinoActiveNote = targetNote;
+    // Tolerância de distância para acerto é 40 pixels
+    if (targetNote.noteId === selectedId) {
+      if (dist <= 40) {
+        if (targetNote.isLong) {
+          // Se for nota longa, inicia a sustentação (hold)
+          targetNote.hitStartTime = musicElapsed;
+          targetNote.isBeingHeld = true;
+          staffRushHinoActiveNote = targetNote;
 
-        // Feedback visual de nota sendo sustentada
-        targetNote.ellipse.setAttribute('fill', '#0284c7'); // sky-600 (azul)
-        if (targetNote.trailRect) {
-          targetNote.trailRect.setAttribute('fill', 'rgba(2, 132, 199, 0.45)');
-        }
-
-        // Toca som contínuo
-        startNoteSound(targetNote.noteId, targetNote.freq);
-      } else {
-        // Nota curta, acerto imediato
-        targetNote.checked = true;
-        targetNote.ellipse.setAttribute('fill', '#10b981'); // verde
-        targetNote.group.setAttribute('opacity', '0');
-        playNoteSound(targetNote.noteId, targetNote.freq);
-
-        setTimeout(function() {
-          if (targetNote.group && targetNote.group.parentNode) {
-            targetNote.group.parentNode.removeChild(targetNote.group);
+          // Feedback visual de nota sendo sustentada
+          targetNote.ellipse.setAttribute('fill', '#0284c7'); // sky-600 (azul)
+          if (targetNote.trailRect) {
+            targetNote.trailRect.setAttribute('fill', 'rgba(2, 132, 199, 0.45)');
           }
-        }, 150);
 
-        // Pontuação
-        var accuracyPoints = Math.max(10, Math.round(100 - dist * 3.5));
-        staffRushScore += accuracyPoints * staffRushCombo;
-        staffRushCombo++;
+          // Toca som contínuo
+          startNoteSound(targetNote.noteId, targetNote.freq, true);
+        } else {
+          // Nota curta, acerto imediato
+          targetNote.checked = true;
+          targetNote.ellipse.setAttribute('fill', '#10b981'); // verde
+          targetNote.group.setAttribute('opacity', '0');
+          playNoteSound(targetNote.noteId, targetNote.freq, true);
 
-        var scoreEl = document.getElementById('staffRushScore');
-        if (scoreEl) scoreEl.textContent = String(staffRushScore);
+          setTimeout(function() {
+            if (targetNote.group && targetNote.group.parentNode) {
+              targetNote.group.parentNode.removeChild(targetNote.group);
+            }
+          }, 150);
 
-        var comboEl = document.getElementById('staffRushCombo');
-        var comboDisplay = document.getElementById('staffRushGameComboDisplay');
-        if (comboEl) comboEl.textContent = String(staffRushCombo);
-        if (comboDisplay && staffRushCombo > 1) comboDisplay.classList.remove('hidden');
+          // Pontuação
+          var accuracyPoints = Math.max(10, Math.round(100 - dist * 2.5));
+          staffRushScore += accuracyPoints * staffRushCombo;
+          staffRushCombo++;
 
-        if (buttonEl) {
-          buttonEl.classList.add('correct');
-          setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
+          var scoreEl = document.getElementById('staffRushScore');
+          if (scoreEl) scoreEl.textContent = String(staffRushScore);
+
+          var comboEl = document.getElementById('staffRushCombo');
+          var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+          if (comboEl) comboEl.textContent = String(staffRushCombo);
+          if (comboDisplay && staffRushCombo > 1) comboDisplay.classList.remove('hidden');
+
+          if (buttonEl) {
+            buttonEl.classList.add('correct');
+            setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
+          }
         }
+      } else {
+        // Pressionou a nota CORRETA, mas está fora da área de colisão (muito longe/cedo).
+        // Ignoramos o toque para não penalizar o aluno com erro. Ele pode tentar novamente.
       }
     } else {
-      // Toque incorreto ou no tempo errado
-      staffRushCombo = 1;
-      var comboDisplay = document.getElementById('staffRushGameComboDisplay');
-      if (comboDisplay) comboDisplay.classList.add('hidden');
-      playGameSfx('wrong');
+      // Pressionou a nota INCORRETA (botão errado).
+      // Apenas consideramos erro se estiver perto o suficiente (dist <= 45) para evitar spam involuntário.
+      if (dist <= 45) {
+        staffRushCombo = 1;
+        var comboDisplay = document.getElementById('staffRushGameComboDisplay');
+        if (comboDisplay) comboDisplay.classList.add('hidden');
+        playGameSfx('wrong');
 
-      if (buttonEl) {
-        buttonEl.classList.add('wrong');
-        setTimeout(function() { buttonEl.classList.remove('wrong'); }, 150);
+        if (buttonEl) {
+          buttonEl.classList.add('wrong');
+          setTimeout(function() { buttonEl.classList.remove('wrong'); }, 150);
+        }
       }
     }
   }
@@ -9854,7 +9891,7 @@
         var playbackSpeed = 0.75; // Andamento do hino a 75% da velocidade
         var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
         var heldDuration = musicElapsed - note.hitStartTime;
-        var minRequired = note.durationSec * 0.70; // Exige pelo menos 70% do tempo
+        var minRequired = note.durationSec * 0.40; // Exige pelo menos 40% do tempo
 
         if (heldDuration >= minRequired) {
           // Acertou e sustentou pelo tempo correto!
@@ -9884,8 +9921,8 @@
             setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
           }
         } else {
-          // Soltou muito antes! Miss/Erro!
-          note.ellipse.setAttribute('fill', '#ef4444'); // vermelho
+          // Acerto parcial! Soltou antes de 40% do tempo
+          note.ellipse.setAttribute('fill', '#eab308'); // amarelo
           note.group.setAttribute('opacity', '0.5');
 
           setTimeout(function() {
@@ -9894,28 +9931,21 @@
             }
           }, 300);
 
-          staffRushLives--;
-          staffRushCombo = 1;
-          playGameSfx('wrong');
+          // Pontuação parcial baseada na proporção de tempo segurada, no mínimo 10 pts
+          var ratio = heldDuration / note.durationSec;
+          if (ratio < 0) ratio = 0;
+          if (ratio > 1) ratio = 1;
+          var partialPoints = Math.max(10, Math.round(50 * ratio));
+          staffRushScore += partialPoints * staffRushCombo;
 
-          var livesEl = document.getElementById('staffRushGameLives');
-          if (livesEl) {
-            var hearts = '';
-            for (var i = 0; i < staffRushLives; i++) hearts += '❤️';
-            if (hearts === '') hearts = '💀 GAME OVER';
-            livesEl.textContent = hearts;
-          }
+          // Vidas e combo não são resetados nem diminuídos!
 
-          var comboDisplay = document.getElementById('staffRushGameComboDisplay');
-          if (comboDisplay) comboDisplay.classList.add('hidden');
+          var scoreEl = document.getElementById('staffRushScore');
+          if (scoreEl) scoreEl.textContent = String(staffRushScore);
 
           if (buttonEl) {
-            buttonEl.classList.add('wrong');
-            setTimeout(function() { buttonEl.classList.remove('wrong'); }, 150);
-          }
-
-          if (staffRushLives <= 0) {
-            handleStaffRushGameOver();
+            buttonEl.classList.add('correct');
+            setTimeout(function() { buttonEl.classList.remove('correct'); }, 150);
           }
         }
       }
