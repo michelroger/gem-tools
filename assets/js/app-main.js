@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.56';
+  const APP_VERSION = '1.3.57';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -342,6 +342,14 @@
   var currentMsaAudioBlobUrl = null;
   var msaVideoAbortController = null;
   var msaAudioAbortController = null;
+
+  // Variáveis para controle de zoom e pan da Infografia
+  var msaInfoScale = 1;
+  var msaInfoPanX = 0;
+  var msaInfoPanY = 0;
+  var msaInfoIsDragging = false;
+  var msaInfoStartX = 0;
+  var msaInfoStartY = 0;
 
   function revokeMsaMedia() {
     if (msaVideoAbortController) {
@@ -9435,18 +9443,39 @@
             noteGroup.appendChild(trailRect);
           }
           
+          // Define se a nota contém uma vida (recuperação) - 15% de chance apenas para notas curtas
+          var temVida = !isLong && Math.random() < 0.15;
+          var heartText = null;
+
           // Cabeça da nota (elipse)
           var ellipse = document.createElementNS(NS, 'ellipse');
           ellipse.setAttribute('cx', '410');
           ellipse.setAttribute('cy', String(pos.y));
           ellipse.setAttribute('rx', '10');
           ellipse.setAttribute('ry', '7');
-          ellipse.setAttribute('fill', isLong ? '#db2777' : '#222'); // Notas longas têm cor diferente (pink-600)
-          if (isLong) {
-            ellipse.setAttribute('stroke', '#be185d');
+          if (temVida) {
+            ellipse.setAttribute('fill', '#ec4899'); // rosa pink para a nota de vida
+            ellipse.setAttribute('stroke', '#db2777');
             ellipse.setAttribute('stroke-width', '1.5');
+          } else {
+            ellipse.setAttribute('fill', isLong ? '#db2777' : '#222'); // Notas longas têm cor diferente (pink-600)
+            if (isLong) {
+              ellipse.setAttribute('stroke', '#be185d');
+              ellipse.setAttribute('stroke-width', '1.5');
+            }
           }
           noteGroup.appendChild(ellipse);
+
+          if (temVida) {
+            heartText = document.createElementNS(NS, 'text');
+            heartText.setAttribute('x', '410');
+            heartText.setAttribute('y', String(pos.y - 10)); // desenhado logo acima da elipse da nota
+            heartText.setAttribute('font-size', '12');
+            heartText.setAttribute('font-family', 'sans-serif');
+            heartText.setAttribute('text-anchor', 'middle');
+            heartText.textContent = '❤️';
+            noteGroup.appendChild(heartText);
+          }
           
           notesGroup.appendChild(noteGroup);
           
@@ -9465,7 +9494,9 @@
             checked: false,
             hitStartTime: null,
             isLong: isLong,
-            isBeingHeld: false
+            isBeingHeld: false,
+            temVida: temVida,
+            heartText: heartText
           });
         });
 
@@ -9690,6 +9721,9 @@
           if (nota.trailRect) {
             nota.trailRect.setAttribute('x', String(nota.x));
           }
+          if (nota.heartText) {
+            nota.heartText.setAttribute('x', String(nota.x));
+          }
         }
 
         // Se a nota passou do limite sem resposta (Miss!) - ignora se estiver sendo segurada
@@ -9711,7 +9745,7 @@
           }, 300);
 
           // Desconta vida e reseta combo (sem som de erro wrong no modo hino)
-          // staffRushLives--; // Comentado para Vida Infinita de testes
+          staffRushLives--;
           staffRushCombo = 1;
           // playGameSfx('wrong'); // Comentado no modo hino
 
@@ -9767,7 +9801,7 @@
           }, 300);
 
           // Desconta vida e reseta combo
-          // staffRushLives--; // Comentado para Vida Infinita de testes
+          staffRushLives--;
           staffRushCombo = 1;
           playGameSfx('wrong');
 
@@ -9928,6 +9962,18 @@
           targetNote.ellipse.setAttribute('fill', '#10b981'); // verde
           targetNote.group.setAttribute('opacity', '0');
           playNoteSound(targetNote.noteId, targetNote.freq, true);
+
+          // Se for uma nota de vida e o jogador tiver menos de 3 vidas, recupera uma
+          if (targetNote.temVida && staffRushLives < 3) {
+            staffRushLives++;
+            playGameSfx('correct'); // Toca o som festivo de acerto/recuperação
+            var livesEl = document.getElementById('staffRushGameLives');
+            if (livesEl) {
+              var hearts = '';
+              for (var i = 0; i < staffRushLives; i++) hearts += '❤️';
+              livesEl.textContent = hearts;
+            }
+          }
 
           setTimeout(function() {
             if (targetNote.group && targetNote.group.parentNode) {
@@ -11627,11 +11673,13 @@
     var audioCont = document.getElementById('msaTabAudioContent');
     var pdfCont = document.getElementById('msaTabPdfContent');
     var quizCont = document.getElementById('msaTabQuizContent');
+    var infografiaCont = document.getElementById('msaTabInfografiaContent');
 
     if (videoCont) videoCont.classList.toggle('active', tabName === 'video');
     if (audioCont) audioCont.classList.toggle('active', tabName === 'audio');
     if (pdfCont) pdfCont.classList.toggle('active', tabName === 'pdf');
     if (quizCont) quizCont.classList.toggle('active', tabName === 'quiz');
+    if (infografiaCont) infografiaCont.classList.toggle('active', tabName === 'infografia');
 
     // Executa a escala dos iframes do Drive caso fiquem visíveis agora
     if (tabName === 'video' || tabName === 'audio') {
@@ -11671,27 +11719,26 @@
     var btnAudio = document.querySelector('.msa-tab-btn[data-tab="audio"]');
     var btnPdf = document.querySelector('.msa-tab-btn[data-tab="pdf"]');
     var btnQuiz = document.querySelector('.msa-tab-btn[data-tab="quiz"]');
+    var btnInfografia = document.querySelector('.msa-tab-btn[data-tab="infografia"]');
 
     if (btnVideo) btnVideo.style.display = hasVideo ? '' : 'none';
     if (btnAudio) btnAudio.style.display = hasAudio ? '' : 'none';
     if (btnPdf) btnPdf.style.display = hasPdf ? '' : 'none';
     if (btnQuiz) btnQuiz.style.display = hasQuiz ? '' : 'none';
+    if (btnInfografia) btnInfografia.style.display = ''; // Sempre disponível
 
     // Determinar qual aba ativar por padrão
     var targetTab = activeMsaTab;
-    if (targetTab === 'video' && !hasVideo) targetTab = 'pdf';
-    if (targetTab === 'audio' && !hasAudio) targetTab = 'pdf';
-    if (targetTab === 'quiz' && !hasQuiz) targetTab = 'pdf';
-    if (targetTab === 'pdf' && !hasPdf) {
-      if (hasVideo) targetTab = 'video';
-      else if (hasAudio) targetTab = 'audio';
-      else if (hasQuiz) targetTab = 'quiz';
-    }
+    if (targetTab === 'video' && !hasVideo) targetTab = 'infografia';
+    if (targetTab === 'audio' && !hasAudio) targetTab = 'infografia';
+    if (targetTab === 'quiz' && !hasQuiz) targetTab = 'infografia';
+    if (targetTab === 'pdf' && !hasPdf) targetTab = 'infografia';
 
     var isCurrentTabAvailable = (activeMsaTab === 'video' && hasVideo) ||
                                 (activeMsaTab === 'audio' && hasAudio) ||
                                 (activeMsaTab === 'pdf' && hasPdf) ||
-                                (activeMsaTab === 'quiz' && hasQuiz);
+                                (activeMsaTab === 'quiz' && hasQuiz) ||
+                                (activeMsaTab === 'infografia');
 
     if (!isCurrentTabAvailable) {
       switchMsaTab(targetTab);
@@ -11981,6 +12028,200 @@
       } else {
         quizCard.style.display = 'none';
       }
+    }
+
+    // Infografia da Fase
+    var infoWrap = document.getElementById('msaInfografiaWrapper');
+    if (infoWrap) {
+      infoWrap.innerHTML = '';
+      
+      // Reseta variáveis de zoom/pan
+      msaInfoScale = 1;
+      msaInfoPanX = 0;
+      msaInfoPanY = 0;
+      msaInfoIsDragging = false;
+      
+      // Cria botões de controle de zoom no topo direito
+      var controlDiv = document.createElement('div');
+      controlDiv.style.position = 'absolute';
+      controlDiv.style.top = '10px';
+      controlDiv.style.right = '10px';
+      controlDiv.style.zIndex = '10';
+      controlDiv.style.display = 'flex';
+      controlDiv.style.flexDirection = 'column';
+      controlDiv.style.gap = '5px';
+      
+      var btnIn = document.createElement('button');
+      btnIn.type = 'button';
+      btnIn.style.background = 'rgba(255,255,255,0.95)';
+      btnIn.style.border = '1px solid #cbd5e1';
+      btnIn.style.width = '36px';
+      btnIn.style.height = '36px';
+      btnIn.style.borderRadius = '6px';
+      btnIn.style.fontWeight = 'bold';
+      btnIn.style.fontSize = '18px';
+      btnIn.style.cursor = 'pointer';
+      btnIn.style.display = 'flex';
+      btnIn.style.alignItems = 'center';
+      btnIn.style.justifyContent = 'center';
+      btnIn.style.color = '#333';
+      btnIn.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+      btnIn.title = 'Aumentar Zoom';
+      btnIn.textContent = '+';
+      
+      var btnOut = document.createElement('button');
+      btnOut.type = 'button';
+      btnOut.style.background = 'rgba(255,255,255,0.95)';
+      btnOut.style.border = '1px solid #cbd5e1';
+      btnOut.style.width = '36px';
+      btnOut.style.height = '36px';
+      btnOut.style.borderRadius = '6px';
+      btnOut.style.fontWeight = 'bold';
+      btnOut.style.fontSize = '18px';
+      btnOut.style.cursor = 'pointer';
+      btnOut.style.display = 'flex';
+      btnOut.style.alignItems = 'center';
+      btnOut.style.justifyContent = 'center';
+      btnOut.style.color = '#333';
+      btnOut.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+      btnOut.title = 'Diminuir Zoom';
+      btnOut.textContent = '-';
+      
+      var btnReset = document.createElement('button');
+      btnReset.type = 'button';
+      btnReset.style.background = 'rgba(255,255,255,0.95)';
+      btnReset.style.border = '1px solid #cbd5e1';
+      btnReset.style.width = '36px';
+      btnReset.style.height = '36px';
+      btnReset.style.borderRadius = '6px';
+      btnReset.style.cursor = 'pointer';
+      btnReset.style.display = 'flex';
+      btnReset.style.alignItems = 'center';
+      btnReset.style.justifyContent = 'center';
+      btnReset.style.color = '#333';
+      btnReset.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+      btnReset.title = 'Redefinir Posição';
+      
+      var iconReset = document.createElement('i');
+      iconReset.setAttribute('data-lucide', 'maximize-2');
+      iconReset.style.width = '16px';
+      iconReset.style.height = '16px';
+      btnReset.appendChild(iconReset);
+      
+      controlDiv.appendChild(btnIn);
+      controlDiv.appendChild(btnOut);
+      controlDiv.appendChild(btnReset);
+      infoWrap.appendChild(controlDiv);
+      
+      // Cria a imagem e viewport
+      var viewport = document.createElement('div');
+      viewport.style.width = '100%';
+      viewport.style.height = '100%';
+      viewport.style.display = 'flex';
+      viewport.style.alignItems = 'center';
+      viewport.style.justifyContent = 'center';
+      viewport.style.cursor = 'grab';
+      
+      var img = document.createElement('img');
+      img.id = 'msaInfografiaImg';
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '100%';
+      img.style.objectFit = 'contain';
+      img.style.pointerEvents = 'none'; // Evita drag nativo do navegador
+      img.style.transformOrigin = 'center';
+      img.style.transition = 'transform 0.1s ease-out';
+      img.alt = 'Infografia da Fase ' + faseNum;
+      
+      var imageUrl = './assets/infografias/fase' + faseNum + '.png';
+      img.src = imageUrl;
+      
+      viewport.appendChild(img);
+      infoWrap.appendChild(viewport);
+      
+      // Registra eventos do visualizador
+      function updateInfografiaTransform() {
+        img.style.transform = 'translate(' + msaInfoPanX + 'px, ' + msaInfoPanY + 'px) scale(' + msaInfoScale + ')';
+      }
+      
+      btnIn.addEventListener('click', function() {
+        msaInfoScale = Math.min(5, msaInfoScale + 0.25);
+        updateInfografiaTransform();
+      });
+      
+      btnOut.addEventListener('click', function() {
+        msaInfoScale = Math.max(0.5, msaInfoScale - 0.25);
+        updateInfografiaTransform();
+      });
+      
+      btnReset.addEventListener('click', function() {
+        msaInfoScale = 1;
+        msaInfoPanX = 0;
+        msaInfoPanY = 0;
+        updateInfografiaTransform();
+      });
+      
+      infoWrap.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        var zoomFactor = 0.1;
+        if (e.deltaY < 0) {
+          msaInfoScale = Math.min(5, msaInfoScale + zoomFactor);
+        } else {
+          msaInfoScale = Math.max(0.5, msaInfoScale - zoomFactor);
+        }
+        updateInfografiaTransform();
+      }, { passive: false });
+      
+      // Arrastar com mouse
+      viewport.addEventListener('mousedown', function(e) {
+        msaInfoIsDragging = true;
+        msaInfoStartX = e.clientX - msaInfoPanX;
+        msaInfoStartY = e.clientY - msaInfoPanY;
+        viewport.style.cursor = 'grabbing';
+      });
+      
+      window.addEventListener('mousemove', function(e) {
+        if (!msaInfoIsDragging) return;
+        msaInfoPanX = e.clientX - msaInfoStartX;
+        msaInfoPanY = e.clientY - msaInfoStartY;
+        updateInfografiaTransform();
+      });
+      
+      window.addEventListener('mouseup', function() {
+        msaInfoIsDragging = false;
+        viewport.style.cursor = 'grab';
+      });
+      
+      // Arrastar com toque (mobile)
+      viewport.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+          msaInfoIsDragging = true;
+          msaInfoStartX = e.touches[0].clientX - msaInfoPanX;
+          msaInfoStartY = e.touches[0].clientY - msaInfoPanY;
+        }
+      }, { passive: true });
+      
+      viewport.addEventListener('touchmove', function(e) {
+        if (!msaInfoIsDragging || e.touches.length !== 1) return;
+        msaInfoPanX = e.touches[0].clientX - msaInfoStartX;
+        msaInfoPanY = e.touches[0].clientY - msaInfoStartY;
+        updateInfografiaTransform();
+      }, { passive: true });
+      
+      viewport.addEventListener('touchend', function() {
+        msaInfoIsDragging = false;
+      });
+      
+      // Tratamento de erro (imagem não encontrada)
+      img.addEventListener('error', function () {
+        infoWrap.innerHTML = '<div class="msa-placeholder-card">' +
+          '<i data-lucide="image-off" style="color:var(--warn); width: 48px; height: 48px;"></i>' +
+          '<p style="margin-top: 10px;"><strong>Infografia da Fase ' + faseNum + ' não encontrada</strong></p>' +
+          '<p style="font-size:0.85rem;color:var(--text-soft);margin-top:0.25rem;text-align:center;max-width:320px;">' +
+          'Adicione a imagem com o resumo correspondente no caminho do projeto para visualizá-la aqui:</p>' +
+          '<span class="msa-placeholder-path">assets/infografias/fase' + faseNum + '.png</span>' +
+          '</div>';
+        if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();
+      });
     }
 
     if (typeof window.gemRefreshLucide === 'function') window.gemRefreshLucide();

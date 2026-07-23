@@ -4525,33 +4525,30 @@
 /* Abas (Tabs) do MSA */
 .msa-tabs-nav {
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   border-bottom: 2px solid var(--card-border);
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
-  overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-}
-
-.msa-tabs-nav::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
 }
 
 .msa-tab-btn {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.6rem 1.1rem;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.85rem;
   background: var(--bg-accent);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
   color: var(--text-soft);
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--ease);
+  flex: 1 1 110px; /* Distribui o espaço igualmente e quebra se faltar largura */
 }
 
 .msa-tab-btn:hover {
@@ -4571,6 +4568,12 @@
   background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(168, 85, 247, 0.35);
+}
+
+.msa-tab-btn[data-tab="infografia"].active {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
 }
 
 .msa-tab-content {
@@ -4596,19 +4599,7 @@
 
 /* Ajustes Responsivos para Telas Estreitas */
 @media (max-width: 480px) {
-  .msa-tabs-nav {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.4rem;
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .msa-tab-btn {
-    justify-content: center;
-    padding: 0.55rem;
-    font-size: 0.85rem;
-  }
+  /* O menu de abas se autoajusta pelo flex-wrap */
 }
 
 /* ========== TELA HOME (PÁGINA INICIAL) ========== */
