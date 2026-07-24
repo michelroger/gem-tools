@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.57';
+  const APP_VERSION = '1.3.58';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -401,6 +401,9 @@
   let staffRushHinoNumber = 1; // Hino de 1 a 480
   let staffRushHinoEvents = []; // notas parseadas do hino
   let staffRushStartTime = 0; // timestamp de início do playback
+  let staffRushHinoElapsed = 0; // tempo acumulado do hino (segundos)
+  let staffRushLastFrameTime = 0; // timestamp do frame anterior
+  let staffRushWaitMode = false; // aguardar aluno apertar nota (modo passo a passo)
   let staffRushHinoActiveNote = null; // nota longa atualmente sendo segurada
   let staffRushHinoDuration = 0; // duração total em segundos do hino ativo
   let staffRushHinoTotalNotes = 0; // total de notas lidas do XML do hino
@@ -9346,6 +9349,10 @@
     staffRushScore = 0;
     staffRushCombo = 1;
     staffRushLives = 3;
+    staffRushHinoElapsed = 0;
+    staffRushLastFrameTime = Date.now();
+    var chk = document.getElementById('chkStaffRushWaitMode');
+    staffRushWaitMode = chk ? chk.checked : false;
 
     if (staffRushPlayMode === 'hino') {
       loadAndSetupHino();
@@ -9503,6 +9510,8 @@
         // Oculta overlay e inicia o loop do jogo
         if (overlay) overlay.style.display = 'none';
         
+        staffRushHinoElapsed = 0;
+        staffRushLastFrameTime = Date.now();
         staffRushStartTime = Date.now();
         staffRushActive = true;
         
@@ -9652,8 +9661,39 @@
     var delayOffset = 3.0; // 3 segundos de preparação para começar a vir as notas
     var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
 
+    var now = Date.now();
+    var deltaSec = 0;
+    if (staffRushLastFrameTime > 0) {
+      deltaSec = (now - staffRushLastFrameTime) / 1000;
+    }
+    staffRushLastFrameTime = now;
+
     if (staffRushPlayMode === 'hino') {
-      var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
+      // Se o modo "Aguardar aluno" estiver ativo, podemos pausar o avanço do tempo
+      var shouldPauseTime = false;
+      if (staffRushWaitMode) {
+        // Filtra notas não respondidas
+        var pendingNotes = staffRushNotes.filter(function (n) {
+          return !n.checked;
+        });
+        if (pendingNotes.length > 0) {
+          // Ordena pela posição x (a mais antiga/esquerda)
+          pendingNotes.sort(function (a, b) { return a.x - b.x; });
+          var nextNote = pendingNotes[0];
+          
+          // Se a nota atingiu o centro do alvo (x=110)
+          if (staffRushHinoElapsed >= nextNote.startSec + delayOffset) {
+            staffRushHinoElapsed = nextNote.startSec + delayOffset;
+            shouldPauseTime = true;
+          }
+        }
+      }
+
+      if (!shouldPauseTime) {
+        staffRushHinoElapsed += deltaSec * playbackSpeed;
+      }
+
+      var musicElapsed = staffRushHinoElapsed;
 
       // Verifica fim do hino
       if (musicElapsed > staffRushHinoDuration + delayOffset + 3) {
@@ -9924,8 +9964,7 @@
   function onStaffRushHinoPointerDown(selectedId, buttonEl) {
     if (!staffRushActive || staffRushLives <= 0) return;
 
-    var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
-    var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
+    var musicElapsed = staffRushHinoElapsed;
     var activeNotes = staffRushNotes.filter(function (n) {
       return !n.checked && n.x > 70;
     });
@@ -10032,8 +10071,7 @@
       note.checked = true;
       staffRushHinoHitNotes++;
 
-      var playbackSpeed = 1.0; // Andamento do hino na velocidade normal da partitura
-      var musicElapsed = ((Date.now() - staffRushStartTime) / 1000) * playbackSpeed;
+      var musicElapsed = staffRushHinoElapsed;
       var heldDuration = musicElapsed - note.hitStartTime;
       var minRequired = note.durationSec * 0.40; // Exige pelo menos 40% do tempo
 
@@ -10539,6 +10577,8 @@
           var badge = document.getElementById('staffRushCurrentModeBadge');
           var hinoControls = document.getElementById('staffRushHinoControls');
 
+          var waitCont = document.getElementById('staffRushWaitModeContainer');
+
           if (staffRushPlayMode === 'arcade') {
             if (overlayTitle) overlayTitle.textContent = 'Corrida de Notas';
             if (overlayText) overlayText.textContent = 'As notas vão deslizar pela pauta. Toque na nota correspondente no momento exato em que ela passar pelo retângulo alvo!';
@@ -10548,6 +10588,7 @@
               badge.style.marginLeft = '0.5rem';
             }
             if (hinoControls) hinoControls.style.display = 'none';
+            if (waitCont) waitCont.style.display = 'none';
           } else {
             if (overlayTitle) overlayTitle.textContent = 'Modo Hino ' + staffRushHinoNumber + ' (Guitar Hero)';
             if (overlayText) overlayText.textContent = 'Toque e SEGURE o botão da nota correspondente pelo tempo de duração dela à medida que ela passar pelo alvo!';
@@ -10557,6 +10598,7 @@
               badge.style.marginLeft = '0.5rem';
             }
             if (hinoControls) hinoControls.style.display = 'flex';
+            if (waitCont) waitCont.style.display = 'flex';
             updateStaffRushHinoSelectorUI();
           }
         });
