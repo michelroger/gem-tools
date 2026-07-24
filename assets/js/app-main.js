@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.58';
+  const APP_VERSION = '1.3.59';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -9672,9 +9672,9 @@
       // Se o modo "Aguardar aluno" estiver ativo, podemos pausar o avanço do tempo
       var shouldPauseTime = false;
       if (staffRushWaitMode) {
-        // Filtra notas não respondidas
+        // Filtra notas não respondidas e que não estejam sendo ativamente seguradas
         var pendingNotes = staffRushNotes.filter(function (n) {
-          return !n.checked;
+          return !n.checked && !n.isBeingHeld;
         });
         if (pendingNotes.length > 0) {
           // Ordena pela posição x (a mais antiga/esquerda)
