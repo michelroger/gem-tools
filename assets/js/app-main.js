@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.3.59';
+  const APP_VERSION = '1.4.1';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -274,6 +274,28 @@
       },
       freqBoard: [
         [130.81], [146.83], [164.81], [174.61], [196.00], [220.00], [246.94]
+      ]
+    },
+    {
+      id: 'tuba',
+      nome: 'Tuba',
+      emoji: '🎺',
+      tipo: 'metal',
+      soundfont: 'tuba',
+      descricao: 'Válvulas de tuba (Bb) — Dó a Si',
+      dedilhado: 'valvulas',
+      notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
+      fingeringMap: {
+        do: 'valvulas: 1+3',
+        re: 'valvulas: 1+2',
+        mi: 'valvulas: 2',
+        fa: 'valvulas: 0',
+        sol: 'valvulas: 0',
+        la: 'valvulas: 1+2',
+        si: 'valvulas: 2'
+      },
+      freqBoard: [
+        [65.41], [73.42], [82.41], [87.31], [98.00], [110.00], [123.47]
       ]
     },
     // VOZ (som GM + nome em solfejo na reprodução do player)
@@ -673,6 +695,7 @@
     trompete: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
     trompa: ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'],
     trombone: ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3'],
+    tuba: ['C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2'],
     chromatic: []
   };
   var tunerStream = null;
@@ -3358,6 +3381,7 @@
     trompete: { speed: 4.8, depth: 0.004, delay: 0.35, ramp: 0.40 },
     trompa: { speed: 4.5, depth: 0.004, delay: 0.40, ramp: 0.40 },
     trombone: { speed: 4.5, depth: 0.004, delay: 0.40, ramp: 0.40 },
+    tuba: { speed: 4.2, depth: 0.003, delay: 0.45, ramp: 0.45 },
     voz: { speed: 5.6, depth: 0.016, delay: 0.15, ramp: 0.30 }
   };
 
@@ -3665,6 +3689,17 @@
       saturation: 0.14,
       outGain: 0.94
     },
+    tuba: {
+      filters: [
+        { type: 'highpass', frequency: 45, Q: 0.7 },
+        { type: 'peaking', frequency: 100, gain: 1.8, Q: 0.9 },
+        { type: 'peaking', frequency: 500, gain: -1.8, Q: 1.0 },
+        { type: 'peaking', frequency: 1800, gain: 1.2, Q: 0.9 },
+        { type: 'highshelf', frequency: 6000, gain: -3.0 }
+      ],
+      saturation: 0.10,
+      outGain: 0.96
+    },
     voz: {
       filters: [
         { type: 'highpass', frequency: 110, Q: 0.7 },
@@ -3766,6 +3801,7 @@
     if (inst === 'trompete') return { attack: 0.011, release: 0.30, gainMul: 0.90 };
     if (inst === 'trompa') return { attack: 0.015, release: 0.38, gainMul: 0.94 };
     if (inst === 'trombone') return { attack: 0.013, release: 0.34, gainMul: 0.92 };
+    if (inst === 'tuba') return { attack: 0.024, release: 0.48, gainMul: 0.96 };
     if (inst === 'voz') return { attack: 0.024, release: 0.55, gainMul: 0.82 };
     return { attack: 0.012, release: 0.34, gainMul: 0.95 };
   }
@@ -3800,6 +3836,14 @@
         midi = midiOrig - 12;
       }
     } else if (instId === 'contrabaixo') {
+      if (midiOrig > 72) { // Acima de C5, transpõe 3 oitavas
+        midi = midiOrig - 36;
+      } else if (midiOrig > 60) { // Acima de C4, transpõe 2 oitavas
+        midi = midiOrig - 24;
+      } else if (midiOrig > 48) { // Acima de C3, transpõe 1 oitava
+        midi = midiOrig - 12;
+      }
+    } else if (instId === 'tuba') {
       if (midiOrig > 72) { // Acima de C5, transpõe 3 oitavas
         midi = midiOrig - 36;
       } else if (midiOrig > 60) { // Acima de C4, transpõe 2 oitavas
@@ -6379,7 +6423,7 @@
     var instId = currentInstrument ? currentInstrument.id : 'violino';
     if (instId === 'viola' || instId === 'trompa') return 'c';
     if (instId === 'trombone' || instId === 'fagote') return 't';
-    if (instId === 'violoncelo' || instId === 'contrabaixo') return 'b';
+    if (instId === 'violoncelo' || instId === 'contrabaixo' || instId === 'tuba') return 'b';
     return 's'; // default Soprano para violino, flauta, clarinete, oboe, trompete, voz
   }
 

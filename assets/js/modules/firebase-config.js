@@ -7,5 +7,5 @@ window.firebaseConfig = {
   storageBucket: "gem-tools.firebasestorage.app",
   messagingSenderId: "1005140348845",
   appId: "1:1005140348845:web:803714c1574cc858705b24",
-  teacherPasswordHash: "d4d5d4a69da1f83ec07d3e3ccb84a680177d9076f89f1ab5138be675fd73cfbd"
+  teacherPasswordHash: "a2bb34780af80cf92faf0872e60567400a910e72543b8de3f47cdb90fc99ffb4"
 };
