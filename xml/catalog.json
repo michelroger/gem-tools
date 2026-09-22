@@ -45,6 +45,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/1_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/1_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/1_b.musicxml"
             }
           },
           "id": "hino-1"
@@ -73,6 +79,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/2_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/2_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/2_b.musicxml"
             }
           },
           "id": "hino-2"
@@ -101,6 +113,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/3_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/3_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/3_b.musicxml"
             }
           },
           "id": "hino-3"
@@ -129,6 +147,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/4_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/4_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/4_b.musicxml"
             }
           },
           "id": "hino-4"
@@ -157,6 +181,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/5_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/5_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/5_b.musicxml"
             }
           },
           "id": "hino-5"
@@ -185,6 +215,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/6_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/6_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/6_b.musicxml"
             }
           },
           "id": "hino-6"
@@ -213,6 +249,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/7_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/7_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/7_b.musicxml"
             }
           },
           "id": "hino-7"
@@ -241,6 +283,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/8_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/8_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/8_b.musicxml"
             }
           },
           "id": "hino-8"
@@ -269,6 +317,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/9_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/9_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/9_b.musicxml"
             }
           },
           "id": "hino-9"
@@ -297,6 +351,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/10_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/10_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/10_b.musicxml"
             }
           },
           "id": "hino-10"
@@ -325,6 +385,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/11_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/11_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/11_b.musicxml"
             }
           },
           "id": "hino-11"
@@ -353,6 +419,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/12_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/12_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/12_b.musicxml"
             }
           },
           "id": "hino-12"
@@ -381,6 +453,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/13_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/13_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/13_b.musicxml"
             }
           },
           "id": "hino-13"
@@ -409,6 +487,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/14_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/14_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/14_b.musicxml"
             }
           },
           "id": "hino-14"
@@ -437,6 +521,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/15_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/15_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/15_b.musicxml"
             }
           },
           "id": "hino-15"
@@ -465,6 +555,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/16_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/16_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/16_b.musicxml"
             }
           },
           "id": "hino-16"
@@ -493,6 +589,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/17_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/17_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/17_b.musicxml"
             }
           },
           "id": "hino-17"
@@ -521,6 +623,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/18_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/18_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/18_b.musicxml"
             }
           },
           "id": "hino-18"
@@ -549,6 +657,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/19_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/19_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/19_b.musicxml"
             }
           },
           "id": "hino-19"
@@ -577,6 +691,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/20_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/20_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/20_b.musicxml"
             }
           },
           "id": "hino-20"
@@ -605,6 +725,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/21_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/21_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/21_b.musicxml"
             }
           },
           "id": "hino-21"
@@ -633,6 +759,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/22_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/22_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/22_b.musicxml"
             }
           },
           "id": "hino-22"
@@ -661,6 +793,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/23_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/23_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/23_b.musicxml"
             }
           },
           "id": "hino-23"
@@ -689,6 +827,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/24_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/24_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/24_b.musicxml"
             }
           },
           "id": "hino-24"
@@ -717,6 +861,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/25_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/25_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/25_b.musicxml"
             }
           },
           "id": "hino-25"
@@ -745,6 +895,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/26_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/26_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/26_b.musicxml"
             }
           },
           "id": "hino-26"
@@ -773,6 +929,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/27_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/27_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/27_b.musicxml"
             }
           },
           "id": "hino-27"
@@ -801,6 +963,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/28_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/28_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/28_b.musicxml"
             }
           },
           "id": "hino-28"
@@ -829,6 +997,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/29_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/29_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/29_b.musicxml"
             }
           },
           "id": "hino-29"
@@ -857,6 +1031,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/30_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/30_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/30_b.musicxml"
             }
           },
           "id": "hino-30"
@@ -885,6 +1065,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/31_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/31_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/31_b.musicxml"
             }
           },
           "id": "hino-31"
@@ -913,6 +1099,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/32_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/32_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/32_b.musicxml"
             }
           },
           "id": "hino-32"
@@ -941,6 +1133,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/33_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/33_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/33_b.musicxml"
             }
           },
           "id": "hino-33"
@@ -969,6 +1167,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/34_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/34_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/34_b.musicxml"
             }
           },
           "id": "hino-34"
@@ -997,6 +1201,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/35_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/35_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/35_b.musicxml"
             }
           },
           "id": "hino-35"
@@ -1025,6 +1235,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/36_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/36_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/36_b.musicxml"
             }
           },
           "id": "hino-36"
@@ -1053,6 +1269,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/37_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/37_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/37_b.musicxml"
             }
           },
           "id": "hino-37"
@@ -1081,6 +1303,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/38_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/38_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/38_b.musicxml"
             }
           },
           "id": "hino-38"
@@ -1109,6 +1337,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/39_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/39_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/39_b.musicxml"
             }
           },
           "id": "hino-39"
@@ -1137,6 +1371,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/40_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/40_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/40_b.musicxml"
             }
           },
           "id": "hino-40"
@@ -1165,6 +1405,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/41_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/41_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/41_b.musicxml"
             }
           },
           "id": "hino-41"
@@ -1193,6 +1439,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/42_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/42_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/42_b.musicxml"
             }
           },
           "id": "hino-42"
@@ -1221,6 +1473,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/43_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/43_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/43_b.musicxml"
             }
           },
           "id": "hino-43"
@@ -1249,6 +1507,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/44_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/44_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/44_b.musicxml"
             }
           },
           "id": "hino-44"
@@ -1277,6 +1541,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/45_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/45_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/45_b.musicxml"
             }
           },
           "id": "hino-45"
@@ -1305,6 +1575,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/46_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/46_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/46_b.musicxml"
             }
           },
           "id": "hino-46"
@@ -1333,6 +1609,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/47_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/47_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/47_b.musicxml"
             }
           },
           "id": "hino-47"
@@ -1361,6 +1643,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/48_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/48_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/48_b.musicxml"
             }
           },
           "id": "hino-48"
@@ -1389,6 +1677,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/49_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/49_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/49_b.musicxml"
             }
           },
           "id": "hino-49"
@@ -1417,6 +1711,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/50_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/50_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/50_b.musicxml"
             }
           },
           "id": "hino-50"
@@ -1445,6 +1745,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/51_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/51_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/51_b.musicxml"
             }
           },
           "id": "hino-51"
@@ -1473,6 +1779,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/52_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/52_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/52_b.musicxml"
             }
           },
           "id": "hino-52"
@@ -1501,6 +1813,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/53_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/53_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/53_b.musicxml"
             }
           },
           "id": "hino-53"
@@ -1557,6 +1875,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/55_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/55_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/55_b.musicxml"
             }
           },
           "id": "hino-55"
@@ -1585,6 +1909,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/56_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/56_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/56_b.musicxml"
             }
           },
           "id": "hino-56"
@@ -1613,6 +1943,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/57_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/57_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/57_b.musicxml"
             }
           },
           "id": "hino-57"
@@ -1641,6 +1977,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/58_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/58_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/58_b.musicxml"
             }
           },
           "id": "hino-58"
@@ -1669,6 +2011,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/59_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/59_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/59_b.musicxml"
             }
           },
           "id": "hino-59"
@@ -1697,6 +2045,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/60_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/60_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/60_b.musicxml"
             }
           },
           "id": "hino-60"
@@ -1725,6 +2079,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/61_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/61_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/61_b.musicxml"
             }
           },
           "id": "hino-61"
@@ -1753,6 +2113,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/62_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/62_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/62_b.musicxml"
             }
           },
           "id": "hino-62"
@@ -1781,6 +2147,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/63_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/63_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/63_b.musicxml"
             }
           },
           "id": "hino-63"
@@ -1809,6 +2181,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/64_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/64_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/64_b.musicxml"
             }
           },
           "id": "hino-64"
@@ -1837,6 +2215,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/65_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/65_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/65_b.musicxml"
             }
           },
           "id": "hino-65"
@@ -1865,6 +2249,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/66_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/66_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/66_b.musicxml"
             }
           },
           "id": "hino-66"
@@ -1893,6 +2283,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/67_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/67_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/67_b.musicxml"
             }
           },
           "id": "hino-67"
@@ -1921,6 +2317,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/68_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/68_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/68_b.musicxml"
             }
           },
           "id": "hino-68"
@@ -1949,6 +2351,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/69_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/69_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/69_b.musicxml"
             }
           },
           "id": "hino-69"
@@ -1977,6 +2385,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/70_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/70_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/70_b.musicxml"
             }
           },
           "id": "hino-70"
@@ -2005,6 +2419,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/71_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/71_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/71_b.musicxml"
             }
           },
           "id": "hino-71"
@@ -2033,6 +2453,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/72_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/72_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/72_b.musicxml"
             }
           },
           "id": "hino-72"
@@ -2061,6 +2487,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/73_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/73_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/73_b.musicxml"
             }
           },
           "id": "hino-73"
@@ -2089,6 +2521,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/74_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/74_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/74_b.musicxml"
             }
           },
           "id": "hino-74"
@@ -2117,6 +2555,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/75_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/75_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/75_b.musicxml"
             }
           },
           "id": "hino-75"
@@ -2145,6 +2589,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/76_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/76_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/76_b.musicxml"
             }
           },
           "id": "hino-76"
@@ -2173,6 +2623,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/77_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/77_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/77_b.musicxml"
             }
           },
           "id": "hino-77"
@@ -2201,6 +2657,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/78_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/78_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/78_b.musicxml"
             }
           },
           "id": "hino-78"
@@ -2229,6 +2691,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/79_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/79_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/79_b.musicxml"
             }
           },
           "id": "hino-79"
@@ -2257,6 +2725,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/80_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/80_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/80_b.musicxml"
             }
           },
           "id": "hino-80"
@@ -2285,6 +2759,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/81_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/81_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/81_b.musicxml"
             }
           },
           "id": "hino-81"
@@ -2313,6 +2793,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/82_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/82_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/82_b.musicxml"
             }
           },
           "id": "hino-82"
@@ -2341,6 +2827,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/83_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/83_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/83_b.musicxml"
             }
           },
           "id": "hino-83"
@@ -2369,6 +2861,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/84_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/84_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/84_b.musicxml"
             }
           },
           "id": "hino-84"
@@ -2397,6 +2895,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/85_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/85_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/85_b.musicxml"
             }
           },
           "id": "hino-85"

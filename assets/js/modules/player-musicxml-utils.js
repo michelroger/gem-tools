@@ -173,6 +173,32 @@
    * A partitura desenhada fica original; o áudio expande retornelas e casas quando o MusicXML as informa.
    * Depende de `StaffMathUtils.midiToFreq` e `MetronomeUtils.fromMusicXmlElement` (carregados no head).
    */
+  function detectPartVoiceChar(part, xmlDoc, partIndex, totalParts) {
+    var partId = part.getAttribute ? part.getAttribute('id') : null;
+    var nameText = '';
+    if (partId && xmlDoc) {
+      var sp = xmlDoc.querySelector('score-part[id="' + partId + '"]');
+      if (sp) {
+        var pn = sp.querySelector('part-name');
+        var pa = sp.querySelector('part-abbreviation');
+        nameText = ((pn ? pn.textContent : '') + ' ' + (pa ? pa.textContent : '')).toLowerCase().trim();
+      }
+    }
+    if (nameText) {
+      if (/\b3p\b|3[ªa]\s*p|tenor|\bt\b/.test(nameText)) return 't';
+      if (/\b4p\b|4[ªa]\s*p|baixo|bass|bxo|\bb\b/.test(nameText)) return 'b';
+      if (/\b1p\b|1[ªa]\s*p|soprano|sop|\bs\b/.test(nameText)) return 's';
+      if (/\b2p\b|2[ªa]\s*p|contralto|alto|\bc\b/.test(nameText)) return 'c';
+    }
+    var clef = part.querySelector('clef sign');
+    var clefSign = clef && clef.textContent ? clef.textContent.trim().toUpperCase() : '';
+    if (totalParts === 2) {
+      if (clefSign === 'F') return partIndex === 0 ? 't' : 'b';
+      if (clefSign === 'G') return partIndex === 0 ? 's' : 'c';
+    }
+    return null;
+  }
+
   function parseMusicXml(xmlText) {
     var parser = new DOMParser();
     var xmlDoc = parser.parseFromString(xmlText, 'application/xml');
@@ -191,6 +217,7 @@
     var scoreBaselineMarkingBeatUnit = 'quarter';
 
     parts.forEach(function (part, partIndex) {
+      var detectedVoiceChar = detectPartVoiceChar(part, xmlDoc, partIndex, parts.length);
       var timelineSec = 0;
       var tempo = 60;
       var divisions = 1;
@@ -342,7 +369,8 @@
               isChord: isChord,
               midi: midi,
               freq: freq,
-              partIndex: partIndex
+              partIndex: partIndex,
+              voiceChar: detectedVoiceChar || null
             };
             partEvents.push(evObj);
             measureEvents.push(evObj);

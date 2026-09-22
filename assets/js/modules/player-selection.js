@@ -37,7 +37,7 @@
     return ['s', 'c', 't', 'b'].filter(function (v) { return !!files[v]; });
   }
 
-  function normalizeSelectedVoices(selectedVoices, availableVoices) {
+  function normalizeSelectedVoices(selectedVoices, availableVoices, preferredVoice) {
     var selected = Array.isArray(selectedVoices) ? selectedVoices.slice() : ['s'];
     selected = selected.map(function (v) { return String(v || '').toLowerCase(); })
       .filter(function (v, idx, arr) {
@@ -45,18 +45,30 @@
       });
     if (availableVoices && availableVoices.length) {
       selected = selected.filter(function (v) { return availableVoices.indexOf(v) >= 0; });
-      if (!selected.length) selected = [availableVoices[0]];
+      if (!selected.length) {
+        var pref = preferredVoice ? String(preferredVoice).toLowerCase() : '';
+        if (pref && availableVoices.indexOf(pref) >= 0) {
+          selected = [pref];
+        } else {
+          selected = [availableVoices[0]];
+        }
+      }
     }
     return selected.length ? selected : ['s'];
   }
 
   function buildVoicePaths(files, selectedVoices) {
     var selected = Array.isArray(selectedVoices) ? selectedVoices : [];
+    var seen = {};
     return selected.map(function (voice) {
       var raw = files && files[voice] ? String(files[voice]) : '';
       if (!raw) return '';
       return './' + raw.replace(/^\.\//, '').replace(/^\/+/, '');
-    }).filter(function (p) { return !!p; });
+    }).filter(function (p) {
+      if (!p || seen[p]) return false;
+      seen[p] = true;
+      return true;
+    });
   }
 
   window.PlayerSelectionModule = window.PlayerSelectionModule || {};

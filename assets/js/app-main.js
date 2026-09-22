@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.4.1';
+  const APP_VERSION = '1.4.2';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6428,7 +6428,9 @@
   }
 
   function getPlayerEventVoiceChar(ev) {
-    if (!ev || ev.partIndex == null || !playerSelectedVoices) return 's';
+    if (!ev) return 's';
+    if (ev.voiceChar) return ev.voiceChar.toLowerCase();
+    if (ev.partIndex == null || !playerSelectedVoices) return 's';
     var char = playerSelectedVoices[ev.partIndex];
     return char ? char.toLowerCase() : 's';
   }
@@ -7289,7 +7291,8 @@
   }
 
   function normalizePlayerSelectedVoices(availableVoices) {
-    playerSelectedVoices = window.PlayerSelectionModule.normalizeSelectedVoices(playerSelectedVoices, availableVoices);
+    var preferred = getPlayerLiveActiveVoiceChar();
+    playerSelectedVoices = window.PlayerSelectionModule.normalizeSelectedVoices(playerSelectedVoices, availableVoices, preferred);
   }
 
   function resolvePlayerCurrentSelection() {
