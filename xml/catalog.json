@@ -13099,6 +13099,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/431_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/431_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/431_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/431_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/431_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-431"
@@ -13127,6 +13139,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/432_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/432_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/432_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/432_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/432_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-432"
@@ -13155,6 +13179,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/433_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/433_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/433_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/433_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/433_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-433"
@@ -13183,6 +13219,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/434_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/434_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/434_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/434_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/434_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-434"
@@ -13211,6 +13259,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/435_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/435_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/435_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/435_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/435_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-435"
@@ -13239,6 +13299,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/436_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/436_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/436_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/436_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/436_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-436"
@@ -13267,6 +13339,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/437_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/437_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/437_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/437_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/437_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-437"
@@ -13295,6 +13379,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/438_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/438_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/438_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/438_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/438_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-438"
@@ -13323,6 +13419,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/439_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/439_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/439_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/439_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/439_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-439"
@@ -13351,6 +13459,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/440_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/440_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/440_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/440_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/440_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-440"
@@ -13379,6 +13499,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/441_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/441_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/441_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/441_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/441_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-441"
@@ -13407,6 +13539,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/442_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/442_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/442_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/442_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/442_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-442"
@@ -13435,6 +13579,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/443_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/443_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/443_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/443_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/443_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-443"
@@ -13463,6 +13619,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/444_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/444_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/444_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/444_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/444_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-444"
@@ -13491,6 +13659,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/445_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/445_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/445_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/445_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/445_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-445"
@@ -13519,6 +13699,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/446_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/446_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/446_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/446_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/446_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-446"
@@ -13547,6 +13739,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/447_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/447_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/447_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/447_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/447_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-447"
@@ -13575,6 +13779,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/448_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/448_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/448_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/448_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/448_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-448"
@@ -13603,6 +13819,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/449_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/449_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/449_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/449_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/449_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-449"
@@ -13631,6 +13859,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/450_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/450_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/450_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/450_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/450_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-450"
@@ -13659,6 +13899,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/451_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/451_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/451_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/451_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/451_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-451"
@@ -13687,6 +13939,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/452_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/452_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/452_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/452_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/452_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-452"
@@ -13715,6 +13979,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/453_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/453_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/453_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/453_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/453_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-453"
@@ -13743,6 +14019,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/454_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/454_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/454_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/454_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-454"
@@ -13771,6 +14059,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/455_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/455_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/455_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/455_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/455_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-455"
@@ -13799,6 +14099,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/456_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/456_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/456_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/456_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/456_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-456"
@@ -13827,6 +14139,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/457_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/457_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/457_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/457_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/457_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-457"
@@ -13855,6 +14179,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/458_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/458_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/458_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/458_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/458_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-458"
@@ -13883,6 +14219,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/459_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/459_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/459_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/459_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/459_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-459"
@@ -13911,6 +14259,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/460_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/460_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/460_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/460_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/460_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-460"
@@ -13939,6 +14299,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/461_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/461_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/461_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/461_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/461_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-461"
@@ -13967,6 +14339,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/462_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/462_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/462_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/462_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/462_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-462"
@@ -13995,6 +14379,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/463_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/463_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/463_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/463_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/463_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-463"
@@ -14023,6 +14419,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/464_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/464_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/464_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/464_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/464_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-464"
@@ -14051,6 +14459,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/465_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/465_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/465_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/465_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/465_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-465"
@@ -14079,6 +14499,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/466_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/466_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/466_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/466_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/466_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-466"
@@ -14107,6 +14539,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/467_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/467_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/467_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/467_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/467_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-467"
@@ -14135,6 +14579,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/468_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/468_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/468_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/468_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/468_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-468"
@@ -14163,6 +14619,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/469_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/469_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/469_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/469_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/469_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-469"
@@ -14191,6 +14659,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/470_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/470_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/470_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/470_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/470_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-470"
@@ -14219,6 +14699,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/471_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/471_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/471_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/471_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/471_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-471"
@@ -14247,6 +14739,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/472_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/472_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/472_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/472_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/472_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-472"
@@ -14275,6 +14779,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/473_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/473_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/473_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/473_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/473_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-473"
@@ -14303,6 +14819,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/474_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/474_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/474_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/474_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/474_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-474"
@@ -14331,6 +14859,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/475_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/475_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/475_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/475_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/475_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-475"
@@ -14359,6 +14899,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/476_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/476_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/476_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/476_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/476_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-476"
@@ -14387,6 +14939,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/477_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/477_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/477_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/477_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/477_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-477"
@@ -14415,6 +14979,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/478_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/478_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/478_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/478_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/478_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-478"
@@ -14443,6 +15019,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/479_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/479_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/479_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/479_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/479_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-479"
@@ -14471,6 +15059,18 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/480_b.musicxml"
+            },
+            "tuba": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/tuba/480_t.musicxml",
+              "b": "xml/colecoes/hinario5-ccb/do/tuba/480_b.musicxml"
+            },
+            "flauta": {
+              "s": "xml/colecoes/hinario5-ccb/do/flauta/480_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/do/flauta/480_s8.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-480"
