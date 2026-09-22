@@ -185,6 +185,7 @@
       }
     }
     if (nameText) {
+      if (/\b(sop8|s8|soprano\s*8)\b/.test(nameText)) return 'c';
       if (/\b3p\b|3[ªa]\s*p|tenor|\bt\b/.test(nameText)) return 't';
       if (/\b4p\b|4[ªa]\s*p|baixo|bass|bxo|\bb\b/.test(nameText)) return 'b';
       if (/\b1p\b|1[ªa]\s*p|soprano|sop|\bs\b/.test(nameText)) return 's';

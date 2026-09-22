@@ -203,12 +203,12 @@
   /** Afinação sugerida da ficha conforme tipo de instrumento. */
   function defaultAfinaçãoForInstrument(inst) {
     if (!inst) return 'do';
-    if (inst.id === 'tuba' || inst.id === 'trombone' || inst.id === 'fagote') return 'do';
+    if (inst.id === 'flauta' || inst.id === 'oboe' || inst.id === 'tuba' || inst.id === 'trombone' || inst.id === 'fagote') return 'do';
     if (inst.id === 'clarinete') return 'sib';
     if (inst.id === 'saxofone') return 'mib';
     if (inst.tipo === 'corda') return 'do';
     if (inst.tipo === 'metal') return 'sib';
-    if (inst.tipo === 'sopro') return 'mib';
+    if (inst.tipo === 'sopro') return 'do';
     return 'do';
   }
 

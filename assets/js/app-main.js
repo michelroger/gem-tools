@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.4.2';
+  const APP_VERSION = '1.4.3';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -7464,8 +7464,14 @@
     var voices = getPlayerAvailableVoices(currentItem);
     if (!voices.length) voices = ['s'];
     normalizePlayerSelectedVoices(voices);
-    voiceChecks.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+    var isFlauta = currentInstrument && currentInstrument.id === 'flauta';
+    voiceChecks.querySelectorAll('.player-voice-check').forEach(function (lbl) {
+      var cb = lbl.querySelector('input[type="checkbox"]');
+      if (!cb) return;
       var v = String(cb.value || '').toLowerCase();
+      if (v === 'c') {
+        lbl.lastChild.textContent = isFlauta ? ' Soprano 8ª' : ' Contralto';
+      }
       var enabled = voices.indexOf(v) >= 0;
       var checked = enabled && playerSelectedVoices.indexOf(v) >= 0;
       window.UiCoreModule.setCheckboxState(cb, enabled, checked);
