@@ -27757,6 +27757,2406 @@
               "b": ""
             }
           }
+        },
+        {
+          "id": "metodo-trompete-1",
+          "numero": 1,
+          "titulo": "Nossa primeira nota MI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/01 Nossa primeira nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-2",
+          "numero": 2,
+          "titulo": "Nossa segunda nota FA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/02 Nossa segunda nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-3",
+          "numero": 3,
+          "titulo": "Três é demais",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/03 Três é demais.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-4",
+          "numero": 4,
+          "titulo": "Quatro seguidas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/04 Quatro seguidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-5",
+          "numero": 5,
+          "titulo": "Uma dupla engraçada",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/05 Uma dupla engraçada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-6",
+          "numero": 6,
+          "titulo": "Sam do skate",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/06 Sam do skate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-7",
+          "numero": 7,
+          "titulo": "Atenção nessa nota",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/07 Atenção nessa nota.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-8",
+          "numero": 8,
+          "titulo": "Continue soprando",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/08 Continue soprando.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-9",
+          "numero": 9,
+          "titulo": "Nossa terceira nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/09 Nossa terceira nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-10",
+          "numero": 10,
+          "titulo": "Preguiçoso no sofá",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/10 Preguiçoso no sofá.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-11",
+          "numero": 11,
+          "titulo": "Cachorrinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/11 Cachorrinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-12",
+          "numero": 12,
+          "titulo": "Nossa quarta nota RÉ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/12 Nossa quarta nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-13",
+          "numero": 13,
+          "titulo": "Maçã para o professor",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/13 Maçã para o professor.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-14",
+          "numero": 14,
+          "titulo": "Nossa quinta nota DÓ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/14 Nossa quinta nota DÓ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-15",
+          "numero": 15,
+          "titulo": "Carros de bate bate",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/15 Carros de bate bate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-16",
+          "numero": 16,
+          "titulo": "Mínimas acontecem",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/16 Mínimas acontecem.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-17",
+          "numero": 17,
+          "titulo": "Pães doces",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/17 Pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-18",
+          "numero": 18,
+          "titulo": "Saltando a montanha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/18 Saltando a montanha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-19",
+          "numero": 19,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/19 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-20",
+          "numero": 20,
+          "titulo": "Semínimas com pausas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/20 Semínimas com pausas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-21",
+          "numero": 21,
+          "titulo": "Gira o dado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/21 Gira o dado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-22",
+          "numero": 22,
+          "titulo": "Mínimas repetidas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/22 Mínimas repetidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-23",
+          "numero": 23,
+          "titulo": "Nova nota SI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/23 Nova nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-24",
+          "numero": 24,
+          "titulo": "Sem incomodar",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/24 Sem incomodar.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-25",
+          "numero": 25,
+          "titulo": "Golpe da língua",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/25 Golpe da língua.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-26",
+          "numero": 26,
+          "titulo": "Yankee Doodle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/26 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-27",
+          "numero": 27,
+          "titulo": "Nova nota LA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/27 Nova nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-28",
+          "numero": 28,
+          "titulo": "Cruzeiro do Caribe",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/28 Cruzeiro do Caribe.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-29",
+          "numero": 29,
+          "titulo": "Casa no sítio",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/29 Casa no sítio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-30",
+          "numero": 30,
+          "titulo": "Deslizando em colcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/30 Deslizando em colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-31",
+          "numero": 31,
+          "titulo": "Canção do repolho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/31 Canção do repolho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-32",
+          "numero": 32,
+          "titulo": "O velho MacDonald",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/32 O velho MacDonald.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-33",
+          "numero": 33,
+          "titulo": "Fogo brilhante",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/33 Fogo brilhante.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-34",
+          "numero": 34,
+          "titulo": "Ponte de Londres",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/34 Ponte de Londres.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-35",
+          "numero": 35,
+          "titulo": "Rosas do Sul",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/35 Rosas do Sul.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-36",
+          "numero": 36,
+          "titulo": "Encantador de notas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/36 Encantador de notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-37",
+          "numero": 37,
+          "titulo": "Cabelos dourados",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/37 Cabelos dourados.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-38",
+          "numero": 38,
+          "titulo": "Brilha brilha estrelinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/38 Brilha brilha estrelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-39",
+          "numero": 39,
+          "titulo": "Hino a alegria",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/39 Hino a alegria.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-40",
+          "numero": 40,
+          "titulo": "Nova nota SIb / LA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/40 Nova nota SIb _ LA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-41",
+          "numero": 41,
+          "titulo": "Yankee Doodle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/41 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-42",
+          "numero": 42,
+          "titulo": "Cabana na floresta",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/42 Cabana na floresta.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-43",
+          "numero": 43,
+          "titulo": "Cópia perfeita",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/43 Cópia perfeita.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-44",
+          "numero": 44,
+          "titulo": "Polly Wolly",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/44 Polly Wolly.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-45",
+          "numero": 45,
+          "titulo": "Nova nota SOLb / FA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/45 Nova nota SOLb _ FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-46",
+          "numero": 46,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/46 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-47",
+          "numero": 47,
+          "titulo": "Ó vinde criancinhas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/47 Ó vinde criancinhas - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/47 Ó vinde criancinhas - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-48",
+          "numero": 48,
+          "titulo": "A esperança",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/48 A esperança.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-49",
+          "numero": 49,
+          "titulo": "Insultos escorregadios",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/49 Insultos escorregadios.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-50",
+          "numero": 50,
+          "titulo": "Você está dormindo?",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/50 Você está dormindo_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-51",
+          "numero": 51,
+          "titulo": "Mais colcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/51 Mais colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-52",
+          "numero": 52,
+          "titulo": "Pra frente e pra trás",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/52 Pra frente e pra trás.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-53",
+          "numero": 53,
+          "titulo": "América",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/53 América.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-54",
+          "numero": 54,
+          "titulo": "Falta técnica",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/54 Falta técnica.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-55",
+          "numero": 55,
+          "titulo": "Ritmo misturado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/55 Ritmo misturado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-56",
+          "numero": 56,
+          "titulo": "Nova nota SIb / LA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/56 Nova nota SIb _ LA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-57",
+          "numero": 57,
+          "titulo": "Mais pães doces",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/57 Mais pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-58",
+          "numero": 58,
+          "titulo": "É natural ( Bequadro )",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/58 É natural ( Bequadro ).musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-59",
+          "numero": 59,
+          "titulo": "Lute e vença",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/59 Lute e vença.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-60",
+          "numero": 60,
+          "titulo": "Minuet",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/60 Minuet.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-61",
+          "numero": 61,
+          "titulo": "Ruben e Raquel",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/61 Ruben e Raquel.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-62",
+          "numero": 62,
+          "titulo": "Quando amor é gentil",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/62 Quando amor é gentil.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-63",
+          "numero": 63,
+          "titulo": "Chapéu mexicano",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/63 Chapéu mexicano.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-64",
+          "numero": 64,
+          "titulo": "Blues dues",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/64 Blues dues.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-65",
+          "numero": 65,
+          "titulo": "Respiração profunda",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/65 Respiração profunda.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-66",
+          "numero": 66,
+          "titulo": "Quando todos marcham",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/66 Quando todos marcham.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-67",
+          "numero": 67,
+          "titulo": "Abertura de flechas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/67 Abertura de flechas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-68",
+          "numero": 68,
+          "titulo": "Esse velho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/68 Esse velho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-69",
+          "numero": 69,
+          "titulo": "Nova nota DO# / REb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/69 Nova nota DO# _ REb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-70",
+          "numero": 70,
+          "titulo": "Cantando docemente",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/70 Cantando docemente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-71",
+          "numero": 71,
+          "titulo": "Truque de ritmos",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/71 Truque de ritmos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-72",
+          "numero": 72,
+          "titulo": "Nova nota LA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/72 Nova nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-73",
+          "numero": 73,
+          "titulo": "Bye baby",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/73 Bye baby.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-74",
+          "numero": 74,
+          "titulo": "Mostrar a Melodia",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/74 Mostrar a Melodia.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-75",
+          "numero": 75,
+          "titulo": "Nova nota SOL# / LAb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/75 Nova nota SOL# _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-76",
+          "numero": 76,
+          "titulo": "Barcarolle",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/76 Barcarolle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-77",
+          "numero": 77,
+          "titulo": "Nova nota SI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/77 Nova nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-78",
+          "numero": 78,
+          "titulo": "Nova nota DÓ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/78 Nova nota DÓ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-79",
+          "numero": 79,
+          "titulo": "Nova nota RE# / MIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/79 Nova nota RE# _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-80",
+          "numero": 80,
+          "titulo": "Nova nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/80 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-81",
+          "numero": 81,
+          "titulo": "Nova nota SOL# / LAb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/81 Nova nota SOL# _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-82",
+          "numero": 82,
+          "titulo": "Nova nota FA# / SOLb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/82 Nova nota FA# _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-83",
+          "numero": 83,
+          "titulo": "Lembrando notas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/83 Lembrando notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-84",
+          "numero": 84,
+          "titulo": "Moldura labial",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/84 Moldura labial.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-85",
+          "numero": 85,
+          "titulo": "Todas em ligaduras",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/85 Todas em ligaduras.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-86",
+          "numero": 86,
+          "titulo": "Nova nota RÉ",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/86 Nova nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-87",
+          "numero": 87,
+          "titulo": "Nova nota RE# / MIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/87 Nova nota RE# _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-88",
+          "numero": 88,
+          "titulo": "Can Can",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/88 Can Can.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-89",
+          "numero": 89,
+          "titulo": "La Bamba",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/89 La Bamba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-90",
+          "numero": 90,
+          "titulo": "Simples presente",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/90 Simples presente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-91",
+          "numero": 91,
+          "titulo": "Nova nota DÓ# / REb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/91 Nova nota DÓ# _ REb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-92",
+          "numero": 92,
+          "titulo": "Nova nota MI",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/92 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-93",
+          "numero": 93,
+          "titulo": "Nova nota SOL",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/93 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-94",
+          "numero": 94,
+          "titulo": "Amazing Grace",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/94 Amazing Grace.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-95",
+          "numero": 95,
+          "titulo": "Nova nota FA",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/95 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-96",
+          "numero": 96,
+          "titulo": "Nova nota FA# / SOLb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/96 Nova nota FA# _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-97",
+          "numero": 97,
+          "titulo": "Treino labial 0",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/97 Treino labial 0.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-98",
+          "numero": 98,
+          "titulo": "Treino labial 2",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/98 Treino labial 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-99",
+          "numero": 99,
+          "titulo": "Treino labial 1",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/99 Treino labial 1.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-100",
+          "numero": 100,
+          "titulo": "Treino labial 1 e 2",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/100 Treino labial 1 e 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-101",
+          "numero": 101,
+          "titulo": "Treino labial 2 e 3",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/101 Treino labial 2 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-102",
+          "numero": 102,
+          "titulo": "Treino labial 1 e 3",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/102 Treino labial 1 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-103",
+          "numero": 103,
+          "titulo": "Treino labial 1 2 3",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/103 Treino labial 1 2 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-104",
+          "numero": 104,
+          "titulo": "Escala DÓ maior",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/104 Escala DÓ maior.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-105",
+          "numero": 105,
+          "titulo": "Alecrim dourado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/105 Alecrim dourado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-106",
+          "numero": 106,
+          "titulo": "Melody Anacreon in H - JS Smith",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/106 Melody Anacreon in H - JS Smith.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-107",
+          "numero": 107,
+          "titulo": "Escala de Fá Maior - SIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/107 Escala de Fá Maior - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-108",
+          "numero": 108,
+          "titulo": "Waltz 2",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/108 Waltz 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-109",
+          "numero": 109,
+          "titulo": "Patrulha americana",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/109 Patrulha americana.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-110",
+          "numero": 110,
+          "titulo": "Escala de SOL maior - FA#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/110 Escala de SOL maior - FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-111",
+          "numero": 111,
+          "titulo": "A dona aranha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/111 A dona aranha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-112",
+          "numero": 112,
+          "titulo": "A barata",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/112 A barata.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-113",
+          "numero": 113,
+          "titulo": "Escala SIb maior - SIb / MIb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/113 Escala SIb maior - SIb _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-114",
+          "numero": 114,
+          "titulo": "Tema J.G Burt",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/114 Tema J.G Burt - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/114 Tema J.G Burt - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-115",
+          "numero": 115,
+          "titulo": "Escala de RÉ maior - Fa# / Do#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/115 Escala de RÉ maior - Fa# _ Do#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-116",
+          "numero": 116,
+          "titulo": "Fui ao mercado",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/116 Fui ao mercado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-117",
+          "numero": 117,
+          "titulo": "A janelinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/117 A janelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-118",
+          "numero": 118,
+          "titulo": "Escala MIb maior - SIb / MIb / LAb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/118 Escala MIb maior - SIb _ MIb _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-119",
+          "numero": 119,
+          "titulo": "Tema P.P. Bliss",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/119 Tema P.P. Bliss - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/119 Tema P.P. Bliss - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-120",
+          "numero": 120,
+          "titulo": "Escala LA maior - Fa# / Do# / Sol#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/120 Escala LA maior - Fa# _ Do# _ Sol#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-121",
+          "numero": 121,
+          "titulo": "Minuet 1 - JS Bach",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/121 Minuet 1 - JS Bach.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-122",
+          "numero": 122,
+          "titulo": "Amigos para sempre",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/122 Amigos para sempre.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-123",
+          "numero": 123,
+          "titulo": "Escala de Mi Maior - Fa# / Do# / Sol# / Ré#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/123 Escala de Mi Maior - Fa# _ Do# _ Sol# _ Ré#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-124",
+          "numero": 124,
+          "titulo": "Andantino",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/124 Andantino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-125",
+          "numero": 125,
+          "titulo": "Hino 441 Eu sou um cordeirinho",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/125 Hino 441 Eu sou um cordeirinho - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/125 Hino 441 Eu sou um cordeirinho - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-126",
+          "numero": 126,
+          "titulo": "Escala de Si maior - Fa# / Do# / Sol# / La#",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/126 Escala de Si maior - Fa# _ Do# _ Sol# _ La#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-127",
+          "numero": 127,
+          "titulo": "Nova nota SOL # / LAb",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/127 Nova nota SOL # _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-128",
+          "numero": 128,
+          "titulo": "Long, long ago",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/128 Long, long ago.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-129",
+          "numero": 129,
+          "titulo": "Go Tell Aunt Rhody",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/129 Go Tell Aunt Rhody.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-130",
+          "numero": 130,
+          "titulo": "Perpetual Motion",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/130 Perpetual Motion.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-131",
+          "numero": 131,
+          "titulo": "Allegro",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/131 Allegro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-132",
+          "numero": 132,
+          "titulo": "Conheça as tercinas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/132 Conheça as tercinas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-133",
+          "numero": 133,
+          "titulo": "Aprendendo pontuadas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/133 Aprendendo pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-134",
+          "numero": 134,
+          "titulo": "Pula pula pipoquinha",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/134 Pula pula pipoquinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-135",
+          "numero": 135,
+          "titulo": "Brilha brilha estrelinha com colcheias, tercinas e pontuadas",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/135 Brilha brilha estrelinha com colcheias, tercinas e pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-136",
+          "numero": 136,
+          "titulo": "Um ternário em quatro",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/136 Um ternário em quatro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-137",
+          "numero": 137,
+          "titulo": "Day 0",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/137 Day 0.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-138",
+          "numero": 138,
+          "titulo": "Binário composto 6/4",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/138 Binário composto 6_4.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-139",
+          "numero": 139,
+          "titulo": "As semicolcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/139 As semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-140",
+          "numero": 140,
+          "titulo": "Escala em FA maior com semicolcheias",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/140 Escala em FA maior com semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-141",
+          "numero": 141,
+          "titulo": "Binário composto 6/8",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/141 Binário composto 6_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-142",
+          "numero": 142,
+          "titulo": "Um ternário composto 9/8",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/142 Um ternário composto 9_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-143",
+          "numero": 143,
+          "titulo": "Um quaternário composto",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/143 Um quaternário composto.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-144",
+          "numero": 144,
+          "titulo": "Theme from new world sinphony",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/144 Theme from new world sinphony.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-145",
+          "numero": 145,
+          "titulo": "O sole mio",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/145 O sole mio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-146",
+          "numero": 146,
+          "titulo": "Lá califa",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/146 Lá califa - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/146 Lá califa - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-147",
+          "numero": 147,
+          "titulo": "Mais perto quero estar",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/147 Mais perto quero estar - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/147 Mais perto quero estar - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-148",
+          "numero": 148,
+          "titulo": "Saudade",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/148 Saudade - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/148 Saudade - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-149",
+          "numero": 149,
+          "titulo": "Toda a glória a Jesus",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/149 Toda a glória a Jesus - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/149 Toda a glória a Jesus - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-trompete-150",
+          "numero": 150,
+          "titulo": "Ação de graças darei",
+          "afinacao": "sib",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "trompete": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/150 Ação de graças darei - Sop.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/sib/trompete/150 Ação de graças darei - Ctr.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
         }
       ]
     }
