@@ -57,6 +57,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/1_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/1_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/1_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-1"
@@ -96,6 +102,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/2_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/2_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/2_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/2_t.musicxml",
               "b": ""
             }
           },
@@ -137,6 +149,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/3_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/3_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/3_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-3"
@@ -176,6 +194,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/4_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/4_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/4_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/4_t.musicxml",
               "b": ""
             }
           },
@@ -217,6 +241,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/5_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/5_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/5_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-5"
@@ -256,6 +286,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/6_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/6_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/6_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/6_t.musicxml",
               "b": ""
             }
           },
@@ -297,6 +333,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/7_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/7_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/7_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-7"
@@ -336,6 +378,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/8_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/8_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/8_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/8_t.musicxml",
               "b": ""
             }
           },
@@ -377,6 +425,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/9_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/9_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/9_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-9"
@@ -416,6 +470,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/10_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/10_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/10_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/10_t.musicxml",
               "b": ""
             }
           },
@@ -457,6 +517,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/11_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/11_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/11_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-11"
@@ -496,6 +562,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/12_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/12_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/12_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/12_t.musicxml",
               "b": ""
             }
           },
@@ -537,6 +609,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/13_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/13_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/13_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-13"
@@ -576,6 +654,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/14_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/14_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/14_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/14_t.musicxml",
               "b": ""
             }
           },
@@ -617,6 +701,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/15_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/15_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/15_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-15"
@@ -656,6 +746,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/16_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/16_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/16_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/16_t.musicxml",
               "b": ""
             }
           },
@@ -697,6 +793,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/17_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/17_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/17_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-17"
@@ -736,6 +838,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/18_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/18_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/18_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/18_t.musicxml",
               "b": ""
             }
           },
@@ -777,6 +885,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/19_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/19_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/19_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-19"
@@ -816,6 +930,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/20_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/20_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/20_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/20_t.musicxml",
               "b": ""
             }
           },
@@ -857,6 +977,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/21_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/21_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/21_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-21"
@@ -896,6 +1022,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/22_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/22_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/22_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/22_t.musicxml",
               "b": ""
             }
           },
@@ -937,6 +1069,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/23_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/23_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/23_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-23"
@@ -976,6 +1114,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/24_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/24_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/24_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/24_t.musicxml",
               "b": ""
             }
           },
@@ -1017,6 +1161,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/25_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/25_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/25_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-25"
@@ -1056,6 +1206,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/26_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/26_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/26_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/26_t.musicxml",
               "b": ""
             }
           },
@@ -1097,6 +1253,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/27_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/27_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/27_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-27"
@@ -1136,6 +1298,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/28_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/28_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/28_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/28_t.musicxml",
               "b": ""
             }
           },
@@ -1177,6 +1345,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/29_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/29_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/29_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-29"
@@ -1216,6 +1390,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/30_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/30_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/30_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/30_t.musicxml",
               "b": ""
             }
           },
@@ -1257,6 +1437,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/31_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/31_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/31_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-31"
@@ -1296,6 +1482,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/32_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/32_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/32_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/32_t.musicxml",
               "b": ""
             }
           },
@@ -1337,6 +1529,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/33_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/33_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/33_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-33"
@@ -1376,6 +1574,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/34_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/34_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/34_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/34_t.musicxml",
               "b": ""
             }
           },
@@ -1417,6 +1621,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/35_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/35_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/35_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-35"
@@ -1456,6 +1666,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/36_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/36_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/36_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/36_t.musicxml",
               "b": ""
             }
           },
@@ -1497,6 +1713,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/37_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/37_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/37_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-37"
@@ -1536,6 +1758,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/38_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/38_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/38_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/38_t.musicxml",
               "b": ""
             }
           },
@@ -1577,6 +1805,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/39_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/39_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/39_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-39"
@@ -1616,6 +1850,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/40_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/40_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/40_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/40_t.musicxml",
               "b": ""
             }
           },
@@ -1657,6 +1897,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/41_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/41_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/41_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-41"
@@ -1696,6 +1942,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/42_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/42_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/42_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/42_t.musicxml",
               "b": ""
             }
           },
@@ -1737,6 +1989,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/43_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/43_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/43_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-43"
@@ -1776,6 +2034,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/44_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/44_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/44_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/44_t.musicxml",
               "b": ""
             }
           },
@@ -1817,6 +2081,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/45_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/45_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/45_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-45"
@@ -1856,6 +2126,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/46_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/46_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/46_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/46_t.musicxml",
               "b": ""
             }
           },
@@ -1897,6 +2173,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/47_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/47_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/47_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-47"
@@ -1936,6 +2218,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/48_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/48_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/48_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/48_t.musicxml",
               "b": ""
             }
           },
@@ -1977,6 +2265,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/49_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/49_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/49_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-49"
@@ -2016,6 +2310,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/50_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/50_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/50_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/50_t.musicxml",
               "b": ""
             }
           },
@@ -2057,6 +2357,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/51_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/51_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/51_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-51"
@@ -2096,6 +2402,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/52_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/52_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/52_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/52_t.musicxml",
               "b": ""
             }
           },
@@ -2137,6 +2449,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/53_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/53_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/53_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-53"
@@ -2170,6 +2488,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/54_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/54_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/54_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/54_t.musicxml",
               "b": ""
             }
           },
@@ -2211,6 +2535,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/55_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/55_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/55_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-55"
@@ -2250,6 +2580,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/56_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/56_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/56_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/56_t.musicxml",
               "b": ""
             }
           },
@@ -2291,6 +2627,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/57_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/57_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/57_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-57"
@@ -2330,6 +2672,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/58_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/58_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/58_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/58_t.musicxml",
               "b": ""
             }
           },
@@ -2371,6 +2719,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/59_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/59_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/59_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-59"
@@ -2410,6 +2764,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/60_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/60_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/60_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/60_t.musicxml",
               "b": ""
             }
           },
@@ -2451,6 +2811,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/61_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/61_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/61_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-61"
@@ -2490,6 +2856,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/62_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/62_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/62_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/62_t.musicxml",
               "b": ""
             }
           },
@@ -2531,6 +2903,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/63_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/63_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/63_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-63"
@@ -2570,6 +2948,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/64_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/64_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/64_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/64_t.musicxml",
               "b": ""
             }
           },
@@ -2611,6 +2995,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/65_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/65_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/65_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-65"
@@ -2650,6 +3040,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/66_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/66_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/66_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/66_t.musicxml",
               "b": ""
             }
           },
@@ -2691,6 +3087,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/67_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/67_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/67_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-67"
@@ -2730,6 +3132,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/68_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/68_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/68_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/68_t.musicxml",
               "b": ""
             }
           },
@@ -2771,6 +3179,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/69_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/69_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/69_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-69"
@@ -2810,6 +3224,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/70_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/70_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/70_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/70_t.musicxml",
               "b": ""
             }
           },
@@ -2851,6 +3271,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/71_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/71_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/71_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-71"
@@ -2890,6 +3316,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/72_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/72_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/72_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/72_t.musicxml",
               "b": ""
             }
           },
@@ -2931,6 +3363,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/73_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/73_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/73_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-73"
@@ -2970,6 +3408,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/74_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/74_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/74_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/74_t.musicxml",
               "b": ""
             }
           },
@@ -3011,6 +3455,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/75_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/75_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/75_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-75"
@@ -3050,6 +3500,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/76_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/76_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/76_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/76_t.musicxml",
               "b": ""
             }
           },
@@ -3091,6 +3547,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/77_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/77_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/77_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-77"
@@ -3130,6 +3592,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/78_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/78_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/78_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/78_t.musicxml",
               "b": ""
             }
           },
@@ -3171,6 +3639,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/79_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/79_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/79_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-79"
@@ -3210,6 +3684,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/80_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/80_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/80_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/80_t.musicxml",
               "b": ""
             }
           },
@@ -3251,6 +3731,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/81_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/81_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/81_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-81"
@@ -3290,6 +3776,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/82_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/82_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/82_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/82_t.musicxml",
               "b": ""
             }
           },
@@ -3331,6 +3823,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/83_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/83_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/83_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-83"
@@ -3370,6 +3868,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/84_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/84_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/84_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/84_t.musicxml",
               "b": ""
             }
           },
@@ -3411,6 +3915,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/85_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/85_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/85_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-85"
@@ -3439,6 +3949,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/86_b.musicxml"
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/86_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/86_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-86"
@@ -3467,6 +3983,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/87_b.musicxml"
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/87_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/87_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-87"
@@ -13111,6 +13633,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/431_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/431_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/431_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-431"
@@ -13150,6 +13678,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/432_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/432_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/432_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/432_t.musicxml",
               "b": ""
             }
           },
@@ -13191,6 +13725,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/433_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/433_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/433_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-433"
@@ -13230,6 +13770,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/434_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/434_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/434_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/434_t.musicxml",
               "b": ""
             }
           },
@@ -13271,6 +13817,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/435_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/435_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/435_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-435"
@@ -13310,6 +13862,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/436_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/436_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/436_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/436_t.musicxml",
               "b": ""
             }
           },
@@ -13351,6 +13909,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/437_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/437_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/437_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-437"
@@ -13390,6 +13954,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/438_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/438_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/438_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/438_t.musicxml",
               "b": ""
             }
           },
@@ -13431,6 +14001,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/439_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/439_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/439_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-439"
@@ -13470,6 +14046,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/440_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/440_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/440_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/440_t.musicxml",
               "b": ""
             }
           },
@@ -13511,6 +14093,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/441_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/441_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/441_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-441"
@@ -13550,6 +14138,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/442_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/442_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/442_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/442_t.musicxml",
               "b": ""
             }
           },
@@ -13591,6 +14185,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/443_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/443_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/443_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-443"
@@ -13630,6 +14230,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/444_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/444_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/444_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/444_t.musicxml",
               "b": ""
             }
           },
@@ -13671,6 +14277,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/445_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/445_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/445_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-445"
@@ -13710,6 +14322,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/446_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/446_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/446_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/446_t.musicxml",
               "b": ""
             }
           },
@@ -13751,6 +14369,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/447_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/447_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/447_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-447"
@@ -13790,6 +14414,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/448_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/448_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/448_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/448_t.musicxml",
               "b": ""
             }
           },
@@ -13831,6 +14461,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/449_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/449_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/449_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-449"
@@ -13870,6 +14506,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/450_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/450_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/450_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/450_t.musicxml",
               "b": ""
             }
           },
@@ -13911,6 +14553,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/451_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/451_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/451_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-451"
@@ -13950,6 +14598,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/452_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/452_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/452_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/452_t.musicxml",
               "b": ""
             }
           },
@@ -13991,6 +14645,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/453_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/453_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/453_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-453"
@@ -14030,6 +14690,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/454_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/454_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/454_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/454_t.musicxml",
               "b": ""
             }
           },
@@ -14071,6 +14737,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/455_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/455_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/455_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-455"
@@ -14110,6 +14782,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/456_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/456_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/456_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/456_t.musicxml",
               "b": ""
             }
           },
@@ -14151,6 +14829,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/457_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/457_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/457_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-457"
@@ -14190,6 +14874,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/458_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/458_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/458_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/458_t.musicxml",
               "b": ""
             }
           },
@@ -14231,6 +14921,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/459_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/459_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/459_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-459"
@@ -14270,6 +14966,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/460_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/460_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/460_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/460_t.musicxml",
               "b": ""
             }
           },
@@ -14311,6 +15013,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/461_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/461_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/461_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-461"
@@ -14350,6 +15058,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/462_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/462_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/462_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/462_t.musicxml",
               "b": ""
             }
           },
@@ -14391,6 +15105,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/463_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/463_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/463_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-463"
@@ -14430,6 +15150,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/464_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/464_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/464_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/464_t.musicxml",
               "b": ""
             }
           },
@@ -14471,6 +15197,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/465_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/465_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/465_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-465"
@@ -14510,6 +15242,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/466_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/466_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/466_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/466_t.musicxml",
               "b": ""
             }
           },
@@ -14551,6 +15289,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/467_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/467_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/467_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-467"
@@ -14590,6 +15334,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/468_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/468_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/468_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/468_t.musicxml",
               "b": ""
             }
           },
@@ -14631,6 +15381,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/469_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/469_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/469_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-469"
@@ -14670,6 +15426,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/470_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/470_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/470_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/470_t.musicxml",
               "b": ""
             }
           },
@@ -14711,6 +15473,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/471_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/471_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/471_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-471"
@@ -14750,6 +15518,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/472_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/472_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/472_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/472_t.musicxml",
               "b": ""
             }
           },
@@ -14791,6 +15565,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/473_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/473_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/473_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-473"
@@ -14830,6 +15610,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/474_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/474_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/474_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/474_t.musicxml",
               "b": ""
             }
           },
@@ -14871,6 +15657,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/475_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/475_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/475_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-475"
@@ -14910,6 +15702,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/476_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/476_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/476_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/476_t.musicxml",
               "b": ""
             }
           },
@@ -14951,6 +15749,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/477_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/477_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/477_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-477"
@@ -14990,6 +15794,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/478_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/478_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/478_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/478_t.musicxml",
               "b": ""
             }
           },
@@ -15031,6 +15841,12 @@
               "c": "xml/colecoes/hinario5-ccb/do/flauta/479_s8.musicxml",
               "t": "",
               "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/479_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/479_t.musicxml",
+              "b": ""
             }
           },
           "id": "hino-479"
@@ -15070,6 +15886,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/flauta/480_s.musicxml",
               "c": "xml/colecoes/hinario5-ccb/do/flauta/480_s8.musicxml",
               "t": "",
+              "b": ""
+            },
+            "trombone": {
+              "s": "xml/colecoes/hinario5-ccb/do/trombone/480_s.musicxml",
+              "c": "",
+              "t": "xml/colecoes/hinario5-ccb/do/trombone/480_t.musicxml",
               "b": ""
             }
           },
