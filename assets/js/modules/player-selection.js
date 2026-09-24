@@ -13,8 +13,8 @@
     if (byInstrument && instrumentId && byInstrument[instrumentId] && hasAtLeastOneScore(byInstrument[instrumentId])) {
       return byInstrument[instrumentId];
     }
-    // Se o clarinete ou saxofone foi selecionado, nao fazemos fallback para outros instrumentos (evita ler partitura de outra afinacao)
-    if (instrumentId === 'clarinete' || instrumentId === 'saxofone') {
+    // Se clarinete, saxofone, trompete ou tuba foi selecionado, nao fazemos fallback para outros instrumentos (evita ler partitura de outra afinacao/clave)
+    if (instrumentId === 'clarinete' || instrumentId === 'saxofone' || instrumentId === 'trompete' || instrumentId === 'tuba') {
       return null;
     }
     // Para outros instrumentos, fazemos fallback mas ignoramos o clarinete e saxofone (afinacao diferente)
@@ -22,10 +22,10 @@
       var keys = Object.keys(byInstrument);
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (key === 'clarinete' || key === 'saxofone') continue;
+        if (key === 'clarinete' || key === 'saxofone' || key === 'trompete' || key === 'tuba') continue;
         if (hasAtLeastOneScore(byInstrument[key])) return byInstrument[key];
       }
-      if (keys.length && keys[0] !== 'clarinete' && keys[0] !== 'saxofone' && byInstrument[keys[0]]) return byInstrument[keys[0]];
+      if (keys.length && keys[0] !== 'clarinete' && keys[0] !== 'saxofone' && keys[0] !== 'trompete' && keys[0] !== 'tuba' && byInstrument[keys[0]]) return byInstrument[keys[0]];
     }
     if (item.arquivos && typeof item.arquivos === 'object') return item.arquivos;
     return null;

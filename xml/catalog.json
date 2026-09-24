@@ -30157,6 +30157,2678 @@
               "b": ""
             }
           }
+        },
+        {
+          "id": "metodo-tuba-1",
+          "numero": 1,
+          "titulo": "Nossa primeira nota DO",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/01 Nossa primeira nota DO.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-2",
+          "numero": 2,
+          "titulo": "Nossa segunda nota RÉ",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/02 Nossa segunda nota RÉ.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-3",
+          "numero": 3,
+          "titulo": "Três é demais",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/03 Três é demais.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-4",
+          "numero": 4,
+          "titulo": "Quatro seguidas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/04 Quatro seguidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-5",
+          "numero": 5,
+          "titulo": "Uma dupla engraçada",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/05 Uma dupla engraçada.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-6",
+          "numero": 6,
+          "titulo": "Sam do skate",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/06 Sam do skate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-7",
+          "numero": 7,
+          "titulo": "Atenção nessa nota",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/07 Atenção nessa nota.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-8",
+          "numero": 8,
+          "titulo": "Continue soprando",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/08 Continue soprando.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-9",
+          "numero": 9,
+          "titulo": "Nossa terceira nota MI",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/09 Nossa terceira nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-10",
+          "numero": 10,
+          "titulo": "Preguiçoso no sofá",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/10 Preguiçoso no sofá.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-11",
+          "numero": 11,
+          "titulo": "Cachorrinho",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/11 Cachorrinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-12",
+          "numero": 12,
+          "titulo": "Nossa quarta nota SI",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/12 Nossa quarta nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-13",
+          "numero": 13,
+          "titulo": "Maçã para o professor",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/13 Maçã para o professor.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-14",
+          "numero": 14,
+          "titulo": "Nossa quinta nota LA",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/14 Nossa quinta nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-15",
+          "numero": 15,
+          "titulo": "Carros de bate bate",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/15 Carros de bate bate.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-16",
+          "numero": 16,
+          "titulo": "Mínimas acontecem",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/16 Mínimas acontecem.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-17",
+          "numero": 17,
+          "titulo": "Pães doces",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/17 Pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-18",
+          "numero": 18,
+          "titulo": "Saltando a montanha",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/18 Saltando a montanha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-19",
+          "numero": 19,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/19 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-20",
+          "numero": 20,
+          "titulo": "Semínimas com pausas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/20 Semínimas com pausas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-21",
+          "numero": 21,
+          "titulo": "Gira o dado",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/21 Gira o dado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-22",
+          "numero": 22,
+          "titulo": "Mínimas repetidas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/22 Mínimas repetidas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-23",
+          "numero": 23,
+          "titulo": "Nova nota SOL",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/23 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-24",
+          "numero": 24,
+          "titulo": "Sem incomodar",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/24 Sem incomodar.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-25",
+          "numero": 25,
+          "titulo": "Golpe da língua",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/25 Golpe da língua.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-26",
+          "numero": 26,
+          "titulo": "Yankee Doodle",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/26 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-27",
+          "numero": 27,
+          "titulo": "Nova nota FA",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/27 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-28",
+          "numero": 28,
+          "titulo": "Cruzeiro do Caribe",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/28 Cruzeiro do Caribe.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-29",
+          "numero": 29,
+          "titulo": "Casa no sítio",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/29 Casa no sítio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-30",
+          "numero": 30,
+          "titulo": "Deslizando em colcheias",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/30 Deslizando em colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-31",
+          "numero": 31,
+          "titulo": "Canção do repolho",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/31 Canção do repolho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-32",
+          "numero": 32,
+          "titulo": "O velho MacDonald",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/32 O velho MacDonald.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-33",
+          "numero": 33,
+          "titulo": "Fogo brilhante",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/33 Fogo brilhante.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-34",
+          "numero": 34,
+          "titulo": "Ponte de Londres",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/34 Ponte de Londres.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-35",
+          "numero": 35,
+          "titulo": "Rosas do Sul",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/35 Rosas do Sul.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-36",
+          "numero": 36,
+          "titulo": "Encantador de notas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/36 Encantador de notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-37",
+          "numero": 37,
+          "titulo": "Nova nota DO# / REb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/37 Nova nota DO# _ REb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-38",
+          "numero": 38,
+          "titulo": "Cabelos dourados",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/38 Cabelos dourados.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-39",
+          "numero": 39,
+          "titulo": "Nova nota FA# / SOLb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/39 Nova nota FA# _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-40",
+          "numero": 40,
+          "titulo": "Brilha brilha estrelinha",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/40 Brilha brilha estrelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-41",
+          "numero": 41,
+          "titulo": "Nova nota SOL",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/41 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-42",
+          "numero": 42,
+          "titulo": "Hino a alegria",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/42 Hino a alegria.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-43",
+          "numero": 43,
+          "titulo": "Nova nota LA",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/43 Nova nota LA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-44",
+          "numero": 44,
+          "titulo": "Nova nota SIb / LA#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/44 Nova nota SIb _ LA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-45",
+          "numero": 45,
+          "titulo": "Yankee Doodle",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/45 Yankee Doodle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-46",
+          "numero": 46,
+          "titulo": "Cabana na floresta",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/46 Cabana na floresta.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-47",
+          "numero": 47,
+          "titulo": "Cópia perfeita",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/47 Cópia perfeita.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-48",
+          "numero": 48,
+          "titulo": "Polly Wolly",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/48 Polly Wolly.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-49",
+          "numero": 49,
+          "titulo": "Nova nota LAb / SOL#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/49 Nova nota LAb _ SOL#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-50",
+          "numero": 50,
+          "titulo": "Maria tinha um cordeirinho",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/50 Maria tinha um cordeirinho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-51",
+          "numero": 51,
+          "titulo": "Ó vinde criancinhas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/51 Ó vinde criancinhas - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/51 Ó vinde criancinhas - Ten.musicxml",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-52",
+          "numero": 52,
+          "titulo": "Nova nota MIb / RE#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/52 Nova nota MIb _ RE#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-53",
+          "numero": 53,
+          "titulo": "A esperança",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/53 A esperança.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-54",
+          "numero": 54,
+          "titulo": "Insultos escorregadios",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/54 Insultos escorregadios.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-55",
+          "numero": 55,
+          "titulo": "Você está dormindo?",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/55 Você está dormindo_.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-56",
+          "numero": 56,
+          "titulo": "Mais colcheias",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/56 Mais colcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-57",
+          "numero": 57,
+          "titulo": "Pra frente e pra trás",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/57 Pra frente e pra trás - Trombone.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/57 Pra frente e pra trás - P2.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-58",
+          "numero": 58,
+          "titulo": "América",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/58 América.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-59",
+          "numero": 59,
+          "titulo": "Falta técnica",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/59 Falta técnica.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-60",
+          "numero": 60,
+          "titulo": "Ritmo misturado",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/60 Ritmo misturado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-61",
+          "numero": 61,
+          "titulo": "Nova nota SIb / LA#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/61 Nova nota SIb _ LA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-62",
+          "numero": 62,
+          "titulo": "Nova nota LAb / SOL#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/62 Nova nota LAb _ SOL#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-63",
+          "numero": 63,
+          "titulo": "Nova nota SI",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/63 Nova nota SI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-64",
+          "numero": 64,
+          "titulo": "Mais pães doces",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/64 Mais pães doces.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-65",
+          "numero": 65,
+          "titulo": "É natural ( Bequadro )",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/65 É natural ( Bequadro ).musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-66",
+          "numero": 66,
+          "titulo": "Lute e vença",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/66 Lute e vença.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-67",
+          "numero": 67,
+          "titulo": "Minuet",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/67 Minuet.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-68",
+          "numero": 68,
+          "titulo": "Ruben e Raquel",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/68 Ruben e Raquel.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-69",
+          "numero": 69,
+          "titulo": "Quando amor é gentil",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/69 Quando amor é gentil.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-70",
+          "numero": 70,
+          "titulo": "Chapéu mexicano",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/70 Chapéu mexicano.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-71",
+          "numero": 71,
+          "titulo": "Blues dues",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/71 Blues dues.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-72",
+          "numero": 72,
+          "titulo": "Respiração profunda",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/72 Respiração profunda.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-73",
+          "numero": 73,
+          "titulo": "Quando todos marcham",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/73 Quando todos marcham.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-74",
+          "numero": 74,
+          "titulo": "Abertura de flechas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/74 Abertura de flechas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-75",
+          "numero": 75,
+          "titulo": "Esse velho",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/75 Esse velho.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-76",
+          "numero": 76,
+          "titulo": "Nova nota DO",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/76 Nova nota DO.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-77",
+          "numero": 77,
+          "titulo": "Nova nota RE",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/77 Nova nota RE.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-78",
+          "numero": 78,
+          "titulo": "Cantando docemente",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/78 Cantando docemente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-79",
+          "numero": 79,
+          "titulo": "Truque de ritmos",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/79 Truque de ritmos.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-80",
+          "numero": 80,
+          "titulo": "Nova nota DO# / REb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/80 Nova nota DO# _ REb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-81",
+          "numero": 81,
+          "titulo": "Nova nota RE# / MIb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/81 Nova nota RE# _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-82",
+          "numero": 82,
+          "titulo": "Bye baby",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/82 Bye baby.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-83",
+          "numero": 83,
+          "titulo": "Mostrar a Melodia",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/83 Mostrar a Melodia.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-84",
+          "numero": 84,
+          "titulo": "Nova nota MI",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/84 Nova nota MI.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-85",
+          "numero": 85,
+          "titulo": "Barcarolle",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/85 Barcarolle.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-86",
+          "numero": 86,
+          "titulo": "Nova nota FA",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/86 Nova nota FA.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-87",
+          "numero": 87,
+          "titulo": "Lembrando notas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/87 Lembrando notas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-88",
+          "numero": 88,
+          "titulo": "Moldura labial",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/88 Moldura labial.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-89",
+          "numero": 89,
+          "titulo": "Todas em ligaduras",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/89 Todas em ligaduras.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-90",
+          "numero": 90,
+          "titulo": "Nova nota FA# / SOLb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/90 Nova nota FA# _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-91",
+          "numero": 91,
+          "titulo": "Can Can",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/91 Can Can.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-92",
+          "numero": 92,
+          "titulo": "La Bamba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/92 La Bamba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-93",
+          "numero": 93,
+          "titulo": "Simples presente",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/93 Simples presente.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-94",
+          "numero": 94,
+          "titulo": "Amazing Grace",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/94 Amazing Grace.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-95",
+          "numero": 95,
+          "titulo": "Nova nota SOL",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/95 Nova nota SOL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-96",
+          "numero": 96,
+          "titulo": "Nova nota FA# / SOLb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/96 Nova nota FA# _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-97",
+          "numero": 97,
+          "titulo": "Treino labial 0",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/97 Treino labial 0.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-98",
+          "numero": 98,
+          "titulo": "Treino labial 2",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/98 Treino labial 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-99",
+          "numero": 99,
+          "titulo": "Treino labial 1",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/99 Treino labial 1.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-100",
+          "numero": 100,
+          "titulo": "Treino labial 1 e 2",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/100 Treino labial 1 e 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-101",
+          "numero": 101,
+          "titulo": "Treino labial 2 e 3",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/101 Treino labial 2 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-102",
+          "numero": 102,
+          "titulo": "Treino labial 1 e 3",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/102 Treino labial 1 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-103",
+          "numero": 103,
+          "titulo": "Treino labial 1, 2 e 3",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/103 Treino labial 1, 2 e 3.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-104",
+          "numero": 104,
+          "titulo": "Escala de Dó maior",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/104 Escala de Dó maior.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-105",
+          "numero": 105,
+          "titulo": "A janelinha",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/105 A janelinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-106",
+          "numero": 106,
+          "titulo": "Fui ao mercado",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/106 Fui ao mercado.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-107",
+          "numero": 107,
+          "titulo": "Escala de Sol maior - FA#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/107 Escala de Sol maior - FA#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-108",
+          "numero": 108,
+          "titulo": "Minuet 1 - JS Bach",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/108 Minuet 1 - JS Bach.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-109",
+          "numero": 109,
+          "titulo": "Amigos para sempre",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/109 Amigos para sempre.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-110",
+          "numero": 110,
+          "titulo": "Só Deus é sábio",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/110 Só Deus é sábio - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/110 Só Deus é sábio - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/110 Só Deus é sábio - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-111",
+          "numero": 111,
+          "titulo": "Na neve no inverno",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/111 Na neve no inverno - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/111 Na neve no inverno - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/111 Na neve no inverno - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-112",
+          "numero": 112,
+          "titulo": "Escala de Fá maior - SIb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/112 Escala de Fá maior - SIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-113",
+          "numero": 113,
+          "titulo": "A barata",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/113 A barata.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-114",
+          "numero": 114,
+          "titulo": "A dona aranha",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/114 A dona aranha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-115",
+          "numero": 115,
+          "titulo": "Meus dias chegou ao fim Senhor",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/115 Meus dias chegou ao fim Senhor - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/115 Meus dias chegou ao fim Senhor - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/115 Meus dias chegou ao fim Senhor - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-116",
+          "numero": 116,
+          "titulo": "Lírio do vale",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/116 Lírio do vale - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/116 Lírio do vale - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/116 Lírio do vale - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-117",
+          "numero": 117,
+          "titulo": "Minha esperança é Jesus",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/117 Minha esperança é Jesus - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/117 Minha esperança é Jesus - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/117 Minha esperança é Jesus - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-118",
+          "numero": 118,
+          "titulo": "Escala de Ré maior - SOL# / DO#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/118 Escala de Ré maior - SOL# _ DO#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-119",
+          "numero": 119,
+          "titulo": "Assim sou",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/119 Assim sou - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/119 Assim sou - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/119 Assim sou - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-120",
+          "numero": 120,
+          "titulo": "Coisas brilhantes",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/120 Coisas brilhantes - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/120 Coisas brilhantes - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/120 Coisas brilhantes - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-121",
+          "numero": 121,
+          "titulo": "Escala de Sib maior - SIb / MIb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/121 Escala de Sib maior - SIb _ MIb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-122",
+          "numero": 122,
+          "titulo": "Melody Anacreon in H - JS Smith",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/122 Melody Anacreon in H - JS Smith.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-123",
+          "numero": 123,
+          "titulo": "Bela América",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/123 Bela América - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/123 Bela América - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/123 Bela América - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-124",
+          "numero": 124,
+          "titulo": "Escala de Lá maior - FA# / DO# / SOL#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/124 Escala de Lá maior - FA# _ DO# _ SOL#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-125",
+          "numero": 125,
+          "titulo": "Go Tell Aunt Rhody",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/125 Go Tell Aunt Rhody.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-126",
+          "numero": 126,
+          "titulo": "Perpetual Motion",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/126 Perpetual Motion.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-127",
+          "numero": 127,
+          "titulo": "Allegro",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/127 Allegro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-128",
+          "numero": 128,
+          "titulo": "Escala de Mi bemol maior - SIb / MIb / LAb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/128 Escala de Mi bemol maior - SIb _ MIb _ LAb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-129",
+          "numero": 129,
+          "titulo": "Palavras gloriosas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/129 Palavras gloriosas - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/129 Palavras gloriosas - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/129 Palavras gloriosas - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-130",
+          "numero": 130,
+          "titulo": "Lares cristãos",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/130 Lares cristãos - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/130 Lares cristãos - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/130 Lares cristãos - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-131",
+          "numero": 131,
+          "titulo": "Escala de Mi maior - FA# / DO# / SOL# / RE#",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/131 Escala de Mi maior - FA# _ DO# _ SOL# _ RE#.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-132",
+          "numero": 132,
+          "titulo": "TEMA E.O EXCELL",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/132 TEMA E.O EXCELL.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-133",
+          "numero": 133,
+          "titulo": "Escala de Lab maior - SIb / MIb / LAb / REb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/133 Escala de Lab maior - SIb _ MIb _ LAb _ REb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-134",
+          "numero": 134,
+          "titulo": "Tema J.G Burt",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/134 Tema J.G Burt.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-135",
+          "numero": 135,
+          "titulo": "Vamos louvar a Cristo",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/135 Vamos louvar a Cristo - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/135 Vamos louvar a Cristo - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/135 Vamos louvar a Cristo - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-136",
+          "numero": 136,
+          "titulo": "Alegria sem igual",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/136 Alegria sem igual - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/136 Alegria sem igual - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/136 Alegria sem igual - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-137",
+          "numero": 137,
+          "titulo": "Escala de REb maior - SIb / MIb / LAb / REb / SOLb",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/137 Escala de REb maior - SIb _ MIb _ LAb _ REb _ SOLb.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-138",
+          "numero": 138,
+          "titulo": "Tema P.P. Bliss",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/138 Tema P.P. Bliss - P1.musicxml",
+              "c": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/138 Tema P.P. Bliss - P2.musicxml",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-139",
+          "numero": 139,
+          "titulo": "As semicolcheias",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/139 As semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-140",
+          "numero": 140,
+          "titulo": "Escala em DO maior com semicolcheias",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/140 Escala em DO maior com semicolcheias.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-141",
+          "numero": 141,
+          "titulo": "Conheça as tercinas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/141 Conheça as tercinas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-142",
+          "numero": 142,
+          "titulo": "Aprendendo pontuadas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/142 Aprendendo pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-143",
+          "numero": 143,
+          "titulo": "Pula pula pipoquinha",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/143 Pula pula pipoquinha.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-144",
+          "numero": 144,
+          "titulo": "Brilha brilha estrelinha com colcheias, tercinas e pontuadas",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/144 Brilha brilha estrelinha com colcheias, tercinas e pontuadas.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-145",
+          "numero": 145,
+          "titulo": "Palavra gloriosa",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/145 Palavra gloriosa - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/145 Palavra gloriosa - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/145 Palavra gloriosa - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-146",
+          "numero": 146,
+          "titulo": "Palavra gloriosa",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/146 Palavra gloriosa - Sop.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/146 Palavra gloriosa - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-147",
+          "numero": 147,
+          "titulo": "Um ternário em quatro",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/147 Um ternário em quatro.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-148",
+          "numero": 148,
+          "titulo": "Binário composto 6/4",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/148 Binário composto 6_4.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-149",
+          "numero": 149,
+          "titulo": "Binário composto 6/8",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/149 Binário composto 6_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-150",
+          "numero": 150,
+          "titulo": "Um ternário composto 9/8",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/150 Um ternário composto 9_8.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-151",
+          "numero": 151,
+          "titulo": "Um quaternário composto",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/151 Um quaternário composto.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-152",
+          "numero": 152,
+          "titulo": "O sole mio",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/152 O sole mio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-153",
+          "numero": 153,
+          "titulo": "Lá califa",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/153 Lá califa - Sop.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/153 Lá califa - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-154",
+          "numero": 154,
+          "titulo": "Mais perto quero estar",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/154 Mais perto quero estar - Sop.musicxml",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/154 Mais perto quero estar - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-155",
+          "numero": 155,
+          "titulo": "Theme of brothers in arms",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/155 Theme of brothers in arms - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/155 Theme of brothers in arms - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/155 Theme of brothers in arms - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-156",
+          "numero": 156,
+          "titulo": "Tennessee fron Pearl Harbor",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/156 Tennessee fron Pearl Harbor - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/156 Tennessee fron Pearl Harbor - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/156 Tennessee fron Pearl Harbor - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-157",
+          "numero": 157,
+          "titulo": "Waltz 2",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/157 Waltz 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-158",
+          "numero": 158,
+          "titulo": "Saudade",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/158 Saudade - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/158 Saudade - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/158 Saudade - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-159",
+          "numero": 159,
+          "titulo": "Ação de graças darei",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/159 Ação de graças darei - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/159 Ação de graças darei - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/159 Ação de graças darei - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-160",
+          "numero": 160,
+          "titulo": "Toda a glória a Jesus",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/160 Toda a glória a Jesus - Sop.musicxml",
+              "c": "",
+              "t": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/160 Toda a glória a Jesus - Ten.musicxml",
+              "b": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/160 Toda a glória a Jesus - Bxo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-161",
+          "numero": 161,
+          "titulo": "1ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/161 1ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-162",
+          "numero": 162,
+          "titulo": "2ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/162 2ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-163",
+          "numero": 163,
+          "titulo": "3ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/163 3ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-164",
+          "numero": 164,
+          "titulo": "4ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/164 4ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-165",
+          "numero": 165,
+          "titulo": "5ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/165 5ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-166",
+          "numero": 166,
+          "titulo": "6ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/166 6ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "metodo-tuba-167",
+          "numero": 167,
+          "titulo": "7ª Posição Tuba",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivosPorInstrumento": {
+            "tuba": {
+              "s": "xml/colecoes/metodo-inclusivo-ccb/do/tuba/167 7ª Posição tuba.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
         }
       ]
     }
