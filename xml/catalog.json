@@ -32831,6 +32831,1249 @@
           }
         }
       ]
+    },
+    {
+      "id": "musicas-cordas",
+      "nome": "Músicas para Cordas",
+      "tipo": "repertorio",
+      "ordem": 4,
+      "filtros": {
+        "afinacoes": [
+          "do"
+        ],
+        "vozes": [
+          "s",
+          "c",
+          "t",
+          "b"
+        ]
+      },
+      "items": [
+        {
+          "id": "cordas-1",
+          "numero": 1,
+          "titulo": "O Canadá",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/01 O Canadá - S.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/01 O Canadá - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/01 O Canadá - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/01 O Canadá - S.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/01 O Canadá - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/01 O Canadá - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-2",
+          "numero": 2,
+          "titulo": "Waltz 2",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/02 Waltz 2.musicxml",
+            "c": "",
+            "t": "",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/02 Waltz 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "xml/colecoes/musicas-cordas/02 Waltz 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/musicas-cordas/02 Waltz 2.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-3",
+          "numero": 3,
+          "titulo": "Canon in D",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/03 Canon in D.musicxml",
+            "c": "",
+            "t": "",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/03 Canon in D.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "xml/colecoes/musicas-cordas/03 Canon in D.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/musicas-cordas/03 Canon in D.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-4",
+          "numero": 4,
+          "titulo": "O sole mio",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/04 O sole mio.musicxml",
+            "c": "",
+            "t": "",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/04 O sole mio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "xml/colecoes/musicas-cordas/04 O sole mio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/musicas-cordas/04 O sole mio.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-5",
+          "numero": 5,
+          "titulo": "Can't Help Falling in Love - Elvis Presley",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/05 Can't Help Falling in Love - Elvis Presley.musicxml",
+            "c": "",
+            "t": "",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/05 Can't Help Falling in Love - Elvis Presley.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "xml/colecoes/musicas-cordas/05 Can't Help Falling in Love - Elvis Presley.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "xml/colecoes/musicas-cordas/05 Can't Help Falling in Love - Elvis Presley.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-6",
+          "numero": 6,
+          "titulo": "The pacific",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/06 The pacific - S.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/06 The pacific - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/06 The pacific - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/06 The pacific - S.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/06 The pacific - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/06 The pacific - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-7",
+          "numero": 7,
+          "titulo": "Band of brothers theme",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/07 Band of brothers theme - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/07 Band of brothers theme - C.musicxml",
+            "t": "xml/colecoes/musicas-cordas/07 Band of brothers theme - T.musicxml",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/07 Band of brothers theme - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/07 Band of brothers theme - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/07 Band of brothers theme - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-8",
+          "numero": 8,
+          "titulo": "Lá califa",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/08 Lá califa - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/08 Lá califa - C.musicxml",
+            "t": "xml/colecoes/musicas-cordas/08 Lá califa - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/08 Lá califa - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/08 Lá califa - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/08 Lá califa - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/08 Lá califa - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/08 Lá califa - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-9",
+          "numero": 9,
+          "titulo": "Tennessee fron Pearl Harbor",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - C.musicxml",
+            "t": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/09 Tennessee fron Pearl Harbor - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-10",
+          "numero": 10,
+          "titulo": "Danny Boy",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/10 Danny Boy - S.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/10 Danny Boy - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/10 Danny Boy - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/10 Danny Boy - S.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/10 Danny Boy - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/10 Danny Boy - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-11",
+          "numero": 11,
+          "titulo": "Ballad Of the Wind Fisch",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/11 Ballad Of the Wind Fisch - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-12",
+          "numero": 12,
+          "titulo": "He's Pirate",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/12 He's Pirate - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/12 He's Pirate - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/12 He's Pirate - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/12 He's Pirate - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/12 He's Pirate - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/12 He's Pirate - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-13",
+          "numero": 13,
+          "titulo": "Gravity Falls Theme Score",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/13 Gravity Falls Theme Score - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-14",
+          "numero": 14,
+          "titulo": "Bella Ciao",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/14 Bella Ciao - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/14 Bella Ciao - C.musicxml",
+            "t": "xml/colecoes/musicas-cordas/14 Bella Ciao - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/14 Bella Ciao - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/14 Bella Ciao - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/14 Bella Ciao - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/14 Bella Ciao - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/14 Bella Ciao - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-15",
+          "numero": 15,
+          "titulo": "Love me tender",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/15 Love me tender - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/15 Love me tender - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/15 Love me tender - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/15 Love me tender - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/15 Love me tender - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/15 Love me tender - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-16",
+          "numero": 16,
+          "titulo": "Londonderry All",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/16 Londonderry All - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/16 Londonderry All - C.musicxml",
+            "t": "",
+            "b": "xml/colecoes/musicas-cordas/16 Londonderry All - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/16 Londonderry All - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/16 Londonderry All - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/16 Londonderry All - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-17",
+          "numero": 17,
+          "titulo": "Perfect",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/17 Perfect - Violin1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/17 Perfect - Violin2.musicxml",
+            "t": "",
+            "b": "xml/colecoes/musicas-cordas/17 Perfect - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/17 Perfect - Violin1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/17 Perfect - Violin2.musicxml",
+              "t": "xml/colecoes/musicas-cordas/17 Perfect - Violin3.musicxml",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/17 Perfect - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-18",
+          "numero": 18,
+          "titulo": "You're Still the One",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/18 You're Still the One - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/18 You're Still the One - Vln2.musicxml",
+            "t": "",
+            "b": "xml/colecoes/musicas-cordas/18 You're Still the One - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/18 You're Still the One - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/18 You're Still the One - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/18 You're Still the One - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-19",
+          "numero": 19,
+          "titulo": "A Thousand Years",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/19 A Thousand Years - Violin.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/19 A Thousand Years - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/19 A Thousand Years - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/19 A Thousand Years - Violin.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/19 A Thousand Years - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/19 A Thousand Years - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-20",
+          "numero": 20,
+          "titulo": "Gladiador",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/20 Gladiador - S.musicxml",
+            "c": "xml/colecoes/musicas-cordas/20 Gladiador - C.musicxml",
+            "t": "xml/colecoes/musicas-cordas/20 Gladiador - T.musicxml",
+            "b": "xml/colecoes/musicas-cordas/20 Gladiador - B.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/20 Gladiador - S.musicxml",
+              "c": "xml/colecoes/musicas-cordas/20 Gladiador - C.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/20 Gladiador - T.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/20 Gladiador - B.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-21",
+          "numero": 21,
+          "titulo": "Beauty and the beast",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/21 Beauty and the beast - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-22",
+          "numero": 22,
+          "titulo": "Midnigth Waltz",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vln.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vln.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/22 Midnigth Waltz - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-23",
+          "numero": 23,
+          "titulo": "Minuet in D maior",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vla .musicxml",
+            "b": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vla .musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/23 Minuet in D maior - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-24",
+          "numero": 24,
+          "titulo": "Áustria",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/24 Áustria - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/24 Áustria - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/24 Áustria - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/24 Áustria - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/24 Áustria - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/24 Áustria - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/24 Áustria - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/24 Áustria - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-25",
+          "numero": 25,
+          "titulo": "The United States National Anthem",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/25 The United States National Anthem - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-26",
+          "numero": 26,
+          "titulo": "Schweizerpsalm",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/26 Schweizerpsalm - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-27",
+          "numero": 27,
+          "titulo": "Hallelujah",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/27 Hallelujah - Vln.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/27 Hallelujah - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/27 Hallelujah - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/27 Hallelujah - Vln.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/27 Hallelujah - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/27 Hallelujah - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-28",
+          "numero": 28,
+          "titulo": "The One",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/28 The One - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/28 The One - Vln2.musicxml",
+            "t": "",
+            "b": "xml/colecoes/musicas-cordas/28 The One - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/28 The One - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/28 The One - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/28 The One - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-29",
+          "numero": 29,
+          "titulo": "Para os montes olharei",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/29 Para os montes olharei - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-30",
+          "numero": 30,
+          "titulo": "Anunciação",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/30 Anunciação - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/30 Anunciação - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/30 Anunciação - Vla.musicxml",
+            "b": ""
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/30 Anunciação - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/30 Anunciação - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/30 Anunciação - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
+            }
+          }
+        },
+        {
+          "id": "cordas-31",
+          "numero": 31,
+          "titulo": "Não aguento mais",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/31 Não aguento mais - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/31 Não aguento mais - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/31 Não aguento mais - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/31 Não aguento mais - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/31 Não aguento mais - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/31 Não aguento mais - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-32",
+          "numero": 32,
+          "titulo": "Can't Help Falling In Love",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/32 Can't Help Falling In Love - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-33",
+          "numero": 33,
+          "titulo": "Main Theme from Schindler's List",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Violino.musicxml",
+            "c": "",
+            "t": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Viola.musicxml",
+            "b": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Violoncelo.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Violino.musicxml",
+              "c": "",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Viola.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/33 Main Theme from Schindler's List - Violoncelo.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-34",
+          "numero": 34,
+          "titulo": "Ode a alegria",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vln2.musicxml",
+              "t": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vln3.musicxml",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/34 Ode a alegria - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-35",
+          "numero": 35,
+          "titulo": "Vivo per Lei",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/35 Vivo per Lei - Vc.musicxml"
+            }
+          }
+        },
+        {
+          "id": "cordas-36",
+          "numero": 36,
+          "titulo": "Para os montes olharei",
+          "afinacao": "do",
+          "compasso": "",
+          "bpm": 0,
+          "arquivos": {
+            "s": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vln1.musicxml",
+            "c": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vln2.musicxml",
+            "t": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vla.musicxml",
+            "b": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vc.musicxml"
+          },
+          "arquivosPorInstrumento": {
+            "violin": {
+              "s": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vln1.musicxml",
+              "c": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vln2.musicxml",
+              "t": "",
+              "b": ""
+            },
+            "viola": {
+              "s": "",
+              "c": "",
+              "t": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vla.musicxml",
+              "b": ""
+            },
+            "violoncelo": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": "xml/colecoes/musicas-cordas/36 Para os montes olharei - Vc.musicxml"
+            }
+          }
+        }
+      ]
     }
   ]
 }
