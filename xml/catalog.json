@@ -63,6 +63,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/1_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/1_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/1_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-1"
@@ -108,6 +114,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/2_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/2_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/2_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/2_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -155,6 +167,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/3_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/3_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/3_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-3"
@@ -200,6 +218,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/4_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/4_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/4_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/4_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -247,6 +271,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/5_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/5_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/5_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-5"
@@ -292,6 +322,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/6_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/6_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/6_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/6_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -339,6 +375,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/7_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/7_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/7_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-7"
@@ -384,6 +426,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/8_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/8_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/8_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/8_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -431,6 +479,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/9_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/9_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/9_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-9"
@@ -476,6 +530,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/10_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/10_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/10_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/10_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -523,6 +583,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/11_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/11_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/11_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-11"
@@ -568,6 +634,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/12_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/12_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/12_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/12_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -615,6 +687,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/13_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/13_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/13_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-13"
@@ -660,6 +738,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/14_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/14_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/14_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/14_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -707,6 +791,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/15_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/15_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/15_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-15"
@@ -752,6 +842,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/16_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/16_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/16_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/16_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -799,6 +895,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/17_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/17_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/17_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-17"
@@ -844,6 +946,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/18_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/18_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/18_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/18_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -891,6 +999,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/19_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/19_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/19_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-19"
@@ -936,6 +1050,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/20_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/20_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/20_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/20_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -983,6 +1103,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/21_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/21_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/21_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-21"
@@ -1028,6 +1154,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/22_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/22_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/22_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/22_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1075,6 +1207,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/23_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/23_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/23_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-23"
@@ -1120,6 +1258,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/24_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/24_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/24_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/24_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1167,6 +1311,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/25_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/25_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/25_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-25"
@@ -1212,6 +1362,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/26_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/26_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/26_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/26_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1259,6 +1415,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/27_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/27_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/27_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-27"
@@ -1304,6 +1466,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/28_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/28_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/28_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/28_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1351,6 +1519,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/29_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/29_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/29_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-29"
@@ -1396,6 +1570,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/30_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/30_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/30_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/30_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1443,6 +1623,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/31_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/31_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/31_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-31"
@@ -1488,6 +1674,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/32_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/32_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/32_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/32_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1535,6 +1727,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/33_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/33_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/33_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-33"
@@ -1580,6 +1778,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/34_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/34_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/34_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/34_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1627,6 +1831,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/35_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/35_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/35_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-35"
@@ -1672,6 +1882,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/36_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/36_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/36_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/36_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1719,6 +1935,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/37_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/37_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/37_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-37"
@@ -1764,6 +1986,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/38_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/38_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/38_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/38_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1811,6 +2039,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/39_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/39_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/39_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-39"
@@ -1856,6 +2090,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/40_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/40_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/40_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/40_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1903,6 +2143,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/41_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/41_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/41_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-41"
@@ -1948,6 +2194,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/42_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/42_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/42_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/42_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -1995,6 +2247,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/43_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/43_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/43_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-43"
@@ -2040,6 +2298,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/44_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/44_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/44_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/44_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2087,6 +2351,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/45_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/45_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/45_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-45"
@@ -2132,6 +2402,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/46_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/46_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/46_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/46_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2179,6 +2455,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/47_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/47_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/47_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-47"
@@ -2224,6 +2506,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/48_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/48_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/48_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/48_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2271,6 +2559,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/49_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/49_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/49_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-49"
@@ -2316,6 +2610,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/50_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/50_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/50_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/50_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2363,6 +2663,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/51_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/51_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/51_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-51"
@@ -2408,6 +2714,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/52_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/52_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/52_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/52_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2455,6 +2767,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/53_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/53_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/53_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-53"
@@ -2494,6 +2812,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/54_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/54_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/54_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/54_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2541,6 +2865,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/55_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/55_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/55_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-55"
@@ -2586,6 +2916,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/56_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/56_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/56_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/56_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2633,6 +2969,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/57_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/57_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/57_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-57"
@@ -2678,6 +3020,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/58_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/58_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/58_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/58_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2725,6 +3073,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/59_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/59_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/59_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-59"
@@ -2770,6 +3124,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/60_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/60_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/60_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/60_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2817,6 +3177,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/61_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/61_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/61_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-61"
@@ -2862,6 +3228,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/62_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/62_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/62_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/62_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -2909,6 +3281,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/63_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/63_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/63_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-63"
@@ -2954,6 +3332,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/64_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/64_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/64_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/64_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3001,6 +3385,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/65_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/65_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/65_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-65"
@@ -3046,6 +3436,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/66_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/66_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/66_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/66_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3093,6 +3489,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/67_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/67_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/67_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-67"
@@ -3138,6 +3540,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/68_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/68_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/68_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/68_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3185,6 +3593,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/69_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/69_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/69_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-69"
@@ -3230,6 +3644,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/70_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/70_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/70_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/70_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3277,6 +3697,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/71_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/71_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/71_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-71"
@@ -3322,6 +3748,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/72_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/72_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/72_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/72_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3369,6 +3801,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/73_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/73_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/73_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-73"
@@ -3414,6 +3852,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/74_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/74_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/74_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/74_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3461,6 +3905,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/75_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/75_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/75_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-75"
@@ -3506,6 +3956,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/76_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/76_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/76_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/76_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3553,6 +4009,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/77_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/77_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/77_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-77"
@@ -3598,6 +4060,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/78_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/78_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/78_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/78_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3645,6 +4113,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/79_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/79_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/79_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-79"
@@ -3690,6 +4164,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/80_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/80_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/80_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/80_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3737,6 +4217,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/81_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/81_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/81_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-81"
@@ -3782,6 +4268,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/82_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/82_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/82_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/82_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3829,6 +4321,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/83_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/83_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/83_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-83"
@@ -3874,6 +4372,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/84_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/84_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/84_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/84_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3921,6 +4425,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/85_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/85_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/85_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-85"
@@ -3954,6 +4464,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/86_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/86_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/86_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/86_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -3989,6 +4505,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/87_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/87_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/87_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-87"
@@ -4017,6 +4539,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/88_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/88_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/88_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-88"
@@ -4045,6 +4573,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/89_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/89_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/89_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-89"
@@ -4073,6 +4607,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/90_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/90_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/90_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-90"
@@ -4101,6 +4641,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/91_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/91_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/91_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-91"
@@ -4129,6 +4675,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/92_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/92_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/92_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-92"
@@ -4157,6 +4709,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/93_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/93_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/93_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-93"
@@ -4185,6 +4743,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/94_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/94_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/94_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-94"
@@ -4213,6 +4777,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/95_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/95_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/95_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-95"
@@ -4241,6 +4811,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/96_b.musicxml"
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/96_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/96_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-96"
@@ -4269,6 +4845,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/97_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-97"
@@ -4297,6 +4879,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/98_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-98"
@@ -4325,6 +4913,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/99_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-99"
@@ -4353,6 +4947,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/100_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-100"
@@ -4381,6 +4981,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/101_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-101"
@@ -4409,6 +5015,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/102_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-102"
@@ -4437,6 +5049,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/103_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-103"
@@ -4465,6 +5083,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/104_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-104"
@@ -4493,6 +5117,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/105_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-105"
@@ -4521,6 +5151,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/106_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-106"
@@ -4549,6 +5185,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/107_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-107"
@@ -4577,6 +5219,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/108_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-108"
@@ -4605,6 +5253,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/109_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-109"
@@ -4633,6 +5287,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/110_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-110"
@@ -4661,6 +5321,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/111_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-111"
@@ -4689,6 +5355,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/112_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-112"
@@ -4717,6 +5389,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/113_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-113"
@@ -4745,6 +5423,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/114_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-114"
@@ -4773,6 +5457,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/115_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-115"
@@ -4801,6 +5491,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/116_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-116"
@@ -4829,6 +5525,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/117_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-117"
@@ -4857,6 +5559,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/118_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-118"
@@ -4885,6 +5593,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/119_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-119"
@@ -4913,6 +5627,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/120_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-120"
@@ -4941,6 +5661,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/121_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-121"
@@ -4969,6 +5695,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/122_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-122"
@@ -4997,6 +5729,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/123_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-123"
@@ -5025,6 +5763,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/124_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-124"
@@ -5053,6 +5797,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/125_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-125"
@@ -5081,6 +5831,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/126_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-126"
@@ -5109,6 +5865,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/127_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-127"
@@ -5137,6 +5899,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/128_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-128"
@@ -5165,6 +5933,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/129_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-129"
@@ -5193,6 +5967,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/130_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-130"
@@ -5221,6 +6001,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/131_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-131"
@@ -5249,6 +6035,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/132_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-132"
@@ -5277,6 +6069,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/133_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-133"
@@ -5305,6 +6103,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/134_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-134"
@@ -5333,6 +6137,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/135_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-135"
@@ -5361,6 +6171,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/136_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-136"
@@ -5389,6 +6205,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/137_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-137"
@@ -5417,6 +6239,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/138_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-138"
@@ -5445,6 +6273,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/139_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-139"
@@ -5473,6 +6307,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/140_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-140"
@@ -5501,6 +6341,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/141_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-141"
@@ -5529,6 +6375,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/142_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-142"
@@ -5557,6 +6409,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/143_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-143"
@@ -5585,6 +6443,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/144_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-144"
@@ -5613,6 +6477,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/145_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-145"
@@ -5641,6 +6511,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/146_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-146"
@@ -5669,6 +6545,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/147_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-147"
@@ -5697,6 +6579,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/148_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-148"
@@ -5725,6 +6613,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/149_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-149"
@@ -5753,6 +6647,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/150_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-150"
@@ -5781,6 +6681,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/151_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-151"
@@ -5809,6 +6715,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/152_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-152"
@@ -5837,6 +6749,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/153_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-153"
@@ -5865,6 +6783,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/154_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-154"
@@ -5893,6 +6817,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/155_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-155"
@@ -5921,6 +6851,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/156_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-156"
@@ -5949,6 +6885,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/157_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-157"
@@ -5977,6 +6919,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/158_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-158"
@@ -6005,6 +6953,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/159_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-159"
@@ -6033,6 +6987,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/160_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-160"
@@ -6061,6 +7021,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/161_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-161"
@@ -6089,6 +7055,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/162_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-162"
@@ -6117,6 +7089,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/163_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-163"
@@ -6145,6 +7123,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/164_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-164"
@@ -6173,6 +7157,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/165_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-165"
@@ -6201,6 +7191,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/166_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-166"
@@ -6229,6 +7225,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/167_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-167"
@@ -6257,6 +7259,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/168_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-168"
@@ -6285,6 +7293,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/169_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-169"
@@ -6313,6 +7327,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/170_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-170"
@@ -6341,6 +7361,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/171_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-171"
@@ -6369,6 +7395,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/172_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-172"
@@ -6397,6 +7429,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/173_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-173"
@@ -6425,6 +7463,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/174_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-174"
@@ -6453,6 +7497,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/175_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-175"
@@ -6481,6 +7531,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/176_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-176"
@@ -6509,6 +7565,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/177_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-177"
@@ -6537,6 +7599,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/178_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-178"
@@ -6565,6 +7633,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/179_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-179"
@@ -6593,6 +7667,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/180_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-180"
@@ -6621,6 +7701,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/181_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-181"
@@ -6649,6 +7735,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/182_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-182"
@@ -6677,6 +7769,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/183_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-183"
@@ -6705,6 +7803,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/184_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-184"
@@ -6733,6 +7837,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/185_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-185"
@@ -6761,6 +7871,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/186_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-186"
@@ -6789,6 +7905,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/187_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-187"
@@ -6817,6 +7939,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/188_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-188"
@@ -6845,6 +7973,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/189_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-189"
@@ -6873,6 +8007,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/190_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-190"
@@ -6901,6 +8041,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/191_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-191"
@@ -6929,6 +8075,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/192_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-192"
@@ -6957,6 +8109,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/193_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-193"
@@ -6985,6 +8143,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/194_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-194"
@@ -7013,6 +8177,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/195_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-195"
@@ -7041,6 +8211,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/196_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-196"
@@ -7069,6 +8245,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/197_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-197"
@@ -7097,6 +8279,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/198_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-198"
@@ -7125,6 +8313,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/199_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-199"
@@ -7153,6 +8347,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/200_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-200"
@@ -7181,6 +8381,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/201_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-201"
@@ -7209,6 +8415,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/202_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-202"
@@ -7237,6 +8449,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/203_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-203"
@@ -7265,6 +8483,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/204_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-204"
@@ -7293,6 +8517,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/205_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-205"
@@ -7321,6 +8551,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/206_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-206"
@@ -7349,6 +8585,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/207_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-207"
@@ -7377,6 +8619,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/208_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-208"
@@ -7405,6 +8653,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/209_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-209"
@@ -7433,6 +8687,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/210_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-210"
@@ -7461,6 +8721,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/211_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-211"
@@ -7489,6 +8755,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/212_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-212"
@@ -7517,6 +8789,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/213_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-213"
@@ -7545,6 +8823,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/214_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-214"
@@ -7573,6 +8857,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/215_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-215"
@@ -7601,6 +8891,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/216_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-216"
@@ -7629,6 +8925,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/217_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-217"
@@ -7657,6 +8959,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/218_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-218"
@@ -7685,6 +8993,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/219_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-219"
@@ -7713,6 +9027,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/220_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-220"
@@ -7741,6 +9061,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/221_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-221"
@@ -7769,6 +9095,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/222_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-222"
@@ -7797,6 +9129,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/223_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-223"
@@ -7825,6 +9163,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/224_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-224"
@@ -7853,6 +9197,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/225_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-225"
@@ -7881,6 +9231,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/226_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-226"
@@ -7909,6 +9265,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/227_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-227"
@@ -7937,6 +9299,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/228_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-228"
@@ -7965,6 +9333,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/229_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-229"
@@ -7993,6 +9367,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/230_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-230"
@@ -8021,6 +9401,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/231_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-231"
@@ -8049,6 +9435,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/232_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-232"
@@ -8077,6 +9469,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/233_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-233"
@@ -8105,6 +9503,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/234_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-234"
@@ -8133,6 +9537,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/235_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-235"
@@ -8161,6 +9571,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/236_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-236"
@@ -8189,6 +9605,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/237_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-237"
@@ -8217,6 +9639,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/238_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-238"
@@ -8245,6 +9673,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/239_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-239"
@@ -8273,6 +9707,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/240_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-240"
@@ -8301,6 +9741,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/241_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-241"
@@ -8329,6 +9775,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/242_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-242"
@@ -8357,6 +9809,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/243_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-243"
@@ -8385,6 +9843,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/244_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-244"
@@ -8413,6 +9877,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/245_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-245"
@@ -8441,6 +9911,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/246_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-246"
@@ -8469,6 +9945,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/247_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-247"
@@ -8497,6 +9979,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/248_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-248"
@@ -8525,6 +10013,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/249_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-249"
@@ -8553,6 +10047,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/250_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-250"
@@ -8581,6 +10081,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/251_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-251"
@@ -8609,6 +10115,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/252_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-252"
@@ -8637,6 +10149,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/253_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-253"
@@ -8665,6 +10183,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/254_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-254"
@@ -8693,6 +10217,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/255_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-255"
@@ -8721,6 +10251,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/256_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-256"
@@ -8749,6 +10285,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/257_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-257"
@@ -8777,6 +10319,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/258_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-258"
@@ -8805,6 +10353,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/259_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-259"
@@ -8833,6 +10387,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/260_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-260"
@@ -8861,6 +10421,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/261_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-261"
@@ -8889,6 +10455,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/262_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-262"
@@ -8917,6 +10489,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/263_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-263"
@@ -8945,6 +10523,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/264_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-264"
@@ -8973,6 +10557,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/265_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-265"
@@ -9001,6 +10591,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/266_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-266"
@@ -9029,6 +10625,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/267_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-267"
@@ -9057,6 +10659,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/268_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-268"
@@ -9085,6 +10693,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/269_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-269"
@@ -9113,6 +10727,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/270_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-270"
@@ -9141,6 +10761,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/271_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-271"
@@ -9169,6 +10795,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/272_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-272"
@@ -9197,6 +10829,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/273_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-273"
@@ -9225,6 +10863,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/274_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-274"
@@ -9253,6 +10897,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/275_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-275"
@@ -9281,6 +10931,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/276_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-276"
@@ -9309,6 +10965,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/277_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-277"
@@ -9337,6 +10999,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/278_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-278"
@@ -9365,6 +11033,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/279_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-279"
@@ -9393,6 +11067,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/280_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-280"
@@ -9421,6 +11101,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/281_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-281"
@@ -9449,6 +11135,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/282_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-282"
@@ -9477,6 +11169,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/283_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-283"
@@ -9505,6 +11203,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/284_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-284"
@@ -9533,6 +11237,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/285_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-285"
@@ -9561,6 +11271,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/286_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-286"
@@ -9589,6 +11305,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/287_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-287"
@@ -9617,6 +11339,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/288_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-288"
@@ -9645,6 +11373,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/289_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-289"
@@ -9673,6 +11407,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/290_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-290"
@@ -9701,6 +11441,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/291_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-291"
@@ -9729,6 +11475,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/292_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-292"
@@ -9757,6 +11509,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/293_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-293"
@@ -9785,6 +11543,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/294_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-294"
@@ -9813,6 +11577,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/295_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-295"
@@ -9841,6 +11611,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/296_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-296"
@@ -9869,6 +11645,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/297_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-297"
@@ -9897,6 +11679,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/298_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-298"
@@ -9925,6 +11713,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/299_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-299"
@@ -9953,6 +11747,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/300_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-300"
@@ -9981,6 +11781,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/301_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-301"
@@ -10009,6 +11815,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/302_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-302"
@@ -10037,6 +11849,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/303_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-303"
@@ -10065,6 +11883,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/304_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-304"
@@ -10093,6 +11917,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/305_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-305"
@@ -10121,6 +11951,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/306_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-306"
@@ -10149,6 +11985,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/307_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-307"
@@ -10177,6 +12019,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/308_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-308"
@@ -10205,6 +12053,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/309_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-309"
@@ -10233,6 +12087,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/310_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-310"
@@ -10261,6 +12121,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/311_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-311"
@@ -10289,6 +12155,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/312_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-312"
@@ -10317,6 +12189,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/313_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-313"
@@ -10345,6 +12223,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/314_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-314"
@@ -10373,6 +12257,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/315_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-315"
@@ -10401,6 +12291,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/316_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-316"
@@ -10429,6 +12325,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/317_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-317"
@@ -10457,6 +12359,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/318_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-318"
@@ -10485,6 +12393,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/319_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-319"
@@ -10513,6 +12427,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/320_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-320"
@@ -10541,6 +12461,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/321_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-321"
@@ -10569,6 +12495,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/322_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-322"
@@ -10597,6 +12529,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/323_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-323"
@@ -10625,6 +12563,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/324_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-324"
@@ -10653,6 +12597,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/325_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-325"
@@ -10681,6 +12631,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/326_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-326"
@@ -10709,6 +12665,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/327_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-327"
@@ -10737,6 +12699,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/328_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-328"
@@ -10765,6 +12733,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/329_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-329"
@@ -10793,6 +12767,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/330_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-330"
@@ -10821,6 +12801,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/331_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-331"
@@ -10849,6 +12835,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/332_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-332"
@@ -10877,6 +12869,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/333_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-333"
@@ -10905,6 +12903,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/334_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-334"
@@ -10933,6 +12937,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/335_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-335"
@@ -10961,6 +12971,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/336_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-336"
@@ -10989,6 +13005,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/337_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-337"
@@ -11017,6 +13039,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/338_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-338"
@@ -11045,6 +13073,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/339_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-339"
@@ -11073,6 +13107,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/340_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-340"
@@ -11101,6 +13141,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/341_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-341"
@@ -11129,6 +13175,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/342_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-342"
@@ -11157,6 +13209,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/343_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-343"
@@ -11185,6 +13243,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/344_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-344"
@@ -11213,6 +13277,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/345_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-345"
@@ -11241,6 +13311,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/346_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-346"
@@ -11269,6 +13345,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/347_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-347"
@@ -11297,6 +13379,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/348_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-348"
@@ -11325,6 +13413,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/349_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-349"
@@ -11353,6 +13447,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/350_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-350"
@@ -11381,6 +13481,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/351_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-351"
@@ -11409,6 +13515,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/352_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-352"
@@ -11437,6 +13549,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/353_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-353"
@@ -11465,6 +13583,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/354_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-354"
@@ -11493,6 +13617,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/355_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-355"
@@ -11521,6 +13651,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/356_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-356"
@@ -11549,6 +13685,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/357_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-357"
@@ -11577,6 +13719,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/358_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-358"
@@ -11605,6 +13753,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/359_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-359"
@@ -11633,6 +13787,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/360_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-360"
@@ -11661,6 +13821,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/361_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-361"
@@ -11689,6 +13855,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/362_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-362"
@@ -11717,6 +13889,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/363_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-363"
@@ -11745,6 +13923,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/364_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-364"
@@ -11773,6 +13957,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/365_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-365"
@@ -11801,6 +13991,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/366_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-366"
@@ -11829,6 +14025,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/367_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-367"
@@ -11857,6 +14059,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/368_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-368"
@@ -11885,6 +14093,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/369_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-369"
@@ -11913,6 +14127,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/370_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-370"
@@ -11941,6 +14161,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/371_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-371"
@@ -11969,6 +14195,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/372_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-372"
@@ -11997,6 +14229,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/373_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-373"
@@ -12025,6 +14263,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/374_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-374"
@@ -12053,6 +14297,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/375_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-375"
@@ -12081,6 +14331,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/376_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-376"
@@ -12109,6 +14365,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/377_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-377"
@@ -12137,6 +14399,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/378_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-378"
@@ -12165,6 +14433,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/379_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-379"
@@ -12193,6 +14467,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/380_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-380"
@@ -12221,6 +14501,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/381_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-381"
@@ -12249,6 +14535,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/382_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-382"
@@ -12277,6 +14569,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/383_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-383"
@@ -12305,6 +14603,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/384_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-384"
@@ -12333,6 +14637,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/385_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-385"
@@ -12361,6 +14671,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/386_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-386"
@@ -12389,6 +14705,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/387_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-387"
@@ -12417,6 +14739,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/388_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-388"
@@ -12445,6 +14773,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/389_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-389"
@@ -12473,6 +14807,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/390_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-390"
@@ -12501,6 +14841,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/391_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-391"
@@ -12529,6 +14875,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/392_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-392"
@@ -12557,6 +14909,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/393_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-393"
@@ -12585,6 +14943,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/394_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-394"
@@ -12613,6 +14977,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/395_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-395"
@@ -12641,6 +15011,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/396_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-396"
@@ -12669,6 +15045,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/397_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-397"
@@ -12697,6 +15079,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/398_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-398"
@@ -12725,6 +15113,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/399_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-399"
@@ -12753,6 +15147,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/400_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-400"
@@ -12781,6 +15181,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/401_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-401"
@@ -12809,6 +15215,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/402_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-402"
@@ -12837,6 +15249,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/403_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-403"
@@ -12865,6 +15283,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/404_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-404"
@@ -12893,6 +15317,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/405_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-405"
@@ -12921,6 +15351,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/406_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-406"
@@ -12949,6 +15385,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/407_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-407"
@@ -12977,6 +15419,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/408_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-408"
@@ -13005,6 +15453,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/409_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-409"
@@ -13033,6 +15487,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/410_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-410"
@@ -13061,6 +15521,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/411_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-411"
@@ -13089,6 +15555,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/412_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-412"
@@ -13117,6 +15589,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/413_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-413"
@@ -13145,6 +15623,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/414_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-414"
@@ -13173,6 +15657,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/415_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-415"
@@ -13201,6 +15691,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/416_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-416"
@@ -13229,6 +15725,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/417_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-417"
@@ -13257,6 +15759,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/418_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-418"
@@ -13285,6 +15793,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/419_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-419"
@@ -13313,6 +15827,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/420_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-420"
@@ -13341,6 +15861,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/421_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-421"
@@ -13369,6 +15895,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/422_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-422"
@@ -13397,6 +15929,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/423_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-423"
@@ -13425,6 +15963,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/424_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-424"
@@ -13453,6 +15997,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/425_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-425"
@@ -13481,6 +16031,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/426_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-426"
@@ -13509,6 +16065,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/427_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-427"
@@ -13537,6 +16099,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/428_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-428"
@@ -13565,6 +16133,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/429_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-429"
@@ -13593,6 +16167,12 @@
               "c": "",
               "t": "",
               "b": "xml/colecoes/hinario5-ccb/do/violoncelo/430_b.musicxml"
+            },
+            "clarinete": {
+              "s": "",
+              "c": "",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-430"
@@ -13638,6 +16218,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/431_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/431_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/431_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/431_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -13685,6 +16271,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/432_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/432_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/432_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-432"
@@ -13730,6 +16322,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/433_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/433_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/433_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/433_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -13777,6 +16375,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/434_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/434_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/434_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-434"
@@ -13822,6 +16426,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/435_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/435_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/435_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/435_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -13869,6 +16479,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/436_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/436_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/436_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-436"
@@ -13914,6 +16530,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/437_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/437_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/437_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/437_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -13961,6 +16583,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/438_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/438_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/438_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-438"
@@ -14006,6 +16634,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/439_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/439_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/439_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/439_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14053,6 +16687,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/440_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/440_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/440_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-440"
@@ -14098,6 +16738,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/441_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/441_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/441_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/441_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14145,6 +16791,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/442_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/442_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/442_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-442"
@@ -14190,6 +16842,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/443_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/443_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/443_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/443_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14237,6 +16895,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/444_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/444_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/444_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-444"
@@ -14282,6 +16946,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/445_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/445_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/445_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/445_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14329,6 +16999,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/446_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/446_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/446_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-446"
@@ -14374,6 +17050,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/447_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/447_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/447_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/447_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14421,6 +17103,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/448_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/448_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/448_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-448"
@@ -14466,6 +17154,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/449_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/449_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/449_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/449_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14513,6 +17207,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/450_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/450_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/450_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-450"
@@ -14558,6 +17258,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/451_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/451_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/451_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/451_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14605,6 +17311,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/452_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/452_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/452_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-452"
@@ -14650,6 +17362,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/453_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/453_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/453_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/453_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14697,6 +17415,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/454_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/454_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/454_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-454"
@@ -14742,6 +17466,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/455_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/455_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/455_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/455_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14789,6 +17519,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/456_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/456_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/456_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-456"
@@ -14834,6 +17570,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/457_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/457_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/457_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/457_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14881,6 +17623,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/458_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/458_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/458_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-458"
@@ -14926,6 +17674,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/459_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/459_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/459_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/459_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -14973,6 +17727,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/460_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/460_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/460_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-460"
@@ -15018,6 +17778,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/461_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/461_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/461_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/461_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15065,6 +17831,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/462_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/462_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/462_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-462"
@@ -15110,6 +17882,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/463_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/463_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/463_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/463_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15157,6 +17935,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/464_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/464_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/464_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-464"
@@ -15202,6 +17986,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/465_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/465_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/465_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/465_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15249,6 +18039,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/466_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/466_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/466_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-466"
@@ -15294,6 +18090,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/467_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/467_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/467_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/467_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15341,6 +18143,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/468_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/468_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/468_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-468"
@@ -15386,6 +18194,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/469_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/469_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/469_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/469_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15433,6 +18247,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/470_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/470_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/470_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-470"
@@ -15478,6 +18298,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/471_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/471_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/471_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/471_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15525,6 +18351,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/472_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/472_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/472_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-472"
@@ -15570,6 +18402,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/473_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/473_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/473_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/473_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15617,6 +18455,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/474_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/474_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/474_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-474"
@@ -15662,6 +18506,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/475_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/475_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/475_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/475_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15709,6 +18559,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/476_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/476_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/476_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-476"
@@ -15754,6 +18610,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/477_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/477_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/477_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/477_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
@@ -15801,6 +18663,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/478_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/478_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/478_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-478"
@@ -15847,6 +18715,12 @@
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/479_t.musicxml",
               "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/479_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/479_c.musicxml",
+              "t": "",
+              "b": ""
             }
           },
           "id": "hino-479"
@@ -15892,6 +18766,12 @@
               "s": "xml/colecoes/hinario5-ccb/do/trombone/480_s.musicxml",
               "c": "",
               "t": "xml/colecoes/hinario5-ccb/do/trombone/480_t.musicxml",
+              "b": ""
+            },
+            "clarinete": {
+              "s": "xml/colecoes/hinario5-ccb/sib/clarineta/480_s.musicxml",
+              "c": "xml/colecoes/hinario5-ccb/sib/clarineta/480_c.musicxml",
+              "t": "",
               "b": ""
             }
           },
