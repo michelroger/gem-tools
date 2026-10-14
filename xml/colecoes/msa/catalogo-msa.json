@@ -1,0 +1,2029 @@
+{
+  "version": "1.0.0",
+  "totalExercicios": 119,
+  "exercicios": [
+    {
+      "titulo": "Fase 2.4 - Exercício 1b - Pág. 22",
+      "fase": 2,
+      "exercicio": "Exercício 1b",
+      "pagina": 22,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.4_-_Exercício_1b_-_Pág._22.musicxml",
+      "id": "msa-f2-Fase_2.4_-_Exercício_1b_-_Pág._22"
+    },
+    {
+      "titulo": "Fase 2.4 - Exercício 1c - Pág. 22",
+      "fase": 2,
+      "exercicio": "Exercício 1c",
+      "pagina": 22,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.4_-_Exercício_1c_-_Pág._22.musicxml",
+      "id": "msa-f2-Fase_2.4_-_Exercício_1c_-_Pág._22"
+    },
+    {
+      "titulo": "Fase 2.4 - Exercício 1d - Pág. 22",
+      "fase": 2,
+      "exercicio": "Exercício 1d",
+      "pagina": 22,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.4_-_Exercício_1d_-_Pág._22.musicxml",
+      "id": "msa-f2-Fase_2.4_-_Exercício_1d_-_Pág._22"
+    },
+    {
+      "titulo": "Fase 2.4 - Exercício 1e - Pág. 22",
+      "fase": 2,
+      "exercicio": "Exercício 1e",
+      "pagina": 22,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.4_-_Exercício_1e_-_Pág._22.musicxml",
+      "id": "msa-f2-Fase_2.4_-_Exercício_1e_-_Pág._22"
+    },
+    {
+      "titulo": "Fase 2.6 - Exercício 10a - Pág. 25",
+      "fase": 2,
+      "exercicio": "Exercício 10a",
+      "pagina": 25,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 11,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.6_-_Exercício_10a_-_Pág._25.musicxml",
+      "id": "msa-f2-Fase_2.6_-_Exercício_10a_-_Pág._25"
+    },
+    {
+      "titulo": "Fase 2.6 - Exercício 9a - Pág. 25",
+      "fase": 2,
+      "exercicio": "Exercício 9a",
+      "pagina": 25,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.6_-_Exercício_9a_-_Pág._25.musicxml",
+      "id": "msa-f2-Fase_2.6_-_Exercício_9a_-_Pág._25"
+    },
+    {
+      "titulo": "Fase 2.6 - Exercício 9d - Pág. 25",
+      "fase": 2,
+      "exercicio": "Exercício 9d",
+      "pagina": 25,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.6_-_Exercício_9d_-_Pág._25.musicxml",
+      "id": "msa-f2-Fase_2.6_-_Exercício_9d_-_Pág._25"
+    },
+    {
+      "titulo": "Teste",
+      "fase": 2,
+      "exercicio": "Exercício _1a_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 6,
+      "arquivo": "xml/colecoes/msa/fase-02/Fase_2.4_-_Exercício_1a_-_Pág._22.musicxml",
+      "id": "msa-f2-Fase_2.4_-_Exercício_1a_-_Pág._22"
+    },
+    {
+      "titulo": "Fase 3.5 - Exercício 1 - Pág. 32",
+      "fase": 3,
+      "exercicio": "Exercício 1",
+      "pagina": 32,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-03/Fase_3.5_-_Exercício_1_-_Pág._32.musicxml",
+      "id": "msa-f3-Fase_3.5_-_Exercício_1_-_Pág._32"
+    },
+    {
+      "titulo": "Fase 3.5 - Exercício 2 - Pág. 32",
+      "fase": 3,
+      "exercicio": "Exercício 2",
+      "pagina": 32,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 21,
+      "arquivo": "xml/colecoes/msa/fase-03/Fase_3.5_-_Exercício_2_-_Pág._32.musicxml",
+      "id": "msa-f3-Fase_3.5_-_Exercício_2_-_Pág._32"
+    },
+    {
+      "titulo": "Fase 3.5 - Exercício 3 - Pág. 33",
+      "fase": 3,
+      "exercicio": "Exercício 3",
+      "pagina": 33,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-03/Fase_3.5_-_Exercício_3_-_Pág._33.musicxml",
+      "id": "msa-f3-Fase_3.5_-_Exercício_3_-_Pág._33"
+    },
+    {
+      "titulo": "Fase 3.5 - Exercício 4 - Pág. 33",
+      "fase": 3,
+      "exercicio": "Exercício 4",
+      "pagina": 33,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 19,
+      "arquivo": "xml/colecoes/msa/fase-03/Fase_3.5_-_Exercício_4_-_Pág._33.musicxml",
+      "id": "msa-f3-Fase_3.5_-_Exercício_4_-_Pág._33"
+    },
+    {
+      "titulo": "Fase 3.5 - Exercício 5 - Pág. 33",
+      "fase": 3,
+      "exercicio": "Exercício 5",
+      "pagina": 33,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-03/Fase_3.5_-_Exercício_5_-_Pág._33.musicxml",
+      "id": "msa-f3-Fase_3.5_-_Exercício_5_-_Pág._33"
+    },
+    {
+      "titulo": "Fase 4.5 - Exercício 6 - Pág. 37",
+      "fase": 4,
+      "exercicio": "Exercício 6",
+      "pagina": 37,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Exercício_6_-_Pág._37.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Exercício_6_-_Pág._37"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de Solfejo em 3",
+      "fase": 4,
+      "exercicio": "Exercício _14_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 10,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de Solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _12_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 8,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de solfejo em 3",
+      "fase": 4,
+      "exercicio": "Exercício _7_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 11,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de solfejo em 3 - Exercício 9 - Pág. 38",
+      "fase": 4,
+      "exercicio": "Exercício 9",
+      "pagina": 38,
+      "compasso": "3/2",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _13_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 10,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _11_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _16_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 8,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39"
+    },
+    {
+      "titulo": "Fase 4.5 - Movimento de soljejo em 3",
+      "fase": 4,
+      "exercicio": "Exercício _10_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de compasso em 4",
+      "fase": 4,
+      "exercicio": "Exercício _23_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42.musicxml",
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de solfejo em 2",
+      "fase": 4,
+      "exercicio": "Exercício _19_-_P",
+      "pagina": null,
+      "compasso": "2/4",
+      "batidas": 2,
+      "bpm": 122,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42.musicxml",
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de solfejo em 2",
+      "fase": 4,
+      "exercicio": "Exercício _24_-_P",
+      "pagina": null,
+      "compasso": "2/4",
+      "batidas": 2,
+      "bpm": 70,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _20_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 11,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42.musicxml",
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _21_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 19,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42.musicxml",
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42"
+    },
+    {
+      "titulo": "Fase 4.6 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _22_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 21,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42.musicxml",
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42"
+    },
+    {
+      "titulo": "Fase 4.7 - Exercício 17 - Pág. 41",
+      "fase": 4,
+      "exercicio": "Exercício 17",
+      "pagina": 41,
+      "compasso": "2/4",
+      "batidas": 2,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Exercício_17_-_Pág._41.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Exercício_17_-_Pág._41"
+    },
+    {
+      "titulo": "Fase 4.7 - Exercício 18 - Pág. 41",
+      "fase": 4,
+      "exercicio": "Exercício 18",
+      "pagina": 41,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 19,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Exercício_18_-_Pág._41.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Exercício_18_-_Pág._41"
+    },
+    {
+      "titulo": "Fase 4.7 - Movimento de Solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _29_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43"
+    },
+    {
+      "titulo": "Fase 4.7 - Movimento de solfejo em 2",
+      "fase": 4,
+      "exercicio": "Exercício _26_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43"
+    },
+    {
+      "titulo": "Fase 4.7 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _25_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43"
+    },
+    {
+      "titulo": "Fase 4.7 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _27_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43"
+    },
+    {
+      "titulo": "Fase 4.7 - Movimento de solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _28_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43.musicxml",
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43"
+    },
+    {
+      "titulo": "Fase. 4.5 - Movimento de Solfejo em 4",
+      "fase": 4,
+      "exercicio": "Exercício _15_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39"
+    },
+    {
+      "titulo": "Fase. 4.5 - Movimento de solfejo em 3",
+      "fase": 4,
+      "exercicio": "Exercício _8_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38.musicxml",
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38"
+    },
+    {
+      "titulo": "Fase 5.1 - Exercício 30 - Pág. 45",
+      "fase": 5,
+      "exercicio": "Exercício 30",
+      "pagina": 45,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 66,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.1_-_Exercício_30_-_Pág._45.musicxml",
+      "id": "msa-f5-Fase_5.1_-_Exercício_30_-_Pág._45"
+    },
+    {
+      "titulo": "Fase 5.1 - Exercício 30 - Pág. 45",
+      "fase": 5,
+      "exercicio": "Exercício 30",
+      "pagina": 45,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 66,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 22,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.1_-_Exercício_32_-_Pág._45.musicxml",
+      "id": "msa-f5-Fase_5.1_-_Exercício_32_-_Pág._45"
+    },
+    {
+      "titulo": "Fase 5.1 - Exercício 33 - Pág. 45",
+      "fase": 5,
+      "exercicio": "Exercício 33",
+      "pagina": 45,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.1_-_Exercício_33_-_Pág._45.musicxml",
+      "id": "msa-f5-Fase_5.1_-_Exercício_33_-_Pág._45"
+    },
+    {
+      "titulo": "Fase 5.2 - Movimento de solfejo em 4",
+      "fase": 5,
+      "exercicio": "Exercício 35_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47.musicxml",
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47"
+    },
+    {
+      "titulo": "Fase 5.2 - Movimento de solfejo em 4",
+      "fase": 5,
+      "exercicio": "Exercício 36_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47.musicxml",
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47"
+    },
+    {
+      "titulo": "Fase 5.2 - Movimento de solfejo em 4",
+      "fase": 5,
+      "exercicio": "Exercício 37_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 75,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47.musicxml",
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47"
+    },
+    {
+      "titulo": "Fase 5.4 - Exercício 38 - Pág. 49",
+      "fase": 5,
+      "exercicio": "Exercício 38",
+      "pagina": 49,
+      "compasso": "6/4",
+      "batidas": 6,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 10,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.4_-_Exercício_38_-_Pág._49.musicxml",
+      "id": "msa-f5-Fase_5.4_-_Exercício_38_-_Pág._49"
+    },
+    {
+      "titulo": "Fase 5.4 - Exercício 39 - Pág. 49",
+      "fase": 5,
+      "exercicio": "Exercício 39",
+      "pagina": 49,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.4_-_Exercício_39_-_Pág._49.musicxml",
+      "id": "msa-f5-Fase_5.4_-_Exercício_39_-_Pág._49"
+    },
+    {
+      "titulo": "Fase 5.5 - Movimento de solfejo em 6",
+      "fase": 5,
+      "exercicio": "Exercício _40_-_P",
+      "pagina": null,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 40,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 20,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50.musicxml",
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50"
+    },
+    {
+      "titulo": "Fase 5.5 - Movimento de solfejo em 6",
+      "fase": 5,
+      "exercicio": "Exercício _41_-_P",
+      "pagina": null,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 61,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51.musicxml",
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51"
+    },
+    {
+      "titulo": "Fase 5.5 - Movimento de solfejo em 6",
+      "fase": 5,
+      "exercicio": "Exercício _42_-_P",
+      "pagina": null,
+      "compasso": "6/4",
+      "batidas": 6,
+      "bpm": 90,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51.musicxml",
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51"
+    },
+    {
+      "titulo": "Fase 6.3 - Escala diatônica - Pág. 55",
+      "fase": 6,
+      "exercicio": null,
+      "pagina": 55,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 4,
+      "arquivo": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_diatônica_-_Pág._55.musicxml",
+      "id": "msa-f6-Fase_6.3_-_Escala_diatônica_-_Pág._55"
+    },
+    {
+      "titulo": "Partitura sem título",
+      "fase": 6,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "13/4",
+      "batidas": 13,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 2,
+      "arquivo": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_cromática_-_Pág._55.musicxml",
+      "id": "msa-f6-Fase_6.3_-_Escala_cromática_-_Pág._55"
+    },
+    {
+      "titulo": "7.1 - Escala de SI Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de DÓ# Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de DÓb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de FÁ Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de FÁ# Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de LÁ Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de LÁb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de MI Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de MIb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de RÉ Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de RÉb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de SIb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de SOL Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66"
+    },
+    {
+      "titulo": "Fase 7.1 - Escala de SOLb Maior",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67.musicxml",
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67"
+    },
+    {
+      "titulo": "Fase 7.3 - Atividade 43 - Pág, 69",
+      "fase": 7,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "9/8",
+      "batidas": 9,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.3_-_Atividade_43_-_Pág_69.musicxml",
+      "id": "msa-f7-Fase_7.3_-_Atividade_43_-_Pág_69"
+    },
+    {
+      "titulo": "Fase 7.3 - Exercício 44 - Pág. 69",
+      "fase": 7,
+      "exercicio": "Exercício 44",
+      "pagina": 69,
+      "compasso": "9/4",
+      "batidas": 9,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.3_-_Exercício_44_-_Pág._69.musicxml",
+      "id": "msa-f7-Fase_7.3_-_Exercício_44_-_Pág._69"
+    },
+    {
+      "titulo": "Fase 7.4 - Movimento de solfejo em 9",
+      "fase": 7,
+      "exercicio": "Exercício _45_-_P",
+      "pagina": null,
+      "compasso": "9/8",
+      "batidas": 9,
+      "bpm": 61,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70.musicxml",
+      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70"
+    },
+    {
+      "titulo": "Fase 7.4 - Movimento de solfejo em 9",
+      "fase": 7,
+      "exercicio": "Exercício _47_-_P",
+      "pagina": null,
+      "compasso": "9/8",
+      "batidas": 9,
+      "bpm": 61,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71.musicxml",
+      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71"
+    },
+    {
+      "titulo": "Fase 7.6 - Exercício 48 - Pág. 73",
+      "fase": 7,
+      "exercicio": "Exercício 48",
+      "pagina": 73,
+      "compasso": "12/8",
+      "batidas": 12,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 11,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.6_-_Exercício_48_-_Pág._73.musicxml",
+      "id": "msa-f7-Fase_7.6_-_Exercício_48_-_Pág._73"
+    },
+    {
+      "titulo": "Fase 7.6 - Movimento de solfejo em 12",
+      "fase": 7,
+      "exercicio": "Exercício _49_-_P",
+      "pagina": null,
+      "compasso": "12/8",
+      "batidas": 12,
+      "bpm": 61,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74.musicxml",
+      "id": "msa-f7-Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74"
+    },
+    {
+      "titulo": "Fase 7.7 - Exercício 51 - Pág. 75",
+      "fase": 7,
+      "exercicio": "Exercício 51",
+      "pagina": 75,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Exercício_51_-_Pág._75.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Exercício_51_-_Pág._75"
+    },
+    {
+      "titulo": "Fase 7.7 - Exercício 52 - Pág. 75",
+      "fase": 7,
+      "exercicio": "Exercício 52",
+      "pagina": 75,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 40,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Exercício_52_-_Pág._75.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Exercício_52_-_Pág._75"
+    },
+    {
+      "titulo": "Fase 7.7 - Exercício 53 - Pág. 75",
+      "fase": 7,
+      "exercicio": "Exercício 53",
+      "pagina": 75,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 60,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 15,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Exercício_53_-_Pág._75.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Exercício_53_-_Pág._75"
+    },
+    {
+      "titulo": "Fase 7.7 - Exercício 54 - Pág. 75",
+      "fase": 7,
+      "exercicio": "Exercício 54",
+      "pagina": 75,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 72,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Exercício_54_-_Pág._75.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Exercício_54_-_Pág._75"
+    },
+    {
+      "titulo": "Fase 7.7 - Exercício 58 - Pág. 79",
+      "fase": 7,
+      "exercicio": "Exercício 58",
+      "pagina": 79,
+      "compasso": "6/4",
+      "batidas": 6,
+      "bpm": 100,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Exercício_58_-_Pág._79.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Exercício_58_-_Pág._79"
+    },
+    {
+      "titulo": "Fase 7.7 - Movimento de solfejo em 12",
+      "fase": 7,
+      "exercicio": "Exercício _50_-_P",
+      "pagina": null,
+      "compasso": "12/8",
+      "batidas": 12,
+      "bpm": 122,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 5,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74"
+    },
+    {
+      "titulo": "Fase 7.7 - Movimento de solfejo em 4",
+      "fase": 7,
+      "exercicio": "Exercício _56_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 60,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 20,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76"
+    },
+    {
+      "titulo": "Fase 7.7 - Movimento de solfejo em 4",
+      "fase": 7,
+      "exercicio": "Exercício _57_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 20,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78.musicxml",
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78"
+    },
+    {
+      "titulo": "Fase 7.7 Exercício 60 - Pág. 79",
+      "fase": 7,
+      "exercicio": "Exercício 60",
+      "pagina": 79,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 72,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_Exercício_60_-_Pág._79.musicxml",
+      "id": "msa-f7-Fase_7.7_Exercício_60_-_Pág._79"
+    },
+    {
+      "titulo": "Fase 8.2 - Exercício 63 - Pág. 85",
+      "fase": 8,
+      "exercicio": "Exercício 63",
+      "pagina": 85,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-08/Fase_8.2_-_Exercício_63_-_Pág._85.musicxml",
+      "id": "msa-f8-Fase_8.2_-_Exercício_63_-_Pág._85"
+    },
+    {
+      "titulo": "Fase 8.2 - Movimento de solfejo em 4",
+      "fase": 8,
+      "exercicio": "Exercício _62_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 33,
+      "arquivo": "xml/colecoes/msa/fase-08/Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84.musicxml",
+      "id": "msa-f8-Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84"
+    },
+    {
+      "titulo": "Fase 8.2 Exercício 65 - Pág. 85",
+      "fase": 8,
+      "exercicio": "Exercício 65",
+      "pagina": 85,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-08/Fase_8.2_Exercício_65_-_Pág._85.musicxml",
+      "id": "msa-f8-Fase_8.2_Exercício_65_-_Pág._85"
+    },
+    {
+      "titulo": "Fase 9.1 - Movimento de Solfejo em 4",
+      "fase": 9,
+      "exercicio": "Exercício _67_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 31,
+      "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88.musicxml",
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88"
+    },
+    {
+      "titulo": "Fase 9.1 - Movimento de solfejo 2",
+      "fase": 9,
+      "exercicio": "Exercício _68_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 38,
+      "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89.musicxml",
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89"
+    },
+    {
+      "titulo": "Fase 9.1 - Movimento de solfejo em 2",
+      "fase": 9,
+      "exercicio": "Exercício _69_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 26,
+      "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91.musicxml",
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91"
+    },
+    {
+      "titulo": "Fase 9.1 Exercício 70 - Pág. 92",
+      "fase": 9,
+      "exercicio": "Exercício 70",
+      "pagina": 92,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 24,
+      "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_Exercício_70_-_Pág._92.musicxml",
+      "id": "msa-f9-Fase_9.1_Exercício_70_-_Pág._92"
+    },
+    {
+      "titulo": "Fase 10.1 - Dinâmica - Hino 131",
+      "fase": 10,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 72,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93.musicxml",
+      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93"
+    },
+    {
+      "titulo": "Fase 10.1 - Dinâmica - Hino 221",
+      "fase": 10,
+      "exercicio": null,
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 70,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93.musicxml",
+      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93"
+    },
+    {
+      "titulo": "Fase 10.1 - Movimento de solfejo em 2",
+      "fase": 10,
+      "exercicio": "Exercício _72_-_P",
+      "pagina": null,
+      "compasso": "2/4",
+      "batidas": 2,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 44,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94.musicxml",
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94"
+    },
+    {
+      "titulo": "Fase 10.1 - Movimento de solfejo em 2",
+      "fase": 10,
+      "exercicio": "Exercício _73_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 160,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 36,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96.musicxml",
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96"
+    },
+    {
+      "titulo": "Fase 10.1 - Movimento de solfejo em 3",
+      "fase": 10,
+      "exercicio": "Exercício _74_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 43,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98.musicxml",
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98"
+    },
+    {
+      "titulo": "Fase 10.1 Exercício 75 - Pág. 99",
+      "fase": 10,
+      "exercicio": "Exercício 75",
+      "pagina": 99,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_Exercício_75_-_Pág._99.musicxml",
+      "id": "msa-f10-Fase_10.1_Exercício_75_-_Pág._99"
+    },
+    {
+      "titulo": "Fase 11.4 - Movimento de Solfejo em 3",
+      "fase": 11,
+      "exercicio": "Exercício _78_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 37,
+      "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107.musicxml",
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107"
+    },
+    {
+      "titulo": "Fase 11.4 - Movimento de solfejo em 3",
+      "fase": 11,
+      "exercicio": "Exercício _77_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 36,
+      "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106.musicxml",
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106"
+    },
+    {
+      "titulo": "Fase 11.4 - Movimento de solfejo em 3",
+      "fase": 11,
+      "exercicio": "Exercício _79_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 27,
+      "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109.musicxml",
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109"
+    },
+    {
+      "titulo": "Fase 11.4 Exercício 80 - Pág. 110 (modificado)",
+      "fase": 11,
+      "exercicio": "Exercício 80",
+      "pagina": 110,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_Exercício_80_-_Pág._110_modificado.musicxml",
+      "id": "msa-f11-Fase_11.4_Exercício_80_-_Pág._110_modificado"
+    },
+    {
+      "titulo": "12.2 - Exercício 84 - Pág. 113",
+      "fase": 12,
+      "exercicio": "Exercício 84",
+      "pagina": 113,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 69,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Exercício_84_-_Pág._113.musicxml",
+      "id": "msa-f12-Fase_12.2_-_Exercício_84_-_Pág._113"
+    },
+    {
+      "titulo": "Fase 12.2 - Exercício 86 - Pág. 113",
+      "fase": 12,
+      "exercicio": "Exercício 86",
+      "pagina": 113,
+      "compasso": "3/2",
+      "batidas": 3,
+      "bpm": 50,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 18,
+      "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Exercício_86_-_Pág._113.musicxml",
+      "id": "msa-f12-Fase_12.2_-_Exercício_86_-_Pág._113"
+    },
+    {
+      "titulo": "Fase 12.2 - Movimento de solfejo em 6",
+      "fase": 12,
+      "exercicio": "Exercício _88_-_P",
+      "pagina": null,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 31,
+      "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114.musicxml",
+      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114"
+    },
+    {
+      "titulo": "Fase 12.2 - Movimento de solfejo em 6",
+      "fase": 12,
+      "exercicio": "Exercício _89_-_P",
+      "pagina": null,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 34,
+      "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116.musicxml",
+      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116"
+    },
+    {
+      "titulo": "Fase 12.2 Exercício 82 - Pág. 113",
+      "fase": 12,
+      "exercicio": "Exercício 82",
+      "pagina": 113,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 72,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 11,
+      "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Exercício_82_-_Pág._113.musicxml",
+      "id": "msa-f12-Fase_12.2_-_Exercício_82_-_Pág._113"
+    },
+    {
+      "titulo": "Fase 13.1 - Exercício 90 - Pág. 122",
+      "fase": 13,
+      "exercicio": "Exercício 90",
+      "pagina": 122,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-13/Fase_13.1_-_Exercício_90_-_Pág._122.musicxml",
+      "id": "msa-f13-Fase_13.1_-_Exercício_90_-_Pág._122"
+    },
+    {
+      "titulo": "Fase 13.1 - Exercício 92 - Pág. 122",
+      "fase": 13,
+      "exercicio": "Exercício 92",
+      "pagina": 122,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 76,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 13,
+      "arquivo": "xml/colecoes/msa/fase-13/Fase_13.1_-_Exercício_92_-_Pág._122.musicxml",
+      "id": "msa-f13-Fase_13.1_-_Exercício_92_-_Pág._122"
+    },
+    {
+      "titulo": "Fase 13.1 - Movimento de solfejo em 9",
+      "fase": 13,
+      "exercicio": "Exercício _94_-_P",
+      "pagina": null,
+      "compasso": "9/8",
+      "batidas": 9,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 25,
+      "arquivo": "xml/colecoes/msa/fase-13/Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122.musicxml",
+      "id": "msa-f13-Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122"
+    },
+    {
+      "titulo": "Fase 14.1 - Exercício 100 - Pág. 129",
+      "fase": 14,
+      "exercicio": "Exercício 100",
+      "pagina": 129,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 63,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-14/Fase_14.1_-_Exercício_100_-_Pág._129.musicxml",
+      "id": "msa-f14-Fase_14.1_-_Exercício_100_-_Pág._129"
+    },
+    {
+      "titulo": "Fase 14.1 - Exercício 102 - Pág. 129",
+      "fase": 14,
+      "exercicio": "Exercício 102",
+      "pagina": 129,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 100,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 9,
+      "arquivo": "xml/colecoes/msa/fase-14/Fase_14.1_-_Exercício_102_-_Pág._129.musicxml",
+      "id": "msa-f14-Fase_14.1_-_Exercício_102_-_Pág._129"
+    },
+    {
+      "titulo": "Fase 14.1 - Exercício 104 - Pág. 129",
+      "fase": 14,
+      "exercicio": "Exercício 104",
+      "pagina": 129,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 72,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-14/Fase_14.1_-_Exercício_104_-_Pág._129.musicxml",
+      "id": "msa-f14-Fase_14.1_-_Exercício_104_-_Pág._129"
+    },
+    {
+      "titulo": "Fase 14.1 - Exercício 96 - Pág. 128",
+      "fase": 14,
+      "exercicio": "Exercício 96",
+      "pagina": 128,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 108,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 19,
+      "arquivo": "xml/colecoes/msa/fase-14/Fase_14.1_-_Exercício_96_-_Pág._128.musicxml",
+      "id": "msa-f14-Fase_14.1_-_Exercício_96_-_Pág._128"
+    },
+    {
+      "titulo": "Fase 14.1 - Exercício 98 - Pág. 128",
+      "fase": 14,
+      "exercicio": "Exercício 98",
+      "pagina": 128,
+      "compasso": "6/8",
+      "batidas": 6,
+      "bpm": 108,
+      "tipo": "ritmica",
+      "claves": [
+        "percussion"
+      ],
+      "temNotasComAltura": false,
+      "totalCompassos": 17,
+      "arquivo": "xml/colecoes/msa/fase-14/Fase_14.1_-_Exercício_98_-_Pág._128.musicxml",
+      "id": "msa-f14-Fase_14.1_-_Exercício_98_-_Pág._128"
+    },
+    {
+      "titulo": "Fase 15.3 - Movimento de solfejo em 12",
+      "fase": 15,
+      "exercicio": "Exercício _106_-_P",
+      "pagina": null,
+      "compasso": "12/8",
+      "batidas": 12,
+      "bpm": 60,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 23,
+      "arquivo": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133.musicxml",
+      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133"
+    },
+    {
+      "titulo": "Fase 15.3 - Movimento de solfejo em 12",
+      "fase": 15,
+      "exercicio": "Exercício _107_-_P",
+      "pagina": null,
+      "compasso": "12/8",
+      "batidas": 12,
+      "bpm": 60,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 14,
+      "arquivo": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134.musicxml",
+      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134"
+    },
+    {
+      "titulo": "Fase 16.2 - Hino 31 - Pág. 137",
+      "fase": 16,
+      "exercicio": null,
+      "pagina": 137,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 68,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 38,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137.musicxml",
+      "id": "msa-f16-Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 2",
+      "fase": 16,
+      "exercicio": "Exercício _109_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 41,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 2",
+      "fase": 16,
+      "exercicio": "Exercício _110_-_P",
+      "pagina": null,
+      "compasso": "2/2",
+      "batidas": 2,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 51,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 3",
+      "fase": 16,
+      "exercicio": "Exercício _111_-_P",
+      "pagina": null,
+      "compasso": "3/4",
+      "batidas": 3,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 37,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 4",
+      "fase": 16,
+      "exercicio": "Exercício _108_-_P",
+      "pagina": null,
+      "compasso": "4/4",
+      "batidas": 4,
+      "bpm": 80,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 32,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 6",
+      "fase": 16,
+      "exercicio": "Exercício _112_-_P",
+      "pagina": null,
+      "compasso": "6/4",
+      "batidas": 6,
+      "bpm": 100,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 35,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151"
+    },
+    {
+      "titulo": "Fase 16.3 - Movimento de solfejo em 9",
+      "fase": 16,
+      "exercicio": "Exercício _113_-_P",
+      "pagina": null,
+      "compasso": "9/4",
+      "batidas": 9,
+      "bpm": 120,
+      "tipo": "solfejo",
+      "claves": [
+        "G"
+      ],
+      "temNotasComAltura": true,
+      "totalCompassos": 29,
+      "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154.musicxml",
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154"
+    }
+  ]
+}

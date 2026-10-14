@@ -1,3 +1,7 @@
-node_modules/ 
-assets/audio/
+node_modules/
 assets/video/
+assets/audio/notas/
+assets/audio/*-bemlongo.wav
+assets/audio/*-longo.wav
+assets/audio/*-medio.wav
+assets/audio/*-curto.wav

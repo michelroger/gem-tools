@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=1.5.0">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.5.1">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v--</div>
+      <div class="splash-version" id="splashVersion">v2.5.1</div>
     </div>
   </div>
 
@@ -288,6 +288,12 @@
           <span class="shortcut-icon"><i data-lucide="book-open-text" aria-hidden="true"></i></span>
           <span class="shortcut-title">MSA com IA</span>
           <span class="shortcut-desc">Resumos do Livro</span>
+        </button>
+        <button type="button" class="home-shortcut-card" data-shortcut-mode="msa-leitura"
+          style="--gradient: linear-gradient(135deg, #06b6d4, #0891b2)">
+          <span class="shortcut-icon"><i data-lucide="music-3" aria-hidden="true"></i></span>
+          <span class="shortcut-title">Leitura MSA</span>
+          <span class="shortcut-desc">Solfejo e Mão</span>
         </button>
         <button type="button" class="home-shortcut-card" data-shortcut-mode="challenge"
           style="--gradient: linear-gradient(135deg, #3b82f6, #1d4ed8)">
@@ -719,6 +725,161 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leitura Rítmica, Métrica e Solfejo do MSA -->
+    <div class="msa-leitura-section hidden" id="msaLeituraSection">
+      <!-- Painel Superior: Seleção de Fase e Lição -->
+      <section class="hinos-panel du-card border border-base-300 bg-base-100 shadow-sm p-4 mb-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+          <div>
+            <h3 class="hinos-panel-title flex items-center gap-2">
+              <i data-lucide="music-3" class="text-primary"></i>
+              Leitura Rítmica, Métrica e Solfejo (MSA)
+            </h3>
+            <p class="text-xs text-base-content/70 mt-1">
+              Prática sincronizada de condução da mão com andamento ajustável e os 3 modos oficiais do MSA.
+            </p>
+          </div>
+          <div id="msaExercicioMeta" class="flex flex-wrap gap-1"></div>
+        </div>
+
+        <!-- Seletor de Fases com Scroll Suave e Botoes de Navegacao -->
+        <div class="relative flex items-center gap-1 my-2 bg-base-200/40 p-1.5 rounded-xl border border-base-300/40">
+          <button type="button" id="btnMsaFasePrev" class="du-btn du-btn-circle du-btn-ghost du-btn-xs text-base-content/80 hover:bg-base-200" title="Fases anteriores" aria-label="Fase anterior">
+            <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+          </button>
+          <div class="msa-fase-tabs-scroll flex-1" id="msaFaseTabs" role="tablist" aria-label="Selecione a Fase">
+            <!-- Preenchido via msa-leitura.js -->
+          </div>
+          <button type="button" id="btnMsaFaseNext" class="du-btn du-btn-circle du-btn-ghost du-btn-xs text-base-content/80 hover:bg-base-200" title="Próximas fases" aria-label="Próxima fase">
+            <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+
+        <!-- Seletor da Lição / Exercício e Opções de Áudio em Cartões Fluidos -->
+        <div class="mt-3 grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
+          <div class="lg:col-span-7">
+            <label class="hinos-field-label block mb-1.5 text-xs font-bold text-base-content/80" for="msaExercicioSelect">Exercício / Lição da Fase</label>
+            <select id="msaExercicioSelect" class="hinos-select du-select du-select-bordered du-select-sm w-full font-semibold">
+              <!-- Preenchido via msa-leitura.js -->
+            </select>
+          </div>
+          <div class="lg:col-span-5 flex flex-wrap gap-2 items-center justify-between">
+            <label class="flex-1 min-w-[95px] flex items-center justify-between px-2.5 py-1.5 rounded-lg border border-base-300 bg-base-200/60 cursor-pointer hover:bg-base-200 transition-all text-xs font-bold" title="Ativa ou desliga a voz com a leitura rítmica ou nomes das notas">
+              <span class="flex items-center gap-1 text-base-content/90">🎙️ Voz</span>
+              <input type="checkbox" id="chkMsaSomLeitura" class="du-toggle du-toggle-xs du-toggle-success" checked />
+            </label>
+            <label class="flex-1 min-w-[105px] flex items-center justify-between px-2.5 py-1.5 rounded-lg border border-base-300 bg-base-200/60 cursor-pointer hover:bg-base-200 transition-all text-xs font-bold" title="Ativa ou desliga o clique de metrônomo nas batidas">
+              <span class="flex items-center gap-1 text-base-content/90">⏱️ Metro</span>
+              <input type="checkbox" id="chkMsaSomMetronomo" class="du-toggle du-toggle-xs du-toggle-primary" checked />
+            </label>
+            <label class="flex-1 min-w-[105px] flex items-center justify-between px-2.5 py-1.5 rounded-lg border border-base-300 bg-base-200/60 cursor-pointer hover:bg-base-200 transition-all text-xs font-bold" title="Inverte a condução para canhotos (mão esquerda)">
+              <span class="flex items-center gap-1 text-base-content/90">✋ Canhoto</span>
+              <input type="checkbox" id="chkMsaLeftHand" class="du-toggle du-toggle-xs" />
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Barra de Escolha dos 3 Modos do MSA e Seletor de Voz -->
+      <div class="du-card border border-base-300 bg-base-100 shadow-sm p-3 mb-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="msa-modes-bar mb-0 flex flex-wrap gap-1.5">
+            <button type="button" class="msa-mode-btn du-btn du-btn-xs sm:du-btn-sm du-btn-primary font-bold" data-msa-mode="ritmica">
+              🥁 Rítmica ("TA")
+            </button>
+            <button type="button" class="msa-mode-btn du-btn du-btn-xs sm:du-btn-sm du-btn-outline font-bold" data-msa-mode="metrica">
+              🗣️ Métrica (Fala)
+            </button>
+          </div>
+          <div class="flex flex-wrap items-center justify-center sm:justify-end gap-2.5">
+            <!-- Seletor de Timbre Vocal: Feminina / Masculina -->
+            <div class="flex items-center gap-1 bg-base-200/80 p-0.5 rounded-lg border border-base-300 shadow-2xs" id="msaVoiceGenderWrap" role="group" aria-label="Seletor de Voz">
+              <button type="button" id="btnMsaVoiceFem" class="du-btn du-btn-xs du-btn-primary font-bold transition-all px-2.5" title="Voz Feminina">
+                👩 Feminina
+              </button>
+              <button type="button" id="btnMsaVoiceMasc" class="du-btn du-btn-xs du-btn-ghost font-bold transition-all px-2.5" title="Voz Masculina">
+                👨 Masculina
+              </button>
+            </div>
+            <div class="text-xs font-semibold text-base-content/75 italic text-center sm:text-right hidden lg:block" id="msaModoDesc">
+              Leitura Rítmica: sílaba "TA" na duração e ritmo exatos.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Playback, Batidas & Andamento (BPM) Responsiva -->
+      <div class="du-card border border-base-300 bg-base-100 shadow-sm p-3 mb-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-3 w-full">
+          <!-- Ações de Reprodução e TEMPO -->
+          <div class="flex items-center justify-between w-full md:w-auto gap-2">
+            <div class="flex items-center gap-1.5">
+              <button type="button" class="du-btn du-btn-success du-btn-sm sm:du-btn-md gap-2 font-extrabold px-3 sm:px-4 shadow-sm" id="btnMsaPlay" aria-label="Iniciar">
+                <i data-lucide="play" style="width: 16px; height: 16px;"></i> Iniciar
+              </button>
+              <button type="button" class="du-btn du-btn-warning du-btn-sm sm:du-btn-md gap-2 font-extrabold px-3 sm:px-4 shadow-sm hidden" id="btnMsaPause" aria-label="Pausar">
+                <i data-lucide="pause" style="width: 16px; height: 16px;"></i> Pausar
+              </button>
+              <button type="button" class="du-btn du-btn-outline du-btn-sm sm:du-btn-md px-2.5" id="btnMsaRestart" aria-label="Reiniciar" title="Reiniciar do começo">
+                <i data-lucide="rotate-ccw" style="width: 16px; height: 16px;"></i>
+              </button>
+            </div>
+
+            <!-- Indicador de Batidas do Compasso -->
+            <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-base-200/70 border border-base-300/50" id="msaBeatDotsWrap">
+              <span class="text-2xs sm:text-xs font-extrabold text-base-content/60 mr-1">TEMPO:</span>
+              <div class="flex items-center gap-1" id="msaBeatDots"></div>
+            </div>
+          </div>
+
+          <!-- Controle de Andamento (BPM) -->
+          <div class="flex items-center justify-between w-full md:w-auto gap-2 bg-base-200/40 p-1.5 rounded-lg border border-base-300/40">
+            <span class="text-xs font-extrabold text-base-content/70 hidden sm:inline ml-1">ANDAMENTO:</span>
+            <button type="button" class="du-btn du-btn-outline du-btn-sm w-9 h-9 p-0 font-extrabold text-base rounded-md" id="btnMsaBpmMinus" aria-label="Diminuir BPM">−</button>
+            <input type="range" id="msaBpmSlider" min="40" max="160" step="1" value="70" class="du-range du-range-sm du-range-primary flex-1 sm:w-36 md:w-44" />
+            <button type="button" class="du-btn du-btn-outline du-btn-sm w-9 h-9 p-0 font-extrabold text-base rounded-md" id="btnMsaBpmPlus" aria-label="Aumentar BPM">+</button>
+            <span class="font-extrabold text-xs sm:text-sm text-primary du-badge du-badge-primary du-badge-outline py-2.5 px-3 whitespace-nowrap min-w-[76px] text-center">
+              <span id="msaBpmValue">70</span> BPM
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palco Principal: Partitura (OSMD) + Movimento de Solfejo da Mão -->
+      <div class="msa-leitura-grid">
+        <!-- Partitura OSMD -->
+        <div class="du-card border border-base-300 bg-base-100 shadow-md p-3 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-base-200 flex-wrap gap-2">
+            <h4 class="font-bold text-sm text-base-content flex items-center gap-2">
+              <span id="msaExercicioTitle">Partitura da Lição</span>
+            </h4>
+            <span class="du-badge du-badge-ghost du-badge-sm font-medium">Ataque sincronizado no pulso</span>
+          </div>
+          <div id="msaOsmdContainer" class="msa-score-box flex-1" aria-live="polite"></div>
+        </div>
+
+        <!-- Condução da Mão (Solfejo MSA) -->
+        <div class="du-card border border-base-300 bg-base-100 shadow-md p-3 flex flex-col items-center">
+          <div class="w-full flex items-center justify-between pb-2 mb-2 border-b border-base-200">
+            <h4 class="font-bold text-sm text-base-content flex items-center gap-1.5">
+              <i data-lucide="hand" class="text-primary" style="width: 16px; height: 16px;"></i>
+              <span>Movimento da Mão</span>
+            </h4>
+            <span class="du-badge du-badge-primary du-badge-outline du-badge-sm" id="msaConducaoCompassoBadge">4 Tempos</span>
+          </div>
+          <div class="metro-solfejo-wrap w-full flex justify-center py-2" id="msaSolfejoWrap">
+            <div class="metro-solfejo-stage" id="msaSolfejoStage" style="max-width: 320px; width: 100%;">
+              <img id="msaSolfejoBaseImg" class="metro-solfejo-img" alt="Diagrama de condução" />
+              <img id="msaSolfejoHandImg" class="metro-solfejo-hand-img" alt="Mão do solfejo" />
+            </div>
+          </div>
+          <p class="text-xs text-center text-base-content/70 mt-2">
+            A mão apoia a batida exatamente no vértice inferior no 1º tempo.
+          </p>
         </div>
       </div>
     </div>
@@ -1321,6 +1482,12 @@
           </button>
           <button type="button"
             class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
+            id="btnMoreMsaLeitura" role="menuitem">
+            <i data-lucide="music-3" aria-hidden="true"></i>
+            <span>Leitura Métrica MSA</span>
+          </button>
+          <button type="button"
+            class="mode-more-item du-btn du-btn-ghost du-btn-sm du-w-full du-justify-start du-gap-2 du-normal-case"
             id="btnMoreSettings" role="menuitem">
             <i data-lucide="settings" aria-hidden="true"></i>
             <span>Ajustes</span>
@@ -1396,7 +1563,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">1.3.31</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.5.1</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1443,9 +1610,10 @@
   <!-- Firebase SDK compatível e scripts de sincronização -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="./assets/js/modules/firebase-config.js?v=1.5.0"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=1.5.0"></script>
-  <script src="./assets/js/app-main.js?v=1.5.0"></script>
+  <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=1.8.9"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.5.1"></script>
+  <script src="./assets/js/app-main.js?v=2.5.1"></script>
 
 </body>
 

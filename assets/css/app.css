@@ -3341,6 +3341,98 @@
       animation: metro-hand-tap-left 170ms ease-out;
     }
 
+    /* Leitura Métrica e Solfejo MSA */
+    .msa-leitura-section {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .msa-leitura-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 992px) {
+      .msa-leitura-grid {
+        grid-template-columns: 1fr 340px;
+      }
+    }
+
+    .msa-score-box {
+      min-height: 280px;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.75rem;
+    }
+
+    html.theme-dark .msa-score-box {
+      background: #1e2538;
+    }
+
+    .msa-fase-tabs-scroll {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding: 0.25rem 0.2rem;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .msa-fase-tabs-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .msa-fase-tab {
+      flex: 0 0 auto !important;
+      min-width: max-content !important;
+      user-select: none;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .msa-modes-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .msa-solfejo-container {
+      position: relative;
+      width: 270px;
+      max-width: 100%;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .msa-hand-floating {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 82px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+      transform-origin: 70% 88%;
+      display: none;
+    }
+
+    .msa-hand-floating.tapping-right {
+      animation: metro-hand-tap-right 170ms ease-out;
+    }
+
+    .msa-hand-floating.tapping-left {
+      animation: metro-hand-tap-left 170ms ease-out;
+    }
+
     .metro-dot {
       --dot-size: 56px;
       flex: 0 0 var(--dot-size);

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '1.5.0';
+  const APP_VERSION = '2.5.1';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -3138,156 +3138,138 @@
       { x: 0.46, y: 0.18 }, //6
     ],
     '9-direita': [
-      { x: 0.46, y: 0.73 }, //1
-      { x: 0.41, y: 0.63 }, //1
-      { x: 0.32, y: 0.60 }, //1
-
-      { x: 0.29, y: 0.66 }, //2
-      { x: 0.23, y: 0.58 }, //2
-      { x: 0.16, y: 0.57 }, //2
-
-
-      { x: 0.12, y: 0.60 }, //3
-      { x: 0.37, y: 0.50 }, //3
-      { x: 0.50, y: 0.54 }, //3
-
-      { x: 0.62, y: 0.58 }, //4
-      { x: 0.66, y: 0.52 }, //4
-      { x: 0.69, y: 0.53 }, //4
-
-      { x: 0.74, y: 0.55 }, //5
-      { x: 0.79, y: 0.50 }, //5
-      { x: 0.81, y: 0.51 }, //5
-
-      { x: 0.87, y: 0.52 }, //6
-      { x: 0.84, y: 0.38 }, //6
-      { x: 0.78, y: 0.33 }, //6
-
-      { x: 0.73, y: 0.36 }, //7
-      { x: 0.70, y: 0.26 }, //7
-      { x: 0.65, y: 0.27 }, //7
-
-      { x: 0.60, y: 0.33 }, //8
-      { x: 0.55, y: 0.24 }, //8
-      { x: 0.50, y: 0.25 }, //8
-
-      { x: 0.44, y: 0.29 }, //9
-      { x: 0.42, y: 0.24 }, //9
-      { x: 0.44, y: 0.20 }, //9
-
-
+      { x: 0.42, y: 0.73 }, // 1
+      { x: 0.38, y: 0.65 },
+      { x: 0.32, y: 0.64 },
+      { x: 0.25, y: 0.68 }, // 2
+      { x: 0.20, y: 0.59 },
+      { x: 0.14, y: 0.58 },
+      { x: 0.09, y: 0.62 }, // 3
+      { x: 0.30, y: 0.51 },
+      { x: 0.48, y: 0.52 },
+      { x: 0.61, y: 0.59 }, // 4
+      { x: 0.66, y: 0.52 },
+      { x: 0.70, y: 0.53 },
+      { x: 0.73, y: 0.56 }, // 5
+      { x: 0.78, y: 0.50 },
+      { x: 0.82, y: 0.51 },
+      { x: 0.86, y: 0.54 }, // 6
+      { x: 0.84, y: 0.40 },
+      { x: 0.78, y: 0.35 },
+      { x: 0.71, y: 0.38 }, // 7
+      { x: 0.67, y: 0.31 },
+      { x: 0.62, y: 0.31 },
+      { x: 0.58, y: 0.34 }, // 8
+      { x: 0.53, y: 0.27 },
+      { x: 0.48, y: 0.27 },
+      { x: 0.44, y: 0.30 }, // 9
+      { x: 0.41, y: 0.22 },
+      { x: 0.43, y: 0.52 }
     ],
     '9-esquerda': [
-      { x: 0.53, y: 0.71 }, //1
-      { x: 0.58, y: 0.62 }, //1
-      { x: 0.63, y: 0.61 }, //1
-
-      { x: 0.69, y: 0.66 }, //2
-      { x: 0.74, y: 0.58 }, //2
-      { x: 0.80, y: 0.57 }, //2
-
-      { x: 0.85, y: 0.60 }, //3
-      { x: 0.63, y: 0.49 }, //3
-      { x: 0.50, y: 0.51 }, //3
-
-      { x: 0.36, y: 0.57 }, //4
-      { x: 0.32, y: 0.52 }, //4
-      { x: 0.29, y: 0.52 }, //4
-
-      { x: 0.23, y: 0.55 }, //5
-      { x: 0.18, y: 0.48 }, //5
-      { x: 0.13, y: 0.50 }, //5
-
-      { x: 0.09, y: 0.52 }, //6
-      { x: 0.11, y: 0.38 }, //6
-      { x: 0.16, y: 0.30 }, //6
-
-      { x: 0.24, y: 0.36 }, //7
-      { x: 0.28, y: 0.26 }, //7
-      { x: 0.32, y: 0.27 }, //7
-
-      { x: 0.38, y: 0.32 }, //8
-      { x: 0.41, y: 0.23 }, //8
-      { x: 0.49, y: 0.25 }, //8
-
-      { x: 0.52, y: 0.28 }, //9
-      { x: 0.55, y: 0.23 }, //9
-      { x: 0.54, y: 0.20 }, //9
+      { x: 0.55, y: 0.71 }, // 1
+      { x: 0.59, y: 0.63 },
+      { x: 0.65, y: 0.62 },
+      { x: 0.72, y: 0.66 }, // 2
+      { x: 0.77, y: 0.58 },
+      { x: 0.83, y: 0.57 },
+      { x: 0.88, y: 0.60 }, // 3
+      { x: 0.68, y: 0.50 },
+      { x: 0.50, y: 0.51 },
+      { x: 0.38, y: 0.57 }, // 4
+      { x: 0.33, y: 0.51 },
+      { x: 0.29, y: 0.52 },
+      { x: 0.25, y: 0.55 }, // 5
+      { x: 0.20, y: 0.49 },
+      { x: 0.16, y: 0.50 },
+      { x: 0.12, y: 0.52 }, // 6
+      { x: 0.14, y: 0.39 },
+      { x: 0.20, y: 0.34 },
+      { x: 0.27, y: 0.36 }, // 7
+      { x: 0.32, y: 0.29 },
+      { x: 0.36, y: 0.29 },
+      { x: 0.41, y: 0.32 }, // 8
+      { x: 0.46, y: 0.25 },
+      { x: 0.50, y: 0.25 },
+      { x: 0.55, y: 0.28 }, // 9
+      { x: 0.57, y: 0.21 },
+      { x: 0.54, y: 0.50 }
     ],
     '12-direita': [
-      { x: 0.51, y: 0.79 }, //1
-      { x: 0.55, y: 0.74 }, //1
-
-      { x: 0.60, y: 0.78 }, //2
-      { x: 0.64, y: 0.70 }, //2
-
-      { x: 0.70, y: 0.77 }, //3
-      { x: 0.54, y: 0.64 }, //3
-
-      { x: 0.39, y: 0.70 }, //4
-      { x: 0.35, y: 0.65 }, //4
-
-      { x: 0.30, y: 0.69 }, //5
-      { x: 0.28, y: 0.60 }, //5
-
-      { x: 0.22, y: 0.67 }, //6
-      { x: 0.40, y: 0.49 }, //6
-
-      { x: 0.67, y: 0.60 }, //7
-      { x: 0.71, y: 0.54 }, //7
-
-      { x: 0.76, y: 0.58 }, //8
-      { x: 0.81, y: 0.52 }, //8
-
-      { x: 0.87, y: 0.55 }, //9
-      { x: 0.52, y: 0.37 }, //9
-
-      { x: 0.35, y: 0.38 }, //10
-      { x: 0.50, y: 0.30 }, //10
-
-      { x: 0.64, y: 0.34 }, //11
-      { x: 0.60, y: 0.22 }, //11
-
-      { x: 0.48, y: 0.25 }, //12
-      { x: 0.47, y: 0.20 }, //12
-
+      { x: 0.51, y: 0.80 }, // 1
+      { x: 0.54, y: 0.74 },
+      { x: 0.57, y: 0.74 },
+      { x: 0.60, y: 0.78 }, // 2
+      { x: 0.63, y: 0.71 },
+      { x: 0.66, y: 0.72 },
+      { x: 0.69, y: 0.76 }, // 3
+      { x: 0.56, y: 0.65 },
+      { x: 0.43, y: 0.66 },
+      { x: 0.35, y: 0.72 }, // 4
+      { x: 0.33, y: 0.65 },
+      { x: 0.30, y: 0.65 },
+      { x: 0.28, y: 0.69 }, // 5
+      { x: 0.25, y: 0.61 },
+      { x: 0.23, y: 0.62 },
+      { x: 0.21, y: 0.66 }, // 6
+      { x: 0.36, y: 0.54 },
+      { x: 0.53, y: 0.55 },
+      { x: 0.66, y: 0.60 }, // 7
+      { x: 0.70, y: 0.53 },
+      { x: 0.73, y: 0.54 },
+      { x: 0.76, y: 0.58 }, // 8
+      { x: 0.80, y: 0.51 },
+      { x: 0.83, y: 0.52 },
+      { x: 0.86, y: 0.55 }, // 9
+      { x: 0.69, y: 0.40 },
+      { x: 0.47, y: 0.38 },
+      { x: 0.32, y: 0.41 }, // 10
+      { x: 0.45, y: 0.33 },
+      { x: 0.56, y: 0.33 },
+      { x: 0.64, y: 0.35 }, // 11
+      { x: 0.62, y: 0.24 },
+      { x: 0.55, y: 0.23 },
+      { x: 0.48, y: 0.25 }, // 12
+      { x: 0.45, y: 0.16 },
+      { x: 0.49, y: 0.52 }
     ],
     '12-esquerda': [
-      { x: 0.49, y: 0.80 }, //1
-      { x: 0.45, y: 0.74 }, //1
-
-      { x: 0.41, y: 0.78 }, //2
-      { x: 0.37, y: 0.70 }, //2
-
-      { x: 0.31, y: 0.77 }, //3
-      { x: 0.54, y: 0.64 }, //3
-
-      { x: 0.64, y: 0.70 }, //4
-      { x: 0.67, y: 0.65 }, //4
-
-      { x: 0.72, y: 0.69 }, //5
-      { x: 0.74, y: 0.60 }, //5
-
-      { x: 0.81, y: 0.67 }, //6
-      { x: 0.65, y: 0.49 }, //6
-
-      { x: 0.35, y: 0.60 }, //7
-      { x: 0.30, y: 0.52 }, //7
-
-      { x: 0.25, y: 0.58 }, //8
-      { x: 0.20, y: 0.50 }, //8
-
-      { x: 0.15, y: 0.55 }, //9
-      { x: 0.50, y: 0.37 }, //9
-
-      { x: 0.69, y: 0.38 }, //10
-      { x: 0.49, y: 0.30 }, //10
-
-      { x: 0.37, y: 0.34 }, //11
-      { x: 0.42, y: 0.21 }, //11
-
-      { x: 0.52, y: 0.24 }, //12
-      { x: 0.55, y: 0.15 }, //12
+      { x: 0.52, y: 0.80 }, // 1
+      { x: 0.48, y: 0.74 },
+      { x: 0.45, y: 0.75 },
+      { x: 0.43, y: 0.78 }, // 2
+      { x: 0.39, y: 0.71 },
+      { x: 0.36, y: 0.72 },
+      { x: 0.34, y: 0.76 }, // 3
+      { x: 0.46, y: 0.65 },
+      { x: 0.59, y: 0.66 },
+      { x: 0.67, y: 0.72 }, // 4
+      { x: 0.70, y: 0.65 },
+      { x: 0.73, y: 0.65 },
+      { x: 0.75, y: 0.69 }, // 5
+      { x: 0.78, y: 0.61 },
+      { x: 0.80, y: 0.62 },
+      { x: 0.83, y: 0.66 }, // 6
+      { x: 0.68, y: 0.54 },
+      { x: 0.51, y: 0.55 },
+      { x: 0.36, y: 0.60 }, // 7
+      { x: 0.32, y: 0.53 },
+      { x: 0.29, y: 0.54 },
+      { x: 0.27, y: 0.57 }, // 8
+      { x: 0.23, y: 0.51 },
+      { x: 0.20, y: 0.52 },
+      { x: 0.17, y: 0.55 }, // 9
+      { x: 0.35, y: 0.40 },
+      { x: 0.57, y: 0.38 },
+      { x: 0.70, y: 0.39 }, // 10
+      { x: 0.58, y: 0.33 },
+      { x: 0.47, y: 0.33 },
+      { x: 0.39, y: 0.34 }, // 11
+      { x: 0.40, y: 0.24 },
+      { x: 0.48, y: 0.23 },
+      { x: 0.55, y: 0.24 }, // 12
+      { x: 0.57, y: 0.16 },
+      { x: 0.53, y: 0.52 }
     ]
   };
 
@@ -8263,6 +8245,11 @@
     if (currentMode === 'tuner' && mode !== 'tuner') stopTuner();
     if (currentMode === 'player' && mode !== 'player') stopPlayerPlayback(true);
     if (currentMode === 'player' && mode !== 'player') stopPlayerLiveListen();
+    if (currentMode === 'msa-leitura' && mode !== 'msa-leitura') {
+      if (typeof window.MsaLeituraModule !== 'undefined' && window.MsaLeituraModule.stopPlayback) {
+        window.MsaLeituraModule.stopPlayback();
+      }
+    }
     if (currentMode === 'msa' && mode !== 'msa') {
       pauseMsaMediaIfPlaying();
       revokeMsaMedia();
@@ -8287,11 +8274,12 @@
       btn.classList.toggle('active', btn.dataset.mode === mode);
     });
     var btnMoreMenu = document.getElementById('btnMoreMenu');
-    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'staff' || mode === 'staff-rush');
+    if (btnMoreMenu) btnMoreMenu.classList.toggle('active', mode === 'tuner' || mode === 'metronome' || mode === 'hinos' || mode === 'msa' || mode === 'msa-leitura' || mode === 'staff' || mode === 'staff-rush');
     var btnMoreTuner = document.getElementById('btnMoreTuner');
     var btnMoreMetronome = document.getElementById('btnMoreMetronome');
     var btnMoreHinos = document.getElementById('btnMoreHinos');
     var btnMoreMsa = document.getElementById('btnMoreMsa');
+    var btnMoreMsaLeitura = document.getElementById('btnMoreMsaLeitura');
     var btnMoreStaff = document.getElementById('btnMoreStaff');
     var btnMoreStaffRush = document.getElementById('btnMoreStaffRush');
     var btnMoreSettings = document.getElementById('btnMoreSettings');
@@ -8299,6 +8287,7 @@
     if (btnMoreMetronome) btnMoreMetronome.classList.toggle('active', mode === 'metronome');
     if (btnMoreHinos) btnMoreHinos.classList.toggle('active', mode === 'hinos');
     if (btnMoreMsa) btnMoreMsa.classList.toggle('active', mode === 'msa');
+    if (btnMoreMsaLeitura) btnMoreMsaLeitura.classList.toggle('active', mode === 'msa-leitura');
     if (btnMoreStaff) btnMoreStaff.classList.toggle('active', mode === 'staff');
     if (btnMoreStaffRush) btnMoreStaffRush.classList.toggle('active', mode === 'staff-rush');
     if (btnMoreSettings) btnMoreSettings.classList.remove('active');
@@ -8313,9 +8302,11 @@
     var metroSectionEl = document.getElementById('metroSection');
     var playerSectionEl = document.getElementById('playerSection');
     var msaSectionEl = document.getElementById('msaSection');
+    var msaLeituraSectionEl = document.getElementById('msaLeituraSection');
     var homeSectionEl = document.getElementById('homeSection');
     var playerSourceRowEl = document.getElementById('playerSourceRow');
     var messageBoxEl = document.getElementById('messageBox');
+    if (msaLeituraSectionEl) msaLeituraSectionEl.classList.toggle('hidden', mode !== 'msa-leitura');
     if (violinSection && staffSectionEl && hinosSectionEl && tunerSectionEl && metroSectionEl && playerSectionEl && msaSectionEl) {
       if (homeSectionEl) homeSectionEl.classList.add('hidden');
       if (staffRushSectionEl) staffRushSectionEl.classList.add('hidden');
@@ -8340,6 +8331,21 @@
         closeHinosEditorModal();
         closeHinosNewStudentModal();
         if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+      } else if (mode === 'msa-leitura') {
+        violinSection.classList.add('hidden');
+        staffSectionEl.classList.add('hidden');
+        tunerSectionEl.classList.add('hidden');
+        metroSectionEl.classList.add('hidden');
+        playerSectionEl.classList.add('hidden');
+        hinosSectionEl.classList.add('hidden');
+        msaSectionEl.classList.add('hidden');
+        closeHinosEditorModal();
+        closeHinosNewStudentModal();
+        if (messageBoxEl) messageBoxEl.classList.remove('hidden');
+        setMessage('Ajuste o andamento e pratique a condução da mão junto com as notas da lição do MSA.');
+        if (typeof window.MsaLeituraModule !== 'undefined' && window.MsaLeituraModule.onShowSection) {
+          window.MsaLeituraModule.onShowSection();
+        }
       } else if (mode === 'staff') {
         violinSection.classList.add('hidden');
         staffSectionEl.classList.remove('hidden');
@@ -8442,7 +8448,7 @@
     }
     var progressSectionEl = document.getElementById('progressSection');
     if (progressSectionEl) {
-      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa' || mode === 'staff-rush');
+      progressSectionEl.classList.toggle('hidden', mode === 'home' || mode === 'hinos' || mode === 'tuner' || mode === 'metronome' || mode === 'player' || mode === 'msa' || mode === 'msa-leitura' || mode === 'staff-rush');
     }
 
     if (mode === 'learn') {
@@ -10593,6 +10599,12 @@
     if (btnMoreMsa) {
       btnMoreMsa.addEventListener('click', function () {
         setMode('msa');
+      });
+    }
+    var btnMoreMsaLeitura = document.getElementById('btnMoreMsaLeitura');
+    if (btnMoreMsaLeitura) {
+      btnMoreMsaLeitura.addEventListener('click', function () {
+        setMode('msa-leitura');
       });
     }
     var btnMoreStaff = document.getElementById('btnMoreStaff');
