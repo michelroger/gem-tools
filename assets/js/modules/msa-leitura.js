@@ -1,6 +1,6 @@
 /**
  * Módulo de Leitura Rítmica, Métrica e Solfejo do MSA (GEM Tools)
- * Versão 2.5.1:
+ * Versão 2.6.0:
  * - Início imediato e confiável do Playback com parser autônomo e robusto de MusicXML.
  * - Suporte pleno a notas convencionais (pitch) e exercícios rítmicos percussivos (unpitched).
  * - Respeito rigoroso aos silêncios/pausas com silêncio absoluto.
@@ -367,7 +367,7 @@
       if (voiceBanks[g].vocalTaBuffer && !force) return;
 
       // 1. Vocal TA (Leitura Rítmica) - voz natural humana pura
-      loadAudioVariation('./assets/audio/' + g + '/msa-ta-vocal.wav?v=2.5.1', function (dec) {
+      loadAudioVariation('./assets/audio/' + g + '/msa-ta-vocal.wav?v=2.6.0', function (dec) {
         voiceBanks[g].vocalTaBuffer = dec;
         console.log('MSA Áudio: TA [' + g + '] carregado (' + dec.duration.toFixed(2) + 's)');
       });
@@ -375,7 +375,7 @@
       // 2. 7 notas da Leitura Métrica - voz natural humana falada limpa e suave
       Object.keys(METRICA_BASE_NAMES).forEach(function (name) {
         var base = METRICA_BASE_NAMES[name];
-        loadAudioVariation('./assets/audio/' + g + '/msa-nota-' + base + '.wav?v=2.5.1', function (dec) {
+        loadAudioVariation('./assets/audio/' + g + '/msa-nota-' + base + '.wav?v=2.6.0', function (dec) {
           voiceBanks[g].noteVoiceBuffers[name] = dec;
           voiceBanks[g].noteVoiceBuffers[name.toLowerCase()] = dec;
           voiceBanks[g].noteVoiceBuffers[normalizeNoteKey(name)] = dec;

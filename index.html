@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=2.5.1">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.6.0">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v2.5.1</div>
+      <div class="splash-version" id="splashVersion">v2.6.0</div>
     </div>
   </div>
 
@@ -518,6 +518,16 @@
               <i data-lucide="trash-2" aria-hidden="true"></i>
             </button>
           </div>
+        </div>
+        <!-- Exibição e alteração da Comum Congregação do aluno ativo -->
+        <div class="hinos-active-comum-wrap" style="margin-top: 0.5rem; font-size: 0.78rem; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.02); padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid rgba(0,0,0,0.05);">
+          <div>
+            <span style="color: var(--text-soft); font-size: 0.7rem; display: block;">Comum Congregação:</span>
+            <strong id="hinosActiveStudentComumText" class="text-primary" style="font-size: 0.8rem;">Carregando...</strong>
+          </div>
+          <button type="button" class="du-btn du-btn-ghost du-btn-xs text-primary" id="btnOpenChangeComum" title="Alterar congregação do aluno">
+            <i data-lucide="map-pin" style="width: 13px; height: 13px; margin-right: 2px;"></i> Alterar
+          </button>
         </div>
         <!-- Painel de Sincronização em Nuvem (Firebase) -->
         <div id="hinosCloudSyncPanel" class="hidden text-xs"
@@ -1148,6 +1158,20 @@
             </select>
           </div>
         </div>
+        <div class="hinos-modal-fields" style="margin-top: 0.5rem;">
+          <div class="hinos-field">
+            <label class="hinos-field-label" for="hinosNewStudentCidade">Cidade</label>
+            <select id="hinosNewStudentCidade" class="hinos-select" aria-label="Cidade da congregação do aluno">
+              <!-- Preenchido dinamicamente via JS com Presidente Prudente e região -->
+            </select>
+          </div>
+          <div class="hinos-field">
+            <label class="hinos-field-label" for="hinosNewStudentComum">Comum Congregação</label>
+            <select id="hinosNewStudentComum" class="hinos-select" aria-label="Comum Congregação do aluno">
+              <!-- Preenchido dinamicamente com base na cidade -->
+            </select>
+          </div>
+        </div>
         <!-- Conexão via Nuvem (Firebase) -->
         <div id="hinosCloudSyncConnectionArea" class="hidden"
           style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(0,0,0,0.1);">
@@ -1188,27 +1212,80 @@
       </div>
     </div>
 
-    <!-- Modal de Senha do Professor -->
+    <!-- Modal de Alterar Comum Congregação do Aluno -->
+    <div class="metronome-modal hidden" id="hinosChangeComumModal" role="dialog" aria-modal="true"
+      aria-labelledby="hinosChangeComumTitle" style="z-index: 1015;">
+      <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl"
+        style="max-width: 420px; width: 95%; display: flex; flex-direction: column;">
+        <button type="button" class="metronome-close" id="hinosChangeComumClose" aria-label="Fechar"><i
+            data-lucide="x"></i></button>
+
+        <h2 class="hinos-new-student-title" id="hinosChangeComumTitle"
+          style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem;">
+          <i data-lucide="map-pin" style="color: var(--primary);"></i> Alterar Congregação
+        </h2>
+        <p class="hinos-new-student-hint" style="margin-bottom: 1rem;">
+          Aluno: <strong id="hinosChangeComumStudentName" class="text-primary">---</strong><br>
+          <span style="font-size: 0.72rem; color: var(--text-soft);">O progresso de hinos e lições do método continuará intacto.</span>
+        </p>
+
+        <form id="hinosChangeComumForm" onsubmit="return false;">
+          <div class="hinos-field" style="margin-bottom: 0.75rem;">
+            <label class="hinos-field-label" for="hinosChangeComumCidade">Cidade</label>
+            <select id="hinosChangeComumCidade" class="hinos-select">
+              <!-- Preenchido via JS -->
+            </select>
+          </div>
+          <div class="hinos-field" style="margin-bottom: 1.25rem;">
+            <label class="hinos-field-label" for="hinosChangeComumSelect">Nova Comum Congregação</label>
+            <select id="hinosChangeComumSelect" class="hinos-select">
+              <!-- Preenchido via JS -->
+            </select>
+          </div>
+
+          <div class="hinos-new-student-actions"
+            style="margin-top: 0.5rem; display: flex; justify-content: flex-end; gap: 0.5rem;">
+            <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnChangeComumCancel">
+              <span>Cancelar</span>
+            </button>
+            <button type="submit" class="du-btn du-btn-primary du-btn-sm" id="btnChangeComumConfirm">
+              <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+              <span>Confirmar Mudança</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de PIN do Professor -->
     <div class="metronome-modal hidden" id="hinosTeacherPasswordModal" role="dialog" aria-modal="true"
       aria-labelledby="hinosTeacherPasswordTitle" style="z-index: 1010;">
       <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl"
-        style="max-width: 400px; width: 95%; display: flex; flex-direction: column;">
+        style="max-width: 420px; width: 95%; display: flex; flex-direction: column;">
         <button type="button" class="metronome-close" id="hinosTeacherPasswordClose" aria-label="Fechar"><i
             data-lucide="x"></i></button>
 
         <h2 class="hinos-new-student-title" id="hinosTeacherPasswordTitle"
           style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem;">
-          <i data-lucide="key-round" style="color: var(--primary);"></i> Área do Professor
+          <i data-lucide="key-round" style="color: var(--primary);"></i> Acesso do Professor
         </h2>
-        <p class="hinos-new-student-hint" style="margin-bottom: 1rem;">Digite a Senha do Professor para acessar o
-          painel.</p>
+        <p class="hinos-new-student-hint" style="margin-bottom: 0.85rem;">Digite seu <strong>E-mail</strong> e <strong>PIN</strong> cadastrados para acessar.</p>
 
         <form id="hinosTeacherPasswordForm" onsubmit="return false;">
-          <div class="hinos-field" style="margin-bottom: 1.5rem;">
-            <label class="hinos-field-label" for="hinosTeacherPasswordInput">Senha Master</label>
-            <input type="password" id="hinosTeacherPasswordInput" class="hinos-input" placeholder="Digite a senha..."
-              required />
+          <div class="hinos-field" style="margin-bottom: 0.65rem;">
+            <label class="hinos-field-label" for="hinosTeacherEmailInput">E-mail ou Usuário</label>
+            <input type="text" id="hinosTeacherEmailInput" class="hinos-input" placeholder="seu.email@exemplo.com"
+              autocomplete="username" required />
           </div>
+
+          <div class="hinos-field" style="margin-bottom: 1rem;">
+            <label class="hinos-field-label" for="hinosTeacherPasswordInput">PIN de Acesso</label>
+            <input type="password" id="hinosTeacherPasswordInput" class="hinos-input" placeholder="••••"
+              maxlength="20" autocomplete="current-password"
+              style="text-align: center; font-size: 1.3rem; letter-spacing: 4px; font-weight: bold;" required />
+          </div>
+
+          <div id="hinosTeacherPasswordError" class="hidden text-xs text-error font-semibold mb-3 text-center"></div>
 
           <div class="hinos-new-student-actions"
             style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 0.5rem;">
@@ -1216,7 +1293,7 @@
               <span>Cancelar</span>
             </button>
             <button type="submit" class="du-btn du-btn-primary du-btn-sm" id="btnTeacherPasswordConfirm">
-              <span>Confirmar</span>
+              <span>Entrar</span>
             </button>
           </div>
         </form>
@@ -1227,21 +1304,35 @@
     <div class="metronome-modal hidden" id="hinosTeacherDashboardModal" role="dialog" aria-modal="true"
       aria-labelledby="hinosTeacherTitle" style="z-index: 1000;">
       <div class="metronome-card du-card border border-base-300 bg-base-100 shadow-xl"
-        style="max-width: 600px; width: 95%; max-height: 85vh; display: flex; flex-direction: column;">
+        style="max-width: 650px; width: 95%; max-height: 88vh; display: flex; flex-direction: column;">
         <button type="button" class="metronome-close" id="hinosTeacherClose" aria-label="Fechar"><i
             data-lucide="x"></i></button>
 
-        <h2 class="hinos-new-student-title" id="hinosTeacherTitle"
-          style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem;">
-          <i data-lucide="graduation-cap" style="color: var(--primary);"></i> Área do Professor
-        </h2>
-        <p class="hinos-new-student-hint" style="margin-bottom: 1rem;">Visualize e simule o acesso ao perfil dos alunos
-          sincronizados na nuvem.</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; padding-right: 2.5rem;">
+          <h2 class="hinos-new-student-title" id="hinosTeacherTitle"
+            style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; margin: 0;">
+            <i data-lucide="graduation-cap" style="color: var(--primary);"></i> Painel do Professor
+          </h2>
+          <div id="teacherHeaderLoggedInfo" class="hidden" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;">
+            <span class="du-badge du-badge-primary du-badge-sm font-semibold" id="teacherLoggedBadge">Professor</span>
+            <span id="teacherLoggedName" class="font-bold text-base-content" style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">---</span>
+            <button type="button" class="du-btn du-btn-outline du-btn-error du-btn-xs" id="btnTeacherLogout" title="Sair desta sessão de professor" style="margin-left: 0.25rem;">
+              <i data-lucide="log-out" style="width: 12px; height: 12px; margin-right: 2px;"></i> Sair
+            </button>
+          </div>
+        </div>
+
+        <p class="hinos-new-student-hint" style="margin-bottom: 0.75rem;">
+          Comum: <strong id="teacherLoggedComumText" class="text-primary">Carregando...</strong>
+        </p>
 
         <!-- Abas do Painel do Professor -->
-        <div class="du-tabs du-tabs-boxed bg-base-200 p-1 mb-4 flex gap-1" style="border-radius: 8px;">
+        <div class="du-tabs du-tabs-boxed bg-base-200 p-1 mb-3 flex gap-1" style="border-radius: 8px;">
           <button type="button" class="du-tab du-tab-active flex-1 py-1.5 text-xs font-semibold rounded-md transition-all" id="btnTeacherTabStudents">
             <i data-lucide="users" style="width: 14px; height: 14px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i> <span style="vertical-align: middle;">Alunos (<span id="teacherStudentCount">0</span>)</span>
+          </button>
+          <button type="button" class="du-tab flex-1 py-1.5 text-xs font-semibold rounded-md transition-all text-base-content/60 hover:text-base-content" id="btnTeacherTabProfessores">
+            <i data-lucide="user-check" style="width: 14px; height: 14px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i> <span style="vertical-align: middle;">Professores</span>
           </button>
           <button type="button" class="du-tab flex-1 py-1.5 text-xs font-semibold rounded-md transition-all text-base-content/60 hover:text-base-content" id="btnTeacherTabMetrics">
             <i data-lucide="bar-chart-3" style="width: 14px; height: 14px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i> <span style="vertical-align: middle;">Dashboard</span>
@@ -1250,20 +1341,29 @@
 
         <!-- Conteúdo da Aba Alunos -->
         <div id="sectionTeacherStudents" class="flex flex-col flex-1" style="min-height: 0;">
-          <!-- Campo de Filtro/Busca -->
-          <div class="hinos-field" style="margin-bottom: 1rem;">
-            <label class="hinos-field-label" for="hinosTeacherSearchInput">Buscar Aluno</label>
-            <input type="search" id="hinosTeacherSearchInput" class="hinos-input"
-              placeholder="Digite o nome do aluno..." />
+          <!-- Filtro de Comum e Busca -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <div class="hinos-field" id="teacherComumFilterContainer">
+              <label class="hinos-field-label" for="teacherComumFilterSelect">Congregação</label>
+              <select id="teacherComumFilterSelect" class="hinos-select" style="font-size: 0.8rem;">
+                <option value="Minha">Minha Congregação</option>
+                <option value="Todas">Todas as Congregações</option>
+              </select>
+            </div>
+            <div class="hinos-field">
+              <label class="hinos-field-label" for="hinosTeacherSearchInput">Buscar Aluno</label>
+              <input type="search" id="hinosTeacherSearchInput" class="hinos-input"
+                placeholder="Nome do aluno..." style="font-size: 0.8rem;" />
+            </div>
           </div>
 
           <!-- Lista de Alunos (Área Rolável) -->
           <div
-            style="flex: 1; overflow-y: auto; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background: rgba(0,0,0,0.02); min-height: 200px; max-height: 40vh; margin-bottom: 1rem;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            style="flex: 1; overflow-y: auto; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; background: rgba(0,0,0,0.02); min-height: 220px; max-height: 42vh; margin-bottom: 0.75rem;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left;">
               <thead>
                 <tr style="border-bottom: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.05); font-weight: bold;">
-                  <th style="padding: 0.5rem; color: var(--text);">Aluno</th>
+                  <th style="padding: 0.5rem; color: var(--text);">Aluno / Congregação</th>
                   <th style="padding: 0.5rem; color: var(--text); text-align: center;">Progresso</th>
                   <th style="padding: 0.5rem; color: var(--text); text-align: center;">Ações</th>
                 </tr>
@@ -1276,6 +1376,67 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- Conteúdo da Aba Professores (Gestão e Cadastro) -->
+        <div id="sectionTeacherProfessores" class="hidden flex flex-col flex-1" style="min-height: 0; overflow-y: auto; max-height: 52vh; display: none;">
+          <div class="du-card bg-base-200 p-3 mb-3" style="border-radius: 8px; border: 1px solid rgba(0,0,0,0.05);">
+            <h3 style="font-size: 0.85rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem; color: var(--text);">
+              <i data-lucide="user-plus" style="width: 14px; height: 14px; color: var(--primary);"></i> Cadastrar Novo Professor
+            </h3>
+            <form id="formNewTeacher" onsubmit="return false;" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+              <div class="hinos-field">
+                <label class="hinos-field-label" for="inpTeacherName">Nome do Professor</label>
+                <input type="text" id="inpTeacherName" class="hinos-input" placeholder="Ex: Nome do Professor" required />
+              </div>
+              <div class="hinos-field">
+                <label class="hinos-field-label" for="inpTeacherEmail">E-mail ou Usuário de Acesso</label>
+                <input type="text" id="inpTeacherEmail" class="hinos-input" placeholder="Ex: professor@email.com" required />
+              </div>
+              <div class="hinos-field">
+                <label class="hinos-field-label" for="selTeacherCidade">Cidade</label>
+                <select id="selTeacherCidade" class="hinos-select">
+                  <!-- Cidades via JS -->
+                </select>
+              </div>
+              <div class="hinos-field">
+                <label class="hinos-field-label" for="selTeacherComum">Comum Congregação</label>
+                <select id="selTeacherComum" class="hinos-select">
+                  <!-- Comuns via JS -->
+                </select>
+              </div>
+              <div class="hinos-field">
+                <label class="hinos-field-label" for="inpTeacherPin">PIN Numérico (4 a 6 dígitos)</label>
+                <input type="password" id="inpTeacherPin" class="hinos-input" placeholder="••••" inputmode="numeric" maxlength="8" required />
+              </div>
+              <div class="hinos-field" style="display: flex; align-items: flex-end;">
+                <button type="submit" class="du-btn du-btn-primary du-btn-sm w-full" id="btnSaveNewTeacher">
+                  <i data-lucide="check" style="width: 14px; height: 14px;"></i> Cadastrar
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Lista de Professores Cadastrados -->
+          <div class="du-card bg-base-200 p-3" style="border-radius: 8px; border: 1px solid rgba(0,0,0,0.05);">
+            <h3 style="font-size: 0.85rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem; color: var(--text);">
+              <i data-lucide="users" style="width: 14px; height: 14px; color: var(--primary);"></i> Professores Ativos na Nuvem
+            </h3>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left;">
+                    <th style="padding: 0.4rem;">Nome / E-mail</th>
+                    <th style="padding: 0.4rem;">Congregação</th>
+                    <th style="padding: 0.4rem; text-align: center;">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="teacherListBody">
+                  <tr><td colspan="3" style="text-align: center; padding: 0.75rem; color: var(--text-soft);">Carregando professores...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -1337,7 +1498,11 @@
           </div>
         </div>
 
-        <div class="hinos-new-student-actions" style="margin-top: auto; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: flex-end;">
+        <div class="hinos-new-student-actions" style="margin-top: auto; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="du-btn du-btn-ghost du-btn-sm text-error font-semibold" id="btnTeacherDashboardLogoutFooter">
+            <i data-lucide="log-out" style="width: 14px; height: 14px; margin-right: 4px;"></i>
+            <span>Trocar de Professor / Sair</span>
+          </button>
           <button type="button" class="du-btn du-btn-outline du-btn-sm" id="btnTeacherDashboardClose">
             <span class="hinos-btn-icon" aria-hidden="true"><i data-lucide="x"></i></span>
             <span>Fechar</span>
@@ -1563,7 +1728,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">2.5.1</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.6.0</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1611,9 +1776,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/msa-leitura.js?v=2.5.1"></script>
-  <script src="./assets/js/app-main.js?v=2.5.1"></script>
+  <script src="./assets/js/modules/congregacoes-data.js?v=2.6.0"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=2.6.0"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.6.0"></script>
+  <script src="./assets/js/app-main.js?v=2.6.0"></script>
 
 </body>
 

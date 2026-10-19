@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.5.1';
+  const APP_VERSION = '2.6.0';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -1231,6 +1231,42 @@
     if (m) m.classList.add('hidden');
   }
 
+  function setupCongregacoesSelects(cidadeSelId, comumSelId, defaultCidade, defaultComum) {
+    var cSel = document.getElementById(cidadeSelId);
+    var kSel = document.getElementById(comumSelId);
+    if (!cSel || !kSel || typeof window.CongregacoesModule === 'undefined') return;
+
+    var cidades = window.CongregacoesModule.getCidades();
+    cSel.innerHTML = '';
+    cidades.forEach(function (cid) {
+      var opt = document.createElement('option');
+      opt.value = cid;
+      opt.textContent = cid;
+      if (defaultCidade && cid.toLowerCase() === defaultCidade.toLowerCase()) {
+        opt.selected = true;
+      }
+      cSel.appendChild(opt);
+    });
+
+    function updateComuns() {
+      var selectedCidade = cSel.value || 'Presidente Prudente';
+      var comuns = window.CongregacoesModule.getByCidade(selectedCidade);
+      kSel.innerHTML = '';
+      comuns.forEach(function (c) {
+        var opt = document.createElement('option');
+        opt.value = c.label;
+        opt.textContent = c.nome;
+        if (defaultComum && (c.label.toLowerCase() === defaultComum.toLowerCase() || c.nome.toLowerCase() === defaultComum.toLowerCase())) {
+          opt.selected = true;
+        }
+        kSel.appendChild(opt);
+      });
+    }
+
+    cSel.onchange = updateComuns;
+    updateComuns();
+  }
+
   function closeHinosNewStudentModal() {
     var m = document.getElementById('hinosNewStudentModal');
     if (m) m.classList.add('hidden');
@@ -1244,6 +1280,7 @@
     if (vozSel) vozSel.value = 'S';
     var inp = document.getElementById('hinosNewStudentName');
     if (inp) inp.value = '';
+    setupCongregacoesSelects('hinosNewStudentCidade', 'hinosNewStudentComum', 'Presidente Prudente', 'Jardim Bongiovani (Central)');
     m.classList.remove('hidden');
     if (inp) inp.focus();
   }
@@ -1480,10 +1517,96 @@
       saveHinosState();
     }
     syncHinosActiveStudentVozUI();
+    updateActiveStudentComumUI();
     // Inicia ou para o ouvinte do Firestore conforme o aluno ativo selecionado
     if (typeof syncActiveStudentFirebaseListener === 'function') {
       syncActiveStudentFirebaseListener();
     }
+  }
+
+  function updateActiveStudentComumUI() {
+    var txt = document.getElementById('hinosActiveStudentComumText');
+    if (!txt) return;
+    var st = getActiveHinosStudent();
+    if (!st) {
+      txt.textContent = 'Nenhum aluno';
+      return;
+    }
+    txt.textContent = st.comum || 'Presidente Prudente - Central';
+    txt.title = st.comum || '';
+  }
+
+  function openChangeComumModal(targetStudent) {
+    var st = targetStudent || getActiveHinosStudent();
+    if (!st) {
+      setMessage('Nenhum aluno selecionado.');
+      return;
+    }
+
+    var modal = document.getElementById('hinosChangeComumModal');
+    var sName = document.getElementById('hinosChangeComumStudentName');
+    var form = document.getElementById('hinosChangeComumForm');
+    var btnCloseX = document.getElementById('hinosChangeComumClose');
+    var btnCancel = document.getElementById('btnChangeComumCancel');
+
+    if (!modal) return;
+    if (sName) sName.textContent = st.name || 'Aluno';
+
+    setupCongregacoesSelects('hinosChangeComumCidade', 'hinosChangeComumSelect', st.cidade || 'Presidente Prudente', st.comum);
+
+    modal.classList.remove('hidden');
+
+    function cleanup() {
+      modal.classList.add('hidden');
+      form.removeEventListener('submit', onSubmit);
+      if (btnCloseX) btnCloseX.removeEventListener('click', onCancel);
+      if (btnCancel) btnCancel.removeEventListener('click', onCancel);
+      modal.removeEventListener('click', onModalClick);
+    }
+
+    function onSubmit(e) {
+      e.preventDefault();
+      var cSel = document.getElementById('hinosChangeComumCidade');
+      var kSel = document.getElementById('hinosChangeComumSelect');
+      var novaCidade = cSel ? cSel.value : 'Presidente Prudente';
+      var novaComum = kSel ? kSel.value : (novaCidade + ' - Central');
+
+      st.cidade = novaCidade;
+      st.comum = novaComum;
+
+      // Se for o aluno ativo local, salva no estado local
+      var activeSt = getActiveHinosStudent();
+      if (activeSt && activeSt.id === st.id) {
+        saveHinosState();
+        updateActiveStudentComumUI();
+      } else if (typeof window.FirebaseSync !== 'undefined' && window.FirebaseSync.isActive()) {
+        // Se estiver alterando pela lista do professor, envia direto para o Firestore
+        window.FirebaseSync.uploadStudent(st, function () {
+          setMessage('Congregação atualizada com sucesso!');
+        });
+      }
+
+      cleanup();
+      setMessage('Congregação de ' + (st.name || 'aluno') + ' alterada para: ' + novaComum);
+
+      // Se o painel do professor estiver aberto, recarrega a lista
+      if (typeof loadTeacherStudents === 'function') {
+        loadTeacherStudents();
+      }
+    }
+
+    function onCancel() {
+      cleanup();
+    }
+
+    function onModalClick(e) {
+      if (e.target === modal) cleanup();
+    }
+
+    form.addEventListener('submit', onSubmit);
+    if (btnCloseX) btnCloseX.addEventListener('click', onCancel);
+    if (btnCancel) btnCancel.addEventListener('click', onCancel);
+    modal.addEventListener('click', onModalClick);
   }
 
   function refreshMetodoControl() {
@@ -2378,20 +2501,35 @@
     if (window.gemRefreshLucide) window.gemRefreshLucide();
   }
 
+  var currentTeacherSession = null;
+  var hinosAllCloudStudents = [];
+
   function filterAndDrawTeacherStudentList() {
     var body = document.getElementById('hinosTeacherStudentListBody');
     var inp = document.getElementById('hinosTeacherSearchInput');
+    var comumSel = document.getElementById('teacherComumFilterSelect');
     if (!body) return;
-    
+
     var filterText = inp ? inp.value.trim().toLowerCase() : '';
+    var filterComum = comumSel ? comumSel.value : 'Todas';
+
     var filtered = hinosAllCloudStudents.filter(function (st) {
+      // Filtro de congregação
+      if (filterComum && filterComum !== 'Todas' && filterComum !== 'Minha') {
+        if (st.comum && st.comum !== filterComum) return false;
+        if (!st.comum && filterComum.indexOf('Bongiovani') === -1) return false;
+      }
+
+      // Filtro de texto (nome, syncCode ou comum)
+      if (!filterText) return true;
       var name = (st.name || '').toLowerCase();
       var code = (st.syncCode || '').toLowerCase();
-      return name.indexOf(filterText) !== -1 || code.indexOf(filterText) !== -1;
+      var comum = (st.comum || '').toLowerCase();
+      return name.indexOf(filterText) !== -1 || code.indexOf(filterText) !== -1 || comum.indexOf(filterText) !== -1;
     });
 
     if (filtered.length === 0) {
-      body.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum aluno encontrado.</td></tr>';
+      body.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum aluno encontrado para este filtro.</td></tr>';
       return;
     }
 
@@ -2399,39 +2537,61 @@
     filtered.forEach(function (st) {
       var tr = document.createElement('tr');
       tr.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
-      
+
       var tdName = document.createElement('td');
       tdName.style.padding = '0.5rem';
       var dName = document.createElement('div');
       dName.style.fontWeight = 'bold';
       dName.style.color = 'var(--text)';
       dName.textContent = st.name || 'Sem nome';
+
+      var dComum = document.createElement('div');
+      dComum.style.fontSize = '0.74rem';
+      dComum.style.color = 'var(--primary)';
+      dComum.style.fontWeight = '600';
+      dComum.textContent = st.comum || (st.cidade ? st.cidade + ' - Central' : 'Presidente Prudente - Jardim Bongiovani (Central)');
+
       var dMeta = document.createElement('div');
-      dMeta.style.fontSize = '0.75rem';
+      dMeta.style.fontSize = '0.7rem';
       dMeta.style.color = 'var(--text-soft)';
-      dMeta.textContent = 'Disp: ' + (st.deviceInfo || 'Desconhecido') + ' | Acesso: ' + (st.lastActiveFormatted || 'Sem data');
+      dMeta.textContent = 'Voz: ' + (st.vozPrincipal || 'S') + ' | Acesso: ' + (st.lastActiveFormatted || 'Sem data');
+
       tdName.appendChild(dName);
+      tdName.appendChild(dComum);
       tdName.appendChild(dMeta);
-      
+
       var tdProg = document.createElement('td');
       tdProg.style.padding = '0.5rem';
       tdProg.style.textAlign = 'center';
       tdProg.style.color = 'var(--text)';
       var sum = st.progressSummary || { hinosAprovados: 0, licoesAprovadas: 0 };
       tdProg.textContent = 'Hinos: ' + sum.hinosAprovados + ' | Lições: ' + sum.licoesAprovadas;
-      
+
       var tdAction = document.createElement('td');
       tdAction.style.padding = '0.5rem';
       tdAction.style.textAlign = 'center';
+      tdAction.style.whiteSpace = 'nowrap';
+
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'du-btn du-btn-primary du-btn-xs';
-      btn.textContent = 'Entrar';
+      btn.textContent = 'Acessar Ficha';
       btn.addEventListener('click', function () {
         enterStudentImpersonation(st);
       });
       tdAction.appendChild(btn);
-      
+
+      var btnTransfer = document.createElement('button');
+      btnTransfer.type = 'button';
+      btnTransfer.className = 'du-btn du-btn-ghost du-btn-xs text-primary';
+      btnTransfer.style.marginLeft = '4px';
+      btnTransfer.title = 'Mudar congregação deste aluno';
+      btnTransfer.innerHTML = '<i data-lucide="map-pin" style="width: 12px; height: 12px;"></i>';
+      btnTransfer.addEventListener('click', function () {
+        openChangeComumModal(st);
+      });
+      tdAction.appendChild(btnTransfer);
+
       tr.appendChild(tdName);
       tr.appendChild(tdProg);
       tr.appendChild(tdAction);
@@ -2439,9 +2599,187 @@
     });
   }
 
+  function renderTeacherStudentList(list) {
+    hinosAllCloudStudents = list || [];
+    var countEl = document.getElementById('teacherStudentCount');
+    if (countEl) countEl.textContent = String(hinosAllCloudStudents.length);
+    filterAndDrawTeacherStudentList();
+  }
+
+  function loadTeacherStudents() {
+    if (typeof window.FirebaseSync === 'undefined' || !window.FirebaseSync.isActive()) return;
+
+    var listBody = document.getElementById('hinosTeacherStudentListBody');
+    if (listBody) {
+      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando alunos da nuvem...</td></tr>';
+    }
+
+    var comumSel = document.getElementById('teacherComumFilterSelect');
+    var selectedComum = comumSel ? comumSel.value : 'Todas';
+
+    if (selectedComum === 'Todas') {
+      window.FirebaseSync.fetchAllStudents(renderTeacherStudentList);
+    } else {
+      var targetComum = selectedComum === 'Minha' ? (currentTeacherSession ? currentTeacherSession.comum : 'Todas') : selectedComum;
+      if (targetComum === 'Todas') {
+        window.FirebaseSync.fetchAllStudents(renderTeacherStudentList);
+      } else {
+        window.FirebaseSync.fetchStudentsByComum(targetComum, renderTeacherStudentList);
+      }
+    }
+  }
+
+  function setupTeacherComumFilter() {
+    var sel = document.getElementById('teacherComumFilterSelect');
+    if (!sel || typeof window.CongregacoesModule === 'undefined') return;
+
+    sel.innerHTML = '';
+
+    // Opção "Todas"
+    var optTodas = document.createElement('option');
+    optTodas.value = 'Todas';
+    optTodas.textContent = 'Todas as Congregações';
+    sel.appendChild(optTodas);
+
+    // Se o professor for de uma comum específica
+    if (currentTeacherSession && currentTeacherSession.comum && currentTeacherSession.comum !== 'Todas') {
+      var optMinha = document.createElement('option');
+      optMinha.value = currentTeacherSession.comum;
+      optMinha.textContent = '⭐ Minha Comum: ' + currentTeacherSession.comum;
+      optMinha.selected = true;
+      sel.appendChild(optMinha);
+    }
+
+    // Lista todas as congregações cadastradas de Presidente Prudente e Região
+    var todas = window.CongregacoesModule.getAll();
+    todas.forEach(function (c) {
+      if (currentTeacherSession && currentTeacherSession.comum === c.label) return;
+      var opt = document.createElement('option');
+      opt.value = c.label;
+      opt.textContent = c.label;
+      sel.appendChild(opt);
+    });
+
+    sel.onchange = function () {
+      loadTeacherStudents();
+    };
+  }
+
+  function loadTeacherList() {
+    var body = document.getElementById('teacherListBody');
+    if (!body || typeof window.FirebaseSync === 'undefined') return;
+
+    body.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 0.75rem; color: var(--text-soft);">Carregando professores...</td></tr>';
+
+    window.FirebaseSync.fetchTeachers(function (teachers) {
+      if (!teachers || teachers.length === 0) {
+        body.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 0.75rem; color: var(--text-soft);">Nenhum professor cadastrado ainda. Use o formulário acima para cadastrar.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = '';
+      teachers.forEach(function (t) {
+        var tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+
+        var tdNome = document.createElement('td');
+        tdNome.style.padding = '0.4rem';
+        tdNome.innerHTML = '<div style="font-weight:bold;">' + t.nome + '</div>' +
+          (t.email ? '<div style="font-size:0.75rem; color:var(--text-soft); font-weight:normal;">' + t.email + '</div>' : '');
+
+        var tdComum = document.createElement('td');
+        tdComum.style.padding = '0.4rem';
+        tdComum.style.color = 'var(--text-soft)';
+        tdComum.textContent = t.comum || 'Não informada';
+
+        var tdAcao = document.createElement('td');
+        tdAcao.style.padding = '0.4rem';
+        tdAcao.style.textAlign = 'center';
+
+        var btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'du-btn du-btn-ghost du-btn-xs text-error';
+        btnDel.innerHTML = '<i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>';
+        btnDel.title = 'Remover professor';
+        btnDel.addEventListener('click', function () {
+          if (!window.confirm('Remover o professor "' + t.nome + '"?')) return;
+          window.FirebaseSync.deleteTeacher(t.id, function (ok) {
+            if (ok) {
+              setMessage('Professor removido com sucesso.');
+              loadTeacherList();
+            } else {
+              setMessage('Erro ao remover professor.');
+            }
+          });
+        });
+
+        tdAcao.appendChild(btnDel);
+        tr.appendChild(tdNome);
+        tr.appendChild(tdComum);
+        tr.appendChild(tdAcao);
+        body.appendChild(tr);
+      });
+
+      if (window.gemRefreshLucide) window.gemRefreshLucide();
+    });
+  }
+
+  function setupTeachersTab() {
+    setupCongregacoesSelects('selTeacherCidade', 'selTeacherComum', 'Presidente Prudente', 'Jardim Bongiovani (Central)');
+
+    var formNew = document.getElementById('formNewTeacher');
+    if (formNew && !formNew._bound) {
+      formNew._bound = true;
+      formNew.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var inpName = document.getElementById('inpTeacherName');
+        var inpEmail = document.getElementById('inpTeacherEmail');
+        var selCid = document.getElementById('selTeacherCidade');
+        var selCom = document.getElementById('selTeacherComum');
+        var inpPin = document.getElementById('inpTeacherPin');
+
+        var nome = inpName ? inpName.value.trim() : '';
+        var email = inpEmail ? inpEmail.value.trim().toLowerCase() : '';
+        var cidade = selCid ? selCid.value : 'Presidente Prudente';
+        var comum = selCom ? selCom.value : (cidade + ' - Central');
+        var pin = inpPin ? inpPin.value.trim() : '';
+
+        if (!nome || !email || !pin) {
+          alert('Por favor, preencha o nome, e-mail/usuário e o PIN.');
+          return;
+        }
+
+        if (pin.length < 4) {
+          alert('O PIN deve ter no mínimo 4 dígitos numéricos.');
+          return;
+        }
+
+        window.FirebaseSync.registerTeacher({
+          nome: nome,
+          email: email,
+          cidade: cidade,
+          comum: comum,
+          pin: pin
+        }, function (saved, err) {
+          if (err || !saved) {
+            alert(err || 'Erro ao cadastrar professor.');
+            return;
+          }
+          setMessage('Professor ' + nome + ' cadastrado com sucesso!');
+          if (inpName) inpName.value = '';
+          if (inpEmail) inpEmail.value = '';
+          if (inpPin) inpPin.value = '';
+          loadTeacherList();
+        });
+      });
+    }
+
+    loadTeacherList();
+  }
+
   function enterStudentImpersonation(remoteStudent) {
     if (!remoteStudent || !remoteStudent.id) return;
-    
+
     if (!window.hinosImpersonatedMode) {
       try {
         localStorage.setItem('gem-tools-teacher-backup', JSON.stringify(hinosState));
@@ -2450,15 +2788,15 @@
         return;
       }
     }
-    
+
     window.hinosImpersonatedMode = true;
-    
+
     hinosState = {
       version: 1,
       students: [remoteStudent],
       activeStudentId: remoteStudent.id
     };
-    
+
     try {
       localStorage.setItem(HINOS_STORAGE_KEY, JSON.stringify(hinosState));
     } catch (e) {}
@@ -2473,9 +2811,11 @@
       banner.classList.remove('hidden');
     }
     if (sName) {
-      sName.textContent = remoteStudent.name || 'Aluno';
+      var profInfo = currentTeacherSession ? ' | Prof. ' + currentTeacherSession.nome : '';
+      var comumInfo = remoteStudent.comum ? ' (' + remoteStudent.comum + ')' : '';
+      sName.textContent = (remoteStudent.name || 'Aluno') + comumInfo + profInfo;
     }
-    
+
     document.body.style.paddingTop = '38px';
 
     renderHinosStudentSelect();
@@ -2486,12 +2826,12 @@
     updateMetodoOverviewBars();
 
     syncActiveStudentFirebaseListener();
-    setMessage('Simulando perfil de: ' + (remoteStudent.name || 'Aluno'));
+    setMessage('Editando perfil de: ' + (remoteStudent.name || 'Aluno'));
   }
 
   function exitStudentImpersonation() {
     window.hinosImpersonatedMode = false;
-    
+
     try {
       var backup = localStorage.getItem('gem-tools-teacher-backup');
       if (backup) {
@@ -2520,14 +2860,13 @@
     updateMetodoOverviewBars();
 
     syncActiveStudentFirebaseListener();
-    setMessage('Você saiu da simulação. Dados originais restaurados.');
-    
+    setMessage('Você saiu da ficha do aluno. Seus dados originais foram restaurados.');
+
     openTeacherDashboard(true);
   }
 
   async function hashTeacherPassword(password) {
     if (typeof crypto === 'undefined' || !crypto.subtle) {
-      // Fallback simples caso não esteja em contexto seguro (HTTPS)
       var hash = 0;
       for (var i = 0; i < password.length; i++) {
         var char = password.charCodeAt(i);
@@ -2549,10 +2888,12 @@
   function askTeacherPassword() {
     return new Promise(function (resolve) {
       var modal = document.getElementById('hinosTeacherPasswordModal');
+      var emailInput = document.getElementById('hinosTeacherEmailInput');
       var input = document.getElementById('hinosTeacherPasswordInput');
       var form = document.getElementById('hinosTeacherPasswordForm');
       var btnCloseX = document.getElementById('hinosTeacherPasswordClose');
       var btnCancel = document.getElementById('btnTeacherPasswordCancel');
+      var errDiv = document.getElementById('hinosTeacherPasswordError');
 
       if (!modal || !input || !form) {
         resolve(null);
@@ -2560,9 +2901,17 @@
       }
 
       input.value = '';
+      if (errDiv) {
+        errDiv.textContent = '';
+        errDiv.classList.add('hidden');
+      }
       modal.classList.remove('hidden');
       setTimeout(function () {
-        input.focus();
+        if (emailInput && !emailInput.value.trim()) {
+          emailInput.focus();
+        } else {
+          input.focus();
+        }
       }, 50);
 
       function cleanup() {
@@ -2575,9 +2924,53 @@
 
       function onSubmit(e) {
         e.preventDefault();
-        var val = input.value;
-        cleanup();
-        resolve(val);
+        var emailVal = emailInput ? emailInput.value.trim().toLowerCase() : '';
+        var pinVal = input.value.trim();
+
+        if (!emailVal && !pinVal) return;
+
+        // Se digitou apenas o PIN e for a senha master, assume admin automaticamente
+        if (!emailVal && pinVal) {
+          emailVal = 'admin';
+        }
+
+        if (typeof window.FirebaseSync !== 'undefined' && typeof window.FirebaseSync.loginTeacher === 'function') {
+          window.FirebaseSync.loginTeacher(emailVal, pinVal, function (prof, err) {
+            if (err || !prof) {
+              if (errDiv) {
+                errDiv.textContent = err || 'E-mail ou PIN inválido.';
+                errDiv.classList.remove('hidden');
+              } else {
+                alert(err || 'E-mail ou PIN inválido.');
+              }
+              input.value = '';
+              input.focus();
+              return;
+            }
+            cleanup();
+            resolve(prof);
+          });
+        } else {
+          // Fallback master hash
+          hashTeacherPassword(pinVal).then(function (hash) {
+            var correctHash = window.firebaseConfig.teacherPasswordHash || '';
+            if (hash === correctHash) {
+              cleanup();
+              resolve({
+                id: 'admin_master',
+                nome: 'Administrador Regional',
+                comum: 'Todas',
+                perfil: 'admin'
+              });
+            } else {
+              if (errDiv) {
+                errDiv.textContent = 'PIN inválido.';
+                errDiv.classList.remove('hidden');
+              }
+              input.value = '';
+            }
+          });
+        }
       }
 
       function onCancel() {
@@ -2605,34 +2998,32 @@
       return;
     }
 
-    var correctHash = window.firebaseConfig.teacherPasswordHash || '';
-    if (!correctHash) {
-      setMessage('Modo professor não habilitado nas configurações do Firebase.');
-      return;
-    }
-
-    if (!skipPrompt) {
-      var pwd = await askTeacherPassword();
-      if (pwd === null) return;
-      var hash = await hashTeacherPassword(pwd);
-      if (hash !== correctHash) {
-        alert('Senha master do professor incorreta.');
-        return;
-      }
+    if (!skipPrompt || !currentTeacherSession) {
+      var prof = await askTeacherPassword();
+      if (!prof) return;
+      currentTeacherSession = prof;
     }
 
     var modal = document.getElementById('hinosTeacherDashboardModal');
     if (modal) modal.classList.remove('hidden');
 
-    var listBody = document.getElementById('hinosTeacherStudentListBody');
-    if (listBody) {
-      listBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Carregando alunos da nuvem...</td></tr>';
-    }
-    
+    // Atualiza cabeçalho do professor
+    var headerInfo = document.getElementById('teacherHeaderLoggedInfo');
+    var badge = document.getElementById('teacherLoggedBadge');
+    var nameSpan = document.getElementById('teacherLoggedName');
+    var comumSpan = document.getElementById('teacherLoggedComumText');
+    if (headerInfo) headerInfo.classList.remove('hidden');
+    if (badge) badge.textContent = currentTeacherSession.perfil === 'admin' ? 'Encarregado Regional' : 'Professor';
+    if (nameSpan) nameSpan.textContent = currentTeacherSession.nome || 'Professor';
+    if (comumSpan) comumSpan.textContent = currentTeacherSession.comum || 'Presidente Prudente';
+
     var searchInp = document.getElementById('hinosTeacherSearchInput');
     if (searchInp) searchInp.value = '';
 
-    window.FirebaseSync.fetchAllStudents(renderTeacherStudentList);
+    // Configura o seletor de Congregação e carrega os alunos
+    setupTeacherComumFilter();
+    loadTeacherStudents();
+    setupTeachersTab();
   }
 
   function initFirebaseSyncUI() {
@@ -2643,9 +3034,9 @@
     var connArea = document.getElementById('hinosCloudSyncConnectionArea');
     if (connArea) connArea.classList.remove('hidden');
 
-    // Mostra a Área do Professor se houver senha configurada
+    // Mostra a Área do Professor se houver configuração
     var teacherRow = document.getElementById('hinosTeacherModePanelRow');
-    if (teacherRow && window.firebaseConfig.teacherPasswordHash) {
+    if (teacherRow) {
       teacherRow.classList.remove('hidden');
     }
 
@@ -2663,72 +3054,88 @@
       });
     }
 
+    function doTeacherLogout() {
+      currentTeacherSession = null;
+      var modalTeacher = document.getElementById('hinosTeacherDashboardModal');
+      if (modalTeacher) modalTeacher.classList.add('hidden');
+      setMessage('Sessão encerrada com sucesso.');
+    }
+
+    var btnLogoutTeacher = document.getElementById('btnTeacherLogout');
+    if (btnLogoutTeacher) {
+      btnLogoutTeacher.addEventListener('click', doTeacherLogout);
+    }
+
+    var btnLogoutFooter = document.getElementById('btnTeacherDashboardLogoutFooter');
+    if (btnLogoutFooter) {
+      btnLogoutFooter.addEventListener('click', doTeacherLogout);
+    }
+
+    var btnOpenChangeComum = document.getElementById('btnOpenChangeComum');
+    if (btnOpenChangeComum) {
+      btnOpenChangeComum.addEventListener('click', function () {
+        openChangeComumModal();
+      });
+    }
+
     var modalTeacher = document.getElementById('hinosTeacherDashboardModal');
     var btnCloseTeacherX = document.getElementById('hinosTeacherClose');
     var btnCloseTeacherBtn = document.getElementById('btnTeacherDashboardClose');
 
     var btnTabStudents = document.getElementById('btnTeacherTabStudents');
+    var btnTabProfessores = document.getElementById('btnTeacherTabProfessores');
     var btnTabMetrics = document.getElementById('btnTeacherTabMetrics');
+
     var secStudents = document.getElementById('sectionTeacherStudents');
+    var secProfessores = document.getElementById('sectionTeacherProfessores');
     var secMetrics = document.getElementById('sectionTeacherMetrics');
 
     function switchTeacherTab(tabName) {
-      if (tabName === 'students') {
-        if (btnTabStudents) btnTabStudents.classList.add('du-tab-active');
-        if (btnTabStudents) {
-          btnTabStudents.classList.remove('text-base-content/60');
-          btnTabStudents.classList.remove('hover:text-base-content');
-        }
-        if (btnTabMetrics) btnTabMetrics.classList.remove('du-tab-active');
-        if (btnTabMetrics) {
-          btnTabMetrics.classList.add('text-base-content/60');
-          btnTabMetrics.classList.add('hover:text-base-content');
-        }
-        if (secStudents) {
-          secStudents.classList.remove('hidden');
-          secStudents.style.display = 'flex';
-        }
-        if (secMetrics) {
-          secMetrics.classList.add('hidden');
-          secMetrics.style.display = 'none';
-        }
-      } else if (tabName === 'metrics') {
-        if (btnTabMetrics) btnTabMetrics.classList.add('du-tab-active');
-        if (btnTabMetrics) {
-          btnTabMetrics.classList.remove('text-base-content/60');
-          btnTabMetrics.classList.remove('hover:text-base-content');
-        }
-        if (btnTabStudents) btnTabStudents.classList.remove('du-tab-active');
-        if (btnTabStudents) {
-          btnTabStudents.classList.add('text-base-content/60');
-          btnTabStudents.classList.add('hover:text-base-content');
-        }
-        if (secMetrics) {
-          secMetrics.classList.remove('hidden');
-          secMetrics.style.display = 'flex';
-        }
-        if (secStudents) {
-          secStudents.classList.add('hidden');
-          secStudents.style.display = 'none';
-        }
-        
-        if (window.FirebaseSync && typeof window.FirebaseSync.fetchMetrics === 'function') {
-          var dashFeatureList = document.getElementById('dashFeatureList');
-          var dashTopHymns = document.getElementById('dashTopHymns');
-          var dashTopLessons = document.getElementById('dashTopLessons');
-          
-          if (dashFeatureList) dashFeatureList.innerHTML = '<div style="text-align: center; color: var(--text-soft);">Carregando métricas...</div>';
-          if (dashTopHymns) dashTopHymns.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
-          if (dashTopLessons) dashTopLessons.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
+      var tabs = [
+        { name: 'students', btn: btnTabStudents, sec: secStudents },
+        { name: 'professores', btn: btnTabProfessores, sec: secProfessores },
+        { name: 'metrics', btn: btnTabMetrics, sec: secMetrics }
+      ];
 
-          window.FirebaseSync.fetchMetrics(renderTeacherDashboardMetrics);
+      tabs.forEach(function (t) {
+        if (!t.btn || !t.sec) return;
+        if (t.name === tabName) {
+          t.btn.classList.add('du-tab-active');
+          t.btn.classList.remove('text-base-content/60', 'hover:text-base-content');
+          t.sec.classList.remove('hidden');
+          t.sec.style.display = 'flex';
+        } else {
+          t.btn.classList.remove('du-tab-active');
+          t.btn.classList.add('text-base-content/60', 'hover:text-base-content');
+          t.sec.classList.add('hidden');
+          t.sec.style.display = 'none';
         }
+      });
+
+      if (tabName === 'professores') {
+        setupTeachersTab();
+      } else if (tabName === 'metrics' && window.FirebaseSync && typeof window.FirebaseSync.fetchMetrics === 'function') {
+        var dashFeatureList = document.getElementById('dashFeatureList');
+        var dashTopHymns = document.getElementById('dashTopHymns');
+        var dashTopLessons = document.getElementById('dashTopLessons');
+
+        if (dashFeatureList) dashFeatureList.innerHTML = '<div style="text-align: center; color: var(--text-soft);">Carregando métricas...</div>';
+        if (dashTopHymns) dashTopHymns.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
+        if (dashTopLessons) dashTopLessons.innerHTML = '<li style="color: var(--text-soft); list-style: none; padding-left: 0; text-align: center;">Carregando...</li>';
+
+        window.FirebaseSync.fetchMetrics(renderTeacherDashboardMetrics);
       }
     }
 
     if (btnTabStudents) {
       btnTabStudents.addEventListener('click', function () {
         switchTeacherTab('students');
+      });
+    }
+
+    if (btnTabProfessores) {
+      btnTabProfessores.addEventListener('click', function () {
+        switchTeacherTab('professores');
       });
     }
 
@@ -2885,6 +3292,9 @@
     tryAddStudentFromModal: function () {
       var inp = document.getElementById('hinosNewStudentName');
       var vozSel = document.getElementById('hinosNewStudentVoz');
+      var cidSel = document.getElementById('hinosNewStudentCidade');
+      var comSel = document.getElementById('hinosNewStudentComum');
+
       var name = inp && inp.value ? inp.value.trim() : '';
       if (!name) {
         setMessage('Digite o nome do aluno.');
@@ -2892,7 +3302,18 @@
       }
       var voz = vozSel && vozSel.value ? vozSel.value : 'S';
       if (HINOS_VOZES.indexOf(voz) === -1) voz = 'S';
-      var st = { id: hinosGenerateId(), name: name, vozPrincipal: voz, hinos: { do: {}, mib: {}, sib: {} } };
+
+      var cidade = cidSel && cidSel.value ? cidSel.value : 'Presidente Prudente';
+      var comum = comSel && comSel.value ? comSel.value : (cidade + ' - Central');
+
+      var st = {
+        id: hinosGenerateId(),
+        name: name,
+        vozPrincipal: voz,
+        cidade: cidade,
+        comum: comum,
+        hinos: { do: {}, mib: {}, sib: {} }
+      };
       ensureStudentHinosShape(st);
       hinosState.students.push(st);
       hinosState.activeStudentId = st.id;
@@ -2901,7 +3322,7 @@
       closeHinosNewStudentModal();
       renderHinosStudentSelect();
       refreshHinosVoiceButtons();
-      setMessage('Aluno adicionado: ' + name + '.');
+      setMessage('Aluno adicionado: ' + name + ' (' + comum + ').');
     },
     removeActiveStudentIfConfirmed: function () {
       var st = getActiveHinosStudent();

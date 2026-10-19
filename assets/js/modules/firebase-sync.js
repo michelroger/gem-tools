@@ -10,6 +10,28 @@
   var activeListenerUnsubscribe = null;
   var activeListenerSyncCode = null;
 
+  // Calcula o hash SHA-256 para verificação de PIN / senhas
+  function sha256(str) {
+    if (typeof crypto !== 'undefined' && crypto.subtle) {
+      try {
+        var msgBuffer = new TextEncoder().encode(str);
+        return crypto.subtle.digest('SHA-256', msgBuffer).then(function (hashBuffer) {
+          var hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+        });
+      } catch (e) {
+        // Segue para fallback
+      }
+    }
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      var char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Promise.resolve('fallback_' + hash);
+  }
+
   // Verifica se as credenciais configuradas são válidas (não são os placeholders)
   function isValidConfig(cfg) {
     if (!cfg) return false;
@@ -325,6 +347,330 @@
         .catch(function (err) {
           console.error('Erro ao buscar alunos para o Modo Professor:', err);
           if (callback) callback(null, err.message || 'Erro de conexão.');
+        });
+    },
+
+    // Autentica um professor por E-mail/Usuário + PIN (ou valida senha master)
+    loginTeacher: function (emailOrUser, pin, callback) {
+      if (!this.isActive()) {
+        if (callback) callback(null, 'Serviço do Firebase inativo.');
+        return;
+      }
+      var cleanPin = pin ? String(pin).trim() : '';
+      var cleanId = emailOrUser ? String(emailOrUser).trim().toLowerCase() : '';
+
+      if (!cleanPin) {
+        if (callback) callback(null, 'Por favor, digite o PIN ou senha.');
+        return;
+      }
+
+      sha256(cleanPin).then(function (hash) {
+        var masterHash = window.firebaseConfig && window.firebaseConfig.teacherPasswordHash;
+
+        // 1. Se for admin ou a senha master pura
+        if (masterHash && (hash === masterHash || cleanId === 'admin' && hash === masterHash)) {
+          if (callback) {
+            callback({
+              id: 'admin_master',
+              nome: 'Administrador Regional',
+              email: 'admin',
+              comum: 'Todas',
+              cidade: 'Presidente Prudente',
+              perfil: 'admin',
+              isMaster: true
+            });
+          }
+          return;
+        }
+
+        if (!cleanId) {
+          if (callback) callback(null, 'Por favor, digite seu e-mail ou usuário.');
+          return;
+        }
+
+        function verifyTeacher(teacher) {
+          if (!teacher) {
+            if (callback) callback(null, 'Professor não encontrado com este e-mail.');
+            return;
+          }
+          if (teacher.ativo === false) {
+            if (callback) callback(null, 'Este cadastro de professor está desativado.');
+            return;
+          }
+          if (teacher.pinHash !== hash) {
+            if (callback) callback(null, 'PIN incorreto para este e-mail.');
+            return;
+          }
+          if (callback) callback(teacher);
+        }
+
+        // 2. Procura na coleção 'teachers' do Firestore pelo e-mail
+        db.collection('teachers').where('email', '==', cleanId).limit(1).get()
+          .then(function (querySnapshot) {
+            if (querySnapshot.empty) {
+              FirebaseSync._fetchTeachersFallback(function (fbList) {
+                var found = fbList.find(function (t) {
+                  return (t.email && t.email.toLowerCase() === cleanId) || (!t.email && (t.nome || '').toLowerCase() === cleanId);
+                });
+                verifyTeacher(found);
+              });
+              return;
+            }
+            var doc = querySnapshot.docs[0];
+            var data = doc.data();
+            data.id = doc.id;
+            verifyTeacher(data);
+          })
+          .catch(function (err) {
+            console.warn('Consulta em collection(teachers) falhou, tentando fallback em metrics:', err);
+            FirebaseSync._fetchTeachersFallback(function (fbList) {
+              var found = fbList.find(function (t) {
+                return (t.email && t.email.toLowerCase() === cleanId) || (!t.email && (t.nome || '').toLowerCase() === cleanId);
+              });
+              verifyTeacher(found);
+            });
+          });
+      });
+    },
+
+    // Mantém retrocompatibilidade para login direto por PIN
+    loginTeacherByPin: function (pin, callback) {
+      return this.loginTeacher('admin', pin, callback);
+    },
+
+    _saveTeacherFallback: function (payload, callback) {
+      if (!this.isActive()) return;
+      var docRef = db.collection('metrics').doc('teachers_registry');
+      docRef.get().then(function (doc) {
+        var data = doc.exists ? doc.data() : {};
+        var list = Array.isArray(data.professores) ? data.professores : [];
+        var safeItem = {
+          id: 'prof_' + Date.now(),
+          nome: payload.nome,
+          email: payload.email || '',
+          comum: payload.comum,
+          cidade: payload.cidade,
+          pinHash: payload.pinHash,
+          perfil: payload.perfil || 'professor',
+          ativo: true,
+          createdAt: new Date().toISOString()
+        };
+        list.push(safeItem);
+        docRef.set({ professores: list, lastUpdate: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+          .then(function () {
+            if (callback) callback(safeItem);
+          })
+          .catch(function (e2) {
+            console.error('Erro no fallback de professores:', e2);
+            if (callback) callback(null, e2.message || 'Erro ao salvar professor.');
+          });
+      }).catch(function (e) {
+        console.error('Erro ao ler doc de fallback:', e);
+        if (callback) callback(null, e.message);
+      });
+    },
+
+    _fetchTeachersFallback: function (callback) {
+      if (!this.isActive()) {
+        if (callback) callback([]);
+        return;
+      }
+      db.collection('metrics').doc('teachers_registry').get().then(function (doc) {
+        if (doc.exists) {
+          var data = doc.data();
+          var list = Array.isArray(data.professores) ? data.professores : [];
+          if (callback) callback(list);
+        } else {
+          if (callback) callback([]);
+        }
+      }).catch(function () {
+        if (callback) callback([]);
+      });
+    },
+
+    _deleteTeacherFallback: function (teacherId, callback) {
+      if (!this.isActive()) return;
+      var docRef = db.collection('metrics').doc('teachers_registry');
+      docRef.get().then(function (doc) {
+        if (!doc.exists) {
+          if (callback) callback(false);
+          return;
+        }
+        var data = doc.data();
+        var list = Array.isArray(data.professores) ? data.professores : [];
+        var filtered = list.filter(function (t) { return t.id !== teacherId; });
+        docRef.set({ professores: filtered, lastUpdate: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+          .then(function () {
+            if (callback) callback(true);
+          })
+          .catch(function () {
+            if (callback) callback(false);
+          });
+      }).catch(function () {
+        if (callback) callback(false);
+      });
+    },
+
+    // Cadastra um novo professor no Firestore
+    registerTeacher: function (teacherData, callback) {
+      if (!this.isActive()) {
+        if (callback) callback(null, 'Serviço inativo');
+        return;
+      }
+      if (!teacherData || !teacherData.nome || !teacherData.comum || !teacherData.pin) {
+        if (callback) callback(null, 'Preencha nome, congregação e PIN.');
+        return;
+      }
+      var emailClean = (teacherData.email || '').trim().toLowerCase();
+      if (!emailClean) {
+        if (callback) callback(null, 'Preencha o e-mail ou usuário de acesso do professor.');
+        return;
+      }
+
+      var self = this;
+      // Verifica duplicidade de e-mail antes de gravar
+      this.fetchTeachers(function (existingList) {
+        var duplicate = (existingList || []).find(function (t) {
+          return t.email && t.email.toLowerCase() === emailClean;
+        });
+        if (duplicate) {
+          if (callback) callback(null, 'Já existe um professor cadastrado com este e-mail/usuário ("' + duplicate.nome + '").');
+          return;
+        }
+
+        sha256(String(teacherData.pin).trim()).then(function (hash) {
+          var payload = {
+            nome: teacherData.nome.trim(),
+            email: emailClean,
+            comum: teacherData.comum.trim(),
+            cidade: teacherData.cidade || 'Presidente Prudente',
+            pinHash: hash,
+            perfil: teacherData.perfil || 'professor',
+            ativo: true,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          db.collection('teachers').add(payload)
+            .then(function (docRef) {
+              payload.id = docRef.id;
+              if (callback) callback(payload);
+            })
+            .catch(function (err) {
+              console.warn('Gravação em collection(teachers) deu erro de permissão. Salvando em fallback de metrics:', err);
+              self._saveTeacherFallback(payload, callback);
+            });
+        });
+      });
+    },
+
+    // Lista os professores cadastrados no Firestore
+    fetchTeachers: function (callback) {
+      if (!this.isActive()) {
+        if (callback) callback([]);
+        return;
+      }
+      var self = this;
+      db.collection('teachers').get()
+        .then(function (snapshot) {
+          var list = [];
+          snapshot.forEach(function (doc) {
+            var data = doc.data();
+            data.id = doc.id;
+            list.push(data);
+          });
+          self._fetchTeachersFallback(function (fbList) {
+            fbList.forEach(function (f) {
+              if (!list.some(function (x) { return x.id === f.id || (x.nome === f.nome && x.comum === f.comum); })) {
+                list.push(f);
+              }
+            });
+            list.sort(function (a, b) {
+              return (a.nome || '').localeCompare(b.nome || '', 'pt-BR');
+            });
+            if (callback) callback(list);
+          });
+        })
+        .catch(function (err) {
+          console.warn('Leitura de collection(teachers) negada. Lendo de fallback metrics:', err);
+          self._fetchTeachersFallback(function (fbList) {
+            fbList.sort(function (a, b) {
+              return (a.nome || '').localeCompare(b.nome || '', 'pt-BR');
+            });
+            if (callback) callback(fbList);
+          });
+        });
+    },
+
+    // Remove um professor pelo ID
+    deleteTeacher: function (teacherId, callback) {
+      if (!this.isActive() || !teacherId) {
+        if (callback) callback(false);
+        return;
+      }
+      var self = this;
+      db.collection('teachers').doc(teacherId).delete()
+        .then(function () {
+          self._deleteTeacherFallback(teacherId, function () {
+            if (callback) callback(true);
+          });
+        })
+        .catch(function () {
+          self._deleteTeacherFallback(teacherId, callback);
+        });
+    },
+
+    // Busca alunos filtrados por comum (ou todos se comum for 'Todas')
+    fetchStudentsByComum: function (comum, callback) {
+      if (!this.isActive()) {
+        if (callback) callback(null, 'Serviço desativado');
+        return;
+      }
+
+      // Se for Todas ou não especificado, traz todos
+      if (!comum || comum === 'Todas') {
+        return this.fetchAllStudents(callback);
+      }
+
+      var self = this;
+      db.collection('students').where('comum', '==', comum).get()
+        .then(function (querySnapshot) {
+          var list = [];
+          querySnapshot.forEach(function (doc) {
+            var data = doc.data();
+            if (data.lastActive) {
+              try {
+                var date = data.lastActive.toDate();
+                data.lastActiveFormatted = date.toLocaleString('pt-BR');
+              } catch (e) {
+                data.lastActiveFormatted = 'Data desconhecida';
+              }
+              delete data.lastActive;
+            } else {
+              data.lastActiveFormatted = 'Sem registro';
+            }
+            list.push(data);
+          });
+
+          list.sort(function (a, b) {
+            var nameA = (a.name || '').toLowerCase();
+            var nameB = (b.name || '').toLowerCase();
+            return nameA.localeCompare(nameB, 'pt-BR');
+          });
+
+          if (callback) callback(list);
+        })
+        .catch(function (err) {
+          console.error('Erro ao buscar alunos por comum (tentando fallback local):', err);
+          self.fetchAllStudents(function (allList, allErr) {
+            if (allErr) {
+              if (callback) callback(null, allErr);
+              return;
+            }
+            var filtered = (allList || []).filter(function (s) {
+              return s.comum === comum;
+            });
+            if (callback) callback(filtered);
+          });
         });
     },
 
