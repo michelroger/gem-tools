@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.6.2';
+  const APP_VERSION = '2.6.3';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -3008,7 +3008,7 @@
               cleanup();
               resolve({
                 id: 'admin_master',
-                nome: 'Administrador Regional',
+                nome: 'Admin',
                 comum: 'Todas',
                 perfil: 'admin'
               });
@@ -3063,7 +3063,7 @@
     var nameSpan = document.getElementById('teacherLoggedName');
     var comumSpan = document.getElementById('teacherLoggedComumText');
     if (headerInfo) headerInfo.classList.remove('hidden');
-    if (badge) badge.textContent = currentTeacherSession.perfil === 'admin' ? 'Encarregado Regional' : 'Professor';
+    if (badge) badge.textContent = currentTeacherSession.perfil === 'admin' ? 'Admin' : 'Professor';
     if (nameSpan) nameSpan.textContent = currentTeacherSession.nome || 'Professor';
     if (comumSpan) comumSpan.textContent = currentTeacherSession.comum || 'Presidente Prudente';
 

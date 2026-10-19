@@ -372,7 +372,7 @@
           if (callback) {
             callback({
               id: 'admin_master',
-              nome: 'Administrador Regional',
+              nome: 'Admin',
               email: 'admin',
               comum: 'Todas',
               cidade: 'Presidente Prudente',
