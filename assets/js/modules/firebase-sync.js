@@ -337,9 +337,9 @@
           });
           
           list.sort(function (a, b) {
-            var nameA = (a.name || '').toLowerCase();
-            var nameB = (b.name || '').toLowerCase();
-            return nameA.localeCompare(nameB, 'pt-BR');
+            var nameA = (a.name || '').trim();
+            var nameB = (b.name || '').trim();
+            return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base', ignorePunctuation: true });
           });
 
           if (callback) callback(list);
@@ -652,9 +652,9 @@
           });
 
           list.sort(function (a, b) {
-            var nameA = (a.name || '').toLowerCase();
-            var nameB = (b.name || '').toLowerCase();
-            return nameA.localeCompare(nameB, 'pt-BR');
+            var nameA = (a.name || '').trim();
+            var nameB = (b.name || '').trim();
+            return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base', ignorePunctuation: true });
           });
 
           if (callback) callback(list);

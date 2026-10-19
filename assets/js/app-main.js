@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.6.1';
+  const APP_VERSION = '2.6.2';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -2528,6 +2528,12 @@
       return name.indexOf(filterText) !== -1 || code.indexOf(filterText) !== -1 || comum.indexOf(filterText) !== -1;
     });
 
+    filtered.sort(function (a, b) {
+      var nameA = (a.name || '').trim();
+      var nameB = (b.name || '').trim();
+      return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base', ignorePunctuation: true });
+    });
+
     if (filtered.length === 0) {
       body.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-soft);">Nenhum aluno encontrado para este filtro.</td></tr>';
       return;
@@ -2562,10 +2568,43 @@
 
       var tdProg = document.createElement('td');
       tdProg.style.padding = '0.5rem';
-      tdProg.style.textAlign = 'center';
-      tdProg.style.color = 'var(--text)';
+      tdProg.style.minWidth = '145px';
+
       var sum = st.progressSummary || { hinosAprovados: 0, licoesAprovadas: 0 };
-      tdProg.textContent = 'Hinos: ' + sum.hinosAprovados + ' | Lições: ' + sum.licoesAprovadas;
+      var hinosQtd = Number(sum.hinosAprovados) || 0;
+      var licoesQtd = Number(sum.licoesAprovadas) || 0;
+
+      // Porcentagens visuais (Hinos base 480, Lições estimadas base 80)
+      var hinosPct = Math.min(100, Math.round((hinosQtd / 480) * 100));
+      var licoesPct = Math.min(100, Math.round((licoesQtd / 80) * 100));
+
+      tdProg.innerHTML =
+        '<div style="display:flex; flex-direction:column; gap:0.35rem; min-width:130px; max-width:175px; margin:0 auto;">' +
+          // Barra de Hinos
+          '<div>' +
+            '<div style="display:flex; justify-content:space-between; align-items:center; font-size:0.7rem; margin-bottom:2px;">' +
+              '<span style="font-weight:600; color:var(--text); display:flex; align-items:center; gap:3px;">' +
+                '<span style="font-size:0.65rem;">🎵</span> Hinos' +
+              '</span>' +
+              '<span style="font-weight:bold; color:var(--primary);">' + hinosQtd + '<span style="font-size:0.65rem; color:var(--text-soft); font-weight:normal;">/480</span></span>' +
+            '</div>' +
+            '<div style="height:6px; background:rgba(0,0,0,0.06); border-radius:4px; overflow:hidden;" title="' + hinosPct + '% dos hinos concluídos">' +
+              '<div style="width:' + Math.max(hinosPct, hinosQtd > 0 ? 4 : 0) + '%; height:100%; background:var(--primary, #4f7cff); border-radius:4px; transition:width 0.3s;"></div>' +
+            '</div>' +
+          '</div>' +
+          // Barra de Lições do Método
+          '<div>' +
+            '<div style="display:flex; justify-content:space-between; align-items:center; font-size:0.7rem; margin-bottom:2px;">' +
+              '<span style="font-weight:600; color:var(--text); display:flex; align-items:center; gap:3px;">' +
+                '<span style="font-size:0.65rem;">📖</span> Método' +
+              '</span>' +
+              '<span style="font-weight:bold; color:#10b981;">' + licoesQtd + '<span style="font-size:0.65rem; color:var(--text-soft); font-weight:normal;"> lições</span></span>' +
+            '</div>' +
+            '<div style="height:6px; background:rgba(0,0,0,0.06); border-radius:4px; overflow:hidden;" title="' + licoesQtd + ' lições aprovadas">' +
+              '<div style="width:' + Math.max(licoesPct, licoesQtd > 0 ? 4 : 0) + '%; height:100%; background:#10b981; border-radius:4px; transition:width 0.3s;"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
 
       var tdAction = document.createElement('td');
       tdAction.style.padding = '0.5rem';
@@ -2600,7 +2639,12 @@
   }
 
   function renderTeacherStudentList(list) {
-    hinosAllCloudStudents = list || [];
+    hinosAllCloudStudents = (list || []).slice();
+    hinosAllCloudStudents.sort(function (a, b) {
+      var nameA = (a.name || '').trim();
+      var nameB = (b.name || '').trim();
+      return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base', ignorePunctuation: true });
+    });
     var countEl = document.getElementById('teacherStudentCount');
     if (countEl) countEl.textContent = String(hinosAllCloudStudents.length);
     filterAndDrawTeacherStudentList();
