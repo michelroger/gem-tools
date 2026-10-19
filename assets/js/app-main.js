@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.6.0';
+  const APP_VERSION = '2.6.1';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -2677,6 +2677,8 @@
         return;
       }
 
+      var isAdmin = currentTeacherSession && currentTeacherSession.perfil === 'admin';
+
       body.innerHTML = '';
       teachers.forEach(function (t) {
         var tr = document.createElement('tr');
@@ -2696,24 +2698,28 @@
         tdAcao.style.padding = '0.4rem';
         tdAcao.style.textAlign = 'center';
 
-        var btnDel = document.createElement('button');
-        btnDel.type = 'button';
-        btnDel.className = 'du-btn du-btn-ghost du-btn-xs text-error';
-        btnDel.innerHTML = '<i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>';
-        btnDel.title = 'Remover professor';
-        btnDel.addEventListener('click', function () {
-          if (!window.confirm('Remover o professor "' + t.nome + '"?')) return;
-          window.FirebaseSync.deleteTeacher(t.id, function (ok) {
-            if (ok) {
-              setMessage('Professor removido com sucesso.');
-              loadTeacherList();
-            } else {
-              setMessage('Erro ao remover professor.');
-            }
+        if (isAdmin) {
+          var btnDel = document.createElement('button');
+          btnDel.type = 'button';
+          btnDel.className = 'du-btn du-btn-ghost du-btn-xs text-error';
+          btnDel.innerHTML = '<i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>';
+          btnDel.title = 'Remover professor';
+          btnDel.addEventListener('click', function () {
+            if (!window.confirm('Remover o professor "' + t.nome + '"?')) return;
+            window.FirebaseSync.deleteTeacher(t.id, function (ok) {
+              if (ok) {
+                setMessage('Professor removido com sucesso.');
+                loadTeacherList();
+              } else {
+                setMessage('Erro ao remover professor.');
+              }
+            });
           });
-        });
+          tdAcao.appendChild(btnDel);
+        } else {
+          tdAcao.innerHTML = '<span style="color: var(--text-soft); font-size: 0.75rem;" title="Apenas o Administrador pode excluir professores">—</span>';
+        }
 
-        tdAcao.appendChild(btnDel);
         tr.appendChild(tdNome);
         tr.appendChild(tdComum);
         tr.appendChild(tdAcao);
