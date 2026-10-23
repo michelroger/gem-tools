@@ -3362,11 +3362,19 @@
 
     .msa-score-box {
       min-height: 280px;
+      max-height: 520px;
       background: #ffffff;
       border-radius: var(--radius-md);
-      overflow-x: auto;
-      overflow-y: hidden;
+      overflow-x: auto !important;
+      overflow-y: auto !important;
       padding: 0.75rem;
+      scroll-behavior: smooth !important;
+      position: relative !important;
+      transition: max-height 0.3s ease !important;
+    }
+
+    .msa-view-expanded .msa-score-box {
+      max-height: 720px !important;
     }
 
     html.theme-dark .msa-score-box {
@@ -3400,37 +3408,538 @@
       margin-bottom: 0.5rem;
     }
 
-    .msa-solfejo-container {
-      position: relative;
-      width: 270px;
-      max-width: 100%;
-      aspect-ratio: 1 / 1;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* =========================================================================
+       NOVO ESTÁGIO DE SOLFEJO MSA: PARTITURA + TELINHA DE TV WEBCAM DE STREAMER
+       ========================================================================= */
+    .msa-unified-card {
+      transition: all 0.25s ease;
     }
 
-    .msa-hand-floating {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 82px;
-      height: auto;
-      pointer-events: none;
-      user-select: none;
-      z-index: 10;
-      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
-      transform-origin: 70% 88%;
-      display: none;
+    /* Barra de Controles de Reprodução Elegante e Uniforme */
+    .msa-playback-bar {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      padding: 8px 12px !important;
+      margin: 10px 0 !important;
+      border-radius: 18px !important;
+      background: rgba(248, 250, 252, 0.85) !important;
+      border: 1.5px solid #E2E8F0 !important;
     }
 
-    .msa-hand-floating.tapping-right {
-      animation: metro-hand-tap-right 170ms ease-out;
+    html.theme-dark .msa-playback-bar {
+      background: rgba(15, 23, 42, 0.65) !important;
+      border-color: #334155 !important;
     }
 
-    .msa-hand-floating.tapping-left {
-      animation: metro-hand-tap-left 170ms ease-out;
+    /* Estágio da Partitura com Quadro do Movimento Flutuando no Canto Superior Direito */
+    .msa-score-stage {
+      position: relative !important;
+      width: 100% !important;
+    }
+
+    /* Quadro do Movimento Flutuante sobre a Lição (Proporção quadrada 1:1 ampla e nítida) */
+    .msa-floating-solfejo {
+      position: absolute !important;
+      top: -34px !important;
+      right: 12px !important;
+      z-index: 30 !important;
+      width: 195px !important;
+      height: 195px !important;
+      background: rgba(254, 252, 248, 0.98) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border: 1.5px solid #E3B375 !important;
+      border-radius: 18px !important;
+      padding: 3px !important;
+      box-shadow: 0 6px 20px -2px rgba(227, 179, 117, 0.35), 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.2s ease !important;
+    }
+
+    html.theme-dark .msa-floating-solfejo {
+      background: rgba(24, 29, 40, 0.96) !important;
+      border-color: rgba(146, 88, 40, 0.6) !important;
+      box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    @media (max-width: 640px) {
+      .msa-floating-solfejo {
+        width: 155px !important;
+        height: 155px !important;
+        top: -20px !important;
+        right: 6px !important;
+        border-radius: 14px !important;
+      }
+    }
+
+    /* Botão Iniciar / Parar */
+    .btn-msa-action {
+      height: 46px !important;
+      min-width: 120px !important;
+      padding: 0 20px !important;
+      border-radius: 14px !important;
+      font-size: 1rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.02em !important;
+      border: none !important;
+      outline: none !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      color: #ffffff !important;
+      transition: all 0.15s ease !important;
+    }
+
+    .btn-msa-start {
+      background: #16A34A !important;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+    }
+
+    .btn-msa-start:hover {
+      background: #15803D !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-msa-stop {
+      background: #EA3829 !important;
+      box-shadow: 0 4px 12px rgba(234, 56, 41, 0.35);
+    }
+
+    .btn-msa-stop:hover {
+      background: #DC2626 !important;
+      transform: translateY(-1px);
+    }
+
+    /* Controle de Andamento BPM Harmonioso com Caixa e Passos de 1 em 1 */
+    .msa-bpm-control {
+      height: 46px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      padding: 0 8px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
+      border-radius: 14px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      box-sizing: border-box !important;
+      transition: all 0.15s ease;
+    }
+
+    html.theme-dark .msa-bpm-control {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+    }
+
+    .btn-bpm-step {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      border: none !important;
+      background: rgba(241, 245, 249, 0.95) !important;
+      color: #334155 !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      user-select: none !important;
+      line-height: 1 !important;
+      padding: 0 !important;
+    }
+
+    html.theme-dark .btn-bpm-step {
+      background: #334155 !important;
+      color: #F1F5F9 !important;
+    }
+
+    .btn-bpm-step:hover {
+      background: #E2E8F0 !important;
+      transform: scale(1.05);
+    }
+
+    html.theme-dark .btn-bpm-step:hover {
+      background: #475569 !important;
+    }
+
+    .btn-bpm-step:active {
+      transform: scale(0.95);
+    }
+
+    /* Botões da Barra de Ferramentas (Modo, Áudio, Ajustes) */
+    .msa-toolbar-btn {
+      height: 46px !important;
+      border-radius: 14px !important;
+      padding: 0 16px !important;
+      font-size: 0.88rem !important;
+      font-weight: 700 !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
+      color: #334155 !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      transition: all 0.18s ease !important;
+    }
+
+    html.theme-dark .msa-toolbar-btn {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+      color: #F1F5F9 !important;
+    }
+
+    .msa-toolbar-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .msa-beat-direction-badge,
+    .msa-note-badge {
+      display: none !important;
+    }
+
+    .msa-solfejo-base-wrapper {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      position: relative !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .msa-solfejo-base-img {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      object-fit: fill !important;
+      pointer-events: none !important;
+      user-select: none !important;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.05)) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    /* Bolinha Dourada: tamanho proporcional, nítida e com pulso sincronizado */
+    .msa-ball-cursor {
+      position: absolute !important;
+      width: 14px !important;
+      height: 14px !important;
+      border-radius: 50% !important;
+      background: radial-gradient(circle at 35% 30%, #FFFBEB 0%, #FBBF24 50%, #D97706 100%) !important;
+      border: 2px solid #FFFFFF !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+      transform: translate(-50%, -50%) !important;
+      pointer-events: none !important;
+      z-index: 15 !important;
+      will-change: left, top, transform;
+      transition: none !important;
+    }
+
+    .msa-ball-cursor.pulsing {
+      animation: msaBallPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    @keyframes msaBallPop {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+      }
+      35% {
+        transform: translate(-50%, -50%) scale(1.65);
+        filter: brightness(1.75);
+        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.55), 0 0 16px rgba(251, 191, 36, 0.95);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    .msa-ball-cursor.fermata-holding {
+      animation: msaFermataBreath 1.2s infinite ease-in-out !important;
+    }
+
+    @keyframes msaFermataBreath {
+      0%, 100% { transform: translate(-50%, -50%) scale(1.2); }
+      50% { transform: translate(-50%, -50%) scale(1.45); }
+    }
+
+    /* Modal de Configurações do MSA e Cartões de Modo Perfeitos */
+    #msaSettingsModal .settings-modal-card {
+      border-radius: 28px !important;
+      animation: msaModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes msaModalPop {
+      0% { opacity: 0; transform: scale(0.96) translateY(6px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .msa-mode-card {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      min-height: 62px !important;
+      padding: 10px 16px !important;
+      border: 1.5px solid #E2E8F0 !important;
+      background: #FFFFFF !important;
+      color: #1E293B !important;
+      border-radius: 16px !important;
+      cursor: pointer !important;
+      transition: all 0.18s ease !important;
+      box-sizing: border-box !important;
+      text-align: left !important;
+      line-height: normal !important;
+    }
+
+    html.theme-dark .msa-mode-card {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+      color: #F1F5F9 !important;
+    }
+
+    .msa-mode-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .msa-mode-content {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+
+    .msa-mode-icon {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 12px !important;
+      background: rgba(241, 245, 249, 0.85) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.4rem !important;
+      flex-shrink: 0 !important;
+    }
+
+    html.theme-dark .msa-mode-icon {
+      background: rgba(51, 65, 85, 0.7) !important;
+    }
+
+    .msa-mode-texts {
+      min-width: 0 !important;
+      text-align: left !important;
+    }
+
+    .msa-card-title {
+      font-size: 0.92rem !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1.25 !important;
+    }
+
+    .msa-card-desc {
+      font-size: 0.76rem !important;
+      line-height: 1.3 !important;
+      margin-top: 2px !important;
+      opacity: 0.75 !important;
+    }
+
+    .msa-mode-card .msa-mode-check {
+      display: none !important;
+      width: 26px !important;
+      height: 26px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.25) !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #FFFFFF !important;
+      flex-shrink: 0 !important;
+      margin-left: 10px !important;
+    }
+
+    .msa-mode-card.active,
+    .msa-mode-card.du-btn-primary {
+      background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+      border-color: #4F46E5 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    .msa-mode-card.active .msa-mode-icon,
+    .msa-mode-card.du-btn-primary .msa-mode-icon {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .msa-mode-card.active .msa-mode-check,
+    .msa-mode-card.du-btn-primary .msa-mode-check {
+      display: flex !important;
+    }
+
+    .msa-mode-card.active .msa-card-title,
+    .msa-mode-card.active .msa-card-desc,
+    .msa-mode-card.du-btn-primary .msa-card-title,
+    .msa-mode-card.du-btn-primary .msa-card-desc {
+      color: #FFFFFF !important;
+    }
+
+    /* Grid das vozes rigorosamente em 2 colunas lado a lado */
+    .msa-voice-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+      width: 100% !important;
+    }
+
+    /* Botões de Gênero Vocal no Modal */
+    .msa-voice-btn {
+      height: 48px !important;
+      border-radius: 14px !important;
+      font-weight: 800 !important;
+      font-size: 0.88rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      border: 1.5px solid #E2E8F0 !important;
+      background: #FFFFFF !important;
+      color: #334155 !important;
+      cursor: pointer !important;
+      transition: all 0.18s ease !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    html.theme-dark .msa-voice-btn {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+      color: #E2E8F0 !important;
+    }
+
+    .msa-voice-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .msa-voice-btn.active,
+    .msa-voice-btn.du-btn-primary {
+      background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+      border-color: #4F46E5 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    .msa-voice-btn.active *,
+    .msa-voice-btn.du-btn-primary * {
+      color: #FFFFFF !important;
+    }
+
+    /* Linhas de Alternador (Switches Estilo iOS Moderno) no Modal */
+    .msa-switch-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 12px 16px !important;
+      border-radius: 16px !important;
+      background: rgba(241, 245, 249, 0.7) !important;
+      border: 1px solid #E2E8F0 !important;
+      cursor: pointer !important;
+      transition: background 0.15s ease !important;
+    }
+
+    html.theme-dark .msa-switch-row {
+      background: rgba(30, 41, 59, 0.7) !important;
+      border-color: #334155 !important;
+    }
+
+    .msa-switch-row input[type="checkbox"] {
+      width: 44px !important;
+      height: 24px !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      background: #CBD5E1 !important;
+      border-radius: 20px !important;
+      position: relative !important;
+      outline: none !important;
+      cursor: pointer !important;
+      transition: background 0.2s ease !important;
+      flex-shrink: 0 !important;
+    }
+
+    .msa-switch-row input[type="checkbox"]::after {
+      content: '' !important;
+      position: absolute !important;
+      top: 2px !important;
+      left: 2px !important;
+      width: 20px !important;
+      height: 20px !important;
+      border-radius: 50% !important;
+      background: #FFFFFF !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    .msa-switch-row input[type="checkbox"]:checked {
+      background: #4F46E5 !important;
+    }
+
+    .msa-switch-row input[type="checkbox"]:checked::after {
+      transform: translateX(20px) !important;
+    }
+
+    /* Destaque das notas na Partitura (OSMD) */
+    .msa-score-box svg .msa-highlight-notehead {
+      fill: #EA3829 !important;
+      stroke: #EA3829 !important;
+      transition: fill 0.08s ease;
+    }
+
+    .msa-score-box svg .msa-highlight-stem {
+      stroke: #EA3829 !important;
+      transition: stroke 0.08s ease;
+    }
+
+    .msa-score-box svg .msa-highlight-lyric {
+      fill: #1E293B !important;
+      font-weight: 900 !important;
+    }
+
+    .msa-lyric-box {
+      background: #FEF08A;
+      color: #854D0E;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-weight: 800;
+    }
+
+    /* Barra vertical/cursor de destaque da partitura (estilo do app de referência) */
+    #msaOsmdContainer img[style*="position: absolute"],
+    #msaOsmdContainer .osmd-cursor,
+    #msaOsmdContainer [id*="cursor"] {
+      opacity: 0.65 !important;
+      background-color: rgba(245, 158, 11, 0.25) !important;
+      border-left: 3px solid #D97706 !important;
+      border-radius: 4px !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.35) !important;
+      pointer-events: none !important;
+      transition: left 0.12s ease-out, top 0.12s ease-out !important;
     }
 
     .metro-dot {

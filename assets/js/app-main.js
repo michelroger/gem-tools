@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.6.3';
+  const APP_VERSION = '2.7.2';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -5260,6 +5260,9 @@
     if (currentMode === 'player') {
       renderPlayerCatalogControls();
       loadPlayerFromCatalogSelection(false);
+    }
+    if (typeof window.MsaLeituraModule !== 'undefined' && window.MsaLeituraModule.onInstrumentChange) {
+      window.MsaLeituraModule.onInstrumentChange(inst);
     }
   }
 
@@ -13704,6 +13707,9 @@
     audio: {
       getAudioContext: getAudioContext,
       loadInstrument: loadInstrument,
+      getCurrentInstrument: function () { return currentInstrument; },
+      freqToMidiNoteName: freqToMidiNoteName,
+      buildSoundfontPlayOptions: buildSoundfontPlayOptions,
       playNoteSound: playNoteSound,
       stopAllPlayerNotes: stopAllPlayerNotes,
       startAmbient: startAmbient,
@@ -13822,6 +13828,18 @@
     if (currentMode !== 'hinos' && currentMode !== 'player') {
       setMessage('Use o botão de configurações para escolher instrumento, tonalidade, clave e áudio.');
     }
+    // Expõe motor de áudio e soundfonts para o módulo de leitura MSA e outros módulos
+    window.gemPlayerAudio = {
+      getAudioContext: getAudioContext,
+      getCurrentInstrument: function () { return currentInstrument; },
+      getInstrumentList: function () { return INSTRUMENTOS; },
+      loadInstrument: loadInstrument,
+      freqToMidiNoteName: freqToMidiNoteName,
+      buildSoundfontPlayOptions: buildSoundfontPlayOptions
+    };
+    window.gemApp = window.gemApp || {};
+    window.gemApp.audio = window.gemPlayerAudio;
+
     // Pequeno atraso para a transição de entrada ficar suave.
     setTimeout(hideSplashScreen, 700);
   }
