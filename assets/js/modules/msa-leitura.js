@@ -386,6 +386,18 @@
   }
 
   function getAudioContext() {
+    if (window.gemPlayerAudio && typeof window.gemPlayerAudio.getAudioContext === 'function') {
+      try {
+        var sharedCtx = window.gemPlayerAudio.getAudioContext();
+        if (sharedCtx) {
+          if (sharedCtx.state === 'suspended') {
+            sharedCtx.resume();
+          }
+          state.audioCtx = sharedCtx;
+          return sharedCtx;
+        }
+      } catch (e) {}
+    }
     if (!state.audioCtx) {
       var AC = window.AudioContext || window.webkitAudioContext;
       if (AC) state.audioCtx = new AC();
@@ -838,59 +850,111 @@
     activeInstrumentStops = [];
   }
 
-  // Fallback acústico quente de cordas (simulação de fricção de arco de violino caso a rede falhe)
-  function playInstrumentStringSynth(ev, t, playDur) {
+  // =========================================================================
+  // SÍNTESE ACÚSTICA RICA DE INSTRUMENTOS (Fallback Imediato e Seguro)
+  // Suporta Metais (Trompete, Trompa, Trombone, Tuba), Cordas e Sopros
+  // =========================================================================
+  function playInstrumentSynth(inst, ev, t, playDur, midiNote) {
     var ctx = getAudioContext();
     if (!ctx) return;
     try {
-      var oscSaw = ctx.createOscillator();
-      var oscTri = ctx.createOscillator();
+      var instId = inst && inst.id ? inst.id : 'violino';
+      var freq = 440;
+      if (typeof midiNote === 'number' && midiNote > 0) {
+        freq = 440 * Math.pow(2, (midiNote - 69) / 12);
+      } else if (typeof ev.hz === 'number' && ev.hz > 0) {
+        freq = ev.hz;
+      }
+
+      var osc1 = ctx.createOscillator();
+      var osc2 = ctx.createOscillator();
       var gainNode = ctx.createGain();
-      var bodyFilter = ctx.createBiquadFilter();
-      var warmthFilter = ctx.createBiquadFilter();
+      var filterNode = ctx.createBiquadFilter();
 
-      var freq = (typeof ev.hz === 'number' && ev.hz > 0) ? ev.hz : 440;
+      var isBrass = (instId === 'trompete' || instId === 'trompa' || instId === 'trombone' || instId === 'tuba');
+      var isWoodwind = (instId === 'flauta' || instId === 'clarinete' || instId === 'oboe' || instId === 'saxofone' || instId === 'fagote');
 
-      // Cordas friccionadas: serra suave + triangular com harmônicos quentes
-      oscSaw.type = 'sawtooth';
-      oscSaw.frequency.setValueAtTime(freq, t);
+      if (isBrass) {
+        // Timbre de Metal / Trompete: dente de serra brilhante + triangular encorpada
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(freq, t);
 
-      oscTri.type = 'triangle';
-      oscTri.frequency.setValueAtTime(freq, t);
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(freq, t);
 
-      // Caixa de ressonância do violino (passa-baixa em 3200Hz + corpo em 1800Hz)
-      bodyFilter.type = 'bandpass';
-      bodyFilter.frequency.setValueAtTime(1800, t);
-      bodyFilter.Q.setValueAtTime(1.2, t);
+        // Ressonância de bocal e campana metálica
+        filterNode.type = 'lowpass';
+        var cutoff = (instId === 'trompete') ? 4200 : (instId === 'tuba' ? 1800 : 3200);
+        filterNode.frequency.setValueAtTime(cutoff, t);
+        filterNode.Q.setValueAtTime(2.2, t);
 
-      warmthFilter.type = 'lowpass';
-      warmthFilter.frequency.setValueAtTime(3200, t);
+        var brassVol = 0.32;
+        var brassAttack = 0.014; // Ataque vivo de articulação de bocal/língua
+        gainNode.gain.setValueAtTime(0.0001, t);
+        gainNode.gain.linearRampToValueAtTime(brassVol, t + brassAttack);
+        gainNode.gain.setValueAtTime(brassVol * 0.92, t + playDur - 0.03);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, t + playDur);
+      } else if (isWoodwind) {
+        // Madeiras / Palhetas
+        osc1.type = (instId === 'clarinete') ? 'square' : 'sawtooth';
+        osc1.frequency.setValueAtTime(freq, t);
 
-      var vol = 0.28;
-      var attack = 0.045; // ataque macio de arco
-      gainNode.gain.setValueAtTime(0.0001, t);
-      gainNode.gain.linearRampToValueAtTime(vol, t + attack);
-      gainNode.gain.setValueAtTime(vol, t + playDur - 0.04);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, t + playDur);
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(freq, t);
 
-      oscSaw.connect(bodyFilter);
-      oscTri.connect(warmthFilter);
-      bodyFilter.connect(gainNode);
-      warmthFilter.connect(gainNode);
-      gainNode.connect(ctx.destination);
+        filterNode.type = 'lowpass';
+        filterNode.frequency.setValueAtTime(3600, t);
+        filterNode.Q.setValueAtTime(1.0, t);
 
-      oscSaw.start(t);
-      oscTri.start(t);
-      oscSaw.stop(t + playDur + 0.02);
-      oscTri.stop(t + playDur + 0.02);
+        var woodVol = 0.28;
+        var woodAttack = 0.022;
+        gainNode.gain.setValueAtTime(0.0001, t);
+        gainNode.gain.linearRampToValueAtTime(woodVol, t + woodAttack);
+        gainNode.gain.setValueAtTime(woodVol * 0.90, t + playDur - 0.03);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, t + playDur);
+      } else {
+        // Cordas friccionadas (Violino, Viola, Violoncelo)
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(freq, t);
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(freq, t);
+
+        filterNode.type = 'lowpass';
+        filterNode.frequency.setValueAtTime(3200, t);
+        filterNode.Q.setValueAtTime(1.2, t);
+
+        var stringVol = 0.28;
+        var stringAttack = 0.040;
+        gainNode.gain.setValueAtTime(0.0001, t);
+        gainNode.gain.linearRampToValueAtTime(stringVol, t + stringAttack);
+        gainNode.gain.setValueAtTime(stringVol * 0.88, t + playDur - 0.04);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, t + playDur);
+      }
+
+      osc1.connect(filterNode);
+      osc2.connect(filterNode);
+      filterNode.connect(gainNode);
+
+      if (window.gemPlayerAudio && typeof window.gemPlayerAudio.getAudioContext === 'function') {
+        var gBus = window.gemPlayerAudio.getAudioContext().destination;
+        gainNode.connect(gBus);
+      } else {
+        gainNode.connect(ctx.destination);
+      }
+
+      osc1.start(t);
+      osc2.start(t);
+      osc1.stop(t + playDur + 0.03);
+      osc2.stop(t + playDur + 0.03);
 
       activeInstrumentStops.push(function () {
         try {
           var now = ctx.currentTime;
           gainNode.gain.cancelScheduledValues(now);
           gainNode.gain.linearRampToValueAtTime(0.0001, now + 0.02);
-          oscSaw.stop(now + 0.03);
-          oscTri.stop(now + 0.03);
+          osc1.stop(now + 0.03);
+          osc2.stop(now + 0.03);
         } catch (e) {}
       });
     } catch (e) {}
@@ -907,41 +971,61 @@
     var dur = Math.max(0.08, (ev.durationSec * 0.94));
 
     var inst = getActiveInstrument();
+    var instId = inst && inst.id ? String(inst.id) : 'violino';
     var sfName = inst.soundfont || 'violin';
 
-    // 1. Resolução da nota MIDI idêntica ao Player (com transposição para instrumentos)
-    var noteName = '';
-    if (window.gemPlayerAudio && typeof window.gemPlayerAudio.freqToMidiNoteName === 'function' && ev.hz) {
-      noteName = window.gemPlayerAudio.freqToMidiNoteName(ev.hz);
-    } else {
-      var acc = (ev.alter === 1) ? '#' : ((ev.alter === -1) ? 'b' : '');
-      noteName = (ev.step || 'C') + acc + (ev.octave || 4);
+    // Nas lições que têm TAAA (rítmicas / unpitched), toca nota única estável e definida
+    // na região média confortável do instrumento, próxima à entonação do TAAA (Mi 4 / 329.63 Hz).
+    var isRhythmTa = (ev.pitchKey === 'unpitched' || !ev.hz || ev.hz <= 0 || state.modoLeitura === 'ritmica');
+    var hzRef = isRhythmTa ? 329.63 : ev.hz;
+
+    // 1. Resolução da nota MIDI com transposição fiel para afinação real de cada instrumento
+    var midi = 60;
+    if (typeof hzRef === 'number' && hzRef > 0) {
+      var midiOrig = Math.round(69 + 12 * Math.log2(hzRef / 440));
+      midi = midiOrig;
+      if (instId === 'saxofone') {
+        midi = midiOrig - 9; // Sax Alto em Mib
+      } else if (instId === 'clarinete' || instId === 'trompete') {
+        midi = midiOrig - 2; // Sib (soam 2 semitons abaixo da nota escrita)
+      } else if (instId === 'trompa') {
+        midi = midiOrig - 7; // Trompa em Fá
+      } else if (instId === 'tuba' || instId === 'contrabaixo') {
+        if (midiOrig > 72) midi = midiOrig - 36;
+        else if (midiOrig > 60) midi = midiOrig - 24;
+        else if (midiOrig > 48) midi = midiOrig - 12;
+      } else if (instId === 'violoncelo' || instId === 'trombone' || instId === 'fagote') {
+        if (midiOrig > 72) midi = midiOrig - 24;
+        else if (midiOrig > 60) midi = midiOrig - 12;
+      } else if (instId === 'viola' && midiOrig > 59) {
+        midi = midiOrig - 12;
+      }
     }
+    midi = Math.max(21, Math.min(108, midi));
+
+    var noteNames = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    var oct = Math.floor(midi / 12) - 1;
+    var noteName = noteNames[midi % 12] + oct;
 
     var playOptions = (window.gemPlayerAudio && typeof window.gemPlayerAudio.buildSoundfontPlayOptions === 'function')
       ? window.gemPlayerAudio.buildSoundfontPlayOptions(dur, 0.65)
-      : { duration: dur, gain: 0.65, attack: 0.02, release: 0.18 };
+      : { duration: dur, gain: 0.65, attack: 0.015, release: 0.25 };
 
     var loadedInst = loadedSoundfontCache[sfName];
     if (loadedInst && typeof loadedInst.play === 'function') {
-      var note = loadedInst.play(noteName, t, playOptions);
-      if (note && typeof note.stop === 'function') {
-        activeInstrumentStops.push(note);
+      try {
+        var note = loadedInst.play(noteName, t, playOptions);
+        if (note && typeof note.stop === 'function') {
+          activeInstrumentStops.push(note);
+        }
+      } catch (errPlay) {
+        playInstrumentSynth(inst, ev, t, dur, midi);
       }
     } else {
-      ensureInstrumentSoundFontLoaded().then(function (instObj) {
-        if (!state.isPlaying) return;
-        if (instObj && typeof instObj.play === 'function') {
-          var n = instObj.play(noteName, t, playOptions);
-          if (n && typeof n.stop === 'function') {
-            activeInstrumentStops.push(n);
-          }
-        } else {
-          playInstrumentStringSynth(ev, t, dur);
-        }
-      }).catch(function () {
-        playInstrumentStringSynth(ev, t, dur);
-      });
+      // Dispara síntese imediata de altíssima resposta para NÃO HAVER SILÊNCIO
+      playInstrumentSynth(inst, ev, t, dur, midi);
+      // Pré-carrega o Soundfont das amostras reais para as notas seguintes
+      ensureInstrumentSoundFontLoaded();
     }
   }
 
@@ -949,7 +1033,8 @@
     if (!state.somLeituraAtivo || !state.somGeralAtivo) return;
 
     // Modo Instrumento: toca as notas com o timbre e transposição do instrumento real do Player
-    if (state.modoLeitura === 'instrumento' && ev.pitchKey !== 'unpitched' && ev.hz) {
+    // Funciona perfeitamente tanto nas lições melódicas quanto nas lições rítmicas com TAAA (nota única)
+    if (state.modoLeitura === 'instrumento') {
       playInstrumentNote(ev, scheduleTime);
       return;
     }
@@ -2532,9 +2617,12 @@
       return;
     }
 
-    if (state.modoLeitura === 'ritmica' || !ev.step) {
+    if (state.modoLeitura === 'ritmica' || !ev.step || ev.pitchKey === 'unpitched') {
       nameEl.textContent = 'TÁ';
       nameEl.style.color = '#F59E0B';
+      if (labelEl) {
+        labelEl.textContent = state.modoLeitura === 'instrumento' ? 'Instrumento:' : 'Voz:';
+      }
       return;
     }
 
@@ -3048,11 +3136,14 @@
     if (ctx && ctx.resume) {
       ctx.resume();
     }
+    if (window.gemPlayerAudio && typeof window.gemPlayerAudio.getAudioContext === 'function') {
+      try {
+        var gCtx = window.gemPlayerAudio.getAudioContext();
+        if (gCtx && gCtx.state === 'suspended') gCtx.resume();
+      } catch (e) {}
+    }
     if (state.modoLeitura === 'instrumento') {
-      var curInst = getActiveInstrument();
-      if (window.gemApp && window.gemApp.audio && typeof window.gemApp.audio.loadInstrument === 'function') {
-        window.gemApp.audio.loadInstrument(curInst.id);
-      }
+      ensureInstrumentSoundFontLoaded();
     } else {
       loadVoiceSamples(state.generoVoz, true);
     }
@@ -3419,9 +3510,12 @@
     renderBeatDots();
 
     if (exercicio.tipo === 'ritmica' || !exercicio.temNotasComAltura) {
-      setModoLeitura('ritmica');
+      // Nas lições rítmicas com TAAA, permite tanto Rítmica (voz humana) quanto Instrumento (nota única)
       setTabDisabled('metrica', true);
-      setTabDisabled('instrumento', true);
+      setTabDisabled('instrumento', false);
+      if (state.modoLeitura === 'metrica') {
+        setModoLeitura('ritmica');
+      }
     } else {
       setTabDisabled('metrica', false);
       setTabDisabled('instrumento', false);
@@ -3792,6 +3886,11 @@
     onShowSection: onShowSection,
     onInstrumentChange: function (newInst) {
       updateInstrumentButtonLabel();
+      var modeLabel = document.getElementById('msaCurrentModeLabel');
+      if (modeLabel && state.modoLeitura === 'instrumento' && newInst) {
+        modeLabel.textContent = newInst.nome || 'Instrumento';
+      }
+      ensureInstrumentSoundFontLoaded();
     }
   };
 

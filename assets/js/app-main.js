@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.7.2';
+  const APP_VERSION = '2.7.3';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -237,7 +237,7 @@
       nome: 'Trompa',
       emoji: '🎺',
       tipo: 'metal',
-      soundfont: 'french-horn',
+      soundfont: 'french_horn',
       descricao: 'Válvulas de trompa (F) — Dó a Si',
       dedilhado: 'valvulas',
       notas: ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'],
@@ -4320,8 +4320,9 @@
     
     midi = Math.max(0, Math.min(127, midi));
     
-    var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    return names[midi % 12] + Math.floor(midi / 12);
+    var names = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    var oct = Math.floor(midi / 12) - 1;
+    return names[midi % 12] + oct;
   }
 
   /**
@@ -4605,7 +4606,9 @@
       destination: getInstrumentShapingDestination(ctx, instrumentId) || ensureAudioOutputBus(ctx) || ctx.destination
     }).then(function (loadedInst) {
       return loadedInst;
-    }).catch(function () {
+    }).catch(function (err) {
+      console.warn('Falha ao carregar soundfont para ' + instrumentId, err);
+      delete instrumentLoadPromises[instrumentId];
       return null;
     });
 
@@ -5264,6 +5267,8 @@
     if (typeof window.MsaLeituraModule !== 'undefined' && window.MsaLeituraModule.onInstrumentChange) {
       window.MsaLeituraModule.onInstrumentChange(inst);
     }
+    // Pré-carrega o soundfont do instrumento selecionado em background
+    loadInstrument(inst.id);
   }
 
   function createInstrumentButtons() {

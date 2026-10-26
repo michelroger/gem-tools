@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=2.7.2">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.7.3">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v2.7.2</div>
+      <div class="splash-version" id="splashVersion">v2.7.3</div>
     </div>
   </div>
 
@@ -787,8 +787,8 @@
         <!-- BARRA SUPERIOR 2: BARRA DE CONTROLES DE REPRODUÇÃO (Sleek, alinhada e uniforme) -->
         <div class="msa-playback-bar">
           
-          <!-- Lado Esquerdo: Botão Iniciar / Parar + BPM -->
-          <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+          <!-- Controles Agrupados à Esquerda: Iniciar + BPM + Instrumento + Volume + Ajustes -->
+          <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap" id="msaControlsLeft">
             <!-- Botão Iniciar / Parar Grande -->
             <button type="button" id="btnMsaPlayStop" class="btn-msa-action btn-msa-start shadow-md" aria-label="Iniciar ou Parar">
               <i data-lucide="play" id="msaPlayIcon" class="w-5 h-5 fill-current"></i>
@@ -804,23 +804,20 @@
               </div>
               <button type="button" id="btnMsaBpmPlus" class="btn-bpm-step" aria-label="Aumentar BPM">+</button>
             </div>
-          </div>
 
-          <!-- Lado Direito: Ações de Modo, Áudio e Opções -->
-          <div class="flex items-center gap-2 flex-wrap" id="msaQuickGrid">
-            <!-- Botão 1: Modo de Leitura Atual com Badge -->
-            <button type="button" id="btnMsaModeToggle" class="msa-toolbar-btn" title="Alterar modo: Rítmica / Métrica / Violino">
+            <!-- Botão 1: Modo de Leitura / Instrumento Atual com Badge -->
+            <button type="button" id="btnMsaModeToggle" class="msa-toolbar-btn" title="Alterar modo: Rítmica / Métrica / Instrumento">
               <i data-lucide="book-open" class="w-4 h-4 text-primary"></i>
               <span id="msaCurrentModeLabel" class="text-xs">Rítmica</span>
             </button>
 
-            <!-- Botão 2: Som Geral ON/OFF -->
+            <!-- Botão 2: Som Geral ON/OFF (Volume) -->
             <button type="button" id="btnMsaAudioToggle" class="msa-toolbar-btn" title="Ativar ou desativar áudio">
               <i data-lucide="volume-2" id="msaAudioIcon" class="w-4 h-4 text-emerald-600"></i>
               <span class="text-xs hidden sm:inline">Som</span>
             </button>
 
-            <!-- Botão 3: Opções Completas (Modal) -->
+            <!-- Botão 3: Opções Completas (Ajustes) -->
             <button type="button" id="btnMsaSettingsToggle" class="msa-toolbar-btn" title="Abrir todas opções de estudo">
               <i data-lucide="sliders-horizontal" class="w-4 h-4 text-primary"></i>
               <span class="text-xs hidden sm:inline">Ajustes</span>
@@ -1826,7 +1823,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">2.7.2</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.7.3</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1874,10 +1871,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/congregacoes-data.js?v=2.7.2"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=2.7.2"></script>
-  <script src="./assets/js/modules/msa-leitura.js?v=2.7.2"></script>
-  <script src="./assets/js/app-main.js?v=2.7.2"></script>
+  <script src="./assets/js/modules/congregacoes-data.js?v=2.7.3"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=2.7.3"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.7.3"></script>
+  <script src="./assets/js/app-main.js?v=2.7.3"></script>
 
 </body>
 

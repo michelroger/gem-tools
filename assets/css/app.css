@@ -3420,8 +3420,8 @@
       display: flex !important;
       flex-wrap: wrap !important;
       align-items: center !important;
-      justify-content: space-between !important;
-      gap: 12px !important;
+      justify-content: flex-start !important;
+      gap: 10px !important;
       padding: 8px 12px !important;
       margin: 10px 0 !important;
       border-radius: 18px !important;
