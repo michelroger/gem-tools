@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.5';
+  const APP_VERSION = '2.8.6';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6895,6 +6895,110 @@
     }
   }
 
+  function makePlayerSolfejoDraggable() {
+    var box = document.getElementById('playerSolfejoBox');
+    var wrapper = document.getElementById('playerScoreWrapper');
+    if (!box || !wrapper) return;
+
+    // Restaura posição salva no localStorage caso exista
+    try {
+      var saved = JSON.parse(localStorage.getItem('gem_player_movement_pos'));
+      if (saved && isFinite(saved.left) && isFinite(saved.top)) {
+        box.style.left = saved.left + 'px';
+        box.style.top = saved.top + 'px';
+        box.style.right = 'auto';
+      }
+    } catch (e) {}
+
+    var isDragging = false;
+    var startPointerX = 0;
+    var startPointerY = 0;
+    var startBoxLeft = 0;
+    var startBoxTop = 0;
+
+    function onPointerDown(e) {
+      if (e.type === 'mousedown' && e.button !== 0) return;
+      isDragging = true;
+      box.classList.add('is-dragging');
+
+      var clientX = e.type.indexOf('touch') !== -1 ? e.touches[0].clientX : e.clientX;
+      var clientY = e.type.indexOf('touch') !== -1 ? e.touches[0].clientY : e.clientY;
+      startPointerX = clientX;
+      startPointerY = clientY;
+
+      var boxRect = box.getBoundingClientRect();
+      var wrapRect = wrapper.getBoundingClientRect();
+
+      startBoxLeft = boxRect.left - wrapRect.left;
+      startBoxTop = boxRect.top - wrapRect.top;
+
+      if (e.cancelable) e.preventDefault();
+
+      window.addEventListener('mousemove', onPointerMove, { passive: false });
+      window.addEventListener('mouseup', onPointerUp, { passive: false });
+      window.addEventListener('touchmove', onPointerMove, { passive: false });
+      window.addEventListener('touchend', onPointerUp, { passive: false });
+      window.addEventListener('touchcancel', onPointerUp, { passive: false });
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+
+      var clientX = e.type.indexOf('touch') !== -1 ? e.touches[0].clientX : e.clientX;
+      var clientY = e.type.indexOf('touch') !== -1 ? e.touches[0].clientY : e.clientY;
+
+      var dx = clientX - startPointerX;
+      var dy = clientY - startPointerY;
+
+      var wrapRect = wrapper.getBoundingClientRect();
+      var boxW = box.offsetWidth || 175;
+      var boxH = box.offsetHeight || 175;
+
+      var maxLeft = Math.max(0, wrapRect.width - boxW);
+      var maxTop = Math.max(0, wrapRect.height - boxH);
+
+      var newLeft = Math.max(0, Math.min(maxLeft, startBoxLeft + dx));
+      var newTop = Math.max(0, Math.min(maxTop, startBoxTop + dy));
+
+      box.style.left = Math.round(newLeft) + 'px';
+      box.style.top = Math.round(newTop) + 'px';
+      box.style.right = 'auto';
+    }
+
+    function onPointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      box.classList.remove('is-dragging');
+
+      window.removeEventListener('mousemove', onPointerMove);
+      window.removeEventListener('mouseup', onPointerUp);
+      window.removeEventListener('touchmove', onPointerMove);
+      window.removeEventListener('touchend', onPointerUp);
+      window.removeEventListener('touchcancel', onPointerUp);
+
+      try {
+        var curLeft = parseFloat(box.style.left);
+        var curTop = parseFloat(box.style.top);
+        if (isFinite(curLeft) && isFinite(curTop)) {
+          localStorage.setItem('gem_player_movement_pos', JSON.stringify({ left: curLeft, top: curTop }));
+        }
+      } catch (e) {}
+    }
+
+    box.addEventListener('mousedown', onPointerDown);
+    box.addEventListener('touchstart', onPointerDown, { passive: false });
+
+    // Duplo clique redefine para a posição original
+    box.addEventListener('dblclick', function () {
+      box.style.left = '';
+      box.style.top = '';
+      box.style.right = '';
+      try { localStorage.removeItem('gem_player_movement_pos'); } catch (e) {}
+      setMessage('Posição do movimento redefinida.');
+    });
+  }
+
   function updatePlayerZoomLabel() {
     var el = document.getElementById('playerZoomVal');
     if (el) el.textContent = Math.round((playerZoomLevel || 1.0) * 100) + '%';
@@ -11777,6 +11881,7 @@
         );
       });
     }
+    makePlayerSolfejoDraggable();
     var btnPlayerZoomIn = document.getElementById('btnPlayerZoomIn');
     if (btnPlayerZoomIn) {
       btnPlayerZoomIn.addEventListener('click', function () {
