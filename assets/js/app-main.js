@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.6';
+  const APP_VERSION = '2.8.7';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6877,8 +6877,9 @@
 
   function syncPlayerMovementUi() {
     var box = document.getElementById('playerSolfejoBox');
+    var shouldShow = !!(playerMovementEnabled && currentMode === 'player');
     if (box) {
-      if (playerMovementEnabled) {
+      if (shouldShow) {
         box.classList.remove('hidden');
         box.style.display = 'flex';
       } else {
@@ -6890,23 +6891,27 @@
     if (toggle) {
       window.UiCoreModule.setAriaPressed(toggle, playerMovementEnabled);
     }
-    if (playerMovementEnabled) {
+    if (shouldShow) {
       updatePlayerSolfejoDiagram();
     }
   }
 
   function makePlayerSolfejoDraggable() {
     var box = document.getElementById('playerSolfejoBox');
-    var wrapper = document.getElementById('playerScoreWrapper');
-    if (!box || !wrapper) return;
+    if (!box) return;
 
     // Restaura posição salva no localStorage caso exista
     try {
       var saved = JSON.parse(localStorage.getItem('gem_player_movement_pos'));
       if (saved && isFinite(saved.left) && isFinite(saved.top)) {
-        box.style.left = saved.left + 'px';
-        box.style.top = saved.top + 'px';
+        var boxW = box.offsetWidth || 175;
+        var boxH = box.offsetHeight || 175;
+        var maxL = Math.max(0, window.innerWidth - boxW);
+        var maxT = Math.max(0, window.innerHeight - boxH);
+        box.style.left = Math.max(0, Math.min(maxL, saved.left)) + 'px';
+        box.style.top = Math.max(0, Math.min(maxT, saved.top)) + 'px';
         box.style.right = 'auto';
+        box.style.bottom = 'auto';
       }
     } catch (e) {}
 
@@ -6927,10 +6932,8 @@
       startPointerY = clientY;
 
       var boxRect = box.getBoundingClientRect();
-      var wrapRect = wrapper.getBoundingClientRect();
-
-      startBoxLeft = boxRect.left - wrapRect.left;
-      startBoxTop = boxRect.top - wrapRect.top;
+      startBoxLeft = boxRect.left;
+      startBoxTop = boxRect.top;
 
       if (e.cancelable) e.preventDefault();
 
@@ -6951,12 +6954,13 @@
       var dx = clientX - startPointerX;
       var dy = clientY - startPointerY;
 
-      var wrapRect = wrapper.getBoundingClientRect();
+      var winW = window.innerWidth;
+      var winH = window.innerHeight;
       var boxW = box.offsetWidth || 175;
       var boxH = box.offsetHeight || 175;
 
-      var maxLeft = Math.max(0, wrapRect.width - boxW);
-      var maxTop = Math.max(0, wrapRect.height - boxH);
+      var maxLeft = Math.max(0, winW - boxW);
+      var maxTop = Math.max(0, winH - boxH);
 
       var newLeft = Math.max(0, Math.min(maxLeft, startBoxLeft + dx));
       var newTop = Math.max(0, Math.min(maxTop, startBoxTop + dy));
@@ -6964,6 +6968,7 @@
       box.style.left = Math.round(newLeft) + 'px';
       box.style.top = Math.round(newTop) + 'px';
       box.style.right = 'auto';
+      box.style.bottom = 'auto';
     }
 
     function onPointerUp() {
@@ -6989,11 +6994,12 @@
     box.addEventListener('mousedown', onPointerDown);
     box.addEventListener('touchstart', onPointerDown, { passive: false });
 
-    // Duplo clique redefine para a posição original
+    // Duplo clique redefine para a posição original no canto superior direito
     box.addEventListener('dblclick', function () {
       box.style.left = '';
       box.style.top = '';
       box.style.right = '';
+      box.style.bottom = '';
       try { localStorage.removeItem('gem_player_movement_pos'); } catch (e) {}
       setMessage('Posição do movimento redefinida.');
     });
@@ -9301,6 +9307,7 @@
       updateHomeUI();
     }
     syncPlayerLiveScoreUi();
+    syncPlayerMovementUi();
     setTimeout(updateBottomNavVisibility, 0);
   }
 

@@ -3647,16 +3647,17 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
     }
 
-    /* Quadro do Movimento de Solfejo Flutuante na Partitura do Player */
+    /* Quadro do Movimento de Solfejo Flutuante na Partitura do Player (Fixo relativo à tela / viewport) */
     #playerSolfejoBox {
-      top: 10px;
-      right: 14px;
+      position: fixed !important;
+      top: 85px;
+      right: 18px;
       width: 175px !important;
       height: 175px !important;
-      z-index: 25 !important;
-      box-shadow: 0 8px 24px -4px rgba(227, 179, 117, 0.4), 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+      z-index: 9999 !important;
+      box-shadow: 0 10px 30px -4px rgba(227, 179, 117, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2) !important;
       cursor: grab;
-      touch-action: none;
+      touch-action: none !important;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -3665,7 +3666,7 @@
       cursor: grabbing !important;
       opacity: 0.94 !important;
       transform: scale(1.03) !important;
-      box-shadow: 0 14px 32px -4px rgba(227, 179, 117, 0.55), 0 6px 14px rgba(0, 0, 0, 0.2) !important;
+      box-shadow: 0 16px 36px -4px rgba(227, 179, 117, 0.6), 0 8px 18px rgba(0, 0, 0, 0.24) !important;
       transition: none !important;
     }
 
@@ -3678,8 +3679,8 @@
       #playerSolfejoBox {
         width: 135px !important;
         height: 135px !important;
-        top: 6px;
-        right: 6px;
+        top: 75px;
+        right: 10px;
       }
     }
 
