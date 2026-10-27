@@ -3371,6 +3371,7 @@
       scroll-behavior: smooth !important;
       position: relative !important;
       transition: max-height 0.3s ease !important;
+      touch-action: pan-y !important;
     }
 
     .msa-view-expanded .msa-score-box {

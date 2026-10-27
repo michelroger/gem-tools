@@ -399,7 +399,7 @@
   }
 
   function setScoreZoom(newZoom) {
-    var clamped = Math.max(0.55, Math.min(2.5, newZoom));
+    var clamped = Math.max(0.45, Math.min(2.5, newZoom));
     state.osmdZoom = Math.round(clamped * 100) / 100;
     try {
       localStorage.setItem('msa_score_zoom', state.osmdZoom);
@@ -4025,27 +4025,30 @@
 
       scoreContainer.addEventListener('touchstart', function (e) {
         if (e.touches && e.touches.length === 2) {
+          e.preventDefault(); // Impede o navegador de dar zoom in na tela inteira
           pinchStartDistance = Math.hypot(
             e.touches[1].clientX - e.touches[0].clientX,
             e.touches[1].clientY - e.touches[0].clientY
           );
           pinchStartZoom = state.osmdZoom || 1.05;
         }
-      }, { passive: true });
+      }, { passive: false });
 
       scoreContainer.addEventListener('touchmove', function (e) {
         if (e.touches && e.touches.length === 2 && pinchStartDistance && pinchStartDistance > 10) {
+          e.preventDefault(); // Impede o navegador de dar zoom in na tela inteira
           var curDistance = Math.hypot(
             e.touches[1].clientX - e.touches[0].clientX,
             e.touches[1].clientY - e.touches[0].clientY
           );
           var factor = curDistance / pinchStartDistance;
+          // Permite reduzir até 0.50 (50% do tamanho)
           var nextZoom = Math.round(pinchStartZoom * factor * 20) / 20;
           if (Math.abs(nextZoom - state.osmdZoom) >= 0.05) {
             setScoreZoom(nextZoom);
           }
         }
-      }, { passive: true });
+      }, { passive: false });
 
       scoreContainer.addEventListener('touchend', function (e) {
         if (!e.touches || e.touches.length < 2) {
