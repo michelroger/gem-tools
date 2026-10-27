@@ -3444,25 +3444,29 @@
 
     /* Quadro do Movimento Flutuante sobre a Lição (Proporção quadrada 1:1 ampla e nítida) */
     .msa-floating-solfejo {
+      position: absolute;
+      z-index: 30;
+      width: 195px;
+      height: 195px;
+      background: rgba(254, 252, 248, 0.98);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid #E3B375;
+      border-radius: 18px;
+      padding: 3px;
+      box-shadow: 0 6px 20px -2px rgba(227, 179, 117, 0.35), 0 3px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    #msaSolfejoBox {
       position: absolute !important;
       top: -34px !important;
       right: 12px !important;
-      z-index: 30 !important;
-      width: 195px !important;
-      height: 195px !important;
-      background: rgba(254, 252, 248, 0.98) !important;
-      backdrop-filter: blur(8px) !important;
-      -webkit-backdrop-filter: blur(8px) !important;
-      border: 1.5px solid #E3B375 !important;
-      border-radius: 18px !important;
-      padding: 3px !important;
-      box-shadow: 0 6px 20px -2px rgba(227, 179, 117, 0.35), 0 3px 8px rgba(0, 0, 0, 0.08) !important;
-      overflow: hidden !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      transition: all 0.2s ease !important;
     }
 
     html.theme-dark .msa-floating-solfejo {
@@ -3472,7 +3476,7 @@
     }
 
     @media (max-width: 640px) {
-      .msa-floating-solfejo {
+      #msaSolfejoBox {
         width: 155px !important;
         height: 155px !important;
         top: -20px !important;

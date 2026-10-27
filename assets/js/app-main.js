@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.7';
+  const APP_VERSION = '2.8.8';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -6900,18 +6900,26 @@
     var box = document.getElementById('playerSolfejoBox');
     if (!box) return;
 
-    // Restaura posição salva no localStorage caso exista
+    // Restaura posição salva no localStorage caso exista e seja válida
     try {
       var saved = JSON.parse(localStorage.getItem('gem_player_movement_pos'));
-      if (saved && isFinite(saved.left) && isFinite(saved.top)) {
+      if (saved && isFinite(saved.left) && isFinite(saved.top) && saved.top >= 20 && saved.left >= 0) {
         var boxW = box.offsetWidth || 175;
         var boxH = box.offsetHeight || 175;
         var maxL = Math.max(0, window.innerWidth - boxW);
         var maxT = Math.max(0, window.innerHeight - boxH);
-        box.style.left = Math.max(0, Math.min(maxL, saved.left)) + 'px';
-        box.style.top = Math.max(0, Math.min(maxT, saved.top)) + 'px';
-        box.style.right = 'auto';
-        box.style.bottom = 'auto';
+        var validLeft = Math.max(0, Math.min(maxL, saved.left));
+        var validTop = Math.max(20, Math.min(maxT, saved.top));
+        box.style.setProperty('left', Math.round(validLeft) + 'px', 'important');
+        box.style.setProperty('top', Math.round(validTop) + 'px', 'important');
+        box.style.setProperty('right', 'auto', 'important');
+        box.style.setProperty('bottom', 'auto', 'important');
+      } else {
+        localStorage.removeItem('gem_player_movement_pos');
+        box.style.removeProperty('left');
+        box.style.removeProperty('top');
+        box.style.removeProperty('right');
+        box.style.removeProperty('bottom');
       }
     } catch (e) {}
 
@@ -6965,10 +6973,10 @@
       var newLeft = Math.max(0, Math.min(maxLeft, startBoxLeft + dx));
       var newTop = Math.max(0, Math.min(maxTop, startBoxTop + dy));
 
-      box.style.left = Math.round(newLeft) + 'px';
-      box.style.top = Math.round(newTop) + 'px';
-      box.style.right = 'auto';
-      box.style.bottom = 'auto';
+      box.style.setProperty('left', Math.round(newLeft) + 'px', 'important');
+      box.style.setProperty('top', Math.round(newTop) + 'px', 'important');
+      box.style.setProperty('right', 'auto', 'important');
+      box.style.setProperty('bottom', 'auto', 'important');
     }
 
     function onPointerUp() {
@@ -6983,10 +6991,12 @@
       window.removeEventListener('touchcancel', onPointerUp);
 
       try {
-        var curLeft = parseFloat(box.style.left);
-        var curTop = parseFloat(box.style.top);
-        if (isFinite(curLeft) && isFinite(curTop)) {
-          localStorage.setItem('gem_player_movement_pos', JSON.stringify({ left: curLeft, top: curTop }));
+        var boxRect = box.getBoundingClientRect();
+        if (boxRect && isFinite(boxRect.left) && isFinite(boxRect.top)) {
+          localStorage.setItem('gem_player_movement_pos', JSON.stringify({
+            left: Math.round(boxRect.left),
+            top: Math.round(boxRect.top)
+          }));
         }
       } catch (e) {}
     }
@@ -6996,10 +7006,10 @@
 
     // Duplo clique redefine para a posição original no canto superior direito
     box.addEventListener('dblclick', function () {
-      box.style.left = '';
-      box.style.top = '';
-      box.style.right = '';
-      box.style.bottom = '';
+      box.style.removeProperty('left');
+      box.style.removeProperty('top');
+      box.style.removeProperty('right');
+      box.style.removeProperty('bottom');
       try { localStorage.removeItem('gem_player_movement_pos'); } catch (e) {}
       setMessage('Posição do movimento redefinida.');
     });
