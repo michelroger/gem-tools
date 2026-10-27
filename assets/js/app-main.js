@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.2';
+  const APP_VERSION = '2.8.3';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -488,6 +488,13 @@
   var playerLiveListenEnabled = false;
   var playerMutePlaybackEnabled = false;
   var playerShowMeasureNumbers = false;
+  var playerZoomLevel = (function () {
+    try {
+      var z = parseFloat(localStorage.getItem('gem_player_zoom'));
+      if (isFinite(z) && z >= 0.45 && z <= 2.5) return z;
+    } catch (e) {}
+    return 1.0;
+  })();
   var playerLiveListenRunning = false;
   var playerLiveListenStream = null;
   var playerLiveListenSource = null;
@@ -559,6 +566,9 @@
     setPlayerOsmd: function (v) { playerOsmd = v; },
     applyPlayerOsmdDisplayOptions: function (osmd) {
       if (!osmd || typeof osmd.setOptions !== 'function') return;
+      try {
+        osmd.zoom = playerZoomLevel;
+      } catch (eZm) { }
       try {
         osmd.setOptions({
           drawMeasureNumbers: !!playerShowMeasureNumbers,
@@ -6734,6 +6744,35 @@
     window.UiCoreModule.setAriaPressed(mutePlaybackToggle, playerMutePlaybackEnabled);
     var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
     window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
+    updatePlayerZoomLabel();
+  }
+
+  function updatePlayerZoomLabel() {
+    var el = document.getElementById('playerZoomVal');
+    if (el) el.textContent = Math.round((playerZoomLevel || 1.0) * 100) + '%';
+  }
+
+  function setPlayerZoom(newZoom) {
+    var clamped = Math.max(0.45, Math.min(2.5, newZoom));
+    playerZoomLevel = Math.round(clamped * 100) / 100;
+    try {
+      localStorage.setItem('gem_player_zoom', playerZoomLevel);
+    } catch (e) {}
+    updatePlayerZoomLabel();
+    if (playerOsmd) {
+      try {
+        playerOsmd.zoom = playerZoomLevel;
+        playerOsmd.render();
+        requestAnimationFrame(function () {
+          resizePlayerOsmdIfActive();
+          buildPlayerNoteAnchorsFromDom();
+        });
+        if (playerNoteNameLabels) {
+          syncPlayerNoteNameLabelOverlays();
+        }
+        resetPlayerCursorToCurrentPosition();
+      } catch (err) {}
+    }
   }
 
   function buildPlayerDisplayMusicXml(xmlText) {
@@ -11554,6 +11593,66 @@
         );
       });
     }
+    var btnPlayerZoomIn = document.getElementById('btnPlayerZoomIn');
+    if (btnPlayerZoomIn) {
+      btnPlayerZoomIn.addEventListener('click', function () {
+        setPlayerZoom(playerZoomLevel + 0.15);
+      });
+    }
+    var btnPlayerZoomOut = document.getElementById('btnPlayerZoomOut');
+    if (btnPlayerZoomOut) {
+      btnPlayerZoomOut.addEventListener('click', function () {
+        setPlayerZoom(playerZoomLevel - 0.15);
+      });
+    }
+    var btnPlayerZoomReset = document.getElementById('btnPlayerZoomReset');
+    if (btnPlayerZoomReset) {
+      btnPlayerZoomReset.addEventListener('click', function () {
+        setPlayerZoom(1.0);
+      });
+    }
+
+    // Gesto de Pinça com 2 dedos (Pinch-to-Zoom) na Partitura do Player
+    var playerOsmdContainer = document.getElementById('playerOsmdContainer');
+    if (playerOsmdContainer) {
+      var playerPinchStartDistance = null;
+      var playerPinchStartZoom = null;
+
+      playerOsmdContainer.addEventListener('touchstart', function (e) {
+        if (e.touches && e.touches.length === 2) {
+          e.preventDefault();
+          playerPinchStartDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          playerPinchStartZoom = playerZoomLevel || 1.0;
+        }
+      }, { passive: false });
+
+      playerOsmdContainer.addEventListener('touchmove', function (e) {
+        if (e.touches && e.touches.length === 2 && playerPinchStartDistance && playerPinchStartDistance > 10) {
+          e.preventDefault();
+          var curDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          var factor = curDistance / playerPinchStartDistance;
+          var nextZoom = Math.round(playerPinchStartZoom * factor * 20) / 20;
+          if (Math.abs(nextZoom - playerZoomLevel) >= 0.05) {
+            setPlayerZoom(nextZoom);
+          }
+        }
+      }, { passive: false });
+
+      playerOsmdContainer.addEventListener('touchend', function (e) {
+        if (!e.touches || e.touches.length < 2) {
+          playerPinchStartDistance = null;
+          playerPinchStartZoom = null;
+        }
+      });
+    }
+
+    updatePlayerZoomLabel();
     var playerSeek = document.getElementById('playerSeek');
     if (playerSeek) {
       playerSeek.addEventListener('input', function () {

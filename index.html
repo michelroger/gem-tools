@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=2.8.2">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.8.3">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v2.8.2</div>
+      <div class="splash-version" id="splashVersion">v2.8.3</div>
     </div>
   </div>
 
@@ -1136,6 +1136,13 @@
             title="Mostrar ou ocultar números de compasso">
             <span class="player-toggle-icon" aria-hidden="true"><i data-lucide="hash"></i></span>
           </button>
+          <div class="msa-zoom-control" id="playerZoomControl" title="Zoom da partitura (ou use dois dedos)">
+            <button type="button" id="btnPlayerZoomOut" class="btn-zoom-step" aria-label="Afastar partitura">−</button>
+            <button type="button" id="btnPlayerZoomReset" class="flex items-center select-none px-1.5 cursor-pointer hover:opacity-80 transition bg-transparent border-0 p-0" title="Clique para redefinir ao tamanho padrão (100%)">
+              <span id="playerZoomVal" class="text-sm text-primary min-w-[36px] text-center font-black">100%</span>
+            </button>
+            <button type="button" id="btnPlayerZoomIn" class="btn-zoom-step" aria-label="Aproximar partitura">+</button>
+          </div>
         </div>
         <div class="player-timeline">
           <input type="range" id="playerSeek" class="player-seek" min="0" max="1000" step="1" value="0"
@@ -1863,7 +1870,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">2.8.2</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.8.3</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1911,10 +1918,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/congregacoes-data.js?v=2.8.2"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=2.8.2"></script>
-  <script src="./assets/js/modules/msa-leitura.js?v=2.8.2"></script>
-  <script src="./assets/js/app-main.js?v=2.8.2"></script>
+  <script src="./assets/js/modules/congregacoes-data.js?v=2.8.3"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=2.8.3"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.8.3"></script>
+  <script src="./assets/js/app-main.js?v=2.8.3"></script>
 
 </body>
 

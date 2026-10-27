@@ -1147,6 +1147,7 @@
       position: relative;
       text-align: left;
       vertical-align: top;
+      touch-action: pan-y !important;
     }
 
     #playerScoreHost .osmd-cursor,
@@ -3632,6 +3633,18 @@
 
     .btn-zoom-step:active {
       transform: scale(0.95);
+    }
+
+    #playerZoomControl {
+      height: 40px !important;
+      border-radius: 11px !important;
+      border: 1px solid rgba(15, 23, 42, 0.16) !important;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14) !important;
+    }
+
+    html.theme-dark #playerZoomControl {
+      border-color: rgba(255, 255, 255, 0.14) !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
     }
 
     /* Botões da Barra de Ferramentas (Modo, Áudio, Ajustes) */
