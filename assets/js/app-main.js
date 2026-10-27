@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.4';
+  const APP_VERSION = '2.8.5';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -488,11 +488,7 @@
   var playerLiveListenEnabled = false;
   var playerMutePlaybackEnabled = false;
   var playerShowMeasureNumbers = false;
-  var playerMovementEnabled = (function () {
-    try {
-      return localStorage.getItem('gem_player_movement') === 'true';
-    } catch (e) { return false; }
-  })();
+  var playerMovementEnabled = false;
   var playerSolfejoTweenRaf = null;
   var playerZoomLevel = (function () {
     try {
@@ -6770,6 +6766,7 @@
   }
 
   function updatePlayerSolfejoDiagram() {
+    if (!playerMovementEnabled) return;
     var beats = getPlayerScoreBeatsCount();
     var side = metroSolfejoLeftHand ? 'esquerda' : 'direita';
     var img = document.getElementById('playerSolfejoBaseImg');
@@ -6881,7 +6878,13 @@
   function syncPlayerMovementUi() {
     var box = document.getElementById('playerSolfejoBox');
     if (box) {
-      box.classList.toggle('hidden', !playerMovementEnabled);
+      if (playerMovementEnabled) {
+        box.classList.remove('hidden');
+        box.style.display = 'flex';
+      } else {
+        box.classList.add('hidden');
+        box.style.display = 'none';
+      }
     }
     var toggle = document.getElementById('playerMovementToggle');
     if (toggle) {

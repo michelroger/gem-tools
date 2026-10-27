@@ -216,6 +216,8 @@
     /** Andamento “da partitura” para o controlo de velocidade (ex.: ♩=78 → 78, unidade semínima). */
     var scoreBaselineMarkingBpm = null;
     var scoreBaselineMarkingBeatUnit = 'quarter';
+    var scoreBeatsPerMeasure = 4;
+    var scoreBeatType = 4;
 
     parts.forEach(function (part, partIndex) {
       var detectedVoiceChar = detectPartVoiceChar(part, xmlDoc, partIndex, parts.length);
@@ -279,11 +281,17 @@
         var beatTypeNode = measure.querySelector('attributes time beat-type');
         if (beatsNode && beatsNode.textContent) {
           var bpmNum = parseInt(beatsNode.textContent || '4', 10);
-          if (isFinite(bpmNum) && bpmNum > 0) beatsPerMeasure = bpmNum;
+          if (isFinite(bpmNum) && bpmNum > 0) {
+            beatsPerMeasure = bpmNum;
+            if (partIndex === 0) scoreBeatsPerMeasure = bpmNum;
+          }
         }
         if (beatTypeNode && beatTypeNode.textContent) {
           var beatDen = parseInt(beatTypeNode.textContent || '4', 10);
-          if (isFinite(beatDen) && beatDen > 0) beatType = beatDen;
+          if (isFinite(beatDen) && beatDen > 0) {
+            beatType = beatDen;
+            if (partIndex === 0) scoreBeatType = beatDen;
+          }
         }
 
         var notes = measure.querySelectorAll('note');
@@ -500,8 +508,8 @@
       voltaPlaybackMap: null,
       baselineMarkingBpm: scoreBaselineMarkingBpm,
       baselineMarkingBeatUnit: scoreBaselineMarkingBeatUnit,
-      beatsPerMeasure: beatsPerMeasure,
-      beatType: beatType
+      beatsPerMeasure: scoreBeatsPerMeasure,
+      beatType: scoreBeatType
     };
   }
 

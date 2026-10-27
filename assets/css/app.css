@@ -3657,6 +3657,11 @@
       box-shadow: 0 8px 24px -4px rgba(227, 179, 117, 0.4), 0 3px 8px rgba(0, 0, 0, 0.1) !important;
     }
 
+    #playerSolfejoBox.hidden,
+    .msa-floating-solfejo.hidden {
+      display: none !important;
+    }
+
     @media (max-width: 640px) {
       #playerSolfejoBox {
         width: 135px !important;
