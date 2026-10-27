@@ -3647,6 +3647,25 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
     }
 
+    /* Quadro do Movimento de Solfejo Flutuante na Partitura do Player */
+    #playerSolfejoBox {
+      top: 10px !important;
+      right: 14px !important;
+      width: 175px !important;
+      height: 175px !important;
+      z-index: 25 !important;
+      box-shadow: 0 8px 24px -4px rgba(227, 179, 117, 0.4), 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    @media (max-width: 640px) {
+      #playerSolfejoBox {
+        width: 135px !important;
+        height: 135px !important;
+        top: 6px !important;
+        right: 6px !important;
+      }
+    }
+
     /* Botões da Barra de Ferramentas (Modo, Áudio, Ajustes) */
     .msa-toolbar-btn {
       height: 46px !important;

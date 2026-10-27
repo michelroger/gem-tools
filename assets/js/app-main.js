@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.8.3';
+  const APP_VERSION = '2.8.4';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -488,6 +488,12 @@
   var playerLiveListenEnabled = false;
   var playerMutePlaybackEnabled = false;
   var playerShowMeasureNumbers = false;
+  var playerMovementEnabled = (function () {
+    try {
+      return localStorage.getItem('gem_player_movement') === 'true';
+    } catch (e) { return false; }
+  })();
+  var playerSolfejoTweenRaf = null;
   var playerZoomLevel = (function () {
     try {
       var z = parseFloat(localStorage.getItem('gem_player_zoom'));
@@ -547,6 +553,7 @@
     nextEventIndex: 0,
     nextCursorIndex: 0,
     nextBeatIndex: 0,
+    nextVisualBeatIndex: 0,
     liveEventIndex: -1,
     rafId: null,
     activeStops: [],
@@ -595,6 +602,9 @@
       playerScoreData = v;
       if (v) playerPlaybackRate = 1;
       syncPlayerSpeedUi();
+      if (playerMovementEnabled) {
+        updatePlayerSolfejoDiagram();
+      }
     },
     setPlayerNoteAnchors: function (v) { playerNoteAnchors = v; },
     isPlayerMode: function () { return currentMode === 'player'; },
@@ -6745,6 +6755,141 @@
     var measureNumToggle = document.getElementById('playerMeasureNumbersToggle');
     window.UiCoreModule.setAriaPressed(measureNumToggle, playerShowMeasureNumbers);
     updatePlayerZoomLabel();
+    syncPlayerMovementUi();
+  }
+
+  function getPlayerScoreBeatsCount() {
+    if (playerScoreData && playerScoreData.beatsPerMeasure) {
+      var b = parseInt(playerScoreData.beatsPerMeasure, 10);
+      if ([2, 3, 4, 6, 9, 12].indexOf(b) !== -1) return b;
+      if (b > 4) return 4;
+      if (b < 2) return 2;
+      return b;
+    }
+    return 4;
+  }
+
+  function updatePlayerSolfejoDiagram() {
+    var beats = getPlayerScoreBeatsCount();
+    var side = metroSolfejoLeftHand ? 'esquerda' : 'direita';
+    var img = document.getElementById('playerSolfejoBaseImg');
+    if (img) {
+      var expectedSrc = './imgs/movimento-' + beats + '-' + side + '.png';
+      if (img.getAttribute('src') !== expectedSrc) {
+        img.src = expectedSrc;
+      }
+    }
+    positionPlayerSolfejoBallAtCurrent();
+  }
+
+  function setPlayerBallPosition(normPt) {
+    var ball = document.getElementById('playerBallCursor');
+    if (!ball || !normPt) return;
+    ball.style.left = (normPt.x * 100).toFixed(3) + '%';
+    ball.style.top = (normPt.y * 100).toFixed(3) + '%';
+    ball.style.display = 'block';
+  }
+
+  function cancelPlayerSolfejoTween() {
+    if (playerSolfejoTweenRaf) {
+      cancelAnimationFrame(playerSolfejoTweenRaf);
+      playerSolfejoTweenRaf = null;
+    }
+  }
+
+  function positionPlayerSolfejoBallAtCurrent(elapsed) {
+    cancelPlayerSolfejoTween();
+    var ball = document.getElementById('playerBallCursor');
+    if (!ball) return;
+    ball.classList.remove('pulsing');
+    var beats = getPlayerScoreBeatsCount();
+    var isLeft = !!metroSolfejoLeftHand;
+    var engine = window.MsaLeituraModule;
+    if (!engine || typeof engine.getAnchorCircleCenter !== 'function') return;
+
+    var curSec = elapsed != null ? elapsed : (playerPlayback.positionSec || 0);
+    if (curSec <= 0.05) {
+      var prepPt = engine.getPrepPoint ? engine.getPrepPoint(beats, isLeft) : engine.getAnchorCircleCenter(beats, isLeft, 0);
+      setPlayerBallPosition(prepPt);
+      return;
+    }
+
+    var beatIdx = 0;
+    if (playerScoreData && playerScoreData.beatEvents && playerScoreData.beatEvents.length) {
+      for (var i = 0; i < playerScoreData.beatEvents.length; i++) {
+        if (playerScoreData.beatEvents[i].sec <= curSec + 0.02) {
+          beatIdx = playerScoreData.beatEvents[i].beatIndex || 0;
+        } else {
+          break;
+        }
+      }
+    }
+    var pt = engine.getAnchorCircleCenter(beats, isLeft, beatIdx);
+    setPlayerBallPosition(pt);
+  }
+
+  function startPlayerSolfejoBallTween(fromBeat, toBeat, durationMs) {
+    cancelPlayerSolfejoTween();
+    var ball = document.getElementById('playerBallCursor');
+    if (!ball) return;
+
+    var beatsCount = getPlayerScoreBeatsCount();
+    var isLeft = !!metroSolfejoLeftHand;
+    var engine = window.MsaLeituraModule;
+    if (!engine || typeof engine.getExactCurveData !== 'function') return;
+
+    var curveData = engine.getExactCurveData(beatsCount, isLeft);
+    if (!curveData || !curveData.beats || !curveData.beats.length) return;
+
+    var b = ((fromBeat % beatsCount) + beatsCount) % beatsCount;
+    var beatPts = curveData.beats[b] || curveData.beats[0];
+    var targetAnchor = engine.getAnchorCircleCenter(beatsCount, isLeft, (b + 1) % beatsCount);
+
+    var startPerf = performance.now();
+    var duration = Math.max(100, durationMs || 600);
+
+    setPlayerBallPosition(beatPts[0]);
+    ball.classList.remove('pulsing');
+    void ball.offsetWidth;
+    ball.classList.add('pulsing');
+
+    function easeSolfejo(t) {
+      return 0.5 * (1 - Math.cos(Math.PI * t));
+    }
+
+    function tweenLoop(nowPerf) {
+      if (!playerPlayback.isPlaying) return;
+      var elap = nowPerf - startPerf;
+      var t = elap / duration;
+
+      var travelT = Math.min(1, t / 0.80);
+      var progress = easeSolfejo(travelT);
+      var curPt = (travelT >= 1) ? targetAnchor : engine.interpolateAlongPolyline(beatPts, progress);
+      setPlayerBallPosition(curPt);
+
+      if (t >= 1) {
+        playerSolfejoTweenRaf = null;
+        setPlayerBallPosition(targetAnchor);
+        return;
+      }
+      playerSolfejoTweenRaf = requestAnimationFrame(tweenLoop);
+    }
+
+    playerSolfejoTweenRaf = requestAnimationFrame(tweenLoop);
+  }
+
+  function syncPlayerMovementUi() {
+    var box = document.getElementById('playerSolfejoBox');
+    if (box) {
+      box.classList.toggle('hidden', !playerMovementEnabled);
+    }
+    var toggle = document.getElementById('playerMovementToggle');
+    if (toggle) {
+      window.UiCoreModule.setAriaPressed(toggle, playerMovementEnabled);
+    }
+    if (playerMovementEnabled) {
+      updatePlayerSolfejoDiagram();
+    }
   }
 
   function updatePlayerZoomLabel() {
@@ -8013,6 +8158,8 @@
     playerPlayback.nextEventIndex = findPlayerEventIndexByTime(clamped);
     playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(clamped));
     playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(clamped);
+    playerPlayback.nextVisualBeatIndex = findPlayerBeatIndexByTime(clamped);
+    if (playerMovementEnabled) positionPlayerSolfejoBallAtCurrent(clamped);
     playerPlayback.lastPlaybackElapsed = null;
     playerPlayback.lastDisplayElapsed = null;
     playerPlayback.osmdSyncedSteps = null;
@@ -8391,6 +8538,8 @@
     playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
     playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
     playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    playerPlayback.nextVisualBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    if (playerMovementEnabled) positionPlayerSolfejoBallAtCurrent(playerPlayback.positionSec);
     playerPlayback.liveEventIndex = -1;
     playerPlayback.startedAtCtx = ctx.currentTime - (Math.max(0, playerPlayback.positionSec) / Math.max(0.4, playerPlaybackRate || 1));
     playerAutoScrollNeedsInitial = true;
@@ -8518,6 +8667,9 @@
     playerPlayback.nextEventIndex = findPlayerEventIndexByTime(playerPlayback.positionSec);
     playerPlayback.nextCursorIndex = Math.max(1, findPlayerCursorIndexByTime(playerPlayback.positionSec));
     playerPlayback.nextBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    playerPlayback.nextVisualBeatIndex = findPlayerBeatIndexByTime(playerPlayback.positionSec);
+    cancelPlayerSolfejoTween();
+    if (playerMovementEnabled) positionPlayerSolfejoBallAtCurrent(playerPlayback.positionSec);
     playerPlayback.liveEventIndex = -1;
     if (playerLiveCurrentEventIndex >= 0) {
       finalizePlayerLiveMetric(playerLiveCurrentEventIndex);
@@ -8610,6 +8762,20 @@
           schedulePlayerMetronomeClick(whenBeat, !!(beatEv && beatEv.accent));
         }
         playerPlayback.nextBeatIndex += 1;
+      }
+    }
+
+    if (playerMovementEnabled && playerScoreData.beatEvents && playerScoreData.beatEvents.length) {
+      while (playerPlayback.nextVisualBeatIndex < playerScoreData.beatEvents.length) {
+        var vBeat = playerScoreData.beatEvents[playerPlayback.nextVisualBeatIndex];
+        var vBeatAt = vBeat ? vBeat.sec : 0;
+        if (vBeatAt > elapsed + 0.010) break;
+        var thisB = vBeat.beatIndex != null ? vBeat.beatIndex : 0;
+        var bCount = getPlayerScoreBeatsCount();
+        var nB = (thisB + 1) % bCount;
+        var bDurMs = ((vBeat.beatDurationSec || (60 / (playerScoreData.baselineMarkingBpm || 60))) / rate) * 1000;
+        startPlayerSolfejoBallTween(thisB, nB, bDurMs);
+        playerPlayback.nextVisualBeatIndex += 1;
       }
     }
 
@@ -11590,6 +11756,21 @@
         }
         setMessage(
           playerShowMeasureNumbers ? 'Números de compasso visíveis.' : 'Números de compasso ocultos.'
+        );
+      });
+    }
+    var playerMovementToggle = document.getElementById('playerMovementToggle');
+    if (playerMovementToggle) {
+      playerMovementToggle.addEventListener('click', function () {
+        playerMovementEnabled = !playerMovementEnabled;
+        try {
+          localStorage.setItem('gem_player_movement', playerMovementEnabled ? 'true' : 'false');
+        } catch (e) {}
+        syncPlayerMovementUi();
+        setMessage(
+          playerMovementEnabled
+            ? 'Movimento de solfejo ativado na partitura.'
+            : 'Movimento de solfejo ocultado.'
         );
       });
     }

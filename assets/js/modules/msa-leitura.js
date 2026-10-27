@@ -4120,7 +4120,11 @@
           setClave(autoClef);
         }
       }
-    }
+    },
+    getExactCurveData: getExactCurveData,
+    getAnchorCircleCenter: getAnchorCircleCenter,
+    interpolateAlongPolyline: interpolateAlongPolyline,
+    getPrepPoint: getPrepPoint
   };
 
   if (document.readyState === 'loading') {

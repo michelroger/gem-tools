@@ -408,7 +408,10 @@
             var beatIdxInBar = (startBeatIndex + bi) % Math.max(1, beatsPerMeasure);
             var beatObj = {
               sec: beatSec,
-              accent: beatIdxInBar === 0
+              accent: beatIdxInBar === 0,
+              beatIndex: beatIdxInBar,
+              beatsPerBar: beatsPerMeasure,
+              beatDurationSec: beatDurSec
             };
             measureBeatEvents.push(beatObj);
             measureBeats.push(beatObj);
@@ -496,7 +499,9 @@
       repeatMap: repeatMap,
       voltaPlaybackMap: null,
       baselineMarkingBpm: scoreBaselineMarkingBpm,
-      baselineMarkingBeatUnit: scoreBaselineMarkingBeatUnit
+      baselineMarkingBeatUnit: scoreBaselineMarkingBeatUnit,
+      beatsPerMeasure: beatsPerMeasure,
+      beatType: beatType
     };
   }
 
