@@ -3851,6 +3851,55 @@
       color: #FFFFFF !important;
     }
 
+    /* Botões de Clave (Sol / Dó / Fá) no Modal */
+    .msa-clef-btn {
+      padding: 10px 6px !important;
+      border-radius: 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      border: 1.5px solid #E2E8F0 !important;
+      background: #FFFFFF !important;
+      color: #334155 !important;
+      cursor: pointer !important;
+      transition: all 0.18s ease !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      text-align: center !important;
+      user-select: none;
+    }
+
+    html.theme-dark .msa-clef-btn {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+      color: #E2E8F0 !important;
+    }
+
+    .msa-clef-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .msa-clef-btn.active,
+    .msa-clef-btn.du-btn-primary {
+      background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+      border-color: #4F46E5 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    .msa-clef-btn.active *,
+    .msa-clef-btn.du-btn-primary * {
+      color: #FFFFFF !important;
+    }
+
+    .msa-clef-btn:disabled {
+      opacity: 0.35 !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+      border-style: dashed !important;
+    }
+
     /* Linhas de Alternador (Switches Estilo iOS Moderno) no Modal */
     .msa-switch-row {
       display: flex !important;

@@ -250,12 +250,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 10,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_14_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de Solfejo em 4",
@@ -267,12 +274,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 8,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_12_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de solfejo em 3",
@@ -284,12 +298,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 11,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_7_-_Pág._38_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de solfejo em 3 - Exercício 9 - Pág. 38",
@@ -301,12 +322,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 13,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_9_-_Pág._38_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de solfejo em 4",
@@ -318,12 +346,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 10,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_sofejo_em_4_-_Exercício_13_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de solfejo em 4",
@@ -335,12 +370,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_11_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de solfejo em 4",
@@ -352,12 +394,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 8,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_16_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.5 - Movimento de soljejo em 3",
@@ -369,12 +418,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_10_-_Pág._38_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de compasso em 4",
@@ -386,12 +442,19 @@
       "bpm": 70,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 13,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42.musicxml",
-      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42"
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_23_-_Pág._42_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de solfejo em 2",
@@ -403,12 +466,19 @@
       "bpm": 122,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 13,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42.musicxml",
-      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42"
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_19_-_Pág._42_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de solfejo em 2",
@@ -420,12 +490,19 @@
       "bpm": 70,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_24_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de solfejo em 4",
@@ -437,12 +514,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 11,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42.musicxml",
-      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42"
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_20_-_Pág._42_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de solfejo em 4",
@@ -454,12 +538,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 19,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42.musicxml",
-      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42"
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_21_-_Pág._42_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.6 - Movimento de solfejo em 4",
@@ -471,12 +562,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 21,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42.musicxml",
-      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42"
+      "id": "msa-f4-Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.6_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_22_-_Pág._42_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.7 - Exercício 17 - Pág. 41",
@@ -522,12 +620,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_29_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.7 - Movimento de solfejo em 2",
@@ -539,12 +644,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_26_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.7 - Movimento de solfejo em 4",
@@ -556,12 +668,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_25_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.7 - Movimento de solfejo em 4",
@@ -573,12 +692,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_27_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 4.7 - Movimento de solfejo em 4",
@@ -590,12 +716,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43.musicxml",
-      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43"
+      "id": "msa-f4-Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_28_-_Pág._43_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase. 4.5 - Movimento de Solfejo em 4",
@@ -607,12 +740,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_15_-_Pág._39_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase. 4.5 - Movimento de solfejo em 3",
@@ -624,12 +764,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38.musicxml",
-      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38"
+      "id": "msa-f4-Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38.musicxml",
+        "do": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-04/Fase_4.5_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_8_-_Pág._38_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.1 - Exercício 30 - Pág. 45",
@@ -692,12 +839,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47.musicxml",
-      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47"
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício35_-_Pág._47_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.2 - Movimento de solfejo em 4",
@@ -709,12 +863,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 14,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47.musicxml",
-      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47"
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício36_-_Pág._47_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.2 - Movimento de solfejo em 4",
@@ -726,12 +887,19 @@
       "bpm": 75,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 15,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47.musicxml",
-      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47"
+      "id": "msa-f5-Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício37_-_Pág._47_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.4 - Exercício 38 - Pág. 49",
@@ -777,12 +945,19 @@
       "bpm": 40,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 20,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50.musicxml",
-      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50"
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_40_-_Página_50_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.5 - Movimento de solfejo em 6",
@@ -794,12 +969,19 @@
       "bpm": 61,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 13,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51.musicxml",
-      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51"
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_41_-_Pág._51_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 5.5 - Movimento de solfejo em 6",
@@ -811,12 +993,19 @@
       "bpm": 90,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 14,
       "arquivo": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51.musicxml",
-      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51"
+      "id": "msa-f5-Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51.musicxml",
+        "do": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-05/Fase_5.5_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_42_-_Pág._51_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 6.3 - Escala diatônica - Pág. 55",
@@ -828,12 +1017,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 4,
       "arquivo": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_diatônica_-_Pág._55.musicxml",
-      "id": "msa-f6-Fase_6.3_-_Escala_diatônica_-_Pág._55"
+      "id": "msa-f6-Fase_6.3_-_Escala_diatônica_-_Pág._55",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_diatônica_-_Pág._55.musicxml",
+        "do": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_diatônica_-_Pág._55_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_diatônica_-_Pág._55_fa.musicxml"
+      }
     },
     {
       "titulo": "Partitura sem título",
@@ -845,12 +1041,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 2,
       "arquivo": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_cromática_-_Pág._55.musicxml",
-      "id": "msa-f6-Fase_6.3_-_Escala_cromática_-_Pág._55"
+      "id": "msa-f6-Fase_6.3_-_Escala_cromática_-_Pág._55",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_cromática_-_Pág._55.musicxml",
+        "do": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_cromática_-_Pág._55_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-06/Fase_6.3_-_Escala_cromática_-_Pág._55_fa.musicxml"
+      }
     },
     {
       "titulo": "7.1 - Escala de SI Maior",
@@ -862,12 +1065,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SI_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala Maior",
@@ -879,12 +1089,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de DÓ# Maior",
@@ -896,12 +1113,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓ_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de DÓb Maior",
@@ -913,12 +1137,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_DÓb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de FÁ Maior",
@@ -930,12 +1161,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de FÁ# Maior",
@@ -947,12 +1185,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_FÁ_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de LÁ Maior",
@@ -964,12 +1209,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁ_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de LÁb Maior",
@@ -981,12 +1233,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_LÁb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de MI Maior",
@@ -998,12 +1257,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MI_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de MIb Maior",
@@ -1015,12 +1281,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_MIb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de RÉ Maior",
@@ -1032,12 +1305,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉ_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de RÉb Maior",
@@ -1049,12 +1329,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_RÉb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de SIb Maior",
@@ -1066,12 +1353,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SIb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de SOL Maior",
@@ -1083,12 +1377,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOL_Maior_-_Pág._66_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.1 - Escala de SOLb Maior",
@@ -1100,12 +1401,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67.musicxml",
-      "id": "msa-f7-Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67"
+      "id": "msa-f7-Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.1_-_Escala_de_SOLb_Maior_-_Pág._67_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.3 - Atividade 43 - Pág, 69",
@@ -1151,12 +1459,19 @@
       "bpm": 61,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70.musicxml",
-      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70"
+      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_45_-_Pág._70_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.4 - Movimento de solfejo em 9",
@@ -1168,12 +1483,19 @@
       "bpm": 61,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 18,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71.musicxml",
-      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71"
+      "id": "msa-f7-Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.4_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_47_-_Pág._71_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.6 - Exercício 48 - Pág. 73",
@@ -1202,12 +1524,19 @@
       "bpm": 61,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 9,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74.musicxml",
-      "id": "msa-f7-Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74"
+      "id": "msa-f7-Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.6_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_49_-_Pág._74_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.7 - Exercício 51 - Pág. 75",
@@ -1304,12 +1633,19 @@
       "bpm": 122,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 5,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74.musicxml",
-      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74"
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_50_-_Pág._74_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.7 - Movimento de solfejo em 4",
@@ -1321,12 +1657,19 @@
       "bpm": 60,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 20,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76.musicxml",
-      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76"
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_56_-_Pág._76_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.7 - Movimento de solfejo em 4",
@@ -1338,12 +1681,19 @@
       "bpm": 70,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 20,
       "arquivo": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78.musicxml",
-      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78"
+      "id": "msa-f7-Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78.musicxml",
+        "do": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-07/Fase_7.7_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_57_-_Pág._78_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 7.7 Exercício 60 - Pág. 79",
@@ -1389,12 +1739,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 33,
       "arquivo": "xml/colecoes/msa/fase-08/Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84.musicxml",
-      "id": "msa-f8-Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84"
+      "id": "msa-f8-Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-08/Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84.musicxml",
+        "do": "xml/colecoes/msa/fase-08/Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-08/Fase_8.2_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_62_-_Pág._84_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 8.2 Exercício 65 - Pág. 85",
@@ -1423,12 +1780,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 31,
       "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88.musicxml",
-      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88"
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88.musicxml",
+        "do": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_67_-_Pág._88_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 9.1 - Movimento de solfejo 2",
@@ -1440,12 +1804,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 38,
       "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89.musicxml",
-      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89"
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89.musicxml",
+        "do": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_68_-_Pág._89_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 9.1 - Movimento de solfejo em 2",
@@ -1457,12 +1828,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 26,
       "arquivo": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91.musicxml",
-      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91"
+      "id": "msa-f9-Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91.musicxml",
+        "do": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-09/Fase_9.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_69_-_Pág._91_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 9.1 Exercício 70 - Pág. 92",
@@ -1491,12 +1869,19 @@
       "bpm": 72,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93.musicxml",
-      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93"
+      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93.musicxml",
+        "do": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_131_-_Sugestão_-_Pág._93_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 10.1 - Dinâmica - Hino 221",
@@ -1508,12 +1893,19 @@
       "bpm": 70,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 17,
       "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93.musicxml",
-      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93"
+      "id": "msa-f10-Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93.musicxml",
+        "do": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-10/Fase_10.1_-_Dinâmica_-_Hino_221_-_Sugestão_-_Pág._93_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 10.1 - Movimento de solfejo em 2",
@@ -1525,12 +1917,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 44,
       "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94.musicxml",
-      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94"
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94.musicxml",
+        "do": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_72_-_Pág._94_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 10.1 - Movimento de solfejo em 2",
@@ -1542,12 +1941,19 @@
       "bpm": 160,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 36,
       "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96.musicxml",
-      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96"
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96.musicxml",
+        "do": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_73_-_Pág._96_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 10.1 - Movimento de solfejo em 3",
@@ -1559,12 +1965,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 43,
       "arquivo": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98.musicxml",
-      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98"
+      "id": "msa-f10-Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98.musicxml",
+        "do": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-10/Fase_10.1_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_74_-_Pág._98_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 10.1 Exercício 75 - Pág. 99",
@@ -1593,12 +2006,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 37,
       "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107.musicxml",
-      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107"
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107.musicxml",
+        "do": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_78_-_Pág._107_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 11.4 - Movimento de solfejo em 3",
@@ -1610,12 +2030,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 36,
       "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106.musicxml",
-      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106"
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106.musicxml",
+        "do": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_77_-_Pág._106_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 11.4 - Movimento de solfejo em 3",
@@ -1627,12 +2054,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 27,
       "arquivo": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109.musicxml",
-      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109"
+      "id": "msa-f11-Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109.musicxml",
+        "do": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-11/Fase_11.4_-_Leitura_métrica_com_movimentode_solfejo_em_3_-_Exercício_79_-_Pág._109_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 11.4 Exercício 80 - Pág. 110 (modificado)",
@@ -1695,12 +2129,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 31,
       "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114.musicxml",
-      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114"
+      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114.musicxml",
+        "do": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_88_-_Pág._114_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 12.2 - Movimento de solfejo em 6",
@@ -1712,12 +2153,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 34,
       "arquivo": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116.musicxml",
-      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116"
+      "id": "msa-f12-Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116.musicxml",
+        "do": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-12/Fase_12.2_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_89_-_Pág._116_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 12.2 Exercício 82 - Pág. 113",
@@ -1780,12 +2228,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 25,
       "arquivo": "xml/colecoes/msa/fase-13/Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122.musicxml",
-      "id": "msa-f13-Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122"
+      "id": "msa-f13-Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-13/Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122.musicxml",
+        "do": "xml/colecoes/msa/fase-13/Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-13/Fase_13.1_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_94_-_Pág._122_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 14.1 - Exercício 100 - Pág. 129",
@@ -1882,12 +2337,19 @@
       "bpm": 60,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 23,
       "arquivo": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133.musicxml",
-      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133"
+      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133.musicxml",
+        "do": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_106_-_Pág._133_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 15.3 - Movimento de solfejo em 12",
@@ -1899,12 +2361,19 @@
       "bpm": 60,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 14,
       "arquivo": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134.musicxml",
-      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134"
+      "id": "msa-f15-Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134.musicxml",
+        "do": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-15/Fase_15.3_-_Leitura_métrica_com_movimento_de_solfejo_em_12_-_Exercício_107_-_Pág._134_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.2 - Hino 31 - Pág. 137",
@@ -1916,12 +2385,19 @@
       "bpm": 68,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 38,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137.musicxml",
-      "id": "msa-f16-Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137"
+      "id": "msa-f16-Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.2_-_Hino_31_-_Forte_Rocha_-_Pág._137_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 2",
@@ -1933,12 +2409,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 41,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_109_-_Pág._142_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 2",
@@ -1950,12 +2433,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 51,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_2_-_Exercício_110_-_Pág._145_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 3",
@@ -1967,12 +2457,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 37,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_3_-_Exercício_111_-_Pág._148_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 4",
@@ -1984,12 +2481,19 @@
       "bpm": 80,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 32,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_4_-_Exercício_108_-_Pág._139_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 6",
@@ -2001,12 +2505,19 @@
       "bpm": 100,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 35,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_6_-_Exercício_112_-_Pág._151_fa.musicxml"
+      }
     },
     {
       "titulo": "Fase 16.3 - Movimento de solfejo em 9",
@@ -2018,12 +2529,19 @@
       "bpm": 120,
       "tipo": "solfejo",
       "claves": [
-        "G"
+        "G",
+        "C",
+        "F"
       ],
       "temNotasComAltura": true,
       "totalCompassos": 29,
       "arquivo": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154.musicxml",
-      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154"
+      "id": "msa-f16-Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154",
+      "arquivos": {
+        "sol": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154.musicxml",
+        "do": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154_do.musicxml",
+        "fa": "xml/colecoes/msa/fase-16/Fase_16.3_-_Leitura_métrica_com_movimento_de_solfejo_em_9_-_Exercício_113_-_Pág._154_fa.musicxml"
+      }
     }
   ]
 }

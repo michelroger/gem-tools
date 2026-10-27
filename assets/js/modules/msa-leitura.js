@@ -274,6 +274,20 @@
         return 'fem';
       }
     })(),
+    claveSelecionada: (function () {
+      try {
+        return localStorage.getItem('msa_clave') || 'sol';
+      } catch (e) {
+        return 'sol';
+      }
+    })(),
+    osmdZoom: (function () {
+      try {
+        var s = parseFloat(localStorage.getItem('msa_score_zoom'));
+        if (isFinite(s) && s >= 0.55 && s <= 2.5) return s;
+      } catch (e) {}
+      return (typeof window !== 'undefined' && window.innerWidth < 640) ? 1.05 : 1.15;
+    })(),
     modoLeitura: 'ritmica', // 'ritmica', 'metrica', 'solfejo'
     maoEsquerda: false,
     somLeituraAtivo: true,
@@ -302,6 +316,106 @@
       loaded: false
     }
   };
+
+  var CLEF_INFO = {
+    'sol': { name: 'Sol', icon: '𝄞', fullName: 'Clave de Sol (2ª linha)' },
+    'do': { name: 'Dó', icon: '𝄡', fullName: 'Clave de Dó (3ª linha - Viola)' },
+    'fa': { name: 'Fá', icon: '𝄢', fullName: 'Clave de Fá (4ª linha - Graves)' }
+  };
+
+  function getScoreFileForCurrentClef(exercicio) {
+    if (!exercicio) return '';
+    var clef = state.claveSelecionada || 'sol';
+    if (exercicio.arquivos && exercicio.arquivos[clef]) {
+      return exercicio.arquivos[clef];
+    }
+    return exercicio.arquivo || '';
+  }
+
+  function setClave(novaClave) {
+    if (novaClave !== 'sol' && novaClave !== 'do' && novaClave !== 'fa') novaClave = 'sol';
+    state.claveSelecionada = novaClave;
+    try {
+      localStorage.setItem('msa_clave', novaClave);
+    } catch (e) {}
+
+    updateClefUi();
+
+    if (state.exercicioAtual) {
+      var isCurrentlyPlaying = state.isPlaying;
+      if (isCurrentlyPlaying) stopPlayback();
+      var fileToLoad = getScoreFileForCurrentClef(state.exercicioAtual);
+      if (fileToLoad) {
+        renderScore(fileToLoad);
+      }
+    }
+  }
+
+  function updateClefUi() {
+    var currentClef = state.claveSelecionada || 'sol';
+    var info = CLEF_INFO[currentClef] || CLEF_INFO.sol;
+
+    var labelEl = document.getElementById('msaCurrentClefLabel');
+    var iconEl = document.getElementById('msaClefIcon');
+    if (labelEl) labelEl.textContent = info.name;
+    if (iconEl) iconEl.textContent = info.icon;
+
+    var hasMelody = !!(state.exercicioAtual && state.exercicioAtual.temNotasComAltura);
+    var clefToggleBtn = document.getElementById('btnMsaClefToggle');
+    if (clefToggleBtn) {
+      clefToggleBtn.classList.toggle('opacity-40', !hasMelody);
+      clefToggleBtn.classList.toggle('cursor-not-allowed', !hasMelody);
+      clefToggleBtn.disabled = !hasMelody;
+      clefToggleBtn.title = hasMelody
+        ? 'Clave atual: ' + info.fullName + '. Toque para alternar (Sol / Dó / Fá)'
+        : 'Exercício rítmico percussivo (sem clave melódica)';
+    }
+
+    var noticeEl = document.getElementById('msaClefNotice');
+    if (noticeEl) {
+      noticeEl.textContent = hasMelody ? '' : '(exercício percussivo sem pauta melódica)';
+    }
+
+    ['sol', 'do', 'fa'].forEach(function (c) {
+      var btn = document.getElementById('btnMsaClef' + c.charAt(0).toUpperCase() + c.slice(1));
+      if (btn) {
+        var isSel = (c === currentClef);
+        btn.classList.toggle('active', isSel);
+        btn.classList.toggle('du-btn-primary', isSel);
+        btn.disabled = !hasMelody;
+      }
+    });
+  }
+
+  function getDefaultScoreZoom() {
+    return (typeof window !== 'undefined' && window.innerWidth < 640) ? 1.05 : 1.15;
+  }
+
+  function updateScoreZoomLabel() {
+    var valEl = document.getElementById('msaScoreZoomVal');
+    if (valEl) {
+      valEl.textContent = Math.round((state.osmdZoom || 1.05) * 100) + '%';
+    }
+  }
+
+  function setScoreZoom(newZoom) {
+    var clamped = Math.max(0.55, Math.min(2.5, newZoom));
+    state.osmdZoom = Math.round(clamped * 100) / 100;
+    try {
+      localStorage.setItem('msa_score_zoom', state.osmdZoom);
+    } catch (e) {}
+    updateScoreZoomLabel();
+    if (state.osmd) {
+      try {
+        state.osmd.zoom = state.osmdZoom;
+        state.osmd.render();
+        if (state.osmd.cursor) {
+          state.osmd.cursor.show();
+        }
+        setTimeout(autoScrollScoreToCursor, 80);
+      } catch (err) {}
+    }
+  }
 
   function normalizeNoteKey(name) {
     if (!name) return 'Dó';
@@ -3080,10 +3194,11 @@
         drawCredits: false,
         drawingParameters: 'compact'
       });
-      // Modo ampliado permanente e confortável com auto-scroll suave
+      // Escala personalizada/padrão da partitura
       state.isZoomExpanded = true;
-      state.osmdZoom = 1.30;
+      if (!state.osmdZoom) state.osmdZoom = getDefaultScoreZoom();
       state.osmd.zoom = state.osmdZoom;
+      updateScoreZoomLabel();
       var stageCard = document.getElementById('msaVideoStageCard');
       if (stageCard) stageCard.classList.add('msa-view-expanded');
 
@@ -3525,7 +3640,9 @@
     }
 
     atualizarQuadroSolfejo();
-    renderScore(exercicio.arquivo);
+    updateClefUi();
+    var fileToLoad = getScoreFileForCurrentClef(exercicio);
+    renderScore(fileToLoad);
   }
 
   function setTabDisabled(modo, disabled) {
@@ -3692,6 +3809,7 @@
       }
       if (chkLeft) chkLeft.checked = !!state.maoEsquerda;
       if (chkClick) chkClick.checked = !!state.somMetronomoAtivo;
+      updateClefUi();
     }
 
     function openMsaSettingsModal() {
@@ -3786,6 +3904,43 @@
       });
     }
 
+    // Botão rápido de alternância de clave na barra de ferramentas (Sol -> Dó -> Fá)
+    var btnClefToggle = document.getElementById('btnMsaClefToggle');
+    if (btnClefToggle) {
+      btnClefToggle.addEventListener('click', function () {
+        if (!state.exercicioAtual || !state.exercicioAtual.temNotasComAltura) return;
+        var order = ['sol', 'do', 'fa'];
+        var currentIdx = order.indexOf(state.claveSelecionada || 'sol');
+        if (currentIdx === -1) currentIdx = 0;
+        var nextIdx = (currentIdx + 1) % order.length;
+        setClave(order[nextIdx]);
+        syncModalControls();
+      });
+    }
+
+    // Botões dedicados no Modal de Opções de Estudo
+    var btnClefSol = document.getElementById('btnMsaClefSol');
+    if (btnClefSol) {
+      btnClefSol.addEventListener('click', function () {
+        setClave('sol');
+        syncModalControls();
+      });
+    }
+    var btnClefDo = document.getElementById('btnMsaClefDo');
+    if (btnClefDo) {
+      btnClefDo.addEventListener('click', function () {
+        setClave('do');
+        syncModalControls();
+      });
+    }
+    var btnClefFa = document.getElementById('btnMsaClefFa');
+    if (btnClefFa) {
+      btnClefFa.addEventListener('click', function () {
+        setClave('fa');
+        syncModalControls();
+      });
+    }
+
     // Controles de BPM (avanço de velocidade de 1 em 1)
     if (btnBpmMinus) {
       btnBpmMinus.addEventListener('click', function () {
@@ -3842,9 +3997,61 @@
         setVoiceGender('fem');
       });
     }
-    if (btnVoiceMasc) {
-      btnVoiceMasc.addEventListener('click', function () {
-        setVoiceGender('masc');
+    // Controles de Zoom da Partitura (Botões + / - e Reset)
+    var btnZoomIn = document.getElementById('btnMsaScoreZoomIn');
+    if (btnZoomIn) {
+      btnZoomIn.addEventListener('click', function () {
+        setScoreZoom((state.osmdZoom || 1.05) + 0.15);
+      });
+    }
+    var btnZoomOut = document.getElementById('btnMsaScoreZoomOut');
+    if (btnZoomOut) {
+      btnZoomOut.addEventListener('click', function () {
+        setScoreZoom((state.osmdZoom || 1.05) - 0.15);
+      });
+    }
+    var btnZoomReset = document.getElementById('btnMsaScoreZoomReset');
+    if (btnZoomReset) {
+      btnZoomReset.addEventListener('click', function () {
+        setScoreZoom(getDefaultScoreZoom());
+      });
+    }
+
+    // Gesto de Pinça com 2 dedos (Pinch-to-Zoom) na Partitura
+    var scoreContainer = document.getElementById('msaOsmdContainer');
+    if (scoreContainer) {
+      var pinchStartDistance = null;
+      var pinchStartZoom = null;
+
+      scoreContainer.addEventListener('touchstart', function (e) {
+        if (e.touches && e.touches.length === 2) {
+          pinchStartDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          pinchStartZoom = state.osmdZoom || 1.05;
+        }
+      }, { passive: true });
+
+      scoreContainer.addEventListener('touchmove', function (e) {
+        if (e.touches && e.touches.length === 2 && pinchStartDistance && pinchStartDistance > 10) {
+          var curDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          var factor = curDistance / pinchStartDistance;
+          var nextZoom = Math.round(pinchStartZoom * factor * 20) / 20;
+          if (Math.abs(nextZoom - state.osmdZoom) >= 0.05) {
+            setScoreZoom(nextZoom);
+          }
+        }
+      }, { passive: true });
+
+      scoreContainer.addEventListener('touchend', function (e) {
+        if (!e.touches || e.touches.length < 2) {
+          pinchStartDistance = null;
+          pinchStartZoom = null;
+        }
       });
     }
 
@@ -3876,6 +4083,8 @@
     loadCatalog();
     setVoiceGender(state.generoVoz);
     updateInstrumentButtonLabel();
+    updateClefUi();
+    updateScoreZoomLabel();
     if (window.gemRefreshLucide) window.gemRefreshLucide();
   }
 
@@ -3883,6 +4092,7 @@
     init: init,
     carregarExercicio: carregarExercicio,
     stopPlayback: stopPlayback,
+    setClave: setClave,
     onShowSection: onShowSection,
     onInstrumentChange: function (newInst) {
       updateInstrumentButtonLabel();
@@ -3891,6 +4101,22 @@
         modeLabel.textContent = newInst.nome || 'Instrumento';
       }
       ensureInstrumentSoundFontLoaded();
+
+      // Sincronização automática intuitiva de clave conforme o instrumento
+      if (newInst && newInst.id) {
+        var autoClef = null;
+        var iId = (newInst.id || '').toLowerCase();
+        if (iId.indexOf('viola') !== -1) {
+          autoClef = 'do';
+        } else if (iId.indexOf('cello') !== -1 || iId.indexOf('violoncelo') !== -1 || iId.indexOf('tuba') !== -1 || iId.indexOf('trombone') !== -1 || iId.indexOf('eufonio') !== -1 || iId.indexOf('euphonium') !== -1 || iId.indexOf('baixo') !== -1 || iId.indexOf('fagote') !== -1) {
+          autoClef = 'fa';
+        } else if (iId.indexOf('violino') !== -1 || iId.indexOf('flauta') !== -1 || iId.indexOf('trompete') !== -1 || iId.indexOf('clarinete') !== -1 || iId.indexOf('sax') !== -1 || iId.indexOf('oboe') !== -1) {
+          autoClef = 'sol';
+        }
+        if (autoClef && autoClef !== state.claveSelecionada) {
+          setClave(autoClef);
+        }
+      }
     }
   };
 

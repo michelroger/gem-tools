@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const APP_VERSION = '2.7.3';
+  const APP_VERSION = '2.8.0';
   const APP_VERSION_LABEL = 'Beta';
   const THEME_STORAGE_KEY = 'orquestra-theme';
   /** MusicXML servido junto ao index (GitHub Pages ou servidor local). */
@@ -12777,24 +12777,53 @@
         viewport.style.cursor = 'grab';
       });
       
-      // Arrastar com toque (mobile)
+      // Arrastar e Zoom com toque (mobile com suporte a pinça de 2 dedos)
+      var msaPinchDist = null;
+      var msaPinchScale = null;
+
       viewport.addEventListener('touchstart', function(e) {
         if (e.touches.length === 1) {
           msaInfoIsDragging = true;
           msaInfoStartX = e.touches[0].clientX - msaInfoPanX;
           msaInfoStartY = e.touches[0].clientY - msaInfoPanY;
+        } else if (e.touches.length === 2) {
+          msaInfoIsDragging = false;
+          msaPinchDist = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          msaPinchScale = msaInfoScale;
         }
       }, { passive: true });
       
       viewport.addEventListener('touchmove', function(e) {
-        if (!msaInfoIsDragging || e.touches.length !== 1) return;
-        msaInfoPanX = e.touches[0].clientX - msaInfoStartX;
-        msaInfoPanY = e.touches[0].clientY - msaInfoStartY;
-        updateInfografiaTransform();
+        if (e.touches.length === 1 && msaInfoIsDragging) {
+          msaInfoPanX = e.touches[0].clientX - msaInfoStartX;
+          msaInfoPanY = e.touches[0].clientY - msaInfoStartY;
+          updateInfografiaTransform();
+        } else if (e.touches.length === 2 && msaPinchDist && msaPinchDist > 5) {
+          var curDist = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          var factor = curDist / msaPinchDist;
+          msaInfoScale = Math.min(5, Math.max(0.5, msaPinchScale * factor));
+          updateInfografiaTransform();
+        }
       }, { passive: true });
       
-      viewport.addEventListener('touchend', function() {
-        msaInfoIsDragging = false;
+      viewport.addEventListener('touchend', function(e) {
+        if (!e.touches || e.touches.length === 0) {
+          msaInfoIsDragging = false;
+          msaPinchDist = null;
+          msaPinchScale = null;
+        } else if (e.touches.length === 1) {
+          msaPinchDist = null;
+          msaPinchScale = null;
+          msaInfoIsDragging = true;
+          msaInfoStartX = e.touches[0].clientX - msaInfoPanX;
+          msaInfoStartY = e.touches[0].clientY - msaInfoPanY;
+        }
       });
       
       // Tratamento de erro (imagem não encontrada)

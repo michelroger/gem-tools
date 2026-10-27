@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=4.0, user-scalable=yes">
   <title>Orquestra para Crianças — Aprenda as Notas</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#4f7cff">
@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=2.7.3">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.8.0">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v2.7.3</div>
+      <div class="splash-version" id="splashVersion">v2.8.0</div>
     </div>
   </div>
 
@@ -811,6 +811,12 @@
               <span id="msaCurrentModeLabel" class="text-xs">Rítmica</span>
             </button>
 
+            <!-- Botão de Alternância Rápida de Clave (Sol / Dó / Fá) -->
+            <button type="button" id="btnMsaClefToggle" class="msa-toolbar-btn" title="Alternar Clave da Lição: Sol / Dó / Fá">
+              <span id="msaClefIcon" class="text-base font-serif font-black leading-none text-primary">𝄞</span>
+              <span id="msaCurrentClefLabel" class="text-xs font-bold">Sol</span>
+            </button>
+
             <!-- Botão 2: Som Geral ON/OFF (Volume) -->
             <button type="button" id="btnMsaAudioToggle" class="msa-toolbar-btn" title="Ativar ou desativar áudio">
               <i data-lucide="volume-2" id="msaAudioIcon" class="w-4 h-4 text-emerald-600"></i>
@@ -854,6 +860,15 @@
               <span id="msaExercicioTitle">Partitura da Lição</span>
             </h4>
             <div class="flex items-center gap-2">
+              <!-- Controles de Zoom da Partitura (Zoom Out / Padrão / Zoom In) -->
+              <div class="flex items-center gap-0.5 rounded-xl border border-base-300 bg-base-200/50 p-0.5 text-xs shadow-sm">
+                <button type="button" id="btnMsaScoreZoomOut" class="btn-bpm-step" style="width:26px;height:26px;font-size:14px;border-radius:8px;" title="Afastar partitura (Zoom Out)">−</button>
+                <button type="button" id="btnMsaScoreZoomReset" class="px-1.5 py-0.5 text-[11px] font-black text-base-content/75 hover:text-primary transition" title="Redefinir para tamanho padrão">
+                  <span id="msaScoreZoomVal">105%</span>
+                </button>
+                <button type="button" id="btnMsaScoreZoomIn" class="btn-bpm-step" style="width:26px;height:26px;font-size:14px;border-radius:8px;" title="Aproximar partitura (Zoom In)">+</button>
+              </div>
+
               <span class="du-badge du-badge-outline du-badge-sm font-bold" id="msaCompassoBadge">4 Tempos</span>
               <span class="du-badge du-badge-secondary du-badge-sm font-bold hidden" id="msaFermataBadge">𝄐 Fermata</span>
             </div>
@@ -926,6 +941,31 @@
                     </div>
                   </div>
                   <div class="msa-mode-check"><i data-lucide="check" class="w-5 h-5"></i></div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Seção Clave de Leitura (Sol / Dó / Fá) -->
+            <div id="msaClefSection">
+              <label class="font-extrabold text-[11px] uppercase tracking-wider text-base-content/60 block mb-2 flex items-center justify-between">
+                <span>Clave de Leitura</span>
+                <span class="text-[10px] text-primary lowercase font-semibold" id="msaClefNotice"></span>
+              </label>
+              <div class="grid grid-cols-3 gap-2" id="msaModalClefBtns">
+                <button type="button" class="msa-clef-btn active" data-clef="sol" id="btnMsaClefSol">
+                  <span class="text-xl font-bold font-serif leading-none">𝄞</span>
+                  <div class="text-xs font-black">Clave de Sol</div>
+                  <div class="text-[10px] opacity-70">2ª linha (Agudos)</div>
+                </button>
+                <button type="button" class="msa-clef-btn" data-clef="do" id="btnMsaClefDo">
+                  <span class="text-xl font-bold font-serif leading-none">𝄡</span>
+                  <div class="text-xs font-black">Clave de Dó</div>
+                  <div class="text-[10px] opacity-70">3ª linha (Viola)</div>
+                </button>
+                <button type="button" class="msa-clef-btn" data-clef="fa" id="btnMsaClefFa">
+                  <span class="text-xl font-bold font-serif leading-none">𝄢</span>
+                  <div class="text-xs font-black">Clave de Fá</div>
+                  <div class="text-[10px] opacity-70">4ª linha (Graves)</div>
                 </button>
               </div>
             </div>
@@ -1823,7 +1863,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">2.7.3</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.8.0</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1871,10 +1911,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/congregacoes-data.js?v=2.7.3"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=2.7.3"></script>
-  <script src="./assets/js/modules/msa-leitura.js?v=2.7.3"></script>
-  <script src="./assets/js/app-main.js?v=2.7.3"></script>
+  <script src="./assets/js/modules/congregacoes-data.js?v=2.8.0"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=2.8.0"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.8.0"></script>
+  <script src="./assets/js/app-main.js?v=2.8.0"></script>
 
 </body>
 
