@@ -31,7 +31,7 @@
       } catch (e) { }
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/app.css?v=2.8.1">
+  <link rel="stylesheet" href="./assets/css/app.css?v=2.8.2">
   <link rel="stylesheet" href="./assets/css/tw-daisy.css">
 
   <!-- Som real de violino (soundfont MusyngKite) -->
@@ -107,7 +107,7 @@
       <span
         class="mx-auto mt-4 inline-block h-8 w-8 animate-spin rounded-full border-2 border-base-300 border-t-primary"
         aria-hidden="true"></span>
-      <div class="splash-version" id="splashVersion">v2.8.1</div>
+      <div class="splash-version" id="splashVersion">v2.8.2</div>
     </div>
   </div>
 
@@ -860,13 +860,13 @@
               <span id="msaExercicioTitle">Partitura da Lição</span>
             </h4>
             <div class="flex items-center gap-2">
-              <!-- Controles de Zoom da Partitura (Zoom Out / Padrão / Zoom In) -->
-              <div class="flex items-center gap-1 rounded-xl border border-base-300 bg-base-200/70 p-1 text-xs shadow-sm">
-                <button type="button" id="btnMsaScoreZoomOut" class="btn-bpm-step" style="width:32px;height:32px;font-size:16px;border-radius:10px;" title="Afastar partitura (Zoom Out)">−</button>
-                <button type="button" id="btnMsaScoreZoomReset" class="px-2 py-1 text-xs font-black text-base-content/80 hover:text-primary transition" title="Redefinir para tamanho padrão">
-                  <span id="msaScoreZoomVal">105%</span>
+              <!-- Controles de Zoom da Partitura no estilo harmonioso idêntico ao BPM -->
+              <div class="msa-zoom-control" title="Ajuste de zoom da partitura">
+                <button type="button" id="btnMsaScoreZoomOut" class="btn-zoom-step" aria-label="Afastar partitura">−</button>
+                <button type="button" id="btnMsaScoreZoomReset" class="flex items-center select-none px-1.5 cursor-pointer hover:opacity-80 transition bg-transparent border-0 p-0" title="Clique para redefinir ao tamanho padrão">
+                  <span id="msaScoreZoomVal" class="text-sm text-primary min-w-[36px] text-center font-black">105%</span>
                 </button>
-                <button type="button" id="btnMsaScoreZoomIn" class="btn-bpm-step" style="width:32px;height:32px;font-size:16px;border-radius:10px;" title="Aproximar partitura (Zoom In)">+</button>
+                <button type="button" id="btnMsaScoreZoomIn" class="btn-zoom-step" aria-label="Aproximar partitura">+</button>
               </div>
 
               <span class="du-badge du-badge-outline du-badge-sm font-bold" id="msaCompassoBadge">4 Tempos</span>
@@ -1863,7 +1863,7 @@
             </div>
           </div>
           <div style="color: var(--text-soft); font-weight:700; margin-bottom:0.85rem;">
-            Versão: <span id="aboutVersionNumber">2.8.1</span> - <span id="aboutVersion">Beta</span>
+            Versão: <span id="aboutVersionNumber">2.8.2</span> - <span id="aboutVersion">Beta</span>
           </div>
           <div style="margin-top:1rem; text-align:center;">
             <button type="button" class="du-btn du-btn-primary du-btn-sm" id="btnAboutOk">OK</button>
@@ -1911,10 +1911,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="./assets/js/modules/firebase-config.js?v=1.8.9"></script>
-  <script src="./assets/js/modules/congregacoes-data.js?v=2.8.1"></script>
-  <script src="./assets/js/modules/firebase-sync.js?v=2.8.1"></script>
-  <script src="./assets/js/modules/msa-leitura.js?v=2.8.1"></script>
-  <script src="./assets/js/app-main.js?v=2.8.1"></script>
+  <script src="./assets/js/modules/congregacoes-data.js?v=2.8.2"></script>
+  <script src="./assets/js/modules/firebase-sync.js?v=2.8.2"></script>
+  <script src="./assets/js/modules/msa-leitura.js?v=2.8.2"></script>
+  <script src="./assets/js/app-main.js?v=2.8.2"></script>
 
 </body>
 

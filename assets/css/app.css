@@ -3577,6 +3577,63 @@
       transform: scale(0.95);
     }
 
+    /* Controle de Zoom no estilo harmonioso idêntico ao BPM */
+    .msa-zoom-control {
+      height: 38px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      padding: 0 6px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
+      border-radius: 14px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      box-sizing: border-box !important;
+      transition: all 0.15s ease;
+    }
+
+    html.theme-dark .msa-zoom-control {
+      background: #1E293B !important;
+      border-color: #334155 !important;
+    }
+
+    .btn-zoom-step {
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 9px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      border: none !important;
+      background: rgba(241, 245, 249, 0.95) !important;
+      color: #334155 !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      user-select: none !important;
+      line-height: 1 !important;
+      padding: 0 !important;
+    }
+
+    html.theme-dark .btn-zoom-step {
+      background: #334155 !important;
+      color: #F1F5F9 !important;
+    }
+
+    .btn-zoom-step:hover {
+      background: #E2E8F0 !important;
+      transform: scale(1.05);
+    }
+
+    html.theme-dark .btn-zoom-step:hover {
+      background: #475569 !important;
+    }
+
+    .btn-zoom-step:active {
+      transform: scale(0.95);
+    }
+
     /* Botões da Barra de Ferramentas (Modo, Áudio, Ajustes) */
     .msa-toolbar-btn {
       height: 46px !important;
